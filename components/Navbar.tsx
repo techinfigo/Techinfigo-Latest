@@ -70,16 +70,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
 
           {/* Status & CTA */}
           <div className="flex items-center gap-6">
-            <div className="hidden xl:flex items-center gap-4 border-l border-brandDark/10 pl-8">
-              <div className="flex flex-col items-end">
-                <span className="text-[9px] font-bold text-brandDark/30 uppercase tracking-[0.2em]">Mandate Status</span>
-                <span className="text-[10px] font-bold text-brandDark uppercase tracking-widest flex items-center gap-2">
-                  Selective 
-                  <span className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse"></span>
-                </span>
-              </div>
-            </div>
-            
             <button 
               onClick={() => onNavigate('contact')}
               className={`hidden sm:block px-8 py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-lg ${
