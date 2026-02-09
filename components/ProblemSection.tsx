@@ -7,63 +7,57 @@ export const ProblemSection: React.FC = () => {
   const bottlenecks = [
     {
       id: 1,
-      title: "The Revenue-Profit Paradox",
-      problem: "Your dashboard shows growth, but rising CAC and hidden overheads are quietly eroding your margins. You're scaling a workload, not a bank balance.",
-      fix: "Unit Economic Guardrails",
-      fixDesc: "We implement real-time contribution margin tracking to ensure every ₹1 spent on ads generates net profit, not just GMV.",
+      title: "The Profit Paradox",
+      problem: "Your dashboard shows growth, but rising CAC is quietly eroding margins. You're scaling a workload, not a bank balance.",
+      fix: "Economic Guardrails",
+      fixDesc: "Real-time contribution margin tracking to ensure every ₹1 spent generates net profit, not just GMV.",
       size: "large"
     },
     {
       id: 2,
       title: "Algorithm Fragility",
-      problem: "Your entire business hinges on a single platform's whim. One policy update or CPM spike can wipe out months of progress.",
-      fix: "Omni-Channel Resilience",
-      fixDesc: "Diversifying attribution and building first-party data assets to reduce Meta/Google dependency by 40%.",
+      problem: "One policy update or CPM spike can wipe out months of progress. Your business hinges on a single platform's whim.",
+      fix: "Channel Resilience",
+      fixDesc: "Diversifying attribution and building 1P data to reduce Meta/Google dependency by 40%.",
       size: "medium"
     },
     {
       id: 3,
       title: "The Manual Grind",
-      problem: "Your team is solving the same fires every month. No repeatable engines, just human effort.",
+      problem: "Team solving the same fires every month. No repeatable engines, just human effort.",
       fix: "Automated Ops",
-      fixDesc: "Standardizing SOPs and creative pipelines so your growth is independent of individual heroics.",
+      fixDesc: "Standardizing pipelines so growth is independent of individual heroics.",
       size: "small"
     },
     {
       id: 4,
       title: "Blind Scaling",
-      problem: "Decisions are made on vanity metrics and gut feeling. You are scaling inefficiency, not success.",
+      problem: "Decisions made on vanity metrics and gut. Scaling inefficiency, not success.",
       fix: "Data Infrastructure",
-      fixDesc: "A custom attribution model that matches Shopify sales to ad spend with 95%+ accuracy.",
+      fixDesc: "Custom attribution matching sales to spend with 95%+ accuracy.",
       size: "small"
     }
   ];
 
   return (
-    <section className="w-full bg-[#faf6ed] py-48 px-6 overflow-hidden">
+    <section className="w-full bg-[#faf6ed] py-24 lg:py-48 px-4 sm:px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
-        {/* Section Header */}
-        <div className="flex flex-col lg:flex-row items-baseline justify-between gap-12 mb-24">
+        <div className="flex flex-col lg:flex-row items-start lg:items-baseline justify-between gap-8 lg:gap-12 mb-16 lg:mb-24">
           <div className="max-w-2xl">
-            <span className="inline-block text-[10px] font-bold tracking-[0.4em] uppercase text-brandDark/40 mb-6 flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></span>
-              Strategic Diagnosis
-            </span>
-            <h2 className="text-5xl md:text-6xl font-bold text-brandDark leading-tight tracking-tight">
-              Scaling breaks where <br /> systems are missing.
+            <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.4em] uppercase text-brandDark/40 mb-4 block">Strategic Diagnosis</span>
+            <h2 className="text-4xl lg:text-6xl font-bold text-brandDark leading-tight tracking-tight">
+              Scaling breaks where <br className="hidden lg:block" /> systems are missing.
             </h2>
           </div>
-          <div className="lg:text-right border-l-2 lg:border-l-0 lg:border-r-2 border-brandYellow pl-8 lg:pl-0 lg:pr-8">
-            <p className="text-brandDark/60 text-lg max-w-[320px] leading-relaxed italic">
-              "We don't solve symptoms; we rebuild the underlying growth architecture."
+          <div className="border-l-4 border-brandYellow pl-6">
+            <p className="text-brandDark/60 text-base lg:text-lg max-w-[320px] leading-relaxed italic">
+              "We don't solve symptoms; we rebuild growth architecture."
             </p>
           </div>
         </div>
 
-        {/* Bento Grid Layout - Dark Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[340px] md:auto-rows-[300px]">
-          
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-auto">
           {bottlenecks.map((item, index) => {
             const isHovered = hoveredIndex === index;
             const isLarge = item.size === 'large';
@@ -74,83 +68,49 @@ export const ProblemSection: React.FC = () => {
                 key={item.id}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
+                onClick={() => setHoveredIndex(isHovered ? null : index)}
                 className={`
-                  relative rounded-2xl p-10 transition-all duration-700 cursor-default overflow-hidden
-                  ${isLarge ? 'md:col-span-2 lg:col-span-2 lg:row-span-2' : ''}
-                  ${isMedium ? 'md:col-span-2 lg:col-span-2' : ''}
-                  ${!isLarge && !isMedium ? 'md:col-span-1 lg:col-span-1' : ''}
+                  relative rounded-xl p-6 lg:p-10 transition-all duration-500 cursor-pointer lg:cursor-default overflow-hidden border-2
+                  ${isLarge ? 'md:col-span-2 lg:row-span-2' : ''}
+                  ${isMedium ? 'md:col-span-2' : ''}
                   ${isHovered 
-                    ? 'bg-[#002a2f] shadow-[0_40px_80px_rgba(0,0,0,0.15)] scale-[1.01] border-brandYellow/20' 
-                    : 'bg-brandDark border border-white/5 shadow-sm'}
-                  border-2
+                    ? 'bg-[#002a2f] border-brandYellow/20 scale-[1.01]' 
+                    : 'bg-brandDark border-white/5 shadow-sm'}
                 `}
               >
-                {/* Content Wrapper */}
-                <div className="relative z-10 h-full flex flex-col justify-between">
-                  <div>
-                    <div className={`
-                      w-12 h-12 rounded-lg flex items-center justify-center mb-8 transition-all duration-500
-                      ${isHovered ? 'bg-brandYellow text-brandDark rotate-12' : 'bg-white/5 text-brandYellow/50'}
-                    `}>
-                      <span className="font-bold text-sm tracking-tighter">0{item.id}</span>
-                    </div>
-
-                    <h3 className={`
-                      font-bold leading-none transition-colors duration-500 text-white
-                      ${isLarge ? 'text-4xl lg:text-5xl mb-6' : 'text-3xl mb-4'}
-                    `}>
-                      {isHovered ? item.fix : item.title}
-                    </h3>
-
-                    <p className={`
-                      transition-all duration-700 leading-relaxed text-white/50
-                      ${isLarge ? 'text-xl' : 'text-base'}
-                      ${isHovered ? 'text-white/80' : ''}
-                    `}>
-                      {isHovered ? item.fixDesc : item.problem}
-                    </p>
+                <div className="relative z-10 h-full flex flex-col">
+                  <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-lg flex items-center justify-center mb-6 lg:mb-8 transition-colors ${isHovered ? 'bg-brandYellow text-brandDark' : 'bg-white/5 text-brandYellow/50'}`}>
+                    <span className="font-bold text-xs tracking-tighter">0{item.id}</span>
                   </div>
 
-                  <div className={`
-                    pt-8 border-t transition-colors duration-700 mt-auto border-white/10
-                  `}>
-                    <span className={`
-                      text-[10px] font-bold uppercase tracking-[0.3em] block mb-2
-                      ${isHovered ? 'text-brandYellow' : 'text-white/20'}
-                    `}>
-                      {isHovered ? 'Resolution Protocol' : 'Current Status'}
+                  <h3 className={`font-bold text-2xl lg:text-4xl text-white mb-4 ${isLarge ? 'lg:text-5xl' : ''}`}>
+                    {isHovered ? item.fix : item.title}
+                  </h3>
+
+                  <p className={`text-sm lg:text-base leading-relaxed text-white/50 mb-8 transition-colors ${isHovered ? 'text-white/80' : ''}`}>
+                    {isHovered ? item.fixDesc : item.problem}
+                  </p>
+
+                  <div className="pt-6 border-t border-white/10 mt-auto">
+                    <span className={`text-[8px] lg:text-[10px] font-bold uppercase tracking-[0.3em] block mb-1 ${isHovered ? 'text-brandYellow' : 'text-white/20'}`}>
+                      {isHovered ? 'Resolution' : 'Status'}
                     </span>
-                    <p className="text-white font-bold text-sm tracking-tight">
-                      {isHovered ? 'Efficiency Lift: High' : 'System Leakage Detected'}
+                    <p className="text-white font-bold text-xs tracking-tight">
+                      {isHovered ? 'Efficiency: High' : 'Leakage Detected'}
                     </p>
                   </div>
                 </div>
-
-                {/* Decorative Background Elements on Hover */}
-                <div className={`
-                  absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-[100px] transition-all duration-1000 pointer-events-none
-                  ${isHovered ? 'bg-brandYellow/20 opacity-100' : 'bg-transparent opacity-0'}
-                `}></div>
               </div>
             );
           })}
-
         </div>
 
-        {/* Section Footer */}
-        <div className="mt-24 flex flex-col md:flex-row items-center justify-between py-10 border-t border-brandDark/5 gap-8">
-          <div className="flex items-center gap-8">
-             <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-[#faf6ed] bg-brandDark/5 transition-transform hover:scale-110"></div>
-                ))}
-              </div>
-              <p className="text-brandDark/40 text-[11px] font-bold uppercase tracking-widest">
-                Benchmarked against ₹50Cr+ D2C Leaders
-              </p>
-          </div>
-          <div className="px-8 py-3 bg-brandDark/[0.03] border border-brandDark/5 rounded-full">
-            <span className="text-[10px] font-bold text-brandDark/30 uppercase tracking-[0.3em]">82+ Critical System Audit Points Verified</span>
+        <div className="mt-16 lg:mt-24 flex flex-col md:flex-row items-center justify-between py-8 border-t border-brandDark/5 gap-6">
+          <p className="text-brandDark/40 text-[9px] lg:text-[11px] font-bold uppercase tracking-widest text-center">
+            Benchmarked against ₹50Cr+ D2C Leaders
+          </p>
+          <div className="px-6 py-2 bg-brandDark/[0.03] border border-brandDark/5 rounded-full">
+            <span className="text-[8px] lg:text-[10px] font-bold text-brandDark/30 uppercase tracking-[0.2em]">82+ Audit Points Verified</span>
           </div>
         </div>
 

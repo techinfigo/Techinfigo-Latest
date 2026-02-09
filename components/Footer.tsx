@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'contact' | 'about' | 'services') => void;
+  onNavigate: (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => void;
   onBookAudit: () => void;
 }
 
@@ -36,6 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onBookAudit }) => {
                 <li><button onClick={() => onNavigate('home')} className="text-sm hover:text-brandYellow transition-colors text-left">Home</button></li>
                 <li><button onClick={() => onNavigate('about')} className="text-sm hover:text-brandYellow transition-colors text-left">About Bureau</button></li>
                 <li><button onClick={() => onNavigate('services')} className="text-sm hover:text-brandYellow transition-colors text-left">Services</button></li>
+                <li><button onClick={() => onNavigate('how-it-works')} className="text-sm hover:text-brandYellow transition-colors text-left">How it works</button></li>
                 <li><button onClick={() => onNavigate('contact')} className="text-sm hover:text-brandYellow transition-colors text-left">Book Audit</button></li>
               </ul>
             </div>

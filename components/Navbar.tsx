@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'contact' | 'about' | 'services') => void;
-  activePage: 'home' | 'contact' | 'about' | 'services';
+  onNavigate: (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => void;
+  activePage: 'home' | 'contact' | 'about' | 'services' | 'how-it-works';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
@@ -22,9 +22,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     { name: 'Home', id: 'home' },
     { name: 'About', id: 'about' },
     { name: 'Services', id: 'services' },
+    { name: 'How it works', id: 'how-it-works' },
   ];
 
-  const handleLinkClick = (page: 'home' | 'contact' | 'about' | 'services') => {
+  const handleLinkClick = (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => {
     onNavigate(page);
     setMobileMenuOpen(false);
   };
