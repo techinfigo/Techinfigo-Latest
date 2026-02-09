@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
 import { SystemSection } from './components/SystemSection';
 import { ProofSection } from './components/ProofSection';
+import { QualificationSection } from './components/QualificationSection';
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
       <ProblemSection />
       <SystemSection />
       <ProofSection />
+      <QualificationSection />
     </main>
   );
 };
