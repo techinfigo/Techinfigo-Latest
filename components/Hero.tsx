@@ -27,15 +27,15 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               We Architect <br />
               <span className="text-brandDark/20 font-light">High-Yield</span> <br />
               <span className="relative inline-block">
-                Growth Engines.
+                Scale Infrastructure.
                 <div className="absolute -bottom-2 left-0 w-1/3 h-2 bg-brandYellow/30 -z-10"></div>
               </span>
             </h1>
           </div>
 
           <p className="text-xl md:text-2xl text-brandDark/60 max-w-xl leading-snug font-medium border-l-4 border-brandYellow pl-8">
-            Eliminating the volatility of "marketing" through structured engineering. 
-            We scale D2C brands from <span className="text-brandDark font-bold">₹50L to ₹50Cr</span> with surgical precision.
+            Eliminating the volatility of "marketing" through performance engineering. 
+            Scaling D2C brands from <span className="text-brandDark font-bold">₹50L to ₹50Cr</span> through unit-economic precision.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-8 w-full sm:w-auto">

@@ -2,10 +2,11 @@
 import React from 'react';
 
 interface FooterProps {
+  onNavigate: (page: 'home' | 'contact' | 'about' | 'services') => void;
   onBookAudit: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onBookAudit }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onBookAudit }) => {
   return (
     <footer className="bg-brandDark py-32 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -32,10 +33,10 @@ export const Footer: React.FC<FooterProps> = ({ onBookAudit }) => {
             <div className="space-y-6">
               <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em]">Navigation</p>
               <ul className="space-y-4">
-                <li><button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="text-sm hover:text-brandYellow transition-colors">Bottlenecks</button></li>
-                <li><button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="text-sm hover:text-brandYellow transition-colors">Infrastructure</button></li>
-                <li><button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="text-sm hover:text-brandYellow transition-colors">Proof</button></li>
-                <li><button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="text-sm hover:text-brandYellow transition-colors">Mandates</button></li>
+                <li><button onClick={() => onNavigate('home')} className="text-sm hover:text-brandYellow transition-colors text-left">Home</button></li>
+                <li><button onClick={() => onNavigate('about')} className="text-sm hover:text-brandYellow transition-colors text-left">About Bureau</button></li>
+                <li><button onClick={() => onNavigate('services')} className="text-sm hover:text-brandYellow transition-colors text-left">Services</button></li>
+                <li><button onClick={() => onNavigate('contact')} className="text-sm hover:text-brandYellow transition-colors text-left">Book Audit</button></li>
               </ul>
             </div>
             <div className="space-y-6">

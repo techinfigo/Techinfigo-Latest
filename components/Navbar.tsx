@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'contact') => void;
-  activePage: 'home' | 'contact';
+  onNavigate: (page: 'home' | 'contact' | 'about' | 'services') => void;
+  activePage: 'home' | 'contact' | 'about' | 'services';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
@@ -19,22 +19,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
   }, []);
 
   const navLinks = [
-    { name: 'Bottlenecks', id: 'bottlenecks' },
-    { name: 'Infrastructure', id: 'infrastructure' },
-    { name: 'Track Record', id: 'track-record' },
-    { name: 'Qualification', id: 'qualification' },
+    { name: 'Home', id: 'home' },
+    { name: 'About', id: 'about' },
+    { name: 'Services', id: 'services' },
   ];
 
-  const handleLinkClick = (id: string) => {
-    if (activePage !== 'home') {
-      onNavigate('home');
-      // Delay scroll to allow home to mount
-      setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleLinkClick = (page: 'home' | 'contact' | 'about' | 'services') => {
+    onNavigate(page);
     setMobileMenuOpen(false);
   };
 
@@ -61,25 +52,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
 
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center gap-12">
-            {activePage === 'home' && navLinks.map((link) => (
+            {navLinks.map((link) => (
               <button
-                key={link.name}
-                onClick={() => handleLinkClick(link.id)}
-                className="text-[10px] font-bold text-brandDark/50 hover:text-brandDark uppercase tracking-[0.3em] transition-all relative group"
+                key={link.id}
+                onClick={() => handleLinkClick(link.id as any)}
+                className={`text-[10px] font-bold uppercase tracking-[0.3em] transition-all relative group ${
+                  activePage === link.id ? 'text-brandDark' : 'text-brandDark/50 hover:text-brandDark'
+                }`}
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-brandYellow transition-all duration-300 group-hover:w-full"></span>
+                <span className={`absolute -bottom-1 left-0 h-[1.5px] bg-brandYellow transition-all duration-300 ${
+                  activePage === link.id ? 'w-full' : 'w-0 group-hover:w-full'
+                }`}></span>
               </button>
             ))}
-            {activePage === 'contact' && (
-               <button
-                 onClick={() => onNavigate('home')}
-                 className="text-[10px] font-bold text-brandDark/50 hover:text-brandDark uppercase tracking-[0.3em] transition-all relative group"
-               >
-                 Back to Control Center
-                 <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-brandYellow transition-all duration-300 group-hover:w-full"></span>
-               </button>
-            )}
           </div>
 
           {/* Status & CTA */}
@@ -98,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
               onClick={() => onNavigate('contact')}
               className={`hidden sm:block px-8 py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-lg ${
                 activePage === 'contact' 
-                ? 'bg-brandYellow text-brandDark' 
+                ? 'bg-brandYellow text-brandDark shadow-brandYellow/20' 
                 : 'bg-brandDark text-white hover:bg-brandYellow hover:text-brandDark shadow-brandDark/10'
               }`}
             >
@@ -123,8 +109,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
         <div className="flex flex-col h-full justify-center px-12 space-y-12">
           {navLinks.map((link, i) => (
             <button 
-              key={link.name}
-              onClick={() => handleLinkClick(link.id)}
+              key={link.id}
+              onClick={() => handleLinkClick(link.id as any)}
               className="text-4xl font-bold text-brandDark tracking-tighter hover:text-brandYellow transition-colors flex items-center gap-6 text-left"
               style={{ transitionDelay: `${i * 100}ms` }}
             >
@@ -134,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
           ))}
           <div className="pt-12 border-t border-brandDark/10">
             <button 
-              onClick={() => onNavigate('contact')}
+              onClick={() => handleLinkClick('contact')}
               className="w-full bg-brandDark text-white py-6 rounded-sm text-sm font-bold uppercase tracking-widest"
             >
               Book Growth Audit

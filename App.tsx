@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
@@ -7,13 +7,14 @@ import { SystemSection } from './components/SystemSection';
 import { ProofSection } from './components/ProofSection';
 import { QualificationSection } from './components/QualificationSection';
 import { ContactPage } from './components/ContactPage';
+import { AboutPage } from './components/AboutPage';
+import { ServicesPage } from './components/ServicesPage';
 import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'contact'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'contact' | 'about' | 'services'>('home');
 
-  // Handle URL hashes or internal triggers
-  const navigateTo = (page: 'home' | 'contact') => {
+  const navigateTo = (page: 'home' | 'contact' | 'about' | 'services') => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(page);
   };
@@ -22,7 +23,7 @@ const App: React.FC = () => {
     <main className="min-h-screen bg-brandBg selection:bg-brandYellow selection:text-brandDark scroll-smooth transition-all duration-700">
       <Navbar onNavigate={navigateTo} activePage={currentPage} />
       
-      {currentPage === 'home' ? (
+      {currentPage === 'home' && (
         <div className="animate-fade-in">
           <Hero onBookAudit={() => navigateTo('contact')} />
           <section id="bottlenecks" className="scroll-mt-24">
@@ -37,9 +38,25 @@ const App: React.FC = () => {
           <section id="qualification" className="scroll-mt-24">
             <QualificationSection />
           </section>
-          <Footer onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
-      ) : (
+      )}
+
+      {currentPage === 'about' && (
+        <div className="animate-slide-up">
+          <AboutPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'services' && (
+        <div className="animate-slide-up">
+          <ServicesPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'contact' && (
         <div className="animate-slide-up">
           <ContactPage onBack={() => navigateTo('home')} />
         </div>
