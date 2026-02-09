@@ -40,29 +40,29 @@ export const ProblemSection: React.FC = () => {
   ];
 
   return (
-    <section className="w-full bg-[#faf6ed] py-24 px-6 overflow-hidden">
+    <section className="w-full bg-[#faf6ed] py-48 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-16">
+        <div className="flex flex-col lg:flex-row items-baseline justify-between gap-12 mb-24">
           <div className="max-w-2xl">
-            <span className="inline-block text-[10px] font-bold tracking-[0.3em] uppercase text-brandDark/40 mb-4 flex items-center gap-2">
+            <span className="inline-block text-[10px] font-bold tracking-[0.4em] uppercase text-brandDark/40 mb-6 flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></span>
-              Interactive System Audit
+              Strategic Diagnosis
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-brandDark leading-tight tracking-tight">
+            <h2 className="text-5xl md:text-6xl font-bold text-brandDark leading-tight tracking-tight">
               Scaling breaks where <br /> systems are missing.
             </h2>
           </div>
-          <div className="md:text-right">
-            <p className="text-brandDark/50 text-sm max-w-[280px] leading-relaxed">
-              Hover over a bottleneck to reveal the <span className="text-brandDark font-semibold">Strategic Infrastructure Fix</span>.
+          <div className="lg:text-right border-l-2 lg:border-l-0 lg:border-r-2 border-brandYellow pl-8 lg:pl-0 lg:pr-8">
+            <p className="text-brandDark/60 text-lg max-w-[320px] leading-relaxed italic">
+              "We don't solve symptoms; we rebuild the underlying growth architecture."
             </p>
           </div>
         </div>
 
         {/* Bento Grid Layout - Dark Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[300px] md:auto-rows-[280px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[340px] md:auto-rows-[300px]">
           
           {bottlenecks.map((item, index) => {
             const isHovered = hoveredIndex === index;
@@ -75,12 +75,12 @@ export const ProblemSection: React.FC = () => {
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className={`
-                  relative rounded-3xl p-8 transition-all duration-500 cursor-default overflow-hidden
+                  relative rounded-2xl p-10 transition-all duration-700 cursor-default overflow-hidden
                   ${isLarge ? 'md:col-span-2 lg:col-span-2 lg:row-span-2' : ''}
-                  ${isMedium ? 'md:col-span-1 lg:col-span-2' : ''}
+                  ${isMedium ? 'md:col-span-2 lg:col-span-2' : ''}
                   ${!isLarge && !isMedium ? 'md:col-span-1 lg:col-span-1' : ''}
                   ${isHovered 
-                    ? 'bg-[#002a2f] shadow-2xl scale-[1.02] border-brandYellow/20' 
+                    ? 'bg-[#002a2f] shadow-[0_40px_80px_rgba(0,0,0,0.15)] scale-[1.01] border-brandYellow/20' 
                     : 'bg-brandDark border border-white/5 shadow-sm'}
                   border-2
                 `}
@@ -89,22 +89,22 @@ export const ProblemSection: React.FC = () => {
                 <div className="relative z-10 h-full flex flex-col justify-between">
                   <div>
                     <div className={`
-                      w-10 h-10 rounded-xl flex items-center justify-center mb-6 transition-colors duration-500
-                      ${isHovered ? 'bg-brandYellow text-brandDark' : 'bg-white/10 text-brandYellow'}
+                      w-12 h-12 rounded-lg flex items-center justify-center mb-8 transition-all duration-500
+                      ${isHovered ? 'bg-brandYellow text-brandDark rotate-12' : 'bg-white/5 text-brandYellow/50'}
                     `}>
-                      <span className="font-bold text-sm">0{item.id}</span>
+                      <span className="font-bold text-sm tracking-tighter">0{item.id}</span>
                     </div>
 
                     <h3 className={`
-                      font-bold leading-tight transition-colors duration-500 text-white
-                      ${isLarge ? 'text-3xl md:text-4xl mb-4' : 'text-2xl mb-3'}
+                      font-bold leading-none transition-colors duration-500 text-white
+                      ${isLarge ? 'text-4xl lg:text-5xl mb-6' : 'text-3xl mb-4'}
                     `}>
                       {isHovered ? item.fix : item.title}
                     </h3>
 
                     <p className={`
-                      transition-all duration-500 leading-relaxed text-white/60
-                      ${isLarge ? 'text-lg' : 'text-sm'}
+                      transition-all duration-700 leading-relaxed text-white/50
+                      ${isLarge ? 'text-xl' : 'text-base'}
                       ${isHovered ? 'text-white/80' : ''}
                     `}>
                       {isHovered ? item.fixDesc : item.problem}
@@ -112,33 +112,24 @@ export const ProblemSection: React.FC = () => {
                   </div>
 
                   <div className={`
-                    pt-6 border-t transition-colors duration-500 mt-auto border-white/10
+                    pt-8 border-t transition-colors duration-700 mt-auto border-white/10
                   `}>
                     <span className={`
-                      text-[10px] font-bold uppercase tracking-widest block mb-1
-                      ${isHovered ? 'text-brandYellow' : 'text-white/30'}
+                      text-[10px] font-bold uppercase tracking-[0.3em] block mb-2
+                      ${isHovered ? 'text-brandYellow' : 'text-white/20'}
                     `}>
-                      {isHovered ? 'The Infrastructure Solution' : 'Critical Bottleneck'}
+                      {isHovered ? 'Resolution Protocol' : 'Current Status'}
                     </span>
-                    <p className={`
-                      font-semibold transition-colors duration-500 text-white
-                    `}>
-                      {isHovered ? 'Systemic Efficiency +24%' : 'Profit Leakage Detected'}
+                    <p className="text-white font-bold text-sm tracking-tight">
+                      {isHovered ? 'Efficiency Lift: High' : 'System Leakage Detected'}
                     </p>
                   </div>
                 </div>
 
                 {/* Decorative Background Elements on Hover */}
-                {isHovered && (
-                  <div className="absolute top-0 right-0 p-4">
-                    <div className="w-12 h-12 border border-white/5 rounded-full flex items-center justify-center animate-spin-slow">
-                      <div className="w-1 h-1 bg-brandYellow rounded-full"></div>
-                    </div>
-                  </div>
-                )}
                 <div className={`
-                  absolute -bottom-10 -right-10 w-48 h-48 rounded-full blur-3xl transition-opacity duration-700 pointer-events-none
-                  ${isHovered ? 'bg-brandYellow/10 opacity-100' : 'bg-transparent opacity-0'}
+                  absolute -bottom-20 -right-20 w-64 h-64 rounded-full blur-[100px] transition-all duration-1000 pointer-events-none
+                  ${isHovered ? 'bg-brandYellow/20 opacity-100' : 'bg-transparent opacity-0'}
                 `}></div>
               </div>
             );
@@ -147,31 +138,23 @@ export const ProblemSection: React.FC = () => {
         </div>
 
         {/* Section Footer */}
-        <div className="mt-12 flex flex-col md:flex-row items-center justify-between py-6 border-t border-brandDark/5 gap-4">
-          <p className="text-brandDark/40 text-xs italic">
-            "Interconnected systems outperform isolated strategies every single time."
-          </p>
-          <div className="flex items-center gap-6">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="w-6 h-6 rounded-full border-2 border-[#faf6ed] bg-brandDark/10"></div>
-              ))}
-            </div>
-            <span className="text-[10px] font-bold text-brandDark/30 uppercase tracking-[0.2em]">82+ Audit Parameters Checked</span>
+        <div className="mt-24 flex flex-col md:flex-row items-center justify-between py-10 border-t border-brandDark/5 gap-8">
+          <div className="flex items-center gap-8">
+             <div className="flex -space-x-2">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-[#faf6ed] bg-brandDark/5 transition-transform hover:scale-110"></div>
+                ))}
+              </div>
+              <p className="text-brandDark/40 text-[11px] font-bold uppercase tracking-widest">
+                Benchmarked against ₹50Cr+ D2C Leaders
+              </p>
+          </div>
+          <div className="px-8 py-3 bg-brandDark/[0.03] border border-brandDark/5 rounded-full">
+            <span className="text-[10px] font-bold text-brandDark/30 uppercase tracking-[0.3em]">82+ Critical System Audit Points Verified</span>
           </div>
         </div>
 
       </div>
-
-      <style>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </section>
   );
 };
