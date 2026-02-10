@@ -33,11 +33,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onBookAudit }) => {
           </div>
         </div>
 
-        {/* Main Footer Grid - Balanced 12-column distribution */}
+        {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-6 mb-20">
           
           {/* Column 1: Identity (Span 3) */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-10">
             <div className="w-14 h-14 bg-brandYellow flex items-center justify-center rounded-xl shadow-lg">
               <span className="text-brandDark font-extrabold text-2xl">TF</span>
             </div>
@@ -48,18 +48,35 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onBookAudit }) => {
               <span className="text-[10px] font-bold text-brandYellow uppercase tracking-widest">• Partner-Led Execution</span>
             </div>
             
-            <div className="space-y-4 pt-4">
-              <p className="text-[11px] font-bold text-white/20 uppercase tracking-[0.4em]">Digital Ecosystem</p>
-              <div className="flex gap-4">
+            {/* Social Icons Section - Refined Size */}
+            <div className="space-y-5 pt-4">
+              <p className="text-[10px] font-bold text-[#4a6d71] uppercase tracking-[0.35em]">Digital Ecosystem</p>
+              <div className="flex gap-3">
                 {[
-                  { icon: 'linkedin', path: 'M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z' },
-                  { icon: 'instagram', path: 'M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm10.5 4.5a1 1 0 100 2 1 1 0 000-2zM12 7a5 5 0 100 10 5 5 0 000-10z' },
-                  { icon: 'facebook', path: 'M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z' },
-                  { icon: 'youtube', path: 'M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48L15.45 11.75z' }
+                  { 
+                    icon: 'linkedin', 
+                    path: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" /> 
+                  },
+                  { 
+                    icon: 'instagram', 
+                    path: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z M12 7a5 5 0 100 10 5 5 0 000-10z M17.5 6.5a.5.5 0 11-1 0 .5.5 0 011 0z" />
+                  },
+                  { 
+                    icon: 'facebook', 
+                    path: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+                  },
+                  { 
+                    icon: 'youtube', 
+                    path: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48L15.45 11.75z" />
+                  }
                 ].map((social) => (
-                  <a key={social.icon} href="#" className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center hover:bg-brandYellow hover:text-brandDark transition-all duration-300">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d={social.path} />
+                  <a 
+                    key={social.icon} 
+                    href="#" 
+                    className="w-11 h-11 rounded-xl bg-[#002a2f] border border-white/5 flex items-center justify-center hover:bg-brandYellow hover:border-brandYellow group transition-all duration-300 shadow-lg"
+                  >
+                    <svg className="w-5 h-5 text-white/30 group-hover:text-brandDark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {social.path}
                     </svg>
                   </a>
                 ))}
@@ -118,7 +135,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onBookAudit }) => {
           {/* Gap for balance (Span 1) */}
           <div className="hidden lg:block lg:col-span-1"></div>
 
-          {/* Column 4: HQ Terminal Card (Span 4 - Reduced from 5 for better balance) */}
+          {/* Column 4: HQ Terminal Card (Span 4) */}
           <div className="lg:col-span-4 relative">
             <div className="bg-[#002a2f] border border-white/10 rounded-2xl p-7 lg:p-8 space-y-6 shadow-2xl h-full">
               <div className="flex justify-between items-center">
