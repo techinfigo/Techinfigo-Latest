@@ -14,9 +14,35 @@ import { CareersPage } from './components/CareersPage';
 import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'contact' | 'about' | 'services' | 'how-it-works' | 'careers'>('home');
+  const [currentPage, setCurrentPage] = useState<string>('home');
 
-  const navigateTo = (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works' | 'careers') => {
+  const navigateTo = (page: string) => {
+    // Handle Smart Anchors
+    if (page === 'system') {
+      if (currentPage !== 'home') {
+        setCurrentPage('home');
+        setTimeout(() => {
+          document.getElementById('infrastructure')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        document.getElementById('infrastructure')?.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (page === 'qualification') {
+      if (currentPage !== 'home') {
+        setCurrentPage('home');
+        setTimeout(() => {
+          document.getElementById('qualification-section')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        document.getElementById('qualification-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    // Handle Standard Pages
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(page);
   };
@@ -37,7 +63,7 @@ const App: React.FC = () => {
           <section id="track-record" className="scroll-mt-24">
             <ProofSection />
           </section>
-          <section id="qualification" className="scroll-mt-24">
+          <section id="qualification-section" className="scroll-mt-24">
             <QualificationSection />
           </section>
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />

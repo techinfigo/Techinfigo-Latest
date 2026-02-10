@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => void;
-  activePage: 'home' | 'contact' | 'about' | 'services' | 'how-it-works';
+  onNavigate: (page: string) => void;
+  activePage: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
@@ -20,13 +20,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
 
   const navLinks = [
     { name: 'Home', id: 'home' },
-    { name: 'About', id: 'about' },
+    { name: 'About Us', id: 'about' },
+    { name: 'The System', id: 'system' },
+    { name: 'Our Process', id: 'how-it-works' },
+    { name: 'Who We Fit', id: 'qualification' },
     { name: 'Services', id: 'services' },
-    { name: 'Process', id: 'how-it-works' },
   ];
 
-  const handleLinkClick = (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => {
-    onNavigate(page);
+  const handleLinkClick = (id: string) => {
+    onNavigate(id);
     setMobileMenuOpen(false);
   };
 
@@ -45,7 +47,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             className="flex items-center gap-3 group cursor-pointer z-[110]" 
             onClick={() => onNavigate('home')}
           >
-            {/* Logo Image Placeholder / Icon */}
             <div className="w-10 h-10 bg-brandDark flex items-center justify-center rounded-sm flex-shrink-0">
               <span className="text-brandYellow font-extrabold text-2xl leading-none select-none">T</span>
             </div>
@@ -59,13 +60,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-10 xl:gap-14">
+          {/* Desktop Navigation Links - Updated Labels */}
+          <div className="hidden lg:flex items-center gap-8 xl:gap-10">
             {navLinks.map((link) => (
               <button
                 key={link.id}
-                onClick={() => handleLinkClick(link.id as any)}
-                className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-all relative py-2 ${
+                onClick={() => handleLinkClick(link.id)}
+                className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all relative py-2 ${
                   activePage === link.id ? 'text-brandDark' : 'text-brandDark/40 hover:text-brandDark'
                 }`}
               >
@@ -102,12 +103,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
 
       {/* Mobile Menu Overlay */}
       <div className={`fixed inset-0 z-[90] bg-white transition-all duration-500 lg:hidden ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
-        <div className="flex flex-col h-full justify-center px-8 space-y-8">
+        <div className="flex flex-col h-full justify-center px-8 space-y-6">
           {navLinks.map((link, i) => (
             <button 
               key={link.id}
-              onClick={() => handleLinkClick(link.id as any)}
-              className="text-4xl font-extrabold text-brandDark tracking-tighter hover:text-brandYellow transition-colors flex items-center gap-6 text-left"
+              onClick={() => handleLinkClick(link.id)}
+              className="text-3xl font-extrabold text-brandDark tracking-tighter hover:text-brandYellow transition-colors flex items-center gap-6 text-left"
             >
               <span className="text-sm font-mono text-brandDark/20">0{i+1}</span>
               {link.name}
