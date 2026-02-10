@@ -1,24 +1,15 @@
-
-import React, { memo } from 'react';
+import React from 'react';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
   onBookAudit: () => void;
 }
 
-// Static data extracted to prevent re-allocation on every render
 const CAPABILITIES = ['Performance Ads', 'CRO & Funnels', 'eCommerce SEO', 'Retention Flows'];
-
-const FOUNDATION_LINKS = [
-  { name: 'Home', id: 'home' },
-  { name: 'Our Story', id: 'about' },
-  { name: 'Contact', id: 'contact' },
-  { name: 'Growth Audit', id: 'contact' }
-];
 
 const LEGAL_LINKS = ['Privacy', 'Terms', 'Sitemap'];
 
-export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) => {
+export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
   return (
     <footer className="bg-brandDark text-white pt-24 pb-12 px-6 lg:px-12 overflow-hidden border-t border-white/5 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -222,4 +213,4 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
       </div>
     </footer>
   );
-});
+};
