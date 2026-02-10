@@ -6,6 +6,8 @@ import { SystemSection } from './components/SystemSection';
 import { ProofSection } from './components/ProofSection';
 import { QualificationSection } from './components/QualificationSection';
 import { QualificationProtocol } from './components/QualificationProtocol';
+import { DiagnosticSection } from './components/DiagnosticSection';
+import { TechinfigoEdge } from './components/TechinfigoEdge';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
@@ -41,6 +43,8 @@ const App: React.FC = () => {
         <div className="animate-fade-in">
           <Hero onBookAudit={() => navigateTo('contact')} />
           <QualificationProtocol />
+          <DiagnosticSection />
+          <TechinfigoEdge onBookAudit={() => navigateTo('contact')} />
           <section id="bottlenecks" className="scroll-mt-24">
             <ProblemSection />
           </section>
