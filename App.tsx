@@ -43,20 +43,42 @@ const App: React.FC = () => {
       
       {currentPage === 'home' && (
         <div className="animate-fade-in">
+          {/* Section 01: Hero */}
           <Hero onBookAudit={() => navigateTo('contact')} />
+          
+          {/* Section 02: Qualification Protocol */}
           <QualificationProtocol />
+          
+          {/* Section 03: Diagnostic Section */}
           <DiagnosticSection />
+          
+          {/* Section 04: Manifesto / Edge */}
           <TechinfigoEdge onBookAudit={() => navigateTo('contact')} />
+          
+          {/* Section 05: Growth Blueprint */}
           <GrowthBlueprint />
+          
+          {/* Section 06: Bottleneck Expertise */}
           <BottleneckExpertise />
+          
+          {/* Section 07: Full Stack Engine */}
           <FullStackEngine />
+          
+          {/* Section 08: Case Study */}
           <CaseStudySection />
+          
+          {/* Section 09: Testimonials */}
           <TestimonialsSection />
+          
+          {/* Section 10: Revenue Accelerator (Final CTA) */}
           <RevenueAccelerator />
+          
+          {/* Section 11: Footer */}
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}
 
+      {/* Page Routing Logic */}
       {currentPage === 'about' && (
         <div className="animate-slide-up">
           <AboutPage onNavigate={navigateTo} />
