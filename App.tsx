@@ -8,6 +8,7 @@ import { QualificationSection } from './components/QualificationSection';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
+import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { HowItWorksPage } from './components/HowItWorksPage';
 import { CareersPage } from './components/CareersPage';
 import { SystemPage } from './components/SystemPage';
@@ -19,10 +20,16 @@ import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('home');
+  const [selectedService, setSelectedService] = useState<string | null>(null);
 
-  const navigateTo = (page: string) => {
+  const navigateTo = (page: string, serviceId?: string) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(page);
+    if (serviceId) {
+      setSelectedService(serviceId);
+    } else {
+      setSelectedService(null);
+    }
   };
 
   return (
@@ -65,6 +72,13 @@ const App: React.FC = () => {
       {currentPage === 'services' && (
         <div className="animate-slide-up">
           <ServicesPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService && (
+        <div className="animate-slide-up">
+          <ServiceDetailPage serviceId={selectedService} onNavigate={navigateTo} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}
