@@ -41,14 +41,14 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
         <div className="h-[1px] w-full bg-white/5 mb-24"></div>
 
         {/* Main Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 xl:gap-16 mb-24">
           
-          {/* Brand Intro */}
-          <div className="lg:col-span-3 space-y-8">
+          {/* Brand Intro - Expanded to 4 cols to allow reducing HQ card */}
+          <div className="lg:col-span-4 space-y-8">
             <div className="w-12 h-12 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
               <span className="text-brandDark font-black text-2xl">TF</span>
             </div>
-            <p className="text-white/80 text-base leading-relaxed font-normal tracking-tight">
+            <p className="text-white/80 text-base leading-relaxed font-normal tracking-tight max-w-sm">
               We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.
             </p>
             <div className="inline-flex items-center gap-3 px-4 py-2 border border-white/10 rounded-full">
@@ -96,7 +96,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               <li className="py-2">
                 <button 
                   onClick={() => onNavigate('careers')}
-                  className="w-full border-2 border-dashed border-brandYellow/40 rounded-xl px-4 py-4 text-[10px] font-bold text-brandYellow uppercase tracking-[0.3em] hover:bg-brandYellow/5 transition-all flex items-center justify-center group"
+                  className="w-full border-2 border-dashed border-brandYellow/40 rounded-xl px-4 py-3 text-[10px] font-bold text-brandYellow uppercase tracking-[0.3em] hover:bg-brandYellow/5 transition-all flex items-center justify-center group"
                 >
                   <span className="whitespace-nowrap">Join the Team</span>
                 </button>
@@ -111,47 +111,47 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             </ul>
           </div>
 
-          {/* HQ Terminal Card */}
-          <div className="lg:col-span-5">
-            <div className="bg-[#002a2f] border border-white/5 rounded-[3rem] p-8 lg:p-10 space-y-10 shadow-3xl h-full transition-colors hover:border-white/10">
+          {/* HQ Terminal Card - Reduced from col-span-5 to col-span-4 */}
+          <div className="lg:col-span-4">
+            <div className="bg-[#002a2f] border border-white/5 rounded-[2.5rem] p-6 lg:p-8 space-y-6 shadow-3xl h-full transition-colors hover:border-white/10">
               {/* Card Header */}
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-mono">HQ TERMINAL</span>
-                <span className="flex items-center gap-2 text-[10px] font-black text-emerald-400 uppercase tracking-widest">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 font-mono">HQ TERMINAL</span>
+                <span className="flex items-center gap-2 text-[9px] font-black text-emerald-400 uppercase tracking-widest">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   LIVE DESK
                 </span>
               </div>
 
               {/* Main Info */}
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {/* Location */}
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-[15px] font-normal text-white/90 leading-snug tracking-tight">
+                  <div className="space-y-1">
+                    <p className="text-[13px] font-normal text-white/90 leading-snug tracking-tight">
                       Office no. 03, Second Floor, Block no.25,<br />
-                      Sanjay Place, Civil Lines, Agra, Uttar Pradesh 282002
+                      Sanjay Place, Civil Lines, Agra, UP 282002
                     </p>
-                    <span className="text-[10px] font-bold text-brandYellow uppercase tracking-widest block">AGRA REGIONAL OFFICE</span>
+                    <span className="text-[8px] font-bold text-brandYellow uppercase tracking-widest block">AGRA REGIONAL OFFICE</span>
                   </div>
                 </div>
 
                 {/* Email */}
-                <div className="flex gap-6 items-center">
-                  <div className="w-12 h-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex gap-4 items-center">
+                  <div className="w-10 h-10 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
                   </div>
                   <a 
                     href="mailto:contact@techinfigo.com" 
-                    className="text-lg font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors"
+                    className="text-base font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors"
                   >
                     contact@techinfigo.com
                   </a>
@@ -162,26 +162,26 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               <div className="h-[1px] w-full bg-white/10"></div>
 
               {/* Partnership Status Section */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">PARTNERSHIP STATUS</span>
-                  <div className="px-3 py-1 bg-brandYellow rounded-md shadow-[0_0_15px_rgba(252,182,50,0.4)]">
-                    <span className="text-[9px] font-black text-brandDark uppercase tracking-widest whitespace-nowrap">1 SPOT LEFT</span>
+                  <span className="text-[9px] font-bold text-white/20 uppercase tracking-[0.4em]">PARTNERSHIP STATUS</span>
+                  <div className="px-2 py-1 bg-brandYellow rounded shadow-[0_0_12px_rgba(252,182,50,0.4)]">
+                    <span className="text-[8px] font-black text-brandDark uppercase tracking-widest whitespace-nowrap">1 SPOT LEFT</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 bg-white/5 hover:bg-white/[0.08] transition-colors group">
-                    <svg className="w-6 h-6 text-white/40 group-hover:text-brandYellow transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center gap-2 bg-white/5 hover:bg-white/[0.08] transition-colors group">
+                    <svg className="w-5 h-5 text-white/40 group-hover:text-brandYellow transition-colors" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
                     </svg>
-                    <span className="text-[9px] font-bold text-white/40 text-center uppercase tracking-widest leading-tight">META BUSINESS<br />PARTNER</span>
+                    <span className="text-[8px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">META BUSINESS<br />PARTNER</span>
                   </div>
-                  <div className="border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 bg-white/5 hover:bg-white/[0.08] transition-colors group">
-                    <svg className="w-6 h-6 text-white/40 group-hover:text-brandYellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center gap-2 bg-white/5 hover:bg-white/[0.08] transition-colors group">
+                    <svg className="w-5 h-5 text-white/40 group-hover:text-brandYellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-                    <span className="text-[9px] font-bold text-white/40 text-center uppercase tracking-widest leading-tight">SHOPIFY PLUS<br />CERTIFIED</span>
+                    <span className="text-[8px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">SHOPIFY PLUS<br />CERTIFIED</span>
                   </div>
                 </div>
               </div>
