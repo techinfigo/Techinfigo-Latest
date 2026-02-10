@@ -7,7 +7,11 @@ interface FooterProps {
 
 const CAPABILITIES = ['Performance Ads', 'CRO & Funnels', 'eCommerce SEO', 'Retention Flows'];
 
-const LEGAL_LINKS = ['Privacy', 'Terms', 'Sitemap'];
+const LEGAL_LINKS = [
+  { name: 'Privacy', id: 'privacy' },
+  { name: 'Terms', id: 'terms' },
+  { name: 'Sitemap', id: 'sitemap' }
+];
 
 export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
   return (
@@ -203,8 +207,12 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           
           <div className="flex items-center justify-center gap-8 text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">
             {LEGAL_LINKS.map((link) => (
-              <button key={link} className="hover:text-brandYellow transition-colors uppercase tracking-[0.4em] font-normal">
-                {link}
+              <button 
+                key={link.id} 
+                onClick={() => onNavigate(link.id)}
+                className="hover:text-brandYellow transition-colors uppercase tracking-[0.4em] font-normal"
+              >
+                {link.name}
               </button>
             ))}
           </div>

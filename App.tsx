@@ -12,6 +12,9 @@ import { HowItWorksPage } from './components/HowItWorksPage';
 import { CareersPage } from './components/CareersPage';
 import { SystemPage } from './components/SystemPage';
 import { QualificationPage } from './components/QualificationPage';
+import { PrivacyPage } from './components/PrivacyPage';
+import { TermsPage } from './components/TermsPage';
+import { SitemapPage } from './components/SitemapPage';
 import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
@@ -83,6 +86,27 @@ const App: React.FC = () => {
       {currentPage === 'careers' && (
         <div className="animate-slide-up">
           <CareersPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'privacy' && (
+        <div className="animate-slide-up">
+          <PrivacyPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'terms' && (
+        <div className="animate-slide-up">
+          <TermsPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'sitemap' && (
+        <div className="animate-slide-up">
+          <SitemapPage onNavigate={navigateTo} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}
