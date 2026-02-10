@@ -11,6 +11,9 @@ import { TechinfigoEdge } from './components/TechinfigoEdge';
 import { GrowthBlueprint } from './components/GrowthBlueprint';
 import { BottleneckExpertise } from './components/BottleneckExpertise';
 import { FullStackEngine } from './components/FullStackEngine';
+import { CaseStudySection } from './components/CaseStudySection';
+import { TestimonialsSection } from './components/TestimonialsSection';
+import { RevenueAccelerator } from './components/RevenueAccelerator';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
@@ -51,6 +54,9 @@ const App: React.FC = () => {
           <GrowthBlueprint />
           <BottleneckExpertise />
           <FullStackEngine />
+          <CaseStudySection />
+          <TestimonialsSection />
+          <RevenueAccelerator />
           <section id="bottlenecks" className="scroll-mt-24">
             <ProblemSection />
           </section>
