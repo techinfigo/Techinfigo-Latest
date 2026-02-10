@@ -29,7 +29,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
             <h2 className="text-5xl lg:text-7xl font-bold tracking-tighter leading-[0.9] mb-6">
               Engineer Your <span className="text-brandYellow italic">Scale.</span>
             </h2>
-            <p className="text-white/60 text-lg lg:text-xl font-medium">
+            <p className="text-white/60 text-lg lg:text-xl font-normal">
               We only partner with 2 new brands per quarter to ensure 100% focus on unit economics.
             </p>
           </div>
@@ -57,8 +57,8 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
             <div className="w-12 h-12 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
               <span className="text-brandDark font-black text-2xl">TF</span>
             </div>
-            <p className="text-white/80 text-base leading-relaxed font-semibold tracking-tight">
-              We build <span className="text-white">compounding growth systems</span> for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.
+            <p className="text-white/80 text-base leading-relaxed font-normal tracking-tight">
+              We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.
             </p>
             <div className="inline-flex items-center gap-3 px-4 py-2 border border-white/10 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-brandYellow"></span>
@@ -74,7 +74,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
                 <li key={item}>
                   <button 
                     onClick={() => onNavigate('services')} 
-                    className="text-sm font-bold text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left"
+                    className="text-sm font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left"
                   >
                     {item}
                   </button>
@@ -83,7 +83,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
               <li>
                 <button 
                   onClick={() => onNavigate('services')} 
-                  className="text-sm font-bold text-brandYellow hover:underline underline-offset-4 tracking-tight flex items-center gap-2"
+                  className="text-sm font-normal text-brandYellow hover:underline underline-offset-4 tracking-tight flex items-center gap-2"
                 >
                   All Levers <span className="text-lg">→</span>
                 </button>
@@ -96,10 +96,10 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
             <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.5em]">Foundation</h4>
             <ul className="space-y-5">
               <li>
-                <button onClick={() => onNavigate('home')} className="text-sm font-bold text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Home</button>
+                <button onClick={() => onNavigate('home')} className="text-sm font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Home</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="text-sm font-bold text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Our Story</button>
+                <button onClick={() => onNavigate('about')} className="text-sm font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Our Story</button>
               </li>
               
               <li className="py-2">
@@ -112,10 +112,10 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
               </li>
 
               <li>
-                <button onClick={() => onNavigate('contact')} className="text-sm font-bold text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Contact</button>
+                <button onClick={() => onNavigate('contact')} className="text-sm font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Contact</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('contact')} className="text-sm font-bold text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Growth Audit</button>
+                <button onClick={() => onNavigate('contact')} className="text-sm font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Growth Audit</button>
               </li>
             </ul>
           </div>
@@ -143,11 +143,11 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
                     </svg>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-[15px] font-bold text-white/90 leading-snug tracking-tight">
+                    <p className="text-[15px] font-normal text-white/90 leading-snug tracking-tight">
                       Office no. 03, Second Floor, Block no.25,<br />
                       Sanjay Place, Civil Lines, Agra, Uttar Pradesh 282002
                     </p>
-                    <span className="text-[10px] font-black text-brandYellow uppercase tracking-widest block">AGRA REGIONAL OFFICE</span>
+                    <span className="text-[10px] font-bold text-brandYellow uppercase tracking-widest block">AGRA REGIONAL OFFICE</span>
                   </div>
                 </div>
 
@@ -160,7 +160,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
                   </div>
                   <a 
                     href="mailto:contact@techinfigo.com" 
-                    className="text-lg font-bold text-white/90 tracking-tight hover:text-brandYellow transition-colors"
+                    className="text-lg font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors"
                   >
                     contact@techinfigo.com
                   </a>
@@ -173,7 +173,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
               {/* Partnership Status Section */}
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">PARTNERSHIP STATUS</span>
+                  <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">PARTNERSHIP STATUS</span>
                   <div className="px-3 py-1 bg-brandYellow rounded-md shadow-[0_0_15px_rgba(252,182,50,0.4)]">
                     <span className="text-[9px] font-black text-brandDark uppercase tracking-widest whitespace-nowrap">1 SPOT LEFT</span>
                   </div>
@@ -184,13 +184,13 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
                     <svg className="w-6 h-6 text-white/40 group-hover:text-brandYellow transition-colors" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
                     </svg>
-                    <span className="text-[9px] font-black text-white/40 text-center uppercase tracking-widest leading-tight">META BUSINESS<br />PARTNER</span>
+                    <span className="text-[9px] font-bold text-white/40 text-center uppercase tracking-widest leading-tight">META BUSINESS<br />PARTNER</span>
                   </div>
                   <div className="border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 bg-white/5 hover:bg-white/[0.08] transition-colors group">
                     <svg className="w-6 h-6 text-white/40 group-hover:text-brandYellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-                    <span className="text-[9px] font-black text-white/40 text-center uppercase tracking-widest leading-tight">SHOPIFY PLUS<br />CERTIFIED</span>
+                    <span className="text-[9px] font-bold text-white/40 text-center uppercase tracking-widest leading-tight">SHOPIFY PLUS<br />CERTIFIED</span>
                   </div>
                 </div>
               </div>
@@ -203,7 +203,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 lg:gap-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 font-mono">
             <span>&copy; 2026 Techinfigo</span>
             <span className="hidden md:block">/</span>
-            <span className="text-white/40 font-bold">Profit-Driven Agency</span>
+            <span className="text-white/40 font-normal">Profit-Driven Agency</span>
             <span className="hidden md:block">/</span>
             <span className="flex items-center gap-2">
               <span className="text-orange-500">❤️</span> Made in India
@@ -212,7 +212,7 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
           
           <div className="flex items-center justify-center gap-8 text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">
             {LEGAL_LINKS.map((link) => (
-              <button key={link} className="hover:text-brandYellow transition-colors uppercase tracking-[0.4em] font-bold">
+              <button key={link} className="hover:text-brandYellow transition-colors uppercase tracking-[0.4em] font-normal">
                 {link}
               </button>
             ))}
