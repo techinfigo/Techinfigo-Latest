@@ -1,14 +1,84 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
   activePage: string;
 }
 
+const services = [
+  { 
+    title: "D2C Performance Ads (Meta + Google)", 
+    desc: "Scale profitably with offer-led creative and full-funnel strategy.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ) 
+  },
+  { 
+    title: "Conversion Rate Optimization (CRO) for D2C", 
+    desc: "Convert more traffic into revenue with data-driven A/B testing.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    ) 
+  },
+  { 
+    title: "SEO for eCommerce & D2C Brands", 
+    desc: "Drive high-intent organic traffic by ranking for valuable keywords.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    ) 
+  },
+  { 
+    title: "Email & SMS Flows for LTV", 
+    desc: "Boost LTV with automated flows that drive repeat purchases.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ) 
+  },
+  { 
+    title: "Marketing Automation for D2C", 
+    desc: "Automate tasks and personalize journeys to scale efficiently.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ) 
+  },
+  { 
+    title: "Creative & Content Strategy", 
+    desc: "Make creatives that stop thumbs and keep learning fresh.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ) 
+  },
+  { 
+    title: "Influencer & UGC Marketing", 
+    desc: "Source authentic content and amplify what performs to build trust.", 
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+    ) 
+  },
+];
+
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  // Fixed "Cannot find namespace 'NodeJS'" by using ReturnType<typeof setTimeout>
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,12 +94,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     { name: 'The System', id: 'system' },
     { name: 'Our Process', id: 'how-it-works' },
     { name: 'Who We Fit', id: 'qualification' },
-    { name: 'Services', id: 'services' },
+    { name: 'Services', id: 'services', hasDropdown: true },
   ];
 
   const handleLinkClick = (id: string) => {
     onNavigate(id);
     setMobileMenuOpen(false);
+    setServicesDropdownOpen(false);
+  };
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setServicesDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setServicesDropdownOpen(false);
+    }, 200);
   };
 
   return (
@@ -60,21 +142,64 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             </div>
           </div>
 
-          {/* Desktop Navigation Links - Updated Labels */}
+          {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-8 xl:gap-10">
             {navLinks.map((link) => (
-              <button
+              <div 
                 key={link.id}
-                onClick={() => handleLinkClick(link.id)}
-                className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all relative py-2 ${
-                  activePage === link.id ? 'text-brandDark' : 'text-brandDark/40 hover:text-brandDark'
-                }`}
+                className="relative"
+                onMouseEnter={link.hasDropdown ? handleMouseEnter : undefined}
+                onMouseLeave={link.hasDropdown ? handleMouseLeave : undefined}
               >
-                {link.name}
-                {activePage === link.id && (
-                  <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-brandYellow"></span>
+                <button
+                  onClick={() => handleLinkClick(link.id)}
+                  className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all relative py-2 flex items-center gap-1.5 ${
+                    activePage === link.id ? 'text-brandDark' : 'text-brandDark/40 hover:text-brandDark'
+                  }`}
+                >
+                  {link.name}
+                  {link.hasDropdown && (
+                    <svg className={`w-3 h-3 transition-transform duration-300 ${servicesDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
+                  )}
+                  {activePage === link.id && (
+                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-brandYellow"></span>
+                  )}
+                </button>
+
+                {/* Services Dropdown Card */}
+                {link.hasDropdown && (
+                  <div 
+                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ${
+                      servicesDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+                    }`}
+                  >
+                    <div className="bg-brandDark w-[480px] rounded-[1.5rem] p-6 shadow-2xl border border-white/10">
+                      <div className="mb-6 px-4">
+                        <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em]">Our Services</span>
+                      </div>
+                      <div className="space-y-1">
+                        {services.map((service, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleLinkClick('services')}
+                            className="w-full text-left group flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-brandYellow group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-300 flex-shrink-0">
+                              {service.icon}
+                            </div>
+                            <div className="space-y-0.5">
+                              <h4 className="text-sm font-bold text-white group-hover:text-brandYellow transition-colors">{service.title}</h4>
+                              <p className="text-[11px] text-white/40 leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                                {service.desc}
+                              </p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 )}
-              </button>
+              </div>
             ))}
           </div>
 
@@ -86,7 +211,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                 activePage === 'contact' ? 'bg-brandYellow text-brandDark' : ''
               }`}
             >
-              Book Audit
+              Free Audit
             </button>
 
             <button 
@@ -102,17 +227,37 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-[90] bg-white transition-all duration-500 lg:hidden ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
-        <div className="flex flex-col h-full justify-center px-8 space-y-6">
+      <div className={`fixed inset-0 z-[90] bg-white transition-all duration-500 lg:hidden overflow-y-auto ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
+        <div className="flex flex-col h-full justify-start pt-32 pb-10 px-8 space-y-6">
           {navLinks.map((link, i) => (
-            <button 
-              key={link.id}
-              onClick={() => handleLinkClick(link.id)}
-              className="text-3xl font-extrabold text-brandDark tracking-tighter hover:text-brandYellow transition-colors flex items-center gap-6 text-left"
-            >
-              <span className="text-sm font-mono text-brandDark/20">0{i+1}</span>
-              {link.name}
-            </button>
+            <div key={link.id} className="space-y-4">
+              <button 
+                onClick={() => link.hasDropdown ? setServicesDropdownOpen(!servicesDropdownOpen) : handleLinkClick(link.id)}
+                className="text-3xl font-extrabold text-brandDark tracking-tighter hover:text-brandYellow transition-colors flex items-center justify-between w-full"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-mono text-brandDark/20">0{i+1}</span>
+                  {link.name}
+                </div>
+                {link.hasDropdown && (
+                  <svg className={`w-6 h-6 transition-transform ${servicesDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
+                )}
+              </button>
+              
+              {link.hasDropdown && servicesDropdownOpen && (
+                <div className="pl-10 space-y-4 animate-in slide-in-from-top-2 duration-300">
+                  {services.map((s, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => handleLinkClick('services')}
+                      className="text-sm font-bold text-brandDark/50 block text-left uppercase tracking-widest hover:text-brandYellow"
+                    >
+                      • {s.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           <div className="pt-8 border-t border-brandDark/5">
             <button 
