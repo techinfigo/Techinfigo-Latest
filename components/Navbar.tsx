@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 
 interface NavbarProps {
@@ -77,7 +76,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
-  // Fixed "Cannot find namespace 'NodeJS'" by using ReturnType<typeof setTimeout>
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -119,30 +117,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
       <nav 
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 lg:px-12 ${
           isScrolled 
-            ? 'py-3 bg-white/95 backdrop-blur-xl border-b border-brandDark/5 shadow-sm' 
-            : 'py-6 bg-white border-b border-transparent'
+            ? 'py-3 bg-white/90 backdrop-blur-xl border-b border-brandDark/5 shadow-3xl' 
+            : 'py-6 bg-transparent border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          {/* Brand Logo Section */}
           <div 
             className="flex items-center gap-3 group cursor-pointer z-[110]" 
             onClick={() => onNavigate('home')}
           >
-            <div className="w-10 h-10 bg-brandDark flex items-center justify-center rounded-sm flex-shrink-0">
-              <span className="text-brandYellow font-extrabold text-2xl leading-none select-none">T</span>
+            <div className="w-10 h-10 bg-brandDark flex items-center justify-center rounded-sm flex-shrink-0 shadow-lg group-hover:bg-brandYellow transition-colors duration-500">
+              <span className="text-white group-hover:text-brandDark font-extrabold text-2xl leading-none select-none transition-colors">T</span>
             </div>
             <div className="flex flex-col justify-center">
               <span className="font-black text-[18px] lg:text-[20px] tracking-tight text-brandDark uppercase leading-[1.1]">
                 Techinfigo
               </span>
-              <span className="text-[8px] lg:text-[9px] font-bold text-brandDark/40 uppercase tracking-[0.35em] leading-none mt-0.5">
+              <span className="text-[8px] lg:text-[9px] font-bold text-brandDark/30 uppercase tracking-[0.35em] leading-none mt-0.5">
                 Growth Bureau
               </span>
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-8 xl:gap-10">
             {navLinks.map((link) => (
               <div 
@@ -154,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                 <button
                   onClick={() => handleLinkClick(link.id)}
                   className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all relative py-2 flex items-center gap-1.5 ${
-                    activePage === link.id ? 'text-brandDark' : 'text-brandDark/40 hover:text-brandDark'
+                    activePage === link.id ? 'text-brandYellow' : 'text-brandDark/40 hover:text-brandDark'
                   }`}
                 >
                   {link.name}
@@ -166,30 +162,29 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                   )}
                 </button>
 
-                {/* Services Dropdown Card */}
                 {link.hasDropdown && (
                   <div 
                     className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ${
                       servicesDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
                     }`}
                   >
-                    <div className="bg-brandDark w-[480px] rounded-[1.5rem] p-6 shadow-2xl border border-white/10">
+                    <div className="bg-white w-[480px] rounded-[1.5rem] p-6 shadow-4xl border border-brandDark/5">
                       <div className="mb-6 px-4">
-                        <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em]">Our Services</span>
+                        <span className="text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.4em]">Our Services</span>
                       </div>
                       <div className="space-y-1">
                         {services.map((service, idx) => (
                           <button
                             key={idx}
                             onClick={() => handleLinkClick('services')}
-                            className="w-full text-left group flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300"
+                            className="w-full text-left group flex items-start gap-4 p-4 rounded-xl hover:bg-brandDark/[0.02] transition-all duration-300"
                           >
-                            <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-brandYellow group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-300 flex-shrink-0">
+                            <div className="w-10 h-10 rounded-lg bg-brandDark/[0.05] flex items-center justify-center text-brandDark group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-300 flex-shrink-0">
                               {service.icon}
                             </div>
                             <div className="space-y-0.5">
-                              <h4 className="text-sm font-bold text-white group-hover:text-brandYellow transition-colors">{service.title}</h4>
-                              <p className="text-[11px] text-white/40 leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                              <h4 className="text-sm font-bold text-brandDark group-hover:text-brandYellow transition-colors">{service.title}</h4>
+                              <p className="text-[11px] text-brandDark/40 leading-relaxed font-medium transition-colors">
                                 {service.desc}
                               </p>
                             </div>
@@ -203,11 +198,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             ))}
           </div>
 
-          {/* Desktop CTA & Mobile Toggle */}
           <div className="flex items-center gap-6">
             <button 
               onClick={() => onNavigate('contact')}
-              className={`hidden md:block px-8 py-3.5 bg-brandDark text-white text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:bg-brandYellow hover:text-brandDark shadow-[0_10px_20px_-5px_rgba(0,29,33,0.15)] ${
+              className={`hidden md:block px-8 py-3.5 bg-brandDark text-white text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:bg-brandYellow hover:text-brandDark shadow-lg ${
                 activePage === 'contact' ? 'bg-brandYellow text-brandDark' : ''
               }`}
             >
@@ -226,8 +220,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-[90] bg-white transition-all duration-500 lg:hidden overflow-y-auto ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
+      <div className={`fixed inset-0 z-[90] bg-[#fcfcfc] transition-all duration-500 lg:hidden overflow-y-auto ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
         <div className="flex flex-col h-full justify-start pt-32 pb-10 px-8 space-y-6">
           {navLinks.map((link, i) => (
             <div key={link.id} className="space-y-4">
@@ -250,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                     <button 
                       key={idx}
                       onClick={() => handleLinkClick('services')}
-                      className="text-sm font-bold text-brandDark/50 block text-left uppercase tracking-widest hover:text-brandYellow"
+                      className="text-sm font-bold text-brandDark/40 block text-left uppercase tracking-widest hover:text-brandYellow"
                     >
                       • {s.title}
                     </button>
@@ -262,7 +255,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
           <div className="pt-8 border-t border-brandDark/5">
             <button 
               onClick={() => handleLinkClick('contact')}
-              className="w-full bg-brandDark text-white py-6 text-sm font-bold uppercase tracking-[0.3em]"
+              className="w-full bg-brandDark text-white py-6 text-sm font-bold uppercase tracking-[0.3em] shadow-xl"
             >
               Start Your Audit
             </button>

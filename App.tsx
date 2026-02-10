@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -24,7 +23,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen bg-brandBg selection:bg-brandYellow selection:text-brandDark scroll-smooth transition-all duration-700">
+    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth transition-all duration-700">
       <Navbar onNavigate={navigateTo} activePage={currentPage} />
       
       {currentPage === 'home' && (

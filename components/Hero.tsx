@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface HeroProps {
@@ -7,21 +6,20 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center px-6 overflow-hidden bg-brandBg">
-      <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none" 
+    <section className="relative min-h-screen flex flex-col justify-center px-6 overflow-hidden bg-[#fcfcfc]">
+      {/* Subtle Light Grid */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: `radial-gradient(circle, #001d21 1.5px, transparent 1.5px)`, backgroundSize: '30px 30px' }} />
+      
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
       
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center z-10 pt-40 pb-20">
         
         <div className="lg:col-span-8 flex flex-col items-start space-y-10 animate-slide-up">
           <div className="space-y-6 w-full">
-            <div className="flex items-center gap-6">
-              <span className="text-[13px] font-mono font-bold text-brandDark/40 tracking-[0.5em] uppercase">SYSTEM_READY_V2</span>
-              <div className="flex-grow h-[1px] bg-brandDark/10"></div>
-            </div>
             <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-brandDark leading-[0.95] tracking-tighter">
               We Build <br />
-              <span className="text-brandDark/20 font-light">Performance</span> <br />
+              <span className="text-brandDark/10 font-light italic">Performance</span> <br />
               <span className="relative inline-block">
                 Engines.
                 <div className="absolute bottom-2 left-0 w-1/2 h-2 bg-brandYellow/40 -z-10"></div>
@@ -35,7 +33,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-8 w-full">
             <button 
-              className="group relative bg-brandDark text-white px-12 py-6 overflow-hidden transition-all duration-500 hover:shadow-2xl"
+              className="group relative bg-brandDark text-white px-12 py-6 overflow-hidden transition-all duration-500 hover:shadow-2xl rounded-sm"
               onClick={onBookAudit}
             >
               <div className="absolute inset-0 w-0 bg-brandYellow transition-all duration-500 group-hover:w-full"></div>
@@ -64,12 +62,14 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
         </div>
 
         <div className="lg:col-span-4 relative flex items-center justify-center">
-          <div className="relative w-full aspect-[3/4] overflow-hidden shadow-2xl rounded-xl bg-brandDark/5">
-            <img 
-              src="https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=1200" 
-              alt="Data Ops" 
-              className="w-full h-full object-cover grayscale brightness-75 transition-all duration-1000"
-            />
+          <div className="relative w-full aspect-[3/4] overflow-hidden shadow-4xl rounded-3xl border border-brandDark/5 bg-white p-2">
+            <div className="w-full h-full overflow-hidden rounded-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=1200" 
+                alt="Data Ops" 
+                className="w-full h-full object-cover grayscale brightness-90 transition-all duration-1000"
+              />
+            </div>
           </div>
         </div>
       </div>
