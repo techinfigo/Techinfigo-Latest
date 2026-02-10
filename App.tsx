@@ -9,6 +9,8 @@ import { QualificationProtocol } from './components/QualificationProtocol';
 import { DiagnosticSection } from './components/DiagnosticSection';
 import { TechinfigoEdge } from './components/TechinfigoEdge';
 import { GrowthBlueprint } from './components/GrowthBlueprint';
+import { BottleneckExpertise } from './components/BottleneckExpertise';
+import { FullStackEngine } from './components/FullStackEngine';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
@@ -47,6 +49,8 @@ const App: React.FC = () => {
           <DiagnosticSection />
           <TechinfigoEdge onBookAudit={() => navigateTo('contact')} />
           <GrowthBlueprint />
+          <BottleneckExpertise />
+          <FullStackEngine />
           <section id="bottlenecks" className="scroll-mt-24">
             <ProblemSection />
           </section>
