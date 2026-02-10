@@ -11,38 +11,14 @@ import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
 import { HowItWorksPage } from './components/HowItWorksPage';
 import { CareersPage } from './components/CareersPage';
+import { SystemPage } from './components/SystemPage';
+import { QualificationPage } from './components/QualificationPage';
 import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('home');
 
   const navigateTo = (page: string) => {
-    // Handle Smart Anchors
-    if (page === 'system') {
-      if (currentPage !== 'home') {
-        setCurrentPage('home');
-        setTimeout(() => {
-          document.getElementById('infrastructure')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      } else {
-        document.getElementById('infrastructure')?.scrollIntoView({ behavior: 'smooth' });
-      }
-      return;
-    }
-
-    if (page === 'qualification') {
-      if (currentPage !== 'home') {
-        setCurrentPage('home');
-        setTimeout(() => {
-          document.getElementById('qualification-section')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      } else {
-        document.getElementById('qualification-section')?.scrollIntoView({ behavior: 'smooth' });
-      }
-      return;
-    }
-
-    // Handle Standard Pages
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(page);
   };
@@ -77,6 +53,13 @@ const App: React.FC = () => {
         </div>
       )}
 
+      {currentPage === 'system' && (
+        <div className="animate-slide-up">
+          <SystemPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
       {currentPage === 'services' && (
         <div className="animate-slide-up">
           <ServicesPage onNavigate={navigateTo} />
@@ -87,6 +70,13 @@ const App: React.FC = () => {
       {currentPage === 'how-it-works' && (
         <div className="animate-slide-up">
           <HowItWorksPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'qualification' && (
+        <div className="animate-slide-up">
+          <QualificationPage onNavigate={navigateTo} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}
