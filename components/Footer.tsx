@@ -222,4 +222,4 @@ export const Footer: React.FC<FooterProps> = memo(({ onNavigate, onBookAudit }) 
       </div>
     </footer>
   );
-}));
+});
