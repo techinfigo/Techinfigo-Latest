@@ -6,73 +6,130 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center px-6 overflow-hidden bg-[#fcfcfc]">
-      {/* Subtle Light Grid */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-           style={{ backgroundImage: `radial-gradient(circle, #001d21 1.5px, transparent 1.5px)`, backgroundSize: '30px 30px' }} />
+    <section className="relative min-h-[90vh] lg:min-h-screen flex flex-col justify-center pt-28 lg:pt-32 px-6 lg:px-12 overflow-hidden bg-brandDark border-b border-white/5">
+      {/* Background Subtle Gradient */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brandYellow/5 rounded-full blur-[120px]"></div>
+      </div>
       
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
-      
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center z-10 pt-40 pb-20">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center z-10 py-12 lg:py-16">
         
-        <div className="lg:col-span-8 flex flex-col items-start space-y-10 animate-slide-up">
-          <div className="space-y-6 w-full">
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-brandDark leading-[0.95] tracking-tighter">
-              We Build <br />
-              <span className="text-brandDark/10 font-light italic">Performance</span> <br />
-              <span className="relative inline-block">
-                Engines.
-                <div className="absolute bottom-2 left-0 w-1/2 h-2 bg-brandYellow/40 -z-10"></div>
-              </span>
+        {/* Left Content Column */}
+        <div className="lg:col-span-7 flex flex-col items-start space-y-6 lg:space-y-8 animate-slide-up">
+          
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
+            <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></div>
+            <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">
+              Active Strategists — Limited Brands Per Quarter
+            </span>
+          </div>
+
+          {/* Main Headline */}
+          <div className="space-y-4 w-full max-w-2xl">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
+              We Help D2C <br /> Brands <span className="text-brandYellow">Scale <br /> Profitably</span> Without <br /> Burning Cash on <br /> Ads.
             </h1>
           </div>
 
-          <p className="text-xl lg:text-2xl text-brandDark/60 max-w-xl leading-relaxed font-medium border-l-[4px] border-brandYellow pl-8">
-            Eliminating guesswork from scaling. We engineer D2C brands from <span className="text-brandDark font-bold">₹50L to ₹50Cr</span> with total unit-economic certainty.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-8 w-full">
-            <button 
-              className="group relative bg-brandDark text-white px-12 py-6 overflow-hidden transition-all duration-500 hover:shadow-2xl rounded-sm"
-              onClick={onBookAudit}
-            >
-              <div className="absolute inset-0 w-0 bg-brandYellow transition-all duration-500 group-hover:w-full"></div>
-              <span className="relative z-10 font-bold text-[13px] uppercase tracking-[0.4em] group-hover:text-brandDark">
-                Request Growth Audit
-              </span>
-            </button>
-            <div className="flex flex-col justify-center border-l-2 border-brandDark/10 pl-8">
-              <span className="text-[11px] font-bold text-brandDark uppercase tracking-[0.3em] mb-1">Status: Accepting Mandates</span>
-              <span className="text-[10px] text-brandDark/30 uppercase tracking-widest font-bold">Qualified D2C Entities Only</span>
-            </div>
+          {/* Subheading */}
+          <div className="max-w-xl">
+            <p className="text-base lg:text-lg text-white/60 leading-relaxed font-medium">
+              A <span className="text-white">system-driven growth partner</span> for brands stuck between rising ad spend and <span className="text-brandYellow">shrinking margins.</span>
+            </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-8 pt-16 border-t border-brandDark/5 w-full max-w-2xl">
-            {[
-              { label: 'Avg ROAS', val: '6.4x' },
-              { label: 'Managed Rev', val: '₹65Cr' },
-              { label: 'Net Yield', val: '+24%' },
-            ].map((stat, i) => (
-              <div key={i} className="space-y-1">
-                <p className="text-[10px] font-bold text-brandDark/40 uppercase tracking-[0.3em]">{stat.label}</p>
-                <p className="text-2xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">{stat.val}</p>
-              </div>
-            ))}
+          {/* CTA Button */}
+          <div className="w-full sm:w-auto pt-2">
+            <button 
+              onClick={onBookAudit}
+              className="w-full sm:w-auto px-10 py-4 lg:px-12 lg:py-5 bg-brandYellow text-brandDark font-extrabold text-[12px] lg:text-[13px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-[0_20px_40px_rgba(252,182,50,0.2)] hover:shadow-[0_25px_50px_rgba(252,182,50,0.3)] hover:-translate-y-1"
+            >
+              Apply Free Growth Audit
+            </button>
+          </div>
+
+          {/* Bottom Trust Bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full pt-10 lg:pt-14 border-t border-white/5 gap-6">
+            <div className="flex flex-col text-center sm:text-left">
+              <span className="text-[8px] lg:text-[9px] font-bold text-white/30 uppercase tracking-[0.3em] mb-1">
+                Trusted by D2C Brands Across
+              </span>
+              <span className="text-[10px] lg:text-[11px] font-bold text-white/50 uppercase tracking-widest">
+                Fashion, Lifestyle & Wellness
+              </span>
+            </div>
+            <div className="flex flex-col items-center sm:items-end">
+              <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-widest leading-none">
+                100+ Audits
+              </span>
+              <span className="text-[8px] lg:text-[9px] font-bold text-white/30 uppercase tracking-[0.3em] mt-1">
+                Delivered
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="lg:col-span-4 relative flex items-center justify-center">
-          <div className="relative w-full aspect-[3/4] overflow-hidden shadow-4xl rounded-3xl border border-brandDark/5 bg-white p-2">
-            <div className="w-full h-full overflow-hidden rounded-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=1200" 
-                alt="Data Ops" 
-                className="w-full h-full object-cover grayscale brightness-90 transition-all duration-1000"
-              />
-            </div>
+        {/* Right Visual Column */}
+        <div className="lg:col-span-5 relative flex items-center justify-center pt-8 lg:pt-0">
+          
+          {/* Main Rounded Image Container */}
+          <div className="relative w-full max-w-[400px] lg:max-w-[460px] aspect-[4/5] rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-white/10 shadow-4xl group">
+             <img 
+               src="https://images.unsplash.com/photo-1542744094-3a31f272c491?auto=format&fit=crop&q=80&w=1200" 
+               alt="Strategic Growth" 
+               className="w-full h-full object-cover grayscale brightness-[0.4] transition-transform duration-1000 group-hover:scale-105"
+             />
+             
+             {/* Subtle Inner Glow */}
+             <div className="absolute inset-0 bg-gradient-to-tr from-brandDark/40 via-transparent to-white/5 pointer-events-none"></div>
           </div>
+
+          {/* Floating Result Card 01 - Top Left */}
+          <div className="absolute top-[8%] -left-[5%] lg:-left-12 w-[180px] lg:w-[220px] bg-brandDark/90 backdrop-blur-xl border border-white/10 p-5 lg:p-6 rounded-3xl shadow-glow animate-float">
+             <div className="flex items-center gap-3 lg:gap-4 mb-3">
+                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-brandYellow/10 rounded-xl flex items-center justify-center">
+                   <svg className="w-4 h-4 lg:w-5 lg:h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 12l3-3 3 3 4-4" />
+                   </svg>
+                </div>
+                <div>
+                   <p className="text-[7px] lg:text-[8px] font-black text-white/30 uppercase tracking-[0.3em] leading-none mb-1">Scaling Result</p>
+                   <p className="text-[10px] lg:text-xs font-bold text-white uppercase tracking-wider">Profitability Lift</p>
+                </div>
+             </div>
+             <p className="text-3xl lg:text-4xl font-black text-brandYellow tracking-tighter">4.82x</p>
+             <p className="text-[8px] lg:text-[9px] font-bold text-white/20 uppercase tracking-[0.2em] mt-2">Blended MER Optimized</p>
+          </div>
+
+          {/* Floating Result Card 02 - Bottom Right */}
+          <div className="absolute bottom-[12%] -right-[5%] lg:-right-8 w-[160px] lg:w-[200px] bg-brandYellow p-5 lg:p-6 rounded-3xl shadow-4xl animate-float-delayed">
+             <div className="flex items-center gap-2 lg:gap-3 mb-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-brandDark animate-pulse"></div>
+                <span className="text-[8px] lg:text-[9px] font-black text-brandDark/40 uppercase tracking-[0.3em]">Systems-Led Growth</span>
+             </div>
+             <h4 className="text-base lg:text-lg font-black text-brandDark tracking-tighter leading-none mb-2">Eliminating <br /> Freelancer Chaos.</h4>
+             <div className="w-full h-1 bg-brandDark/10 rounded-full overflow-hidden">
+                <div className="w-2/3 h-full bg-brandDark"></div>
+             </div>
+          </div>
+
         </div>
       </div>
+
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+        }
+        @keyframes float-delayed {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(12px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float-delayed 7s ease-in-out infinite; }
+      `}</style>
     </section>
   );
 };

@@ -87,9 +87,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -119,13 +119,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     }, 200);
   };
 
+  // Determine colors based on scroll state
+  const navTextColor = isScrolled ? 'text-brandDark/60 hover:text-brandDark' : 'text-white/70 hover:text-white';
+  const activeTextColor = 'text-brandYellow';
+  const logoTextColor = isScrolled ? 'text-brandDark' : 'text-white';
+  const logoSubColor = isScrolled ? 'text-brandDark/30' : 'text-white/40';
+
   return (
     <>
       <nav 
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 lg:px-12 ${
           isScrolled 
-            ? 'py-3 bg-white/90 backdrop-blur-xl border-b border-brandDark/5 shadow-3xl' 
-            : 'py-6 bg-transparent border-b border-transparent'
+            ? 'py-3 bg-white/95 backdrop-blur-xl border-b border-brandDark/5 shadow-3xl' 
+            : 'py-6 bg-transparent border-b border-white/5'
         }`}
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -133,14 +139,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             className="flex items-center gap-3 group cursor-pointer z-[110]" 
             onClick={() => onNavigate('home')}
           >
-            <div className="w-10 h-10 bg-brandDark flex items-center justify-center rounded-sm flex-shrink-0 shadow-lg group-hover:bg-brandYellow transition-colors duration-500">
-              <span className="text-white group-hover:text-brandDark font-extrabold text-2xl leading-none select-none transition-colors">T</span>
+            <div className={`w-10 h-10 flex items-center justify-center rounded-sm flex-shrink-0 shadow-lg transition-colors duration-500 ${isScrolled ? 'bg-brandDark group-hover:bg-brandYellow' : 'bg-brandYellow group-hover:bg-white'}`}>
+              <span className={`font-extrabold text-2xl leading-none select-none transition-colors ${isScrolled ? 'text-white group-hover:text-brandDark' : 'text-brandDark group-hover:text-brandDark'}`}>T</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="font-black text-[18px] lg:text-[20px] tracking-tight text-brandDark uppercase leading-[1.1]">
+              <span className={`font-black text-[18px] lg:text-[20px] tracking-tight uppercase leading-[1.1] transition-colors ${logoTextColor}`}>
                 Techinfigo
               </span>
-              <span className="text-[8px] lg:text-[9px] font-bold text-brandDark/30 uppercase tracking-[0.35em] leading-none mt-0.5">
+              <span className={`text-[8px] lg:text-[9px] font-bold uppercase tracking-[0.35em] leading-none mt-0.5 transition-colors ${logoSubColor}`}>
                 Growth Bureau
               </span>
             </div>
@@ -157,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                 <button
                   onClick={() => handleLinkClick(link.id)}
                   className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all relative py-2 flex items-center gap-1.5 ${
-                    activePage === link.id ? 'text-brandYellow' : 'text-brandDark/40 hover:text-brandDark'
+                    activePage === link.id ? activeTextColor : navTextColor
                   }`}
                 >
                   {link.name}
@@ -208,20 +214,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
           <div className="flex items-center gap-6">
             <button 
               onClick={() => onNavigate('contact')}
-              className={`hidden md:block px-8 py-3.5 bg-brandDark text-white text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:bg-brandYellow hover:text-brandDark shadow-lg ${
-                activePage === 'contact' ? 'bg-brandYellow text-brandDark' : ''
-              }`}
+              className={`hidden md:block px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-500 shadow-lg ${
+                isScrolled 
+                  ? 'bg-brandDark text-white hover:bg-brandYellow hover:text-brandDark' 
+                  : 'bg-brandYellow text-brandDark hover:bg-white'
+              } ${activePage === 'contact' ? 'bg-brandYellow text-brandDark' : ''}`}
             >
               Free Audit
             </button>
 
             <button 
-              className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[110]"
+              className={`lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[110] rounded-lg transition-colors ${!isScrolled && !mobileMenuOpen ? 'bg-white/10' : ''}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <div className={`w-6 h-[2px] bg-brandDark transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[4px]' : ''}`}></div>
-              <div className={`w-6 h-[2px] bg-brandDark transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></div>
-              <div className={`w-6 h-[2px] bg-brandDark transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[4px]' : ''}`}></div>
+              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[4px] bg-brandDark' : (isScrolled ? 'bg-brandDark' : 'bg-white')}`}></div>
+              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'} ${isScrolled ? 'bg-brandDark' : 'bg-white'}`}></div>
+              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[4px] bg-brandDark' : (isScrolled ? 'bg-brandDark' : 'bg-white')}`}></div>
             </button>
           </div>
         </div>

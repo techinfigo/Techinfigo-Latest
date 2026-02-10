@@ -1,127 +1,137 @@
-
 import React from 'react';
 
 interface ServicesPageProps {
-  onNavigate: (page: 'home' | 'contact' | 'about' | 'services') => void;
+  onNavigate: (page: string, serviceId?: string) => void;
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
   const servicePillars = [
     {
-      id: "01",
-      title: "Growth Infrastructure",
-      subtitle: "The Foundation",
-      desc: "We don't just run ads. We rebuild your attribution, tracking, and P&L modeling to ensure data integrity at scale.",
-      features: ["Attribution Modeling", "Unit Economic Audits", "Custom Data Dashboards", "Tech Stack Optimization"]
+      id: "performance-ads",
+      title: "D2C Performance Ads (Meta + Google)",
+      desc: "Scale profitably with offer-led creative and full-funnel strategy.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
     },
     {
-      id: "02",
-      title: "Paid Acquisition",
-      subtitle: "Precision Scaling",
-      desc: "Omni-channel execution across Meta, Google, and Amazon with a primary focus on net-contribution margin, not just ROAS.",
-      features: ["Meta Ads Dominance", "Google Search & Shopping", "Media Buying Automation", "Market Expansion Strategies"]
+      id: "cro",
+      title: "Conversion Rate Optimization (CRO)",
+      desc: "Convert more traffic into revenue with data-driven A/B testing.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      )
     },
     {
-      id: "03",
-      title: "Creative Strategy",
-      subtitle: "The Variable",
-      desc: "Systematic creative production driven by data. We identify winners through iterative testing cycles and scale them aggressively.",
-      features: ["UGC Strategy", "Direct Response Design", "Creative Performance Audits", "Rapid Prototyping"]
+      id: "seo",
+      title: "eCommerce & D2C SEO",
+      desc: "Drive high-intent organic traffic by ranking for valuable keywords.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      )
     },
     {
-      id: "04",
-      title: "Retention & LTV",
-      subtitle: "The Compounder",
-      desc: "Maximizing the value of every acquired customer through automated lifecycle loops and high-frequency engagement.",
-      features: ["Email & SMS Automation", "WhatsApp Marketing", "Loyalty Infrastructure", "Churn Mitigation"]
+      id: "retention",
+      title: "Email & SMS Retention Flows",
+      desc: "Boost LTV with automated flows that drive repeat purchases.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      )
+    },
+    {
+      id: "automation",
+      title: "Marketing Automation",
+      desc: "Automate tasks and personalize journeys to scale efficiently.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        </svg>
+      )
+    },
+    {
+      id: "creative",
+      title: "Performance Creative Strategy",
+      desc: "Make creatives that stop thumbs and keep learning fresh.",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      )
     }
   ];
 
   return (
-    <div className="min-h-screen bg-brandBg pt-40 pb-20 px-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="mb-32 space-y-8">
-          <span className="text-[10px] font-mono font-bold text-brandDark/30 tracking-[0.5em] uppercase flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-brandYellow"></span>
-            Execution Mandates
-          </span>
-          <h1 className="text-6xl lg:text-8xl font-bold text-brandDark tracking-tighter leading-[0.85]">
-            Full-Stack <br />
-            <span className="text-brandDark/20">Growth Ops.</span>
+    <div className="min-h-screen bg-brandBg font-sans">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-40 pb-32">
+        {/* Technical Header */}
+        <div className="mb-24 space-y-8 animate-slide-up">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-brandDark text-white rounded-full">
+             <span className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></span>
+             <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Operational Levers</span>
+          </div>
+          <h1 className="text-6xl lg:text-9xl font-black text-brandDark tracking-tighter leading-[0.85]">
+            Growth <br />
+            <span className="text-brandDark/20 italic">Instruments.</span>
           </h1>
           <p className="text-xl lg:text-2xl text-brandDark/60 leading-relaxed max-w-2xl font-medium border-l-4 border-brandYellow pl-8">
-            We operate as your outsourced growth department. Our services are integrated, systematic, and purely performance-driven.
+            Precision tools engineered for D2C dominance. Select a node to view full technical specifications and protocol.
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-40">
-          {servicePillars.map((service) => (
-            <div key={service.id} className="group bg-white p-12 border border-brandDark/5 shadow-sm transition-all duration-700 hover:shadow-2xl hover:scale-[1.01] relative overflow-hidden">
-              <div className="relative z-10">
-                <div className="flex justify-between items-baseline mb-12">
-                  <span className="text-sm font-mono font-bold text-brandYellow">{service.id}</span>
-                  <span className="text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.3em]">{service.subtitle}</span>
+        {/* Services Grid using the exact aesthetic from the user reference */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
+          {servicePillars.map((service, i) => (
+            <button
+              key={service.id}
+              onClick={() => onNavigate('service-detail', service.id)}
+              className="group relative text-left pt-6 animate-slide-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              {/* Folder Tab Motif */}
+              <div className="absolute top-0 left-0 w-32 h-8 bg-white border-x-2 border-t-2 border-dotted border-brandYellow/40 rounded-t-3xl z-0 group-hover:bg-brandDark group-hover:border-brandDark transition-all duration-500"></div>
+              
+              <div className="relative z-10 bg-white rounded-tr-[3rem] rounded-b-[3rem] p-8 lg:p-10 shadow-3xl border-2 border-dotted border-brandYellow/40 transition-all duration-500 group-hover:border-brandYellow group-hover:-translate-y-2 group-hover:shadow-4xl flex items-center gap-8">
+                {/* ICON BOX - MATCHING USER IMAGE */}
+                <div className="w-16 h-16 lg:w-20 lg:h-20 bg-brandYellow rounded-[1.25rem] flex items-center justify-center text-brandDark shadow-glow shrink-0 transition-transform group-hover:scale-105 duration-500">
+                  {service.icon}
                 </div>
                 
-                <h3 className="text-4xl font-bold text-brandDark mb-6 tracking-tight group-hover:text-brandYellow transition-colors duration-500">
-                  {service.title}
-                </h3>
-                <p className="text-brandDark/60 text-lg leading-relaxed mb-10 min-h-[80px]">
-                  {service.desc}
-                </p>
+                {/* TEXT CONTENT - MATCHING USER IMAGE */}
+                <div className="space-y-1">
+                  <h3 className="text-xl lg:text-2xl font-extrabold text-brandYellow tracking-tight group-hover:text-brandDark transition-colors duration-500">
+                    {service.title}
+                  </h3>
+                  <p className="text-[#9eaeb0] text-sm lg:text-base font-medium leading-tight">
+                    {service.desc}
+                  </p>
+                </div>
 
-                <div className="space-y-4">
-                  {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
-                      <div className="w-1.5 h-1.5 rounded-full bg-brandDark/10 group-hover:bg-brandYellow transition-colors"></div>
-                      <span className="text-xs font-bold text-brandDark/40 uppercase tracking-widest">{feature}</span>
-                    </div>
-                  ))}
+                {/* Technical Index on Tab */}
+                <div className="absolute top-[-1.5rem] left-8 z-20">
+                  <span className="text-[9px] font-mono font-bold text-brandDark/20 uppercase tracking-widest group-hover:text-brandYellow/50 transition-colors">MOD_{service.id.toUpperCase().slice(0,3)}</span>
                 </div>
               </div>
-
-              {/* Decorative accent */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brandYellow/20 transition-all duration-700"></div>
-            </div>
+            </button>
           ))}
         </div>
 
-        {/* Process/How we work banner */}
-        <div className="bg-brandDark text-white p-12 lg:p-20 rounded-sm mb-40 relative overflow-hidden">
-          <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 pointer-events-none">
-            <svg viewBox="0 0 100 100" className="h-full w-full fill-current text-white">
-              <path d="M0 0h100v100H0zM10 10v80h80V10H10z" />
-            </svg>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 relative z-10">
-            <div className="lg:col-span-1 border-r border-white/10 pr-8">
-               <h4 className="text-[10px] font-bold uppercase tracking-[0.5em] text-brandYellow mb-6">Our Protocol</h4>
-               <p className="text-2xl font-bold tracking-tight text-white leading-tight mb-4">Integrated Execution</p>
-               <p className="text-white/40 text-sm leading-relaxed">We don't sell hours. We sell outcomes. All services are bundled into a single scaling mandate.</p>
-            </div>
-            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-12">
-               <div>
-                  <p className="text-brandYellow font-mono text-sm mb-4">/ Efficiency</p>
-                  <p className="text-white/60 text-sm leading-relaxed">Every service is audited weekly against your actual bank balance, not just ad platforms.</p>
-               </div>
-               <div>
-                  <p className="text-brandYellow font-mono text-sm mb-4">/ Speed</p>
-                  <p className="text-white/60 text-sm leading-relaxed">Rapid deployment cycles. We go from audit to active infrastructure in under 14 business days.</p>
-               </div>
-            </div>
-          </div>
-        </div>
-
         {/* Section Closure */}
-        <div className="text-center py-20 border-t border-brandDark/5">
-          <h2 className="text-4xl font-bold text-brandDark tracking-tighter mb-8">Ready to deploy the engine?</h2>
+        <div className="mt-40 text-center py-20 border-t border-dotted border-brandYellow/20 animate-slide-up">
+          <h2 className="text-4xl font-black text-brandDark tracking-tighter mb-12">System synchronization required.</h2>
           <button 
             onClick={() => onNavigate('contact')}
-            className="bg-brandDark text-white px-12 py-6 rounded-sm font-bold text-[11px] uppercase tracking-[0.5em] hover:bg-brandYellow hover:text-brandDark transition-all duration-300 shadow-xl"
+            className="bg-brandDark text-white px-12 py-6 rounded-xl font-bold text-[11px] uppercase tracking-[0.5em] hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-2xl group flex items-center gap-4 mx-auto"
           >
-            Request System Audit
+            Initiate Growth Audit
+            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </button>
         </div>
       </div>
