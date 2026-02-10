@@ -66,7 +66,11 @@ const App: React.FC = () => {
 
       {currentPage === 'contact' && (
         <div className="animate-slide-up">
-          <ContactPage onBack={() => navigateTo('home')} />
+          <ContactPage 
+            onBack={() => navigateTo('home')} 
+            onNavigate={navigateTo}
+            onBookAudit={() => navigateTo('contact')}
+          />
         </div>
       )}
 
