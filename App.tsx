@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { ProblemSection } from './components/ProblemSection';
-import { SystemSection } from './components/SystemSection';
-import { ProofSection } from './components/ProofSection';
-import { QualificationSection } from './components/QualificationSection';
 import { QualificationProtocol } from './components/QualificationProtocol';
 import { DiagnosticSection } from './components/DiagnosticSection';
 import { TechinfigoEdge } from './components/TechinfigoEdge';
@@ -57,18 +53,6 @@ const App: React.FC = () => {
           <CaseStudySection />
           <TestimonialsSection />
           <RevenueAccelerator />
-          <section id="bottlenecks" className="scroll-mt-24">
-            <ProblemSection />
-          </section>
-          <section id="infrastructure" className="scroll-mt-24">
-            <SystemSection />
-          </section>
-          <section id="track-record" className="scroll-mt-24">
-            <ProofSection />
-          </section>
-          <section id="qualification-section" className="scroll-mt-24">
-            <QualificationSection />
-          </section>
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}
