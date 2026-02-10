@@ -40,24 +40,24 @@ export const ProblemSection: React.FC = () => {
   ];
 
   return (
-    <section className="w-full bg-[#faf6ed] py-32 lg:py-56 px-6">
+    <section className="w-full bg-[#faf6ed] py-24 lg:py-40 px-6">
       <div className="max-w-7xl mx-auto">
         
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-24">
-          <div className="max-w-3xl">
-            <span className="text-[12px] font-bold tracking-[0.6em] uppercase text-brandDark/30 mb-6 block">Strategic Audit</span>
-            <h2 className="text-5xl lg:text-7xl font-bold text-brandDark leading-[1] tracking-tighter">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-10 mb-20">
+          <div className="max-w-2xl">
+            <span className="text-[11px] font-bold tracking-[0.6em] uppercase text-brandDark/30 mb-4 block">Strategic Audit</span>
+            <h2 className="text-4xl lg:text-6xl font-bold text-brandDark leading-[1.1] tracking-tighter">
               Scaling breaks where <br /> systems are absent.
             </h2>
           </div>
-          <div className="border-l-[6px] border-brandYellow pl-10 max-w-sm">
-            <p className="text-brandDark/60 text-xl lg:text-2xl leading-relaxed italic font-medium">
+          <div className="border-l-[4px] border-brandYellow pl-8 max-w-sm mt-4 lg:mt-0">
+            <p className="text-brandDark/60 text-lg lg:text-xl leading-relaxed italic font-medium">
               "We don't fix ads. We re-engineer growth architecture."
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
           {bottlenecks.map((item, index) => {
             const isHovered = hoveredIndex === index;
             const isLarge = item.size === 'large';
@@ -69,32 +69,32 @@ export const ProblemSection: React.FC = () => {
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className={`
-                  relative rounded-sm p-10 lg:p-14 transition-all duration-500 cursor-default border-2
+                  relative rounded-2xl p-8 lg:p-12 transition-all duration-500 cursor-default border
                   ${isLarge ? 'md:col-span-2 lg:row-span-2' : ''}
                   ${isMedium ? 'md:col-span-2' : ''}
                   ${isHovered 
-                    ? 'bg-brandDark border-brandYellow/30 scale-[1.02] shadow-2xl' 
+                    ? 'bg-brandDark border-brandYellow/30 scale-[1.01] shadow-2xl' 
                     : 'bg-white border-brandDark/5 shadow-sm'}
                 `}
               >
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className={`w-14 h-14 rounded-sm flex items-center justify-center mb-12 transition-colors ${isHovered ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5 text-brandDark/30'}`}>
-                    <span className="font-bold text-lg">0{item.id}</span>
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-10 transition-colors ${isHovered ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5 text-brandDark/30'}`}>
+                    <span className="font-bold text-base">0{item.id}</span>
                   </div>
 
-                  <h3 className={`font-bold text-3xl lg:text-5xl tracking-tighter mb-8 transition-colors ${isHovered ? 'text-white' : 'text-brandDark'}`}>
+                  <h3 className={`font-bold text-2xl lg:text-4xl tracking-tighter mb-6 transition-colors ${isHovered ? 'text-white' : 'text-brandDark'}`}>
                     {isHovered ? item.fix : item.title}
                   </h3>
 
-                  <p className={`text-xl lg:text-2xl leading-relaxed mb-12 transition-colors ${isHovered ? 'text-white/70' : 'text-brandDark/50'}`}>
+                  <p className={`text-base lg:text-lg leading-relaxed mb-10 transition-colors ${isHovered ? 'text-white/70' : 'text-brandDark/50'}`}>
                     {isHovered ? item.fixDesc : item.problem}
                   </p>
 
-                  <div className={`pt-10 border-t mt-auto ${isHovered ? 'border-white/10' : 'border-brandDark/5'}`}>
-                    <span className={`text-[12px] font-bold uppercase tracking-[0.4em] block mb-2 ${isHovered ? 'text-brandYellow' : 'text-brandDark/20'}`}>
+                  <div className={`pt-8 border-t mt-auto ${isHovered ? 'border-white/10' : 'border-brandDark/5'}`}>
+                    <span className={`text-[10px] font-bold uppercase tracking-[0.4em] block mb-2 ${isHovered ? 'text-brandYellow' : 'text-brandDark/20'}`}>
                       {isHovered ? 'Protocol' : 'Diagnosis'}
                     </span>
-                    <p className={`font-bold text-sm tracking-widest uppercase ${isHovered ? 'text-white' : 'text-brandDark'}`}>
+                    <p className={`font-bold text-[11px] tracking-widest uppercase ${isHovered ? 'text-white' : 'text-brandDark'}`}>
                       {isHovered ? 'Maximum Yield Sync' : 'Critical Failure Node'}
                     </p>
                   </div>

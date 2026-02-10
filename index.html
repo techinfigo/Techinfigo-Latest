@@ -17,7 +17,7 @@
               brandText: '#0a0a0a'
             },
             fontFamily: {
-              sans: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
+              sans: ['Poppins', 'Inter', 'system-ui', 'sans-serif']
             }
           }
         }
@@ -25,24 +25,29 @@
     </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+      
+      html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
         background-color: #faf6ed;
         color: #0a0a0a;
         font-family: 'Poppins', sans-serif;
+        line-height: 1.5; /* Balanced line height */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
-      
-      /* Smooth scrolling for mobile and desktop */
-      html {
-        scroll-behavior: smooth;
-      }
 
-      /* Custom selection color for a premium touch */
       ::selection {
         background-color: #fcb632;
         color: #001d21;
+      }
+
+      .max-w-7xl {
+        max-width: 80rem;
       }
     </style>
   <script type="importmap">
