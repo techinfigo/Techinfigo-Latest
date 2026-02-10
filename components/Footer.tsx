@@ -18,36 +18,10 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
     <footer className="bg-brandDark text-white pt-24 pb-12 px-6 lg:px-12 overflow-hidden border-t border-white/5 font-sans">
       <div className="max-w-7xl mx-auto">
         
-        {/* Top Header Section */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 mb-24">
-          <div className="max-w-xl">
-            <h2 className="text-5xl lg:text-7xl font-bold tracking-tighter leading-[0.9] mb-6">
-              Engineer Your <span className="text-brandYellow italic">Scale.</span>
-            </h2>
-            <p className="text-white/60 text-lg lg:text-xl font-normal">
-              We only partner with 2 new brands per quarter to ensure 100% focus on unit economics.
-            </p>
-          </div>
-          <div className="flex flex-col items-center lg:items-end gap-3">
-            <button 
-              onClick={onBookAudit}
-              className="bg-brandYellow text-brandDark font-bold px-10 py-6 rounded-lg text-sm uppercase tracking-[0.2em] flex items-center gap-4 hover:bg-white transition-all shadow-2xl group"
-            >
-              Book Free Growth Audit
-              <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </button>
-            <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">Response in {"<"} 24 Hours</span>
-          </div>
-        </div>
-
-        <div className="h-[1px] w-full bg-white/5 mb-24"></div>
-
         {/* Main Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 xl:gap-16 mb-24">
           
-          {/* Brand Intro - Expanded to 4 cols to allow reducing HQ card */}
+          {/* Brand Intro */}
           <div className="lg:col-span-4 space-y-8">
             <div className="w-12 h-12 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
               <span className="text-brandDark font-black text-2xl">TF</span>
@@ -115,7 +89,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             </ul>
           </div>
 
-          {/* HQ Terminal Card - Reduced from col-span-5 to col-span-4 */}
+          {/* HQ Terminal Card */}
           <div className="lg:col-span-4">
             <div className="bg-[#002a2f] border border-white/5 rounded-[2.5rem] p-6 lg:p-8 space-y-6 shadow-3xl h-full transition-colors hover:border-white/10">
               {/* Card Header */}
