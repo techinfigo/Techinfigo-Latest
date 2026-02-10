@@ -5,6 +5,7 @@ import { ProblemSection } from './components/ProblemSection';
 import { SystemSection } from './components/SystemSection';
 import { ProofSection } from './components/ProofSection';
 import { QualificationSection } from './components/QualificationSection';
+import { QualificationProtocol } from './components/QualificationProtocol';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
@@ -39,6 +40,7 @@ const App: React.FC = () => {
       {currentPage === 'home' && (
         <div className="animate-fade-in">
           <Hero onBookAudit={() => navigateTo('contact')} />
+          <QualificationProtocol />
           <section id="bottlenecks" className="scroll-mt-24">
             <ProblemSection />
           </section>
