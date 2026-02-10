@@ -119,17 +119,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     }, 200);
   };
 
-  // Determine colors based on scroll state
-  const navTextColor = isScrolled ? 'text-brandDark/60 hover:text-brandDark' : 'text-white/70 hover:text-white';
+  // The critical logic: If not on Home page, always use the solid/dark-text style.
+  const isHome = activePage === 'home';
+  const shouldShowSolid = isScrolled || !isHome;
+
+  // Determine colors based on scroll state or page
+  const navTextColor = shouldShowSolid ? 'text-brandDark/60 hover:text-brandDark' : 'text-white/70 hover:text-white';
   const activeTextColor = 'text-brandYellow';
-  const logoTextColor = isScrolled ? 'text-brandDark' : 'text-white';
-  const logoSubColor = isScrolled ? 'text-brandDark/30' : 'text-white/40';
+  const logoTextColor = shouldShowSolid ? 'text-brandDark' : 'text-white';
+  const logoSubColor = shouldShowSolid ? 'text-brandDark/30' : 'text-white/40';
 
   return (
     <>
       <nav 
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 lg:px-12 ${
-          isScrolled 
+          shouldShowSolid 
             ? 'py-3 bg-white/95 backdrop-blur-xl border-b border-brandDark/5 shadow-3xl' 
             : 'py-6 bg-transparent border-b border-white/5'
         }`}
@@ -139,8 +143,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             className="flex items-center gap-3 group cursor-pointer z-[110]" 
             onClick={() => onNavigate('home')}
           >
-            <div className={`w-10 h-10 flex items-center justify-center rounded-sm flex-shrink-0 shadow-lg transition-colors duration-500 ${isScrolled ? 'bg-brandDark group-hover:bg-brandYellow' : 'bg-brandYellow group-hover:bg-white'}`}>
-              <span className={`font-extrabold text-2xl leading-none select-none transition-colors ${isScrolled ? 'text-white group-hover:text-brandDark' : 'text-brandDark group-hover:text-brandDark'}`}>T</span>
+            <div className={`w-10 h-10 flex items-center justify-center rounded-sm flex-shrink-0 shadow-lg transition-colors duration-500 ${shouldShowSolid ? 'bg-brandDark group-hover:bg-brandYellow' : 'bg-brandYellow group-hover:bg-white'}`}>
+              <span className={`font-extrabold text-2xl leading-none select-none transition-colors ${shouldShowSolid ? 'text-white group-hover:text-brandDark' : 'text-brandDark group-hover:text-brandDark'}`}>T</span>
             </div>
             <div className="flex flex-col justify-center">
               <span className={`font-black text-[18px] lg:text-[20px] tracking-tight uppercase leading-[1.1] transition-colors ${logoTextColor}`}>
@@ -215,7 +219,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             <button 
               onClick={() => onNavigate('contact')}
               className={`hidden md:block px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-500 shadow-lg ${
-                isScrolled 
+                shouldShowSolid 
                   ? 'bg-brandDark text-white hover:bg-brandYellow hover:text-brandDark' 
                   : 'bg-brandYellow text-brandDark hover:bg-white'
               } ${activePage === 'contact' ? 'bg-brandYellow text-brandDark' : ''}`}
@@ -224,24 +228,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             </button>
 
             <button 
-              className={`lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[110] rounded-lg transition-colors ${!isScrolled && !mobileMenuOpen ? 'bg-white/10' : ''}`}
+              className={`lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[110] rounded-lg transition-colors ${!shouldShowSolid && !mobileMenuOpen ? 'bg-white/10' : ''}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[4px] bg-brandDark' : (isScrolled ? 'bg-brandDark' : 'bg-white')}`}></div>
-              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'} ${isScrolled ? 'bg-brandDark' : 'bg-white'}`}></div>
-              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[4px] bg-brandDark' : (isScrolled ? 'bg-brandDark' : 'bg-white')}`}></div>
+              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[4px] bg-brandDark' : (shouldShowSolid ? 'bg-brandDark' : 'bg-white')}`}></div>
+              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'} ${shouldShowSolid ? 'bg-brandDark' : 'bg-white'}`}></div>
+              <div className={`w-6 h-[2px] transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[4px] bg-brandDark' : (shouldShowSolid ? 'bg-brandDark' : 'bg-white')}`}></div>
             </button>
           </div>
         </div>
       </nav>
 
+      {/* Mobile Menu remains dark on light bg regardless */}
       <div className={`fixed inset-0 z-[90] bg-[#fcfcfc] transition-all duration-500 lg:hidden overflow-y-auto ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
         <div className="flex flex-col h-full justify-start pt-32 pb-10 px-8 space-y-6">
           {navLinks.map((link, i) => (
             <div key={link.id} className="space-y-4">
               <button 
                 onClick={() => link.hasDropdown ? setServicesDropdownOpen(!servicesDropdownOpen) : handleLinkClick(link.id)}
-                className="text-3xl font-extrabold text-brandDark tracking-tighter hover:text-brandYellow transition-colors flex items-center justify-between w-full"
+                className={`text-3xl font-extrabold tracking-tighter hover:text-brandYellow transition-colors flex items-center justify-between w-full ${activePage === link.id ? 'text-brandYellow' : 'text-brandDark'}`}
               >
                 <div className="flex items-center gap-4">
                   <span className="text-xs font-mono text-brandDark/20">0{i+1}</span>
