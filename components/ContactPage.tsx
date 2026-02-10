@@ -1,6 +1,84 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Footer } from './Footer';
+
+interface Option {
+  label: string;
+  value: string;
+}
+
+interface CustomSelectProps {
+  label: string;
+  options: Option[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  required?: boolean;
+}
+
+const CustomSelect: React.FC<CustomSelectProps> = ({ label, options, value, onChange, placeholder = "Select...", required }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find(opt => opt.value === value);
+
+  return (
+    <div className="space-y-2 relative" ref={containerRef}>
+      <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">
+        {label} {required && <span className="text-brandYellow font-black">*</span>}
+      </label>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full flex items-center justify-between bg-[#fcfcfc] border px-5 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 text-left ${
+          isOpen ? 'border-brandYellow ring-2 ring-brandYellow/5' : 'border-[#f0f0f0]'
+        }`}
+      >
+        <span className={selectedOption ? 'text-brandDark' : 'text-brandDark/30'}>
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        <svg 
+          className={`w-4 h-4 text-brandDark/30 transition-transform duration-300 ${isOpen ? 'rotate-180 text-brandYellow' : ''}`} 
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-[100] left-0 right-0 mt-2 bg-white border border-[#f0f0f0] rounded-xl shadow-2xl py-2 animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
+          {options.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => {
+                onChange(opt.value);
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors ${
+                value === opt.value 
+                  ? 'bg-brandYellow text-brandDark' 
+                  : 'hover:bg-brandYellow/10 text-brandDark/70 hover:text-brandDark'
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface ContactPageProps {
   onBack: () => void;
@@ -11,6 +89,25 @@ interface ContactPageProps {
 export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, onBookAudit }) => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Form State
+  const [formData, setFormData] = useState({
+    brandName: '',
+    website: '',
+    businessModel: '',
+    platform: '',
+    adSpend: '',
+    revenue: '',
+    objective: '',
+    engagement: '',
+    budget: '',
+    email: '',
+    whatsapp: ''
+  });
+
+  const updateField = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,10 +146,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
   return (
     <div className="min-h-screen bg-brandBg font-sans">
       <div className="pb-16">
-        {/* Main Content Grid - Tightened pt-28 to sit neatly under navbar */}
         <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-20">
           
-          {/* Left Column: Direct Access & SLA */}
           <aside className="lg:col-span-4 space-y-6 animate-slide-up">
             <div className="bg-[#001d21] rounded-[2rem] p-7 lg:p-9 space-y-8 shadow-2xl border border-white/5">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-brandYellow/10 rounded-full border border-brandYellow/10">
@@ -101,7 +196,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
               </div>
             </div>
 
-            {/* SLA Committed Card */}
             <div className="bg-white rounded-[2rem] p-8 shadow-3xl border border-brandDark/5">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-8 rounded-lg bg-brandYellow/10 flex items-center justify-center text-brandYellow text-lg">⏱</div>
@@ -120,9 +214,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
             </div>
           </aside>
 
-          {/* Right Column: Application Form */}
           <main className="lg:col-span-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <form onSubmit={handleSubmit} className="bg-white rounded-[2.5rem] p-8 lg:p-14 shadow-4xl border border-brandDark/5 space-y-12">
+            <form onSubmit={handleSubmit} className="bg-white rounded-[2.5rem] p-8 lg:p-14 shadow-4xl border border-brandDark/5 space-y-10">
               
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="space-y-1">
@@ -136,132 +229,167 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
               </div>
 
               {/* Form Section 1: Brand Profile */}
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div className="flex items-center gap-3">
                   <div className="w-[3px] h-4 bg-brandYellow rounded-full"></div>
                   <h3 className="text-[13px] font-bold text-brandDark uppercase tracking-widest">Brand Profile</h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">BRAND NAME *</label>
-                    <input required type="text" placeholder="e.g. Aura Skincare" className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" />
+                    <input 
+                      required 
+                      type="text" 
+                      value={formData.brandName}
+                      onChange={(e) => updateField('brandName', e.target.value)}
+                      placeholder="e.g. Aura Skincare" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WEBSITE URL</label>
-                    <input type="url" placeholder="https://yourbrand.com" className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" />
+                    <input 
+                      type="url" 
+                      value={formData.website}
+                      onChange={(e) => updateField('website', e.target.value)}
+                      placeholder="https://yourbrand.com" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">BUSINESS MODEL *</label>
-                    <div className="relative">
-                      <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                        <option value="">Select...</option>
-                        <option value="d2c">D2C Brand</option>
-                        <option value="ecommerce">E-commerce Marketplace</option>
-                        <option value="saas">SaaS / Service</option>
-                      </select>
-                      <svg className="w-4 h-4 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-brandDark/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">PLATFORM *</label>
-                    <div className="relative">
-                      <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                        <option value="">Select...</option>
-                        <option value="shopify">Shopify</option>
-                        <option value="woocommerce">WooCommerce</option>
-                        <option value="magento">Magento</option>
-                        <option value="other">Other</option>
-                      </select>
-                      <svg className="w-4 h-4 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-brandDark/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </div>
-                  </div>
+                  <CustomSelect 
+                    label="BUSINESS MODEL"
+                    required
+                    options={[
+                      { label: "D2C Brand", value: "d2c" },
+                      { label: "E-commerce Marketplace", value: "ecommerce" },
+                      { label: "SaaS / Service", value: "saas" }
+                    ]}
+                    value={formData.businessModel}
+                    onChange={(val) => updateField('businessModel', val)}
+                  />
+                  <CustomSelect 
+                    label="PLATFORM"
+                    required
+                    options={[
+                      { label: "Shopify", value: "shopify" },
+                      { label: "WooCommerce", value: "woocommerce" },
+                      { label: "Magento", value: "magento" },
+                      { label: "Other", value: "other" }
+                    ]}
+                    value={formData.platform}
+                    onChange={(val) => updateField('platform', val)}
+                  />
                 </div>
               </div>
 
               {/* Form Section 2: Metrics & Scaling */}
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div className="flex items-center gap-3">
                   <div className="w-[3px] h-4 bg-brandYellow rounded-full"></div>
                   <h3 className="text-[13px] font-bold text-brandDark uppercase tracking-widest">Metrics & Scaling</h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">MONTHLY AD SPEND *</label>
-                    <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                      <option value="">Select...</option>
-                      <option value="0-5">₹0 - ₹5L</option>
-                      <option value="5-20">₹5L - ₹20L</option>
-                      <option value="20-50">₹20L - ₹50L</option>
-                      <option value="50+">₹50L+</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">MONTHLY REVENUE *</label>
-                    <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                      <option value="">Select...</option>
-                      <option value="20-50">₹20L - ₹50L</option>
-                      <option value="50-100">₹50L - ₹1Cr</option>
-                      <option value="100+">₹1Cr+</option>
-                    </select>
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                  <CustomSelect 
+                    label="MONTHLY AD SPEND"
+                    required
+                    options={[
+                      { label: "₹0 - ₹5L", value: "0-5" },
+                      { label: "₹5L - ₹20L", value: "5-20" },
+                      { label: "₹20L - ₹50L", value: "20-50" },
+                      { label: "₹50L+", value: "50+" }
+                    ]}
+                    value={formData.adSpend}
+                    onChange={(val) => updateField('adSpend', val)}
+                  />
+                  <CustomSelect 
+                    label="MONTHLY REVENUE"
+                    required
+                    options={[
+                      { label: "₹20L - ₹50L", value: "20-50" },
+                      { label: "₹50L - ₹1Cr", value: "50-100" },
+                      { label: "₹1Cr+", value: "100+" }
+                    ]}
+                    value={formData.revenue}
+                    onChange={(val) => updateField('revenue', val)}
+                  />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">PRIMARY OBJECTIVE *</label>
-                  <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                    <option value="">Select...</option>
-                    <option value="scale">Aggressive Scaling</option>
-                    <option value="profit">Optimizing Net Profit</option>
-                    <option value="infrastructure">Fixing Attribution/Infrastructure</option>
-                  </select>
-                </div>
+                <CustomSelect 
+                  label="PRIMARY OBJECTIVE"
+                  required
+                  options={[
+                    { label: "Aggressive Scaling", value: "scale" },
+                    { label: "Optimizing Net Profit", value: "profit" },
+                    { label: "Fixing Attribution/Infrastructure", value: "infrastructure" }
+                  ]}
+                  value={formData.objective}
+                  onChange={(val) => updateField('objective', val)}
+                />
               </div>
 
               {/* Form Section 3: Engagement */}
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div className="flex items-center gap-3">
                   <div className="w-[3px] h-4 bg-brandYellow rounded-full"></div>
                   <h3 className="text-[13px] font-bold text-brandDark uppercase tracking-widest">Engagement</h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">READY FOR 3-MO ENGAGEMENT? *</label>
-                    <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                      <option value="">Select...</option>
-                      <option value="yes">Yes, Definitely</option>
-                      <option value="no">Just exploring</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">MONTHLY BUDGET CAPACITY *</label>
-                    <select required className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl appearance-none cursor-pointer">
-                      <option value="">Select...</option>
-                      <option value="lite">₹50K - ₹1.5L</option>
-                      <option value="standard">₹1.5L - ₹3L</option>
-                      <option value="enterprise">₹3L+</option>
-                    </select>
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                  <CustomSelect 
+                    label="READY FOR 3-MO ENGAGEMENT?"
+                    required
+                    options={[
+                      { label: "Yes, Definitely", value: "yes" },
+                      { label: "Just exploring", value: "no" }
+                    ]}
+                    value={formData.engagement}
+                    onChange={(val) => updateField('engagement', val)}
+                  />
+                  <CustomSelect 
+                    label="MONTHLY BUDGET CAPACITY"
+                    required
+                    options={[
+                      { label: "₹50K - ₹1.5L", value: "lite" },
+                      { label: "₹1.5L - ₹3L", value: "standard" },
+                      { label: "₹3L+", value: "enterprise" }
+                    ]}
+                    value={formData.budget}
+                    onChange={(val) => updateField('budget', val)}
+                  />
                 </div>
               </div>
 
               {/* Form Section 4: Contact Info */}
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div className="flex items-center gap-3">
                   <div className="w-[3px] h-4 bg-brandYellow rounded-full"></div>
                   <h3 className="text-[13px] font-bold text-brandDark uppercase tracking-widest">Contact Info</h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WORK EMAIL *</label>
-                    <input required type="email" placeholder="you@brand.com" className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" />
+                    <input 
+                      required 
+                      type="email" 
+                      value={formData.email}
+                      onChange={(e) => updateField('email', e.target.value)}
+                      placeholder="you@brand.com" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WHATSAPP *</label>
-                    <input required type="tel" placeholder="+91 XXXX XXX XXX" className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" />
+                    <input 
+                      required 
+                      type="tel" 
+                      value={formData.whatsapp}
+                      onChange={(e) => updateField('whatsapp', e.target.value)}
+                      placeholder="+91 XXXX XXX XXX" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-3.5 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="pt-6 space-y-4">
+              <div className="pt-4 space-y-3">
                 <button 
                   type="submit" 
                   disabled={loading}
@@ -282,7 +410,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
                     </>
                   )}
                 </button>
-                <p className="text-center text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.3em]">TAKES LESS THAN 2 MINUTES TO COMPLETE</p>
+                <p className="text-center text-[9px] font-bold text-brandDark/20 uppercase tracking-[0.3em]">TAKES LESS THAN 2 MINUTES TO COMPLETE</p>
               </div>
 
             </form>
