@@ -152,56 +152,59 @@ export const FullStackEngine: React.FC = () => {
   const handleNext = () => setActiveIndex((prev) => (prev < MODULES.length - 1 ? prev + 1 : 0));
 
   return (
-    <section className="w-full py-16 lg:py-24 px-6 bg-[#fcfcfc] font-sans overflow-hidden">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section className="w-full py-20 lg:py-32 px-6 bg-brandDark font-sans overflow-hidden relative">
+      {/* Decorative Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brandYellow/[0.02] blur-[150px] pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         
-        {/* Header - Centered as per image */}
+        {/* Header - White text for dark background */}
         <div className="text-center space-y-4">
-          <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none">
+          <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-none">
             Your Full-Stack Growth Engine
           </h2>
-          <p className="text-brandDark/40 text-lg lg:text-xl font-medium max-w-2xl mx-auto">
+          <p className="text-white/40 text-lg lg:text-xl font-medium max-w-2xl mx-auto">
             One integrated team to manage strategy, creative, media, and retention.
           </p>
         </div>
 
-        {/* Navigation Tabs Bar - Premium segmented control look */}
-        <div className="bg-white border border-brandDark/5 rounded-[2rem] p-1.5 shadow-sm flex flex-wrap lg:flex-nowrap items-center justify-between">
+        {/* Navigation Tabs Bar - Slightly transparent for dark background */}
+        <div className="bg-white/5 border border-white/5 rounded-[2.5rem] p-1.5 shadow-2xl flex flex-wrap lg:flex-nowrap items-center justify-between backdrop-blur-md">
           {MODULES.map((module, idx) => {
             const isActive = activeIndex === idx;
             return (
               <button
                 key={module.id}
                 onClick={() => setActiveIndex(idx)}
-                className={`flex-1 min-w-[120px] py-4 lg:py-5 flex flex-col items-center gap-2 transition-all duration-500 relative rounded-2xl ${
-                  isActive ? 'bg-brandDark text-white shadow-2xl z-10' : 'bg-transparent text-brandDark/40 hover:bg-brandDark/5'
+                className={`flex-1 min-w-[120px] py-4 lg:py-6 flex flex-col items-center gap-2 transition-all duration-500 relative rounded-[2rem] ${
+                  isActive ? 'bg-brandYellow text-brandDark shadow-glow z-10' : 'bg-transparent text-white/40 hover:bg-white/5'
                 }`}
               >
-                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5'}`}>
+                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-brandDark text-brandYellow' : 'bg-white/5'}`}>
                   {React.cloneElement(module.icon as React.ReactElement<any>, { className: 'w-5 h-5' })}
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{module.label}</span>
                 {isActive && (
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-brandYellow rounded-full translate-y-0.5"></div>
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-brandDark rounded-full translate-y-0.5"></div>
                 )}
               </button>
             );
           })}
         </div>
 
-        {/* Main Content Card - ENFORCED UNIFIED LARGE HEIGHT */}
-        <div className="bg-white rounded-[3rem] shadow-4xl border border-brandDark/5 overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:h-[580px] animate-fade-in transition-all duration-500">
+        {/* Main Content Card - High Contrast White Card */}
+        <div className="bg-white rounded-[3.5rem] shadow-4xl border border-brandDark/5 overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:h-[620px] animate-fade-in transition-all duration-500">
           
-          {/* Left Content Side - High legibility, matching provided image */}
-          <div className="lg:col-span-6 p-8 lg:p-16 flex flex-col justify-between h-full">
-            <div className="space-y-10 lg:space-y-12">
+          {/* Left Content Side */}
+          <div className="lg:col-span-6 p-10 lg:p-20 flex flex-col justify-between h-full">
+            <div className="space-y-12 lg:space-y-14">
               
               {/* Card Meta Info */}
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-brandDark rounded-2xl flex items-center justify-center text-brandYellow shadow-lg">
-                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-6 h-6 lg:w-7 lg:h-7' })}
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-brandDark rounded-2xl flex items-center justify-center text-brandYellow shadow-2xl">
+                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-7 h-7 lg:w-8 lg:h-8' })}
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.4em]">
                     INTEGRATED SYSTEM {activeModule.layer}
                   </span>
@@ -211,41 +214,41 @@ export const FullStackEngine: React.FC = () => {
                 </div>
               </div>
 
-              {/* Title - Punchy Large Text */}
+              {/* Title */}
               <h3 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter leading-none uppercase">
                 {activeModule.title}
               </h3>
 
-              {/* Mission Statement - Italic with brand border */}
-              <div className="border-l-[6px] lg:border-l-[8px] border-brandYellow pl-8 lg:pl-10 space-y-2">
+              {/* Mission Statement */}
+              <div className="border-l-[6px] lg:border-l-[10px] border-brandYellow pl-10 lg:pl-12 space-y-3">
                 <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.5em]">STRATEGIC MISSION</span>
-                <p className="text-xl lg:text-3xl font-bold text-brandDark/60 italic leading-tight max-w-lg">
+                <p className="text-2xl lg:text-4xl font-bold text-brandDark/60 italic leading-tight max-w-lg">
                   "{activeModule.mission}"
                 </p>
               </div>
 
-              {/* Specific Inputs/Impact Grid - Visible Bullet Points */}
-              <div className="grid grid-cols-2 gap-10 lg:gap-16 pt-10 border-t border-brandDark/5">
-                <div className="space-y-4">
-                  <span className="text-[10px] lg:text-[11px] font-black text-brandDark/20 uppercase tracking-[0.5em]">INPUTS</span>
-                  <ul className="space-y-3">
+              {/* Specific Inputs/Impact Grid */}
+              <div className="grid grid-cols-2 gap-12 lg:gap-20 pt-12 border-t border-brandDark/5">
+                <div className="space-y-5">
+                  <span className="text-[10px] lg:text-[12px] font-black text-brandDark/20 uppercase tracking-[0.5em]">INPUTS</span>
+                  <ul className="space-y-4">
                     {activeModule.inputs.map((input, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
-                        <span className="text-sm lg:text-xl font-black text-brandDark tracking-tight">{input}</span>
+                      <li key={i} className="flex items-center gap-4">
+                        <div className="w-2.5 h-2.5 rounded-full bg-brandYellow"></div>
+                        <span className="text-base lg:text-2xl font-black text-brandDark tracking-tight">{input}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-4">
-                  <span className="text-[10px] lg:text-[11px] font-black text-brandDark/20 uppercase tracking-[0.5em]">IMPACT</span>
-                  <ul className="space-y-3">
+                <div className="space-y-5">
+                  <span className="text-[10px] lg:text-[12px] font-black text-brandDark/20 uppercase tracking-[0.5em]">IMPACT</span>
+                  <ul className="space-y-4">
                     {activeModule.impact.map((impact, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <svg className="w-5 h-5 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
+                      <li key={i} className="flex items-center gap-4">
+                        <svg className="w-6 h-6 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                         </svg>
-                        <span className="text-sm lg:text-xl font-black text-brandDark tracking-tight">{impact}</span>
+                        <span className="text-base lg:text-2xl font-black text-brandDark tracking-tight">{impact}</span>
                       </li>
                     ))}
                   </ul>
@@ -253,30 +256,30 @@ export const FullStackEngine: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Controls - Persistent Placement */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pt-12 border-t border-brandDark/5">
-              <button className="w-full sm:w-auto px-12 py-6 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.25em] rounded-2xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105">
+            {/* Bottom Controls */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-10 pt-14 border-t border-brandDark/5">
+              <button className="w-full sm:w-auto px-14 py-7 bg-brandYellow text-brandDark font-black text-[13px] uppercase tracking-[0.25em] rounded-2xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105">
                 See Full Playbook →
               </button>
 
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-8">
                 <button 
                   onClick={handlePrev}
-                  className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
+                  className="w-14 h-14 lg:w-16 lg:h-16 rounded-full border-2 border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
                 >
-                  <svg className="w-5 h-5 lg:w-6 lg:h-6 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 lg:w-7 lg:h-7 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
-                <div className="text-center min-w-[80px]">
-                  <p className="text-[9px] font-bold text-brandDark/20 uppercase tracking-[0.4em] mb-1">MODULE</p>
-                  <p className="text-[14px] lg:text-[16px] font-black text-brandDark tracking-widest">{activeIndex + 1}/{MODULES.length}</p>
+                <div className="text-center min-w-[100px]">
+                  <p className="text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.4em] mb-1">MODULE</p>
+                  <p className="text-[18px] lg:text-[20px] font-black text-brandDark tracking-widest">{activeIndex + 1}/{MODULES.length}</p>
                 </div>
                 <button 
                   onClick={handleNext}
-                  className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
+                  className="w-14 h-14 lg:w-16 lg:h-16 rounded-full border-2 border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
                 >
-                  <svg className="w-5 h-5 lg:w-6 lg:h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 lg:w-7 lg:h-7 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -284,24 +287,23 @@ export const FullStackEngine: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Visual Side - Grayscale with High-Impact Stats */}
-          <div className="lg:col-span-6 relative overflow-hidden group min-h-[400px] lg:min-h-0">
+          {/* Right Visual Side */}
+          <div className="lg:col-span-6 relative overflow-hidden group min-h-[450px] lg:min-h-0">
             <img 
               key={activeModule.id}
               src={activeModule.image} 
               alt={activeModule.title} 
-              className="w-full h-full object-cover grayscale brightness-[0.3] transition-transform duration-[4000ms] group-hover:scale-110"
+              className="w-full h-full object-cover grayscale brightness-[0.3] transition-transform duration-[5000ms] group-hover:scale-110"
             />
             
-            {/* Soft Gradient Overlay for depth */}
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brandDark/10 to-brandDark/50 lg:hidden"></div>
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brandDark/10 to-brandDark/60 lg:hidden"></div>
             
-            {/* Metric Badge - Exactly like the image */}
-            <div className="absolute bottom-12 right-12 bg-brandDark/90 backdrop-blur-2xl p-8 lg:p-12 rounded-[3.5rem] border border-white/10 shadow-4xl animate-float">
-               <span className="text-[10px] lg:text-[11px] font-bold text-brandYellow uppercase tracking-[0.5em] block mb-2">
+            {/* Metric Badge */}
+            <div className="absolute bottom-14 right-14 bg-brandDark/90 backdrop-blur-2xl p-10 lg:p-14 rounded-[4rem] border border-white/10 shadow-4xl animate-float">
+               <span className="text-[11px] lg:text-[12px] font-bold text-brandYellow uppercase tracking-[0.5em] block mb-3">
                  {activeModule.metricLabel}
                </span>
-               <h4 className="text-5xl lg:text-7xl font-black text-white tracking-tighter leading-none">
+               <h4 className="text-6xl lg:text-[100px] font-black text-white tracking-tighter leading-none">
                  {activeModule.metricValue}
                </h4>
             </div>
@@ -314,9 +316,9 @@ export const FullStackEngine: React.FC = () => {
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
+          50% { transform: translateY(-20px); }
         }
-        .animate-float { animation: float 5s ease-in-out infinite; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
       `}</style>
     </section>
   );
