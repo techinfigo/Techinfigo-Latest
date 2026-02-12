@@ -7,37 +7,21 @@ interface SystemPageProps {
 export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* 1. Terminal Header */}
-      <section className="pt-44 lg:pt-56 pb-24 px-6 lg:px-12 border-b border-brandDark/5 bg-white">
+      {/* Standard Header */}
+      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12">
-            <div className="space-y-10 lg:max-w-4xl">
-              <div className="inline-flex items-center gap-3 px-4 py-2 bg-brandDark text-white rounded-full">
-                <span className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] font-mono">System Protocol / v4.2.0</span>
-              </div>
-              <h1 className="text-6xl lg:text-[110px] font-black text-brandDark tracking-tighter leading-[0.85]">
-                Infrastructure <br />
-                <span className="text-brandDark/20 italic">Over Luck.</span>
-              </h1>
-              <p className="text-2xl lg:text-3xl text-brandDark/50 leading-tight font-bold max-w-2xl">
-                We replace agency "voodoo" with <span className="text-brandDark">deterministic systems</span> built on unit-economic certainty.
-              </p>
-            </div>
-            <div className="hidden lg:block pb-4">
-               <div className="bg-brandDark p-8 rounded-3xl space-y-4 shadow-3xl w-64 border border-white/5">
-                  <div className="flex justify-between items-center border-b border-white/10 pb-4">
-                     <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">Load Status</span>
-                     <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest">Optimal</span>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                      <div className="w-full h-full bg-brandYellow"></div>
-                    </div>
-                    <p className="text-[8px] font-mono text-white/20 uppercase tracking-widest">Data Synchronization Active</p>
-                  </div>
-               </div>
-            </div>
+          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
+              SYSTEM PROTOCOL / V4.2
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
+              Infrastructure <br />
+              Over Luck.
+            </h1>
+            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
+              We replace agency "voodoo" with deterministic systems built on <br className="hidden lg:block" /> unit-economic certainty.
+            </p>
           </div>
         </div>
       </section>

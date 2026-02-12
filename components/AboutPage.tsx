@@ -7,39 +7,28 @@ interface AboutPageProps {
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* 1. Technical DNA Header */}
-      <section className="pt-44 lg:pt-56 pb-24 px-6 lg:px-12 border-b border-brandDark/5">
+      
+      {/* 1. Header Section - EXACT MATCH TO IMAGE (COMPACT HEIGHT) */}
+      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-end">
-            <div className="lg:col-span-8 space-y-10">
-              <div className="inline-flex items-center gap-3 px-4 py-2 bg-brandDark text-white rounded-full">
-                <span className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Operational DNA / V4.0</span>
-              </div>
-              <h1 className="text-6xl lg:text-[120px] font-black text-brandDark tracking-tighter leading-[0.85]">
-                Built for the <br />
-                <span className="text-brandYellow italic">Profit-Obsessed.</span>
-              </h1>
-            </div>
-            <div className="lg:col-span-4 pb-4">
-              <div className="bg-white border-2 border-dotted border-brandYellow/30 p-8 rounded-3xl space-y-6 shadow-sm">
-                <p className="text-[11px] font-black text-brandDark/20 uppercase tracking-[0.4em] border-b border-brandDark/5 pb-4">Internal Metric Focus</p>
-                <div className="space-y-4">
-                   <div className="flex justify-between items-center">
-                     <span className="text-sm font-bold text-brandDark/60">Success Rate</span>
-                     <span className="text-xl font-black text-brandDark">100% Alignment</span>
-                   </div>
-                   <div className="flex justify-between items-center">
-                     <span className="text-sm font-bold text-brandDark/60">Execution Latency</span>
-                     <span className="text-xl font-black text-brandDark">&lt; 24 Hours</span>
-                   </div>
-                   <div className="flex justify-between items-center">
-                     <span className="text-sm font-bold text-brandDark/60">Partner Seniority</span>
-                     <span className="text-xl font-black text-brandDark">Founders Only</span>
-                   </div>
-                </div>
-              </div>
-            </div>
+          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
+              ABOUT US
+            </span>
+            
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
+              The Growth Partner <br />
+              Behind Ambitious D2C <br />
+              Brands
+            </h1>
+            
+            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
+              We're a team of strategists, creatives, and data nerds obsessed <br className="hidden lg:block" />
+              with building profitable, compounding growth systems.
+            </p>
           </div>
         </div>
       </section>

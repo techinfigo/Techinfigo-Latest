@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface HowItWorksPageProps {
@@ -31,23 +30,28 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
   ];
 
   return (
-    <div className="min-h-screen bg-brandBg pt-48 pb-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-40 space-y-12">
-          <span className="text-[12px] font-mono font-bold text-brandDark/30 tracking-[0.6em] uppercase flex items-center gap-4">
-            <span className="w-3 h-3 rounded-full bg-brandYellow"></span>
-            Operational Blueprint
-          </span>
-          <h1 className="text-6xl lg:text-9xl font-extrabold text-brandDark tracking-tighter leading-[0.85]">
-            The Scale <br />
-            <span className="text-brandDark/20">Protocol.</span>
-          </h1>
-          <p className="text-2xl lg:text-4xl text-brandDark/60 leading-relaxed max-w-3xl font-medium border-l-[8px] border-brandYellow pl-12">
-            Growth is a science of variable reduction. Here is how we systematically de-risk your business.
-          </p>
+    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+      {/* Standard Header */}
+      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto">
+          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
+              OPERATIONAL BLUEPRINT
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
+              The Scale <br />
+              Protocol.
+            </h1>
+            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
+              Growth is a science of variable reduction. Here is how we <br className="hidden lg:block" /> systematically de-risk your business.
+            </p>
+          </div>
         </div>
+      </section>
 
-        <div className="space-y-40">
+      <section className="py-24 lg:py-32 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto space-y-40">
           {phases.map((phase) => (
             <div key={phase.id} className="grid grid-cols-1 lg:grid-cols-12 gap-16 border-t border-brandDark/5 pt-20">
               <div className="lg:col-span-4">
@@ -73,7 +77,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

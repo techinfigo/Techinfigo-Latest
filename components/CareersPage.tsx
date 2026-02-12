@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 
 interface Option {
@@ -140,180 +139,186 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
   }
 
   return (
-    <div className="min-h-screen bg-brandBg pt-48 pb-32 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-40 space-y-12 animate-slide-up">
-          <span className="text-[12px] font-mono font-bold text-brandDark/30 tracking-[0.6em] uppercase flex items-center gap-4">
-            <span className="w-3 h-3 rounded-full bg-brandYellow"></span>
-            Talent Mandate
-          </span>
-          <h1 className="text-6xl lg:text-9xl font-extrabold text-brandDark tracking-tighter leading-[0.85]">
-            Engineered <br />
-            <span className="text-brandDark/20">Together.</span>
-          </h1>
-          <p className="text-2xl lg:text-4xl text-brandDark/60 leading-relaxed max-w-3xl font-medium border-l-[8px] border-brandYellow pl-12">
-            We don't hire 'employees.' We hire engineers who treat growth as a high-precision discipline.
-          </p>
-        </div>
-
-        {/* Operational Slots */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-56">
-          {roles.map((role, i) => (
-            <div key={i} className="bg-white border border-brandDark/5 p-12 rounded-2xl space-y-6 shadow-sm">
-              <span className="text-[10px] font-bold text-brandDark/20 tracking-[0.4em] uppercase">SLOT_0{i+1}</span>
-              <h3 className="text-3xl font-bold text-brandDark tracking-tight">{role.title}</h3>
-              <p className="text-brandYellow font-mono text-sm tracking-widest uppercase">{role.focus}</p>
-              <button 
-                onClick={scrollToForm}
-                className="pt-10 flex items-center gap-3 text-xs font-bold text-brandDark uppercase tracking-[0.3em] hover:text-brandYellow transition-colors group"
-              >
-                APPLY FOR SLOT
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* Application Form */}
-        <div ref={formRef} className="max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <div className="bg-white rounded-[2.5rem] p-10 lg:p-20 shadow-4xl border border-brandDark/5 space-y-16">
-            <div className="space-y-3 text-center">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-brandDark tracking-tight">Application Terminal</h2>
-              <p className="text-brandDark/40 text-lg">Neutral vetting process for high-yield talent.</p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-10">
-              
-              {/* Identity Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">FULL NAME *</label>
-                  <input 
-                    required type="text" 
-                    value={formData.fullName}
-                    onChange={(e) => updateField('fullName', e.target.value)}
-                    placeholder="e.g. Rahul Sharma" 
-                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WORK EMAIL *</label>
-                  <input 
-                    required type="email" 
-                    value={formData.email}
-                    onChange={(e) => updateField('email', e.target.value)}
-                    placeholder="you@domain.com" 
-                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WHATSAPP *</label>
-                  <input 
-                    required type="tel" 
-                    value={formData.whatsapp}
-                    onChange={(e) => updateField('whatsapp', e.target.value)}
-                    placeholder="+91 XXXX XXX XXX" 
-                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">LINKEDIN PROFILE *</label>
-                  <input 
-                    required type="url" 
-                    value={formData.linkedin}
-                    onChange={(e) => updateField('linkedin', e.target.value)}
-                    placeholder="linkedin.com/in/username" 
-                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
-                  />
-                </div>
-              </div>
-
-              {/* Professional Scope */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
-                <CustomSelect 
-                  label="PRIMARY SPECIALIZATION *"
-                  options={[
-                    { label: "Growth Strategy & P&L", value: "strategy" },
-                    { label: "Media Buying (Meta/Google)", value: "media" },
-                    { label: "CRO & Landing Pages", value: "cro" },
-                    { label: "Performance Creative", value: "creative" },
-                    { label: "Retention & Email Ops", value: "retention" },
-                    { label: "Data & Infrastructure", value: "data" }
-                  ]}
-                  value={formData.specialization}
-                  onChange={(val) => updateField('specialization', val)}
-                />
-                <CustomSelect 
-                  label="EXPERIENCE (D2C FOCUS) *"
-                  options={[
-                    { label: "0-2 Years (Associate)", value: "0-2" },
-                    { label: "2-5 Years (Strategist)", value: "2-5" },
-                    { label: "5+ Years (Expert)", value: "5+" }
-                  ]}
-                  value={formData.experience}
-                  onChange={(val) => updateField('experience', val)}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">PORTFOLIO / CASE STUDIES LINK</label>
-                  <input 
-                    type="url" 
-                    value={formData.portfolio}
-                    onChange={(e) => updateField('portfolio', e.target.value)}
-                    placeholder="Link to your best work" 
-                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">EXPECTED MONTHLY CTC (INR)</label>
-                  <input 
-                    type="text" 
-                    value={formData.expectedCtc}
-                    onChange={(e) => updateField('expectedCtc', e.target.value)}
-                    placeholder="e.g. 1,00,000" 
-                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">THE PITCH (TELL US ABOUT A GROWTH WIN) *</label>
-                <textarea 
-                  required
-                  rows={4}
-                  value={formData.pitch}
-                  onChange={(e) => updateField('pitch', e.target.value)}
-                  placeholder="Tell us about a specific variable you moved that led to a significant revenue lift."
-                  className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all resize-none"
-                />
-              </div>
-
-              <div className="pt-8">
-                <button 
-                  type="submit" 
-                  disabled={loading}
-                  className="w-full py-6 bg-brandDark text-white font-bold text-sm uppercase tracking-[0.4em] rounded-xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-2xl flex items-center justify-center gap-4 group disabled:opacity-80"
-                >
-                  {loading ? (
-                    <span className="flex items-center gap-3">
-                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                      SYNCING PROFILE...
-                    </span>
-                  ) : (
-                    <>
-                      Submit Application
-                      <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </>
-                  )}
-                </button>
-              </div>
-
-            </form>
+    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+      {/* Standard Header */}
+      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto">
+          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
+              TALENT MANDATE
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
+              Engineered <br />
+              Together.
+            </h1>
+            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
+              We don't hire 'employees.' We hire engineers who treat growth <br className="hidden lg:block" /> as a high-precision discipline.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="py-24 lg:py-32 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Operational Slots */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-56">
+            {roles.map((role, i) => (
+              <div key={i} className="bg-white border border-brandDark/5 p-12 rounded-2xl space-y-6 shadow-sm">
+                <span className="text-[10px] font-bold text-brandDark/20 tracking-[0.4em] uppercase">SLOT_0{i+1}</span>
+                <h3 className="text-3xl font-bold text-brandDark tracking-tight">{role.title}</h3>
+                <p className="text-brandYellow font-mono text-sm tracking-widest uppercase">{role.focus}</p>
+                <button 
+                  onClick={scrollToForm}
+                  className="pt-10 flex items-center gap-3 text-xs font-bold text-brandDark uppercase tracking-[0.3em] hover:text-brandYellow transition-colors group"
+                >
+                  APPLY FOR SLOT
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Application Form */}
+          <div ref={formRef} className="max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-white rounded-[2.5rem] p-10 lg:p-20 shadow-4xl border border-brandDark/5 space-y-16">
+              <div className="space-y-3 text-center">
+                <h2 className="text-4xl lg:text-5xl font-extrabold text-brandDark tracking-tight">Application Terminal</h2>
+                <p className="text-brandDark/40 text-lg">Neutral vetting process for high-yield talent.</p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-10">
+                
+                {/* Identity Details */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">FULL NAME *</label>
+                    <input 
+                      required type="text" 
+                      value={formData.fullName}
+                      onChange={(e) => updateField('fullName', e.target.value)}
+                      placeholder="e.g. Rahul Sharma" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WORK EMAIL *</label>
+                    <input 
+                      required type="email" 
+                      value={formData.email}
+                      onChange={(e) => updateField('email', e.target.value)}
+                      placeholder="you@domain.com" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WHATSAPP *</label>
+                    <input 
+                      required type="tel" 
+                      value={formData.whatsapp}
+                      onChange={(e) => updateField('whatsapp', e.target.value)}
+                      placeholder="+91 XXXX XXX XXX" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">LINKEDIN PROFILE *</label>
+                    <input 
+                      required type="url" 
+                      value={formData.linkedin}
+                      onChange={(e) => updateField('linkedin', e.target.value)}
+                      placeholder="linkedin.com/in/username" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
+                  </div>
+                </div>
+
+                {/* Professional Scope */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                  <CustomSelect 
+                    label="PRIMARY SPECIALIZATION *"
+                    options={[
+                      { label: "Growth Strategy & P&L", value: "strategy" },
+                      { label: "Media Buying (Meta/Google)", value: "media" },
+                      { label: "CRO & Landing Pages", value: "cro" },
+                      { label: "Performance Creative", value: "creative" },
+                      { label: "Retention & Email Ops", value: "retention" },
+                      { label: "Data & Infrastructure", value: "data" }
+                    ]}
+                    value={formData.specialization}
+                    onChange={(val) => updateField('specialization', val)}
+                  />
+                  <CustomSelect 
+                    label="EXPERIENCE (D2C FOCUS) *"
+                    options={[
+                      { label: "0-2 Years (Associate)", value: "0-2" },
+                      { label: "2-5 Years (Strategist)", value: "2-5" },
+                      { label: "5+ Years (Expert)", value: "5+" }
+                    ]}
+                    value={formData.experience}
+                    onChange={(val) => updateField('experience', val)}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">PORTFOLIO / CASE STUDIES LINK</label>
+                    <input 
+                      type="url" 
+                      value={formData.portfolio}
+                      onChange={(e) => updateField('portfolio', e.target.value)}
+                      placeholder="Link to your best work" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">EXPECTED MONTHLY CTC (INR)</label>
+                    <input 
+                      type="text" 
+                      value={formData.expectedCtc}
+                      onChange={(e) => updateField('expectedCtc', e.target.value)}
+                      placeholder="e.g. 1,00,000" 
+                      className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">THE PITCH (TELL US ABOUT A GROWTH WIN) *</label>
+                  <textarea 
+                    required
+                    rows={4}
+                    value={formData.pitch}
+                    onChange={(e) => updateField('pitch', e.target.value)}
+                    placeholder="Tell us about a specific variable you moved that led to a significant revenue lift."
+                    className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all resize-none"
+                  />
+                </div>
+
+                <div className="pt-8">
+                  <button 
+                    type="submit" 
+                    disabled={loading}
+                    className="w-full py-6 bg-brandDark text-white font-bold text-sm uppercase tracking-[0.4em] rounded-xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-2xl flex items-center justify-center gap-4 group disabled:opacity-80"
+                  >
+                    {loading ? (
+                      <span className="flex items-center gap-3">
+                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        SYNCING PROFILE...
+                      </span>
+                    ) : (
+                      <>
+                        Submit Application
+                        <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

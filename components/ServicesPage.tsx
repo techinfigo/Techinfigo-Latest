@@ -69,72 +69,74 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-brandBg font-sans">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-40 pb-32">
-        {/* Technical Header */}
-        <div className="mb-24 space-y-8 animate-slide-up">
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-brandDark text-white rounded-full">
-             <span className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></span>
-             <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Operational Levers</span>
+    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+      {/* Standard Header */}
+      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto">
+          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
+              OPERATIONAL LEVERS
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
+              Growth <br />
+              Instruments.
+            </h1>
+            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
+              Precision tools engineered for D2C dominance. Select a node to <br className="hidden lg:block" /> view full technical specifications and protocol.
+            </p>
           </div>
-          <h1 className="text-6xl lg:text-9xl font-black text-brandDark tracking-tighter leading-[0.85]">
-            Growth <br />
-            <span className="text-brandDark/20 italic">Instruments.</span>
-          </h1>
-          <p className="text-xl lg:text-2xl text-brandDark/60 leading-relaxed max-w-2xl font-medium border-l-4 border-brandYellow pl-8">
-            Precision tools engineered for D2C dominance. Select a node to view full technical specifications and protocol.
-          </p>
         </div>
+      </section>
 
-        {/* Services Grid using the exact aesthetic from the user reference */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
-          {servicePillars.map((service, i) => (
-            <button
-              key={service.id}
-              onClick={() => onNavigate('service-detail', service.id)}
-              className="group relative text-left pt-6 animate-slide-up"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            >
-              {/* Folder Tab Motif */}
-              <div className="absolute top-0 left-0 w-32 h-8 bg-white border-x-2 border-t-2 border-dotted border-brandYellow/40 rounded-t-3xl z-0 group-hover:bg-brandDark group-hover:border-brandDark transition-all duration-500"></div>
-              
-              <div className="relative z-10 bg-white rounded-tr-[3rem] rounded-b-[3rem] p-8 lg:p-10 shadow-3xl border-2 border-dotted border-brandYellow/40 transition-all duration-500 group-hover:border-brandYellow group-hover:-translate-y-2 group-hover:shadow-4xl flex items-center gap-8">
-                {/* ICON BOX - MATCHING USER IMAGE */}
-                <div className="w-16 h-16 lg:w-20 lg:h-20 bg-brandYellow rounded-[1.25rem] flex items-center justify-center text-brandDark shadow-glow shrink-0 transition-transform group-hover:scale-105 duration-500">
-                  {service.icon}
-                </div>
+      {/* Services Grid */}
+      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-brandBg">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
+            {servicePillars.map((service, i) => (
+              <button
+                key={service.id}
+                onClick={() => onNavigate('service-detail', service.id)}
+                className="group relative text-left pt-6 animate-slide-up"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                {/* Folder Tab Motif */}
+                <div className="absolute top-0 left-0 w-32 h-8 bg-white border-x-2 border-t-2 border-dotted border-brandYellow/40 rounded-t-3xl z-0 group-hover:bg-brandDark group-hover:border-brandDark transition-all duration-500"></div>
                 
-                {/* TEXT CONTENT - MATCHING USER IMAGE */}
-                <div className="space-y-1">
-                  <h3 className="text-xl lg:text-2xl font-extrabold text-brandYellow tracking-tight group-hover:text-brandDark transition-colors duration-500">
-                    {service.title}
-                  </h3>
-                  <p className="text-[#9eaeb0] text-sm lg:text-base font-medium leading-tight">
-                    {service.desc}
-                  </p>
-                </div>
+                <div className="relative z-10 bg-white rounded-tr-[3rem] rounded-b-[3rem] p-8 lg:p-10 shadow-3xl border-2 border-dotted border-brandYellow/40 transition-all duration-500 group-hover:border-brandYellow group-hover:-translate-y-2 group-hover:shadow-4xl flex items-center gap-8">
+                  <div className="w-16 h-16 lg:w-20 lg:h-20 bg-brandYellow rounded-[1.25rem] flex items-center justify-center text-brandDark shadow-glow shrink-0 transition-transform group-hover:scale-105 duration-500">
+                    {service.icon}
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <h3 className="text-xl lg:text-2xl font-extrabold text-brandYellow transition-colors duration-500">
+                      {service.title}
+                    </h3>
+                    <p className="text-[#9eaeb0] text-sm lg:text-base font-medium leading-tight">
+                      {service.desc}
+                    </p>
+                  </div>
 
-                {/* Technical Index on Tab */}
-                <div className="absolute top-[-1.5rem] left-8 z-20">
-                  <span className="text-[9px] font-mono font-bold text-brandDark/20 uppercase tracking-widest group-hover:text-brandYellow/50 transition-colors">MOD_{service.id.toUpperCase().slice(0,3)}</span>
+                  <div className="absolute top-[-1.5rem] left-8 z-20">
+                    <span className="text-[9px] font-mono font-bold text-brandDark/20 uppercase tracking-widest group-hover:text-brandYellow/50 transition-colors">MOD_{service.id.toUpperCase().slice(0,3)}</span>
+                  </div>
                 </div>
-              </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-40 text-center py-20 border-t border-dotted border-brandYellow/20 animate-slide-up">
+            <h2 className="text-4xl font-black text-brandDark tracking-tighter mb-12">System synchronization required.</h2>
+            <button 
+              onClick={() => onNavigate('contact')}
+              className="bg-brandDark text-white px-12 py-6 rounded-xl font-bold text-[11px] uppercase tracking-[0.5em] hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-2xl group flex items-center gap-4 mx-auto"
+            >
+              Initiate Growth Audit
+              <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
-          ))}
+          </div>
         </div>
-
-        {/* Section Closure */}
-        <div className="mt-40 text-center py-20 border-t border-dotted border-brandYellow/20 animate-slide-up">
-          <h2 className="text-4xl font-black text-brandDark tracking-tighter mb-12">System synchronization required.</h2>
-          <button 
-            onClick={() => onNavigate('contact')}
-            className="bg-brandDark text-white px-12 py-6 rounded-xl font-bold text-[11px] uppercase tracking-[0.5em] hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-2xl group flex items-center gap-4 mx-auto"
-          >
-            Initiate Growth Audit
-            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-          </button>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
