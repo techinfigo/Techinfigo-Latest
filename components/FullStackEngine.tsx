@@ -4,11 +4,13 @@ interface ModuleData {
   id: string;
   label: string;
   layer: string;
+  layerSub: string;
   title: string;
   mission: string;
   inputs: string[];
   impact: string[];
-  timeSaved: string;
+  metricLabel: string;
+  metricValue: string;
   image: string;
   icon: React.ReactNode;
 }
@@ -18,11 +20,13 @@ const MODULES: ModuleData[] = [
     id: 'performance',
     label: 'PERFORMANCE',
     layer: 'LAYER 1',
-    title: 'Media Buying',
-    mission: 'Buy high-intent traffic at profitable unit economics.',
-    inputs: ['Meta Ads', 'Google Ads'],
-    impact: ['Scale Velocity', 'CAC Control'],
-    timeSaved: '15h/wk',
+    layerSub: '01: REACH',
+    title: 'Performance Ads',
+    mission: 'Offer-led Meta & Google strategies to lower acquisition costs.',
+    inputs: ['Creative Testing', 'Broad Scaling'],
+    impact: ['Lower CAC', 'New Sales'],
+    metricLabel: 'BLENDED MER',
+    metricValue: '4.8x',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,11 +38,13 @@ const MODULES: ModuleData[] = [
     id: 'cro',
     label: 'CRO',
     layer: 'LAYER 2',
+    layerSub: '02: CONVERT',
     title: 'Conversion Ops',
-    mission: 'Transform clicks into customers through scientific testing.',
+    mission: 'Transforming window shoppers into high-LTV customers through UI science.',
     inputs: ['A/B Testing', 'Funnel Design'],
     impact: ['CVR Lift', 'ROAS Boost'],
-    timeSaved: '12h/wk',
+    metricLabel: 'CONV. LIFT',
+    metricValue: '+32%',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,11 +56,13 @@ const MODULES: ModuleData[] = [
     id: 'seo',
     label: 'SEO',
     layer: 'LAYER 3',
+    layerSub: '03: AUTHORITY',
     title: 'Organic Scale',
-    mission: 'Build organic compounding value through search visibility.',
+    mission: 'Building organic compounding value through high-intent search visibility.',
     inputs: ['Keyword Ops', 'Technical SEO'],
-    impact: ['Free Traffic', 'Authority'],
-    timeSaved: '8h/wk',
+    impact: ['Free Traffic', 'Brand Moat'],
+    metricLabel: 'ORGANIC REVENUE',
+    metricValue: '₹1.2Cr+',
     image: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,11 +74,13 @@ const MODULES: ModuleData[] = [
     id: 'email',
     label: 'EMAIL',
     layer: 'LAYER 4',
-    title: 'Retention',
-    mission: 'Extract maximum LTV from every customer in the ecosystem.',
+    layerSub: '04: RETAIN',
+    title: 'Retention Flows',
+    mission: 'Maximizing the LTV of every customer through automated lifecycle loops.',
     inputs: ['Klaviyo Flows', 'List Hygiene'],
     impact: ['LTV Compound', 'Direct Rev'],
-    timeSaved: '20h/wk',
+    metricLabel: 'LTV MULTIPLIER',
+    metricValue: '2.4x',
     image: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,16 +92,17 @@ const MODULES: ModuleData[] = [
     id: 'automation',
     label: 'AUTOMATION',
     layer: 'LAYER 5',
-    title: 'Automation',
-    mission: 'Integrate stacks to save hours and personalize journeys.',
+    layerSub: '05: SYNC',
+    title: 'Growth Systems',
+    mission: 'Integrate stacks to save hours and personalize customer journeys.',
     inputs: ['Stack Sync', 'Task Automation'],
     impact: ['Efficiency', 'Data Integrity'],
-    timeSaved: '10h/wk',
+    metricLabel: 'TIME SAVED',
+    metricValue: '10h/wk',
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     )
   },
@@ -99,11 +110,13 @@ const MODULES: ModuleData[] = [
     id: 'creative',
     label: 'CREATIVE',
     layer: 'LAYER 6',
+    layerSub: '06: CONTENT',
     title: 'Performance Creative',
-    mission: 'Fuel the engine with assets that stop the scroll.',
+    mission: 'Fuel the engine with assets that stop the scroll and build desire.',
     inputs: ['UGC Lab', 'Motion Design'],
     impact: ['CTR Lift', 'Brand Recall'],
-    timeSaved: '18h/wk',
+    metricLabel: 'HOOK RATE',
+    metricValue: '42%',
     image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,11 +128,13 @@ const MODULES: ModuleData[] = [
     id: 'influencer',
     label: 'INFLUENCER',
     layer: 'LAYER 7',
+    layerSub: '07: TRUST',
     title: 'Influencer Ops',
-    mission: 'Leverage third-party trust to bypass skepticism.',
-    inputs: ['Seeding Lab', 'Creator Whitelisting'],
+    mission: 'Leveraging third-party trust to scale beyond the algorithm limits.',
+    inputs: ['Seeding Lab', 'Whitelisting'],
     impact: ['Social Proof', 'Viral Loops'],
-    timeSaved: '25h/wk',
+    metricLabel: 'PROFIT SCALE',
+    metricValue: '5.4x',
     image: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&q=80&w=800',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,94 +145,107 @@ const MODULES: ModuleData[] = [
 ];
 
 export const FullStackEngine: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(5); // Start on Creative (Index 5)
+  const [activeIndex, setActiveIndex] = useState(0); 
   const activeModule = MODULES[activeIndex];
 
   const handlePrev = () => setActiveIndex((prev) => (prev > 0 ? prev - 1 : MODULES.length - 1));
   const handleNext = () => setActiveIndex((prev) => (prev < MODULES.length - 1 ? prev + 1 : 0));
 
   return (
-    <section className="w-full py-12 lg:py-14 px-6 bg-[#fcfcfc] font-sans">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <section className="w-full py-16 lg:py-24 px-6 bg-[#fcfcfc] font-sans overflow-hidden">
+      <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* Header - More Compact */}
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl lg:text-4xl font-black text-brandDark tracking-tighter">
+        {/* Header - Centered as per image */}
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none">
             Your Full-Stack Growth Engine
           </h2>
-          <p className="text-brandDark/40 text-sm lg:text-base font-medium">
+          <p className="text-brandDark/40 text-lg lg:text-xl font-medium max-w-2xl mx-auto">
             One integrated team to manage strategy, creative, media, and retention.
           </p>
         </div>
 
-        {/* Navigation Tabs Bar - Tighter Padding */}
-        <div className="bg-white border border-brandDark/5 rounded-2xl p-1 shadow-sm flex flex-wrap lg:flex-nowrap items-center justify-between overflow-hidden">
+        {/* Navigation Tabs Bar - Premium segmented control look */}
+        <div className="bg-white border border-brandDark/5 rounded-[2rem] p-1.5 shadow-sm flex flex-wrap lg:flex-nowrap items-center justify-between">
           {MODULES.map((module, idx) => {
             const isActive = activeIndex === idx;
             return (
               <button
                 key={module.id}
                 onClick={() => setActiveIndex(idx)}
-                className={`flex-1 min-w-[100px] py-3 lg:py-4 flex flex-col items-center gap-1.5 lg:gap-2 transition-all duration-500 relative ${
-                  isActive ? 'bg-brandDark text-white shadow-xl z-10' : 'bg-transparent text-brandDark/40 hover:bg-brandDark/5'
+                className={`flex-1 min-w-[120px] py-4 lg:py-5 flex flex-col items-center gap-2 transition-all duration-500 relative rounded-2xl ${
+                  isActive ? 'bg-brandDark text-white shadow-2xl z-10' : 'bg-transparent text-brandDark/40 hover:bg-brandDark/5'
                 }`}
               >
-                <div className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5'}`}>
-                  {React.cloneElement(module.icon as React.ReactElement<any>, { className: 'w-4 h-4 lg:w-[18px] lg:h-[18px]' })}
+                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5'}`}>
+                  {React.cloneElement(module.icon as React.ReactElement<any>, { className: 'w-5 h-5' })}
                 </div>
-                <span className="text-[8px] font-black uppercase tracking-[0.15em]">{module.label}</span>
-                {isActive && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-brandYellow rounded-full translate-y-1"></div>}
+                <span className="text-[10px] font-black uppercase tracking-[0.15em]">{module.label}</span>
+                {isActive && (
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-brandYellow rounded-full translate-y-0.5"></div>
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* Content Card - Significantly Reduced Height */}
-        <div className="bg-white rounded-[2rem] shadow-4xl border border-brandDark/5 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-fit lg:min-h-[440px] animate-fade-in">
+        {/* Main Content Card - ENFORCED UNIFIED LARGE HEIGHT */}
+        <div className="bg-white rounded-[3rem] shadow-4xl border border-brandDark/5 overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:h-[580px] animate-fade-in transition-all duration-500">
           
-          {/* Left Content Side - Optimized Padding and Spacing */}
-          <div className="lg:col-span-6 p-6 lg:p-10 flex flex-col justify-between">
-            <div className="space-y-6 lg:space-y-7">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-brandDark rounded-lg flex items-center justify-center text-brandYellow">
-                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-4 h-4' })}
+          {/* Left Content Side - High legibility, matching provided image */}
+          <div className="lg:col-span-6 p-8 lg:p-16 flex flex-col justify-between h-full">
+            <div className="space-y-10 lg:space-y-12">
+              
+              {/* Card Meta Info */}
+              <div className="flex items-center gap-5">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-brandDark rounded-2xl flex items-center justify-center text-brandYellow shadow-lg">
+                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-6 h-6 lg:w-7 lg:h-7' })}
                 </div>
-                <div className="space-y-0">
-                  <span className="text-[8px] font-black text-brandYellow uppercase tracking-[0.3em]">INTEGRATED SYSTEM {activeModule.layer}</span>
-                  <p className="text-[8px] font-bold text-brandDark/20 uppercase tracking-widest leading-none">MODULE: {activeModule.id.toUpperCase()}</p>
+                <div className="space-y-1">
+                  <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.4em]">
+                    INTEGRATED SYSTEM {activeModule.layer}
+                  </span>
+                  <p className="text-[10px] lg:text-[11px] font-bold text-brandDark/20 uppercase tracking-[0.3em] leading-none">
+                    {activeModule.layerSub}
+                  </p>
                 </div>
               </div>
 
-              <h3 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none uppercase">
+              {/* Title - Punchy Large Text */}
+              <h3 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter leading-none uppercase">
                 {activeModule.title}
               </h3>
 
-              <div className="border-l-[4px] border-brandYellow pl-6 space-y-1">
-                <span className="text-[8px] font-bold text-brandYellow uppercase tracking-[0.4em]">STRATEGIC MISSION</span>
-                <p className="text-base lg:text-lg font-bold text-brandDark/60 italic leading-snug">
+              {/* Mission Statement - Italic with brand border */}
+              <div className="border-l-[6px] lg:border-l-[8px] border-brandYellow pl-8 lg:pl-10 space-y-2">
+                <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.5em]">STRATEGIC MISSION</span>
+                <p className="text-xl lg:text-3xl font-bold text-brandDark/60 italic leading-tight max-w-lg">
                   "{activeModule.mission}"
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-6 pt-6 border-t border-brandDark/5">
-                <div className="space-y-2">
-                  <span className="text-[8px] font-bold text-brandDark/20 uppercase tracking-[0.4em]">INPUTS</span>
-                  <ul className="space-y-1.5">
+              {/* Specific Inputs/Impact Grid - Visible Bullet Points */}
+              <div className="grid grid-cols-2 gap-10 lg:gap-16 pt-10 border-t border-brandDark/5">
+                <div className="space-y-4">
+                  <span className="text-[10px] lg:text-[11px] font-black text-brandDark/20 uppercase tracking-[0.5em]">INPUTS</span>
+                  <ul className="space-y-3">
                     {activeModule.inputs.map((input, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <div className="w-1 h-1 rounded-full bg-brandYellow"></div>
-                        <span className="text-[11px] lg:text-xs font-black text-brandDark tracking-tight">{input}</span>
+                      <li key={i} className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
+                        <span className="text-sm lg:text-xl font-black text-brandDark tracking-tight">{input}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-2">
-                  <span className="text-[8px] font-bold text-brandDark/20 uppercase tracking-[0.4em]">IMPACT</span>
-                  <ul className="space-y-1.5">
+                <div className="space-y-4">
+                  <span className="text-[10px] lg:text-[11px] font-black text-brandDark/20 uppercase tracking-[0.5em]">IMPACT</span>
+                  <ul className="space-y-3">
                     {activeModule.impact.map((impact, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <svg className="w-3 h-3 text-brandYellow" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd"></path></svg>
-                        <span className="text-[11px] lg:text-xs font-black text-brandDark tracking-tight">{impact}</span>
+                      <li key={i} className="flex items-center gap-3">
+                        <svg className="w-5 h-5 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-sm lg:text-xl font-black text-brandDark tracking-tight">{impact}</span>
                       </li>
                     ))}
                   </ul>
@@ -225,52 +253,71 @@ export const FullStackEngine: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Controls - Tightened */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 mt-6 border-t border-brandDark/5">
-              <button className="w-full sm:w-auto px-6 py-3.5 bg-brandYellow text-brandDark font-black text-[9px] uppercase tracking-[0.25em] rounded-lg hover:bg-brandDark hover:text-white transition-all shadow-glow">
+            {/* Bottom Controls - Persistent Placement */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pt-12 border-t border-brandDark/5">
+              <button className="w-full sm:w-auto px-12 py-6 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.25em] rounded-2xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105">
                 See Full Playbook →
               </button>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 <button 
                   onClick={handlePrev}
-                  className="w-9 h-9 lg:w-10 lg:h-10 rounded-full border border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
+                  className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
                 >
-                  <svg className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7"></path></svg>
+                  <svg className="w-5 h-5 lg:w-6 lg:h-6 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
+                  </svg>
                 </button>
-                <div className="text-center min-w-[50px]">
-                  <p className="text-[10px] font-black text-brandDark tracking-widest">{activeIndex + 1}/{MODULES.length}</p>
+                <div className="text-center min-w-[80px]">
+                  <p className="text-[9px] font-bold text-brandDark/20 uppercase tracking-[0.4em] mb-1">MODULE</p>
+                  <p className="text-[14px] lg:text-[16px] font-black text-brandDark tracking-widest">{activeIndex + 1}/{MODULES.length}</p>
                 </div>
                 <button 
                   onClick={handleNext}
-                  className="w-9 h-9 lg:w-10 lg:h-10 rounded-full border border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
+                  className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
                 >
-                  <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7"></path></svg>
+                  <svg className="w-5 h-5 lg:w-6 lg:h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
+                  </svg>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right Visual Side - Grayscale and Brightness optimized */}
-          <div className="lg:col-span-6 relative overflow-hidden group min-h-[240px] lg:min-h-0">
+          {/* Right Visual Side - Grayscale with High-Impact Stats */}
+          <div className="lg:col-span-6 relative overflow-hidden group min-h-[400px] lg:min-h-0">
             <img 
               key={activeModule.id}
               src={activeModule.image} 
               alt={activeModule.title} 
-              className="w-full h-full object-cover grayscale brightness-[0.4] transition-transform duration-[2000ms] group-hover:scale-105"
+              className="w-full h-full object-cover grayscale brightness-[0.3] transition-transform duration-[4000ms] group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brandDark/5 to-brandDark/30 lg:hidden"></div>
             
-            {/* Floating Stats Badge - More Compact */}
-            <div className="absolute bottom-6 right-6 bg-brandDark/90 backdrop-blur-xl p-4 lg:p-6 rounded-2xl border border-white/10 shadow-4xl animate-float">
-               <span className="text-[8px] font-bold text-brandYellow uppercase tracking-[0.3em] block mb-1">TIME SAVED</span>
-               <h4 className="text-2xl lg:text-3xl font-black text-white tracking-tighter">{activeModule.timeSaved}</h4>
+            {/* Soft Gradient Overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brandDark/10 to-brandDark/50 lg:hidden"></div>
+            
+            {/* Metric Badge - Exactly like the image */}
+            <div className="absolute bottom-12 right-12 bg-brandDark/90 backdrop-blur-2xl p-8 lg:p-12 rounded-[3.5rem] border border-white/10 shadow-4xl animate-float">
+               <span className="text-[10px] lg:text-[11px] font-bold text-brandYellow uppercase tracking-[0.5em] block mb-2">
+                 {activeModule.metricLabel}
+               </span>
+               <h4 className="text-5xl lg:text-7xl font-black text-white tracking-tighter leading-none">
+                 {activeModule.metricValue}
+               </h4>
             </div>
           </div>
 
         </div>
 
       </div>
+      
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+        }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+      `}</style>
     </section>
   );
 };
