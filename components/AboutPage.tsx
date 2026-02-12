@@ -270,8 +270,197 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         `}</style>
       </section>
 
-      {/* 4. Comparison Section */}
-      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-white">
+      {/* 4. OUR STORY Section - Timeline */}
+      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-white relative overflow-hidden">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-24 space-y-4 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.4em] block">
+              OUR STORY
+            </span>
+            <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-[1.1]">
+              From Humble Beginnings <br className="hidden lg:block" /> to a Full-Stack Partner
+            </h2>
+          </div>
+
+          {/* Timeline Components */}
+          <div className="relative border-l-2 border-brandDark/5 ml-4 lg:ml-0 pl-10 lg:pl-20 space-y-20">
+            {[
+              {
+                year: "2018",
+                title: "Roots in Performance Marketing",
+                desc: "Started by running Meta & Google ads for early-stage D2C brands, learning the fundamentals of direct-response."
+              },
+              {
+                year: "2020",
+                title: "The Shift to Full-Funnel",
+                desc: "Realized ads were only half the battle. Expanded into CRO, landing page design, and email to control the entire customer journey."
+              },
+              {
+                year: "2022",
+                title: "Formalized the Growth Engine",
+                desc: "Developed the core frameworks for offer-led testing and creative velocity that we use today."
+              },
+              {
+                year: "2024",
+                title: "Crossed ₹10Cr in Managed Spend",
+                desc: "A milestone in delivering profitable scale for our partners, with a focus on sustainable, long-term growth."
+              }
+            ].map((item, i) => (
+              <div key={i} className="relative group animate-slide-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="absolute -left-[51px] lg:-left-[91px] top-1.5 w-5 h-5 rounded-full bg-brandDark border-4 border-white shadow-sm group-hover:scale-125 group-hover:bg-brandYellow transition-all duration-500"></div>
+                
+                <div className="space-y-4">
+                  <span className="text-xl lg:text-2xl font-black text-brandYellow tracking-tight block">
+                    {item.year}
+                  </span>
+                  <div className="space-y-3">
+                    <h3 className="text-2xl lg:text-3xl font-black text-brandDark tracking-tighter">
+                      {item.title}
+                    </h3>
+                    <p className="text-brandDark/60 text-base lg:text-lg font-medium leading-relaxed max-w-2xl">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. SOCIAL PROOF Section - Testimonials */}
+      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-[#fcfcfc] border-t border-brandDark/5 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16 space-y-3 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.4em] block">
+              SOCIAL PROOF
+            </span>
+            <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-tight">
+              What Our Partners Say
+            </h2>
+          </div>
+
+          {/* Testimonial Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 animate-slide-up">
+            {[
+              {
+                quote: "They are the first team that felt like true partners. The clarity they brought to our ad account and landing pages was a game-changer.",
+                name: "Aisha Khan",
+                role: "Founder, Skincare Brand",
+                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150"
+              },
+              {
+                quote: "We stopped guessing and started building a real growth system. Our MER has never been healthier, and we finally have a clear path to scale.",
+                name: "Rohan Mehta",
+                role: "CEO, Apparel Co.",
+                image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=150"
+              }
+            ].map((testimonial, i) => (
+              <div key={i} className="bg-white rounded-[2rem] p-8 lg:p-12 shadow-3xl border border-brandDark/5 relative group hover:shadow-4xl transition-all duration-500">
+                {/* Subtle Quote Icon */}
+                <div className="absolute top-8 left-8 text-brandDark/5 group-hover:text-brandYellow/10 transition-colors">
+                  <svg className="w-16 h-16 lg:w-20 lg:h-20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.987z" />
+                  </svg>
+                </div>
+
+                <div className="relative z-10 space-y-8">
+                  <p className="text-xl lg:text-2xl font-medium text-brandDark leading-relaxed tracking-tight italic">
+                    "{testimonial.quote}"
+                  </p>
+                  
+                  <div className="flex items-center gap-4 pt-4">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 shadow-md">
+                      <img src={testimonial.image} alt={testimonial.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-base lg:text-lg font-black text-brandDark leading-none">
+                        {testimonial.name}
+                      </p>
+                      <p className="text-[10px] lg:text-[11px] font-bold text-brandDark/40 uppercase tracking-widest">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. OUR CULTURE Section - Bento Gallery (NEW) */}
+      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-white relative">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16 space-y-3 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.4em] block">
+              OUR CULTURE
+            </span>
+            <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-tight">
+              Life at Techinfigo
+            </h2>
+          </div>
+
+          {/* Bento Style Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 animate-slide-up">
+            {/* Left Big Image */}
+            <div className="relative aspect-[4/5] lg:aspect-auto lg:h-full rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden group shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
+                alt="Culture Landscape" 
+                className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+              />
+              <div className="absolute inset-0 bg-brandDark/5"></div>
+            </div>
+
+            {/* Right Column Stack */}
+            <div className="flex flex-col gap-4 lg:gap-6">
+              {/* Top Right Landscape */}
+              <div className="relative aspect-[16/9] rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden group shadow-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800" 
+                  alt="Overhead View" 
+                  className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                />
+                <div className="absolute inset-0 bg-brandDark/5"></div>
+              </div>
+
+              {/* Bottom Right Side-by-Side */}
+              <div className="grid grid-cols-2 gap-4 lg:gap-6">
+                <div className="relative aspect-square rounded-[2rem] overflow-hidden group shadow-lg">
+                  <img 
+                    src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=600" 
+                    alt="Team Cityscape" 
+                    className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                  />
+                  <div className="absolute inset-0 bg-brandDark/5"></div>
+                </div>
+                <div className="relative aspect-square rounded-[2rem] overflow-hidden group shadow-lg">
+                  <img 
+                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600" 
+                    alt="Coastal View" 
+                    className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                  />
+                  <div className="absolute inset-0 bg-brandDark/5"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Caption */}
+          <div className="mt-8 text-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <p className="text-brandDark/40 text-sm lg:text-base font-medium">
+              A peek behind the scenes of our remote-first team.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Comparison Section */}
+      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-white border-t border-brandDark/5">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl mb-16 space-y-4">
             <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">
