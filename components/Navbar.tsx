@@ -119,11 +119,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     }, 200);
   };
 
-  // The critical logic: If not on Home page, always use the solid/dark-text style.
   const isHome = activePage === 'home';
   const shouldShowSolid = isScrolled || !isHome;
 
-  // Determine colors based on scroll state or page
   const navTextColor = shouldShowSolid ? 'text-brandDark/60 hover:text-brandDark' : 'text-white/70 hover:text-white';
   const activeTextColor = 'text-brandYellow';
   const logoTextColor = shouldShowSolid ? 'text-brandDark' : 'text-white';
@@ -185,23 +183,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                       servicesDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
                     }`}
                   >
-                    <div className="bg-white w-[520px] rounded-[1.5rem] p-6 shadow-4xl border border-brandDark/5">
+                    <div className="bg-brandDark w-[520px] rounded-[1.5rem] p-6 shadow-4xl border border-white/10 backdrop-blur-2xl">
                       <div className="mb-6 px-4">
-                        <span className="text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.4em]">Our Mandates</span>
+                        <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em]">Our Mandates</span>
                       </div>
                       <div className="space-y-1">
                         {services.map((service, idx) => (
                           <button
                             key={idx}
                             onClick={() => handleLinkClick('service-detail', service.id)}
-                            className="w-full text-left group flex items-start gap-4 p-4 rounded-xl hover:bg-brandDark/[0.02] transition-all duration-300"
+                            className="w-full text-left group flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300"
                           >
                             <div className="w-10 h-10 rounded-lg bg-brandYellow flex items-center justify-center text-brandDark shadow-sm flex-shrink-0 transition-transform group-hover:scale-110">
                               {service.icon}
                             </div>
                             <div className="space-y-0.5">
                               <h4 className="text-sm font-bold text-brandYellow transition-colors">{service.title}</h4>
-                              <p className="text-[11px] text-brandDark/40 leading-relaxed font-medium">
+                              <p className="text-[11px] text-white/40 leading-relaxed font-medium">
                                 {service.desc}
                               </p>
                             </div>
@@ -239,7 +237,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu remains dark on light bg regardless */}
       <div className={`fixed inset-0 z-[90] bg-[#fcfcfc] transition-all duration-500 lg:hidden overflow-y-auto ${mobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none'}`}>
         <div className="flex flex-col h-full justify-start pt-32 pb-10 px-8 space-y-6">
           {navLinks.map((link, i) => (
