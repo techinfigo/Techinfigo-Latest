@@ -78,8 +78,8 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           {/* Main Rounded Image Container */}
           <div className="relative w-full max-w-[400px] lg:max-w-[460px] aspect-[4/5] rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-white/10 shadow-4xl group">
              <img 
-               src="https://images.unsplash.com/photo-1542744094-3a31f272c491?auto=format&fit=crop&q=80&w=1200" 
-               alt="Strategic Growth" 
+               src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200" 
+               alt="Strategic Growth and Data Infrastructure" 
                className="w-full h-full object-cover grayscale brightness-[0.4] transition-transform duration-1000 group-hover:scale-105"
              />
              
