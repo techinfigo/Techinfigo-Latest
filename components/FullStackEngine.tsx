@@ -153,6 +153,9 @@ export const FullStackEngine: React.FC = () => {
 
   return (
     <section className="w-full py-16 lg:py-28 px-6 bg-brandDark font-sans overflow-hidden relative">
+      {/* Dynamic Background Glow to highlight the active section */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,_#fcb63208_0%,_transparent_60%)] pointer-events-none"></div>
+      
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         
         {/* Header Section */}
@@ -190,7 +193,7 @@ export const FullStackEngine: React.FC = () => {
         </div>
 
         {/* Main Content Card - High Contrast Split Design */}
-        <div className="bg-white rounded-[4rem] shadow-4xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:h-[580px] animate-fade-in transition-all duration-500">
+        <div className="bg-white rounded-[4rem] shadow-4xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:h-[620px] animate-fade-in transition-all duration-500">
           
           {/* Left Content Column (White Area) */}
           <div className="lg:col-span-6 p-10 lg:p-16 flex flex-col justify-between h-full">
@@ -290,20 +293,24 @@ export const FullStackEngine: React.FC = () => {
               key={activeModule.id}
               src={activeModule.image} 
               alt={activeModule.title} 
-              className="w-full h-full object-cover grayscale brightness-[0.2] transition-transform duration-[5000ms] group-hover:scale-110 opacity-70"
+              className="w-full h-full object-cover grayscale brightness-[0.25] transition-transform duration-[5000ms] group-hover:scale-110 opacity-70"
             />
             
-            {/* Split Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brandDark/10 to-brandDark/60 lg:bg-gradient-to-l lg:from-transparent lg:via-brandDark/5 lg:to-brandDark/50"></div>
+            {/* Visual Overlays for depth */}
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-brandDark/5 to-brandDark/40"></div>
+            <div className="absolute inset-0 bg-[#001d21]/20 mix-blend-multiply"></div>
             
-            {/* Large Floating Metric Card */}
-            <div className="absolute bottom-12 right-12 bg-brandDark/90 backdrop-blur-xl p-12 lg:p-16 rounded-[4rem] border border-white/10 shadow-4xl animate-float">
-               <span className="text-[11px] lg:text-[12px] font-bold text-brandYellow uppercase tracking-[0.5em] block mb-4">
+            {/* Large Floating Metric Card - CRITICAL VISIBILITY FIX */}
+            <div className="absolute bottom-10 right-10 z-[30] bg-[#002a2f] border border-white/10 p-10 lg:p-14 rounded-[3.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] animate-float-high">
+               <span className="text-[11px] lg:text-[12px] font-black text-brandYellow uppercase tracking-[0.5em] block mb-4">
                  {activeModule.metricLabel}
                </span>
-               <h4 className="text-6xl lg:text-[110px] font-black text-white tracking-tighter leading-none">
+               <h4 className="text-6xl lg:text-[100px] font-black text-white tracking-tighter leading-none">
                  {activeModule.metricValue}
                </h4>
+               
+               {/* Decorative corner accent */}
+               <div className="absolute top-6 right-6 w-3 h-3 bg-brandYellow/20 rounded-full"></div>
             </div>
           </div>
 
@@ -312,11 +319,21 @@ export const FullStackEngine: React.FC = () => {
       </div>
       
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
+        @keyframes floatHigh {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-25px) scale(1.02); }
         }
-        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-high { 
+          animation: floatHigh 8s ease-in-out infinite; 
+          will-change: transform;
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
       `}</style>
     </section>
   );
