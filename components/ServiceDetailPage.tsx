@@ -8,6 +8,7 @@ interface ServiceDetailPageProps {
 const SERVICE_DATA: Record<string, any> = {
   "performance-ads": {
     title: "D2C Performance Ads (Meta + Google)",
+    displayTitle: <>D2C Performance Ads <br /> (Meta + Google)</>,
     desc: "Scale profitably with offer-led creative and full-funnel strategy.",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,6 +28,7 @@ const SERVICE_DATA: Record<string, any> = {
   },
   "cro": {
     title: "Conversion Rate Optimization (CRO)",
+    displayTitle: <>Conversion Rate <br /> Optimization (CRO)</>,
     desc: "Convert more traffic into revenue with data-driven A/B testing.",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,14 +59,14 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId,
       
       <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-40 pb-32 relative z-10">
         
-        {/* REDESIGNED HEADER CARD - EXACT MATCH TO USER IMAGE */}
+        {/* HEADER CARD - Force 2 lines where possible */}
         <div className="bg-white rounded-[3rem] p-10 lg:p-14 shadow-4xl border-2 border-dotted border-brandYellow/20 animate-slide-up flex flex-col md:flex-row items-center gap-12 mb-20 group">
           <div className="w-24 h-24 lg:w-32 lg:h-32 bg-brandYellow rounded-[2rem] flex items-center justify-center text-brandDark shadow-glow shrink-0 transition-all duration-700 group-hover:rotate-6">
             {service.icon}
           </div>
           <div className="space-y-3 text-center md:text-left">
             <h1 className="text-4xl lg:text-7xl font-black text-brandYellow tracking-tighter leading-tight">
-              {service.title}
+              {service.displayTitle || service.title}
             </h1>
             <p className="text-[#9eaeb0] text-xl lg:text-3xl font-medium tracking-tight max-w-3xl leading-relaxed">
               {service.desc}

@@ -7,20 +7,26 @@ interface SystemPageProps {
 export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* Standard Header */}
+      {/* 1. Header Section - Updated to 2 Lines */}
       <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        {/* Subtle Background Glow */}
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        
         <div className="max-w-7xl mx-auto">
           <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
             <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
-              SYSTEM PROTOCOL / V4.2
+              THE SYSTEM
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
-              Infrastructure <br />
-              Over Luck.
+            
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl uppercase">
+              One System. <br />
+              No Custom Chaos.
             </h1>
+            
             <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
-              We replace agency "voodoo" with deterministic systems built on <br className="hidden lg:block" /> unit-economic certainty.
+              You aren't paying for hours, freelancers, or random tasks. <br className="hidden lg:block" />
+              You are deploying a fixed growth framework that removes <br className="hidden lg:block" />
+              guesswork from scaling.
             </p>
           </div>
         </div>

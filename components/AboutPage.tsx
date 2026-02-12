@@ -135,7 +135,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       
-      {/* 1. Header Section */}
+      {/* 1. Header Section - Updated to 2 Lines */}
       <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto">
@@ -144,9 +144,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               ABOUT US
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
-              The Growth Partner <br />
-              Behind Ambitious D2C <br />
-              Brands
+              The Growth Partner Behind <br className="hidden lg:block" />
+              Ambitious D2C Brands
             </h1>
             <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
               We're a team of strategists, creatives, and data nerds obsessed <br className="hidden lg:block" />
@@ -391,7 +390,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 6. OUR CULTURE Section - Bento Gallery (NEW) */}
+      {/* 6. OUR CULTURE Section - Bento Gallery */}
       <section className="py-24 lg:py-32 px-6 lg:px-12 bg-white relative">
         <div className="max-w-7xl mx-auto">
           {/* Header */}

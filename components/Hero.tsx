@@ -26,10 +26,11 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
             </span>
           </div>
 
-          {/* Main Headline */}
+          {/* Main Headline - Updated to 2 Lines */}
           <div className="space-y-4 w-full max-w-2xl">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
-              We Help D2C <br /> Brands <span className="text-brandYellow">Scale <br /> Profitably</span> Without <br /> Burning Cash on <br /> Ads.
+              We Help D2C Brands <br />
+              <span className="text-brandYellow">Scale Profitably.</span>
             </h1>
           </div>
 
