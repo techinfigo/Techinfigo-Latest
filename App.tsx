@@ -20,6 +20,13 @@ import { PrivacyPage } from './components/PrivacyPage';
 import { TermsPage } from './components/TermsPage';
 import { SitemapPage } from './components/SitemapPage';
 import { Footer } from './components/Footer';
+import { PerformanceAdsPage } from './components/PerformanceAdsPage';
+import { CROPage } from './components/CROPage';
+import { SEOPage } from './components/SEOPage';
+import { RetentionPage } from './components/RetentionPage';
+import { AutomationPage } from './components/AutomationPage';
+import { CreativePage } from './components/CreativePage';
+import { InfluencerPage } from './components/InfluencerPage';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('home');
@@ -163,7 +170,56 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {currentPage === 'service-detail' && selectedService && (
+      {currentPage === 'service-detail' && selectedService === 'performance-ads' && (
+        <div className="animate-slide-up">
+          <PerformanceAdsPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService === 'cro' && (
+        <div className="animate-slide-up">
+          <CROPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService === 'seo' && (
+        <div className="animate-slide-up">
+          <SEOPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService === 'retention' && (
+        <div className="animate-slide-up">
+          <RetentionPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService === 'automation' && (
+        <div className="animate-slide-up">
+          <AutomationPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService === 'creative' && (
+        <div className="animate-slide-up">
+          <CreativePage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService === 'influencer' && (
+        <div className="animate-slide-up">
+          <InfluencerPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'service-detail' && selectedService && selectedService !== 'performance-ads' && selectedService !== 'cro' && selectedService !== 'seo' && selectedService !== 'retention' && selectedService !== 'automation' && selectedService !== 'creative' && selectedService !== 'influencer' && (
         <div className="animate-slide-up">
           <ServiceDetailPage serviceId={selectedService} onNavigate={navigateTo} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />

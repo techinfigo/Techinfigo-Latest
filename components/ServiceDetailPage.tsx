@@ -45,6 +45,107 @@ const SERVICE_DATA: Record<string, any> = {
       { label: "Conversion Lift", val: "+1.4x" },
       { label: "Session Value", val: "+22%" }
     ]
+  },
+  "seo": {
+    title: "SEO for eCommerce & D2C Brands",
+    displayTitle: <>SEO for eCommerce <br /> & D2C Brands</>,
+    desc: "Drive high-intent organic traffic by ranking for valuable keywords.",
+    icon: (
+      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    ),
+    protocol: [
+      { id: "NODE_01", name: "Technical Audit", detail: "Crawl analysis and core web vitals optimization for search engine visibility." },
+      { id: "NODE_02", name: "Content Strategy", detail: "Keyword clustering and topical authority building to capture intent." },
+      { id: "NODE_03", name: "On-Page Ops", detail: "Meta tags, schema markup, and internal linking structure refinement." },
+      { id: "NODE_04", name: "Authority Building", detail: "High-quality link acquisition from relevant industry domains." }
+    ],
+    metrics: [
+      { label: "Organic Traffic", val: "+45%" },
+      { label: "Keyword Rankings", val: "+120%" }
+    ]
+  },
+  "retention": {
+    title: "Email & SMS Flows for LTV",
+    displayTitle: <>Email & SMS <br /> Flows for LTV</>,
+    desc: "Boost LTV with automated flows that drive repeat purchases.",
+    icon: (
+      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+    protocol: [
+      { id: "NODE_01", name: "Flow Audit", detail: "Analyzing existing flows and identifying gaps in the customer journey." },
+      { id: "NODE_02", name: "Segmentation", detail: "Creating high-value segments for hyper-targeted messaging." },
+      { id: "NODE_03", name: "Creative Ops", detail: "Testing subject lines and content layout for higher open and click rates." },
+      { id: "NODE_04", name: "SMS Integration", detail: "Synergistic SMS campaigns for time-sensitive offers and alerts." }
+    ],
+    metrics: [
+      { label: "Repeat Rate", val: "+35%" },
+      { label: "Email Revenue", val: "+50%" }
+    ]
+  },
+  "automation": {
+    title: "Marketing Automation for D2C",
+    displayTitle: <>Marketing Automation <br /> for D2C</>,
+    desc: "Automate tasks and personalize journeys to scale efficiently.",
+    icon: (
+      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ),
+    protocol: [
+      { id: "NODE_01", name: "Workflow Mapping", detail: "Visualizing customer journeys and identifying automation touchpoints." },
+      { id: "NODE_02", name: "Tool Integration", detail: "Connecting CRM, email, and ad platforms for seamless data flow." },
+      { id: "NODE_03", name: "Personalization", detail: "Dynamic content logic based on user behavior and preferences." },
+      { id: "NODE_04", name: "Reporting Ops", detail: "Real-time dashboards for key metrics and performance tracking." }
+    ],
+    metrics: [
+      { label: "Time Saved", val: "20hrs/wk" },
+      { label: "Conversion Rate", val: "+15%" }
+    ]
+  },
+  "creative": {
+    title: "Creative & Content Strategy",
+    displayTitle: <>Creative & <br /> Content Strategy</>,
+    desc: "Make creatives that stop thumbs and keep learning fresh.",
+    icon: (
+      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ),
+    protocol: [
+      { id: "NODE_01", name: "Trend Analysis", detail: "Identifying viral trends and formats relevant to your niche." },
+      { id: "NODE_02", name: "Scriptwriting", detail: "Direct-response copywriting for video ads that hook and convert." },
+      { id: "NODE_03", name: "Visual Design", detail: "High-converting static and motion graphics production." },
+      { id: "NODE_04", name: "Iterative Testing", detail: "Rapid feedback loops to refine creative assets based on data." }
+    ],
+    metrics: [
+      { label: "CTR Lift", val: "+40%" },
+      { label: "ROAS", val: "+25%" }
+    ]
+  },
+  "influencer": {
+    title: "Influencer & UGC Marketing",
+    displayTitle: <>Influencer & <br /> UGC Marketing</>,
+    desc: "Source authentic content and amplify what performs to build trust.",
+    icon: (
+      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+    ),
+    protocol: [
+      { id: "NODE_01", name: "Creator Sourcing", detail: "Finding influencers that align with brand values and audience." },
+      { id: "NODE_02", name: "Campaign Ops", detail: "Briefing, shipping, and content approval management." },
+      { id: "NODE_03", name: "Whitelisting", detail: "Running ads through creator handles for enhanced social proof." },
+      { id: "NODE_04", name: "UGC Production", detail: "Generating authentic user-generated content at scale." }
+    ],
+    metrics: [
+      { label: "Engagement", val: "+60%" },
+      { label: "CPA", val: "-20%" }
+    ]
   }
 };
 
