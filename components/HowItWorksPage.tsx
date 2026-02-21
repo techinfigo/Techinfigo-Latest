@@ -36,37 +36,20 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. Impact Header Section */}
-      <section className="bg-brandDark pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-12 relative overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `linear-gradient(#fcb632 1px, transparent 1px), linear-gradient(90deg, #fcb632 1px, transparent 1px)`, backgroundSize: '60px 60px' }}></div>
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="space-y-12 animate-slide-up">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-[2px] bg-brandYellow"></div>
-              <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
-                OPERATIONAL BLUEPRINT
-              </span>
-            </div>
-            
-            <h1 className="text-5xl sm:text-6xl lg:text-[110px] font-black text-white leading-[0.9] tracking-tighter max-w-5xl">
+      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto">
+          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
+              OPERATIONAL BLUEPRINT
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
               Trust the Process, <br />
               <span className="text-brandYellow italic">Not the Screenshot.</span>
             </h1>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-8">
-              <p className="text-lg lg:text-2xl text-white/50 font-medium leading-relaxed max-w-xl">
-                Most agencies lead with cherry-picked case studies from the 2021 golden era. We lead with the <span className="text-white">repeatable systems</span> we use to drive growth today.
-              </p>
-              <div className="flex items-end lg:justify-end">
-                <button 
-                  onClick={() => onNavigate('contact')}
-                  className="px-10 py-6 bg-brandYellow text-brandDark font-black text-[11px] uppercase tracking-[0.4em] rounded-xl hover:bg-white transition-all shadow-glow"
-                >
-                  Apply For System Audit
-                </button>
-              </div>
-            </div>
+            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
+              Most agencies lead with cherry-picked case studies from the 2021 golden era. We lead with the <span className="text-white">repeatable systems</span> we use to drive growth today.
+            </p>
           </div>
         </div>
       </section>
