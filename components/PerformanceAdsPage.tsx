@@ -22,7 +22,7 @@ export const PerformanceAdsPage: React.FC<PerformanceAdsPageProps> = ({ onNaviga
           
           <h1 className="text-5xl lg:text-[80px] font-black text-brandDark tracking-tighter leading-[0.9] mb-8 animate-slide-up">
             Stop Burning Cash. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brandYellow to-orange-500">Start Buying Revenue.</span>
+            <span className="text-brandYellow">Start Buying Revenue.</span>
           </h1>
           
           <p className="text-xl lg:text-2xl text-brandDark/60 font-medium max-w-3xl leading-relaxed mb-12 animate-slide-up" style={{ animationDelay: '0.1s' }}>
@@ -38,7 +38,7 @@ export const PerformanceAdsPage: React.FC<PerformanceAdsPageProps> = ({ onNaviga
             </button>
             <button 
               onClick={() => document.getElementById('strategy')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-10 py-5 bg-white border border-brandDark/10 text-brandDark text-sm font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-brandBg hover:border-brandDark/30 transition-all"
+              className="px-10 py-5 bg-white border-2 border-brandDark/10 text-brandDark text-sm font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-brandBg hover:border-brandDark/30 transition-all"
             >
               How We Do It
             </button>
