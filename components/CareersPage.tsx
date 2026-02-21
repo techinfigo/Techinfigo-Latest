@@ -160,34 +160,56 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
       </section>
 
       <section className="py-24 lg:py-32 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          {/* Operational Slots */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-56">
-            {roles.map((role, i) => (
-              <div key={i} className="bg-white border border-brandDark/5 p-12 rounded-2xl space-y-6 shadow-sm">
-                <span className="text-[10px] font-bold text-brandDark/20 tracking-[0.4em] uppercase">SLOT_0{i+1}</span>
-                <h3 className="text-3xl font-bold text-brandDark tracking-tight">{role.title}</h3>
-                <p className="text-brandYellow font-mono text-sm tracking-widest uppercase">{role.focus}</p>
-                <button 
-                  onClick={scrollToForm}
-                  className="pt-10 flex items-center gap-3 text-xs font-bold text-brandDark uppercase tracking-[0.3em] hover:text-brandYellow transition-colors group"
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
+          
+          {/* Left Column: Open Positions */}
+          <div className="lg:col-span-5 space-y-12 sticky top-32">
+            <div className="space-y-4">
+              <span className="text-[10px] font-bold text-brandYellow uppercase tracking-[0.4em] block">
+                OPEN POSITIONS
+              </span>
+              <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">
+                Operational <br /> Slots.
+              </h2>
+              <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
+                Current openings in our growth unit. Select a role to apply.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {roles.map((role, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => {
+                    updateField('specialization', role.focus.toLowerCase().includes('strategy') ? 'strategy' : role.focus.toLowerCase().includes('creative') ? 'creative' : 'data');
+                    scrollToForm();
+                  }}
+                  className="group bg-white border border-brandDark/5 p-8 rounded-2xl space-y-4 shadow-sm hover:border-brandYellow/50 hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden"
                 >
-                  APPLY FOR SLOT
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </button>
-              </div>
-            ))}
+                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                  </div>
+                  
+                  <span className="text-[10px] font-bold text-brandDark/20 tracking-[0.4em] uppercase block">SLOT_0{i+1}</span>
+                  <h3 className="text-2xl font-bold text-brandDark tracking-tight group-hover:text-brandYellow transition-colors">{role.title}</h3>
+                  <p className="text-brandDark/40 font-mono text-xs tracking-widest uppercase">{role.focus}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Application Form */}
-          <div ref={formRef} className="max-w-4xl mx-auto animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <div className="bg-white rounded-[2.5rem] p-10 lg:p-20 shadow-4xl border border-brandDark/5 space-y-16">
-              <div className="space-y-3 text-center">
-                <h2 className="text-4xl lg:text-5xl font-extrabold text-brandDark tracking-tight">Application Terminal</h2>
-                <p className="text-brandDark/40 text-lg">Neutral vetting process for high-yield talent.</p>
+          {/* Right Column: Application Form */}
+          <div ref={formRef} className="lg:col-span-7 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-4xl border border-brandDark/5 space-y-12 relative">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 rounded-bl-[2.5rem] pointer-events-none"></div>
+              
+              <div className="space-y-3">
+                <span className="text-[10px] font-bold text-brandDark/30 uppercase tracking-[0.3em]">INTAKE PROTOCOL</span>
+                <h2 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight">Application Terminal</h2>
+                <p className="text-brandDark/50 text-base">Neutral vetting process for high-yield talent.</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-10">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 
                 {/* Identity Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
