@@ -114,9 +114,9 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
   };
 
   const roles = [
-    { title: "Growth Strategist", focus: "P&L Engineering" },
-    { title: "Performance Designer", focus: "Conversion Assets" },
-    { title: "Data & Ops Engineer", focus: "Infrastructure" }
+    { title: "Growth Strategist", focus: "P&L Engineering", location: "Remote", type: "Full-time", exp: "2-5 Years" },
+    { title: "Performance Designer", focus: "Conversion Assets", location: "Remote", type: "Full-time", exp: "1-3 Years" },
+    { title: "Data & Ops Engineer", focus: "Infrastructure", location: "Remote", type: "Contract", exp: "3+ Years" }
   ];
 
   if (submitted) {
@@ -169,7 +169,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                 OPEN POSITIONS
               </span>
               <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">
-                Operational <br /> Slots.
+                Current <br /> Openings.
               </h2>
               <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
                 Current openings in our growth unit. Select a role to apply.
@@ -184,15 +184,28 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                     updateField('specialization', role.focus.toLowerCase().includes('strategy') ? 'strategy' : role.focus.toLowerCase().includes('creative') ? 'creative' : 'data');
                     scrollToForm();
                   }}
-                  className="group bg-white border border-brandDark/5 p-8 rounded-2xl space-y-4 shadow-sm hover:border-brandYellow/50 hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden"
+                  className={`group border p-8 rounded-[2rem] space-y-4 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer relative overflow-hidden ${
+                    i === 1 ? 'bg-white border-brandYellow shadow-md' : 'bg-[#f5f5f5] border-transparent hover:bg-white hover:border-brandYellow/50'
+                  }`}
                 >
-                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className={`absolute top-8 right-8 transition-opacity duration-300 ${i === 1 ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                     <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                   </div>
                   
-                  <span className="text-[10px] font-bold text-brandDark/20 tracking-[0.4em] uppercase block">SLOT_0{i+1}</span>
-                  <h3 className="text-2xl font-bold text-brandDark tracking-tight group-hover:text-brandYellow transition-colors">{role.title}</h3>
-                  <p className="text-brandDark/40 font-mono text-xs tracking-widest uppercase">{role.focus}</p>
+                  <h3 className={`text-3xl font-black tracking-tight transition-colors ${i === 1 ? 'text-brandYellow' : 'text-brandDark group-hover:text-brandYellow'}`}>
+                    {role.title}
+                  </h3>
+                  <p className="text-brandDark/40 font-bold text-xs tracking-[0.2em] uppercase">{role.focus}</p>
+                  
+                  <div className="flex flex-wrap gap-3 pt-4">
+                    {[role.location, role.type, role.exp].map((tag, idx) => (
+                      <span key={idx} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                        i === 1 ? 'bg-brandYellow/10 text-brandYellow' : 'bg-brandDark/5 text-brandDark/60 group-hover:bg-brandYellow/10 group-hover:text-brandYellow transition-colors'
+                      }`}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
