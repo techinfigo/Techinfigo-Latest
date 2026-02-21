@@ -194,11 +194,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
                             onClick={() => handleLinkClick('service-detail', service.id)}
                             className="w-full text-left group flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300"
                           >
-                            <div className="w-10 h-10 rounded-lg bg-brandYellow flex items-center justify-center text-brandDark shadow-sm flex-shrink-0 transition-transform group-hover:scale-110">
+                            <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-brandYellow shadow-sm flex-shrink-0 transition-transform group-hover:scale-110 group-hover:bg-brandYellow group-hover:text-brandDark">
                               {service.icon}
                             </div>
                             <div className="space-y-0.5">
-                              <h4 className="text-sm font-bold text-brandYellow transition-colors">{service.title}</h4>
+                              <h4 className="text-sm font-bold text-white group-hover:text-brandYellow transition-colors">{service.title}</h4>
                               <p className="text-[11px] text-white/40 leading-relaxed font-medium">
                                 {service.desc}
                               </p>
