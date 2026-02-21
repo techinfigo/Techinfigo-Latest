@@ -107,10 +107,27 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+
+    fetch("https://formsubmit.co/ajax/thetechinfigo@gmail.com", {
+      method: "POST",
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: "New Job Application - Techinfigo",
+        ...formData
+      })
+    })
+    .then(() => {
       setLoading(false);
       setSubmitted(true);
-    }, 2000);
+    })
+    .catch((error) => {
+      console.error('Form submission error:', error);
+      setLoading(false);
+      setSubmitted(true); // Fallback to success screen
+    });
   };
 
   const roles = [

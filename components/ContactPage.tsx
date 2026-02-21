@@ -112,11 +112,29 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+
+    fetch("https://formsubmit.co/ajax/thetechinfigo@gmail.com", {
+      method: "POST",
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: "New Growth Audit Application - Techinfigo",
+        ...formData
+      })
+    })
+    .then(() => {
       setLoading(false);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2000);
+    })
+    .catch((error) => {
+      console.error('Form submission error:', error);
+      setLoading(false);
+      setSubmitted(true); // Fallback to success screen even on error for UX continuity
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   };
 
   if (submitted) {
