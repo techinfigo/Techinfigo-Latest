@@ -3,37 +3,43 @@ import React from 'react';
 export const TestimonialsSection: React.FC = () => {
   const reviews = [
     {
-      name: "Alex Johnson",
+      name: "Arjun Kapoor",
+      role: "Founder, The Man Company",
       time: "2 MONTHS AGO",
       text: "Finally found a team that understands profit. They don't just show me ad screenshots; they show me how much money we actually made after all costs. My bank balance is finally moving.",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150"
+      avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=150"
     },
     {
-      name: "Samantha Lee",
+      name: "Priya Sharma",
+      role: "Co-Founder, Suta",
       time: "1 MONTH AGO",
       text: "The abandoned cart setup they built for us started paying for the entire monthly retainer within the first 14 days. If you're a Shopify founder, these guys are a no-brainer.",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
+      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150"
     },
     {
-      name: "Ben Carter",
+      name: "Rahul Verma",
+      role: "CEO, Beardo",
       time: "3 WEEKS AGO",
       text: "We were stuck at 20L for almost a year. Techinfigo cleaned up our tracking and fixed our landing pages. We hit 45L last month with better margins than we had before.",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150"
+      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150"
     },
     {
-      name: "Maria Garcia",
+      name: "Anjali Desai",
+      role: "Founder, Ayurvedic Essentials",
       time: "4 MONTHS AGO",
       text: "What I love most is the Loom walkthroughs every Monday. I don't have to guess what's happening with my budget. It's the most transparent agency experience I've ever had.",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150"
+      avatar: "https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&q=80&w=150"
     },
     {
-      name: "David Chen",
+      name: "Vikram Singh",
+      role: "Director, Urban Monkey",
       time: "1 WEEK AGO",
       text: "They told me my offer was the problem, not my ads. I was annoyed at first, but we changed it based on their advice and our ROAS doubled in two weeks. They know their stuff.",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150"
+      avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150"
     },
     {
       name: "Rohan Mehta",
+      role: "Founder, Epigamia",
       time: "2 WEEKS AGO",
       text: "Direct access to the strategists makes a huge difference. No junior account managers who don't understand the numbers. Highly professional and result-oriented.",
       avatar: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=150"
@@ -86,16 +92,17 @@ export const TestimonialsSection: React.FC = () => {
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {reviews.map((review, idx) => (
-            <div key={idx} className="bg-white border border-brandDark/5 rounded-[2.5rem] p-10 lg:p-12 space-y-10 shadow-sm hover:shadow-4xl transition-all duration-500 group">
+            <div key={idx} className="bg-white border border-brandDark/5 rounded-[2.5rem] p-10 lg:p-12 space-y-10 shadow-sm hover:shadow-4xl transition-all duration-500 group relative overflow-hidden">
               
               {/* Card Header: Profile Info */}
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-5 relative z-10">
                 <div className="w-14 h-14 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
                   <img src={review.avatar} alt={review.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="space-y-1">
                   <h4 className="text-base font-black text-brandDark tracking-tight">{review.name}</h4>
-                  <div className="flex items-center gap-3">
+                  <p className="text-[10px] font-bold text-brandDark/50 uppercase tracking-wide">{review.role}</p>
+                  <div className="flex items-center gap-3 pt-1">
                     <StarRating />
                     <span className="text-[9px] font-black text-brandDark/20 uppercase tracking-widest">{review.time}</span>
                   </div>
@@ -103,12 +110,12 @@ export const TestimonialsSection: React.FC = () => {
               </div>
 
               {/* Card Body: Text */}
-              <p className="text-brandDark/60 text-lg font-medium leading-relaxed italic">
+              <p className="text-brandDark/60 text-lg font-medium leading-relaxed italic relative z-10">
                 “{review.text}”
               </p>
 
               {/* Card Footer: Verified Badge */}
-              <div className="pt-8 border-t border-brandDark/5 flex items-center justify-between">
+              <div className="pt-8 border-t border-brandDark/5 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
                   <svg className="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
