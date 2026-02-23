@@ -63,7 +63,7 @@ const App: React.FC = () => {
           {/* INTEGRATED: Our Growth Lifecycle */}
           <section className="py-24 lg:py-40 px-6 lg:px-12 bg-[#f9f7f2] border-y border-brandDark/5 relative overflow-hidden">
             <div className="max-w-7xl mx-auto relative z-10">
-              <div className="text-center mb-16 lg:mb-24 space-y-6">
+              <div className="text-center mb-20 space-y-6">
                 <h2 className="text-4xl lg:text-[64px] font-black text-brandDark tracking-tighter leading-tight">
                   Our Growth Lifecycle
                 </h2>
@@ -71,18 +71,30 @@ const App: React.FC = () => {
                   From first audit to stable scale, here is exactly how your brand moves through our system.
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-8">
-                {lifecycleSteps.map((step, i) => (
-                  <div key={i} className="bg-white border border-brandDark/5 rounded-[2rem] p-8 lg:p-10 shadow-sm relative overflow-hidden group hover:shadow-4xl hover:-translate-y-1 transition-all duration-700">
-                    <span className="absolute top-4 right-6 text-[80px] lg:text-[110px] font-black text-brandDark/[0.04] leading-none select-none pointer-events-none group-hover:text-brandYellow/[0.1] transition-colors duration-700">
-                      {step.num}
-                    </span>
-                    <div className="relative z-10 space-y-4">
-                      <h3 className="text-2xl lg:text-3xl font-black text-brandDark tracking-tight uppercase">{step.title}</h3>
-                      <p className="text-brandDark/50 text-sm lg:text-base font-medium leading-relaxed">{step.desc}</p>
-                    </div>
-                  </div>
-                ))}
+
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-0 relative">
+                 {/* Connecting Line for Desktop */}
+                 <div className="hidden lg:block absolute top-[40px] left-[10%] right-[10%] h-0.5 bg-brandDark/10 z-0"></div>
+
+                 {lifecycleSteps.map((step, i) => (
+                   <div key={i} className="flex-1 relative z-10 group">
+                     <div className="flex flex-col items-center text-center">
+                       {/* Number Circle */}
+                       <div className="w-20 h-20 bg-white border-4 border-[#f9f7f2] outline outline-1 outline-brandDark/10 rounded-full flex items-center justify-center text-3xl font-black text-brandDark mb-8 shadow-xl group-hover:scale-110 group-hover:border-brandYellow transition-all duration-500 relative">
+                         {step.num}
+                         {/* Pulse effect */}
+                         <div className="absolute inset-0 rounded-full bg-brandYellow/20 animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                       </div>
+                       
+                       {/* Content Card */}
+                       <div className="bg-white p-8 rounded-[2rem] border border-brandDark/5 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 w-full max-w-xs mx-auto min-h-[200px] flex flex-col justify-center relative overflow-hidden">
+                         <div className="absolute top-0 left-0 w-full h-1 bg-brandDark/5 group-hover:bg-brandYellow transition-colors duration-500"></div>
+                         <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight mb-3">{step.title}</h3>
+                         <p className="text-brandDark/50 text-sm font-medium leading-relaxed">{step.desc}</p>
+                       </div>
+                     </div>
+                   </div>
+                 ))}
               </div>
             </div>
           </section>
