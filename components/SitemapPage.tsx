@@ -1,119 +1,163 @@
-import React, { useState } from 'react';
-import { SITE_STRUCTURE } from '../navigation';
+import React from 'react';
 import { Footer } from './Footer';
 
 interface SitemapPageProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, serviceId?: string) => void;
 }
 
-export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+interface TreeNodeData {
+  label: string;
+  page?: string;
+  serviceId?: string;
+  children?: TreeNodeData[];
+  color?: string;
+}
 
-  const filteredStructure = Object.entries(SITE_STRUCTURE).reduce((acc, [category, pages]) => {
-    const filteredPages = pages.filter(page => 
-      page.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      page.desc.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    
-    if (filteredPages.length > 0) {
-      acc[category] = filteredPages;
+const treeData: TreeNodeData = {
+  label: 'HomePage',
+  page: 'home',
+  color: 'bg-brandDark text-white hover:bg-brandDark/90',
+  children: [
+    {
+      label: 'Services',
+      page: 'services',
+      color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80',
+      children: [
+        { label: 'Performance Ads', page: 'service-detail', serviceId: 'performance-ads' },
+        { label: 'CRO', page: 'service-detail', serviceId: 'cro' },
+        { label: 'SEO', page: 'service-detail', serviceId: 'seo' },
+        { label: 'Retention', page: 'service-detail', serviceId: 'retention' },
+        { label: 'Automation', page: 'service-detail', serviceId: 'automation' },
+        { label: 'Creative', page: 'service-detail', serviceId: 'creative' },
+        { label: 'Influencer', page: 'service-detail', serviceId: 'influencer' },
+      ]
+    },
+    { label: 'About', page: 'about', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'System', page: 'system', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'Careers', page: 'careers', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'Contact', page: 'contact', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    {
+      label: 'Legal',
+      color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80',
+      children: [
+        { label: 'Privacy', page: 'privacy' },
+        { label: 'Terms', page: 'terms' },
+      ]
     }
-    return acc;
-  }, {} as typeof SITE_STRUCTURE);
+  ]
+};
+
+const TreeNode: React.FC<{ node: TreeNodeData; onNavigate: (page: string, serviceId?: string) => void }> = ({ node, onNavigate }) => {
+  const handleClick = () => {
+    if (node.page) {
+      onNavigate(node.page, node.serviceId);
+    }
+  };
+
+  const defaultColor = "bg-white border-2 border-brandDark/10 text-brandDark hover:border-brandYellow hover:shadow-md";
+  const nodeColor = node.color || defaultColor;
 
   return (
-    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+    <li>
+      <button 
+        onClick={handleClick}
+        className={`inline-block px-6 py-3 rounded-lg text-sm font-bold tracking-wide transition-all duration-300 shadow-sm relative z-10 ${nodeColor} ${!node.page ? 'cursor-default' : 'cursor-pointer'}`}
+      >
+        {node.label}
+      </button>
+      {node.children && node.children.length > 0 && (
+        <ul>
+          {node.children.map((child, index) => (
+            <TreeNode key={index} node={child} onNavigate={onNavigate} />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
+
+export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
+  return (
+    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark overflow-x-hidden">
+      <style>{`
+        .tree ul {
+          padding-top: 20px; 
+          position: relative;
+          transition: all 0.5s;
+          display: flex;
+          justify-content: center;
+        }
+
+        .tree li {
+          float: left; text-align: center;
+          list-style-type: none;
+          position: relative;
+          padding: 20px 5px 0 5px;
+          transition: all 0.5s;
+        }
+
+        /* Connectors */
+        .tree li::before, .tree li::after {
+          content: '';
+          position: absolute; top: 0; right: 50%;
+          border-top: 1px solid #ccc;
+          width: 50%; height: 20px;
+        }
+        .tree li::after {
+          right: auto; left: 50%;
+          border-left: 1px solid #ccc;
+        }
+
+        /* Remove connectors from single children */
+        .tree li:only-child::after, .tree li:only-child::before {
+          display: none;
+        }
+        .tree li:only-child { padding-top: 0; }
+
+        /* Remove left connector from first child and right connector from last child */
+        .tree li:first-child::before, .tree li:last-child::after {
+          border: 0 none;
+        }
+        
+        /* Add back vertical connector to last nodes */
+        .tree li:last-child::before {
+          border-right: 1px solid #ccc;
+          border-radius: 0 5px 0 0;
+        }
+        .tree li:first-child::after {
+          border-radius: 5px 0 0 0;
+        }
+
+        /* Downward connectors from parents */
+        .tree ul ul::before {
+          content: '';
+          position: absolute; top: 0; left: 50%;
+          border-left: 1px solid #ccc;
+          width: 0; height: 20px;
+        }
+      `}</style>
+
       {/* Header */}
-      <section className="bg-brandDark pt-32 pb-20 px-6 lg:px-12 relative overflow-hidden">
+      <section className="bg-brandDark pt-32 pb-10 px-6 lg:px-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brandYellow/5 rounded-full blur-[150px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <span className="text-brandYellow font-bold tracking-[0.3em] uppercase text-xs mb-6 block">Directory</span>
           <h1 className="text-5xl lg:text-7xl font-black text-white tracking-tighter mb-8">
             Sitemap
           </h1>
-          <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12">
-            Navigate our entire ecosystem. Find exactly what you're looking for below.
+          <p className="text-xl text-white/60 max-w-2xl mx-auto">
+            Visual map of our ecosystem.
           </p>
-
-          {/* Search Bar */}
-          <div className="max-w-xl mx-auto relative group">
-            <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-brandDark/40 group-focus-within:text-brandDark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            <input
-              type="text"
-              placeholder="Search pages..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-14 pr-6 py-5 bg-white text-brandDark placeholder-brandDark/40 rounded-2xl border-2 border-transparent focus:border-brandYellow focus:outline-none shadow-xl transition-all text-lg font-medium"
-            />
-          </div>
         </div>
       </section>
 
-      {/* Content Grid */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20">
-        {Object.keys(filteredStructure).length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-2xl text-brandDark/40 font-bold">No pages found matching "{searchQuery}"</p>
-            <button 
-              onClick={() => setSearchQuery('')}
-              className="mt-4 text-brandYellow font-bold hover:underline"
-            >
-              Clear search
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-20">
-            {Object.entries(filteredStructure).map(([category, pages]) => (
-              <div key={category} className="animate-slide-up">
-                <div className="flex items-center gap-4 mb-10">
-                  <h2 className="text-3xl font-black text-brandDark tracking-tight">{category}</h2>
-                  <div className="h-px bg-brandDark/10 flex-grow"></div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {pages.map((page) => (
-                    <button
-                      key={page.id}
-                      onClick={() => onNavigate(page.id)}
-                      className="group flex flex-col items-start p-8 bg-white border border-brandDark/5 rounded-[2rem] hover:border-brandYellow/50 hover:shadow-2xl transition-all duration-300 text-left h-full"
-                    >
-                      <div className="w-12 h-12 bg-brandBg rounded-xl flex items-center justify-center text-brandDark mb-6 group-hover:bg-brandYellow group-hover:text-brandDark transition-colors shadow-sm">
-                        {page.icon ? (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={page.icon} />
-                          </svg>
-                        ) : (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                          </svg>
-                        )}
-                      </div>
-                      
-                      <h3 className="text-xl font-bold text-brandDark mb-3 group-hover:text-brandYellow transition-colors">
-                        {page.name}
-                      </h3>
-                      
-                      <p className="text-brandDark/50 text-sm leading-relaxed">
-                        {page.desc}
-                      </p>
-                      
-                      <div className="mt-auto pt-6 flex items-center text-xs font-bold text-brandDark/30 uppercase tracking-widest group-hover:text-brandDark transition-colors">
-                        Visit Page 
-                        <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+      {/* Tree Diagram */}
+      <div className="w-full overflow-x-auto py-20 px-6">
+        <div className="tree min-w-max flex justify-center">
+          <ul>
+            <TreeNode node={treeData} onNavigate={onNavigate} />
+          </ul>
+        </div>
       </div>
 
       <Footer onNavigate={onNavigate} onBookAudit={() => onNavigate('contact')} />
