@@ -59,9 +59,9 @@ export const PerformanceAdsPage: React.FC<PerformanceAdsPageProps> = ({ onNaviga
                   "Generic targeting that relies on outdated interest stacks.",
                   "Zero accountability for the post-click experience."
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-4 items-start p-6 bg-red-50/50 rounded-2xl border border-red-100">
-                    <svg className="w-6 h-6 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                    <p className="text-brandDark/80 font-medium">{item}</p>
+                  <div key={i} className="flex gap-6 items-start p-8 bg-white rounded-2xl border border-brandDark/10 hover:border-brandDark/20 transition-colors group">
+                    <svg className="w-5 h-5 text-brandDark/30 shrink-0 mt-1 group-hover:text-brandDark/50 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <p className="text-brandDark/60 font-medium leading-relaxed group-hover:text-brandDark/80 transition-colors">{item}</p>
                   </div>
                 ))}
               </div>
@@ -76,9 +76,9 @@ export const PerformanceAdsPage: React.FC<PerformanceAdsPageProps> = ({ onNaviga
                   "Broad targeting that lets the algorithm find the buyers.",
                   "Full-funnel optimization from ad click to checkout."
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-4 items-start p-6 bg-brandYellow/5 rounded-2xl border border-brandYellow/20">
-                    <svg className="w-6 h-6 text-brandDark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                    <p className="text-brandDark/80 font-medium">{item}</p>
+                  <div key={i} className="flex gap-6 items-start p-8 bg-brandYellow/5 rounded-2xl border border-brandYellow/30 hover:border-brandYellow/60 hover:bg-brandYellow/10 transition-all shadow-sm hover:shadow-md">
+                    <svg className="w-5 h-5 text-brandDark shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                    <p className="text-brandDark font-bold leading-relaxed">{item}</p>
                   </div>
                 ))}
               </div>
