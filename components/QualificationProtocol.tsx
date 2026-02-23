@@ -56,7 +56,7 @@ export const QualificationProtocol: React.FC = () => {
                   ].map((item, idx) => (
                     <div key={idx} className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-6 transition-all hover:bg-white/[0.06]">
                       <div className="flex items-center gap-3 mb-3">
-                         <svg className="w-4 h-4 text-[#fbb632]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <svg className="w-6 h-6 text-[#fbb632]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={item.icon} />
                          </svg>
                          <span className="text-[11px] font-bold text-[#fbb632] uppercase tracking-widest">{item.label}</span>
@@ -110,7 +110,7 @@ export const QualificationProtocol: React.FC = () => {
                   ].map((item, idx) => (
                     <div key={idx} className="bg-white border border-black/[0.03] rounded-3xl p-6 shadow-sm">
                       <div className="flex items-center gap-3 mb-3">
-                         <svg className="w-4 h-4 text-red-500/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={item.icon} />
                          </svg>
                          <span className="text-[11px] font-bold text-black/40 uppercase tracking-widest">{item.label}</span>
