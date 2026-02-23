@@ -15,11 +15,11 @@ const LEGAL_LINKS = [
 
 export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
   return (
-    <footer className="bg-brandDark text-white pt-24 pb-12 px-6 lg:px-12 overflow-hidden border-t border-white/5 font-sans">
+    <footer className="bg-brandDark text-white pt-16 lg:pt-24 pb-12 px-6 lg:px-12 overflow-hidden border-t border-white/5 font-sans">
       <div className="max-w-7xl mx-auto">
         
         {/* Main Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 xl:gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 mb-16 lg:mb-24">
           
           {/* Brand Intro */}
           <div className="lg:col-span-4 space-y-8">

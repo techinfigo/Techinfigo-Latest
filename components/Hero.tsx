@@ -88,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           </div>
 
           {/* Floating Result Card 01 - Top Left */}
-          <div className="absolute top-[8%] -left-[5%] lg:-left-12 w-[180px] lg:w-[220px] bg-brandDark/90 backdrop-blur-xl border border-white/10 p-5 lg:p-6 rounded-3xl shadow-glow animate-float">
+          <div className="absolute top-[8%] -left-[5%] lg:-left-12 w-[180px] lg:w-[220px] bg-brandDark/90 backdrop-blur-xl border border-white/10 p-5 lg:p-6 rounded-3xl shadow-glow animate-float scale-75 lg:scale-100 origin-top-left">
              <div className="flex items-center gap-3 lg:gap-4 mb-3">
                 <div className="w-8 h-8 lg:w-10 lg:h-10 bg-brandYellow/10 rounded-xl flex items-center justify-center">
                    <svg className="w-4 h-4 lg:w-5 lg:h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +105,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           </div>
 
           {/* Floating Result Card 02 - Bottom Right */}
-          <div className="absolute bottom-[12%] -right-[5%] lg:-right-8 w-[160px] lg:w-[200px] bg-brandYellow p-5 lg:p-6 rounded-3xl shadow-4xl animate-float-delayed">
+          <div className="absolute bottom-[12%] -right-[5%] lg:-right-8 w-[160px] lg:w-[200px] bg-brandYellow p-5 lg:p-6 rounded-3xl shadow-4xl animate-float-delayed scale-75 lg:scale-100 origin-bottom-right">
              <div className="flex items-center gap-2 lg:gap-3 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-brandDark animate-pulse"></div>
                 <span className="text-[8px] lg:text-[9px] font-black text-brandDark/40 uppercase tracking-[0.3em]">Systems-Led Growth</span>

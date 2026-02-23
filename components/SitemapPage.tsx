@@ -157,7 +157,7 @@ export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
 
       {/* Tree Diagram Container */}
       <div className="flex-grow flex items-center justify-center overflow-auto p-4 bg-brandBg">
-        <div className="tree transform scale-90 origin-top-center">
+        <div className="tree transform scale-50 md:scale-75 lg:scale-90 origin-top-center">
           <ul>
             <TreeNode node={treeData} onNavigate={onNavigate} />
           </ul>

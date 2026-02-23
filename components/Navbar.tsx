@@ -145,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
               <span className={`font-extrabold text-2xl leading-none select-none transition-colors ${shouldShowSolid ? 'text-white group-hover:text-brandDark' : 'text-brandDark group-hover:text-brandDark'}`}>T</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className={`font-black text-[18px] lg:text-[20px] tracking-tight uppercase leading-[1.1] transition-colors ${logoTextColor}`}>
+              <span className={`font-black text-[16px] lg:text-[20px] tracking-tight uppercase leading-[1.1] transition-colors ${logoTextColor}`}>
                 Techinfigo
               </span>
               <span className={`text-[8px] lg:text-[9px] font-bold uppercase tracking-[0.35em] leading-none mt-0.5 transition-colors ${logoSubColor}`}>

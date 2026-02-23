@@ -47,7 +47,7 @@ export const QualificationProtocol: React.FC = () => {
               <div className="space-y-8">
                 <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.4em]">Mindset Architecture</p>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
                     { label: 'Revenue Base', val: '₹20L+ Monthly', icon: 'M12 20V10M6 20V16M18 20V4' },
                     { label: 'North Star', val: 'MER & Contribution', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
@@ -101,7 +101,7 @@ export const QualificationProtocol: React.FC = () => {
               <div className="space-y-8">
                 <p className="text-black/20 text-[9px] font-black uppercase tracking-[0.4em]">High Risk Architecture</p>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
                     { label: 'Budget Base', val: '₹10K–20K Total', icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' },
                     { label: 'North Star', val: 'Instant ROAS Hacks', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
