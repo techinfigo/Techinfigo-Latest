@@ -193,62 +193,62 @@ export const FullStackEngine: React.FC = () => {
         </div>
 
         {/* Main Content Card - High Contrast Split Design */}
-        <div className="bg-white rounded-[4rem] shadow-4xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:h-[620px] animate-fade-in transition-all duration-500">
+        <div className="bg-white rounded-[4rem] shadow-4xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:min-h-[620px] h-auto animate-fade-in transition-all duration-500">
           
           {/* Left Content Column (White Area) */}
-          <div className="lg:col-span-6 p-10 lg:p-16 flex flex-col justify-between h-full">
-            <div className="space-y-12">
+          <div className="lg:col-span-6 p-8 lg:p-12 flex flex-col justify-between h-full">
+            <div className="space-y-8">
               
               {/* Meta Headings */}
-              <div className="flex items-center gap-6">
-                <div className="w-14 h-14 bg-brandDark rounded-2xl flex items-center justify-center text-brandYellow shadow-xl">
-                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-7 h-7' })}
+              <div className="flex items-center gap-5">
+                <div className="w-12 h-12 bg-brandDark rounded-xl flex items-center justify-center text-brandYellow shadow-lg">
+                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-6 h-6' })}
                 </div>
-                <div className="space-y-1">
-                  <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.4em]">
+                <div className="space-y-0.5">
+                  <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">
                     INTEGRATED SYSTEM {activeModule.layer}
                   </span>
-                  <p className="text-[10px] lg:text-[11px] font-bold text-brandDark/20 uppercase tracking-[0.3em] leading-none">
+                  <p className="text-[9px] lg:text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.25em] leading-none">
                     {activeModule.layerSub}
                   </p>
                 </div>
               </div>
 
               {/* Main Title */}
-              <h3 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter leading-none uppercase">
+              <h3 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none uppercase">
                 {activeModule.title}
               </h3>
 
               {/* Strategic Mission Block */}
-              <div className="border-l-[8px] lg:border-l-[10px] border-brandYellow pl-8 lg:pl-10 space-y-2">
-                <span className="text-[10px] lg:text-[11px] font-black text-brandYellow uppercase tracking-[0.5em]">STRATEGIC MISSION</span>
-                <p className="text-2xl lg:text-3xl font-bold text-brandDark/70 italic leading-tight max-w-sm">
+              <div className="border-l-[6px] lg:border-l-[8px] border-brandYellow pl-6 lg:pl-8 space-y-1.5">
+                <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">STRATEGIC MISSION</span>
+                <p className="text-xl lg:text-2xl font-bold text-brandDark/70 italic leading-tight max-w-sm">
                   "{activeModule.mission}"
                 </p>
               </div>
 
               {/* Functional Details Grid */}
-              <div className="grid grid-cols-2 gap-10 pt-10 border-t border-brandDark/5">
-                <div className="space-y-4">
-                  <span className="text-[10px] font-bold text-brandDark/20 uppercase tracking-widest block mb-2">INPUTS</span>
-                  <ul className="space-y-3">
+              <div className="grid grid-cols-2 gap-8 pt-8 border-t border-brandDark/5">
+                <div className="space-y-3">
+                  <span className="text-[9px] font-bold text-brandDark/20 uppercase tracking-widest block mb-1">INPUTS</span>
+                  <ul className="space-y-2">
                     {activeModule.inputs.map((input, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
-                        <span className="text-base lg:text-xl font-black text-brandDark tracking-tight">{input}</span>
+                      <li key={i} className="flex items-center gap-2.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brandYellow"></div>
+                        <span className="text-sm lg:text-lg font-black text-brandDark tracking-tight">{input}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-4">
-                  <span className="text-[10px] font-bold text-brandDark/20 uppercase tracking-widest block mb-2">IMPACT</span>
-                  <ul className="space-y-3">
+                <div className="space-y-3">
+                  <span className="text-[9px] font-bold text-brandDark/20 uppercase tracking-widest block mb-1">IMPACT</span>
+                  <ul className="space-y-2">
                     {activeModule.impact.map((impact, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <svg className="w-5 h-5 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
+                      <li key={i} className="flex items-center gap-2.5">
+                        <svg className="w-4 h-4 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                         </svg>
-                        <span className="text-base lg:text-xl font-black text-brandDark tracking-tight">{impact}</span>
+                        <span className="text-sm lg:text-lg font-black text-brandDark tracking-tight">{impact}</span>
                       </li>
                     ))}
                   </ul>
@@ -257,7 +257,7 @@ export const FullStackEngine: React.FC = () => {
             </div>
 
             {/* Bottom Actions Area */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-10 pt-12">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pt-8">
               <button className="w-full sm:w-auto px-10 py-6 bg-brandYellow text-brandDark font-black text-[12px] uppercase tracking-[0.25em] rounded-xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105">
                 See Full Playbook →
               </button>
