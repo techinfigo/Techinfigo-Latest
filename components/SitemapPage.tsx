@@ -23,7 +23,7 @@ const treeData: TreeNodeData = {
       page: 'services',
       color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80',
       children: [
-        { label: 'Performance Ads', page: 'service-detail', serviceId: 'performance-ads' },
+        { label: 'Ads', page: 'service-detail', serviceId: 'performance-ads' },
         { label: 'CRO', page: 'service-detail', serviceId: 'cro' },
         { label: 'SEO', page: 'service-detail', serviceId: 'seo' },
         { label: 'Retention', page: 'service-detail', serviceId: 'retention' },
@@ -54,14 +54,14 @@ const TreeNode: React.FC<{ node: TreeNodeData; onNavigate: (page: string, servic
     }
   };
 
-  const defaultColor = "bg-white border-2 border-brandDark/10 text-brandDark hover:border-brandYellow hover:shadow-md";
+  const defaultColor = "bg-white border border-brandDark/10 text-brandDark hover:border-brandYellow hover:shadow-sm";
   const nodeColor = node.color || defaultColor;
 
   return (
     <li>
       <button 
         onClick={handleClick}
-        className={`inline-block px-6 py-3 rounded-lg text-sm font-bold tracking-wide transition-all duration-300 shadow-sm relative z-10 ${nodeColor} ${!node.page ? 'cursor-default' : 'cursor-pointer'}`}
+        className={`inline-block px-3 py-1.5 rounded-md text-xs font-bold tracking-wide transition-all duration-300 shadow-sm relative z-10 whitespace-nowrap ${nodeColor} ${!node.page ? 'cursor-default' : 'cursor-pointer'}`}
       >
         {node.label}
       </button>
@@ -78,10 +78,10 @@ const TreeNode: React.FC<{ node: TreeNodeData; onNavigate: (page: string, servic
 
 export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
   return (
-    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark overflow-x-hidden">
+    <div className="h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark overflow-hidden flex flex-col">
       <style>{`
         .tree ul {
-          padding-top: 20px; 
+          padding-top: 15px; 
           position: relative;
           transition: all 0.5s;
           display: flex;
@@ -92,7 +92,7 @@ export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
           float: left; text-align: center;
           list-style-type: none;
           position: relative;
-          padding: 20px 5px 0 5px;
+          padding: 15px 4px 0 4px;
           transition: all 0.5s;
         }
 
@@ -101,7 +101,7 @@ export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
           content: '';
           position: absolute; top: 0; right: 50%;
           border-top: 1px solid #ccc;
-          width: 50%; height: 20px;
+          width: 50%; height: 15px;
         }
         .tree li::after {
           right: auto; left: 50%;
@@ -133,34 +133,36 @@ export const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
           content: '';
           position: absolute; top: 0; left: 50%;
           border-left: 1px solid #ccc;
-          width: 0; height: 20px;
+          width: 0; height: 15px;
         }
       `}</style>
 
-      {/* Header */}
-      <section className="bg-brandDark pt-32 pb-10 px-6 lg:px-12 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brandYellow/5 rounded-full blur-[150px] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto relative z-10 text-center">
-          <span className="text-brandYellow font-bold tracking-[0.3em] uppercase text-xs mb-6 block">Directory</span>
-          <h1 className="text-5xl lg:text-7xl font-black text-white tracking-tighter mb-8">
-            Sitemap
-          </h1>
-          <p className="text-xl text-white/60 max-w-2xl mx-auto">
-            Visual map of our ecosystem.
-          </p>
+      {/* Compact Header */}
+      <section className="bg-brandDark py-4 px-6 relative shrink-0 z-20 shadow-md">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-black text-white tracking-tighter">
+              Sitemap
+            </h1>
+            <span className="text-brandYellow text-[10px] font-bold tracking-[0.2em] uppercase">Directory</span>
+          </div>
+          <button 
+            onClick={() => onNavigate('home')}
+            className="text-white/60 hover:text-brandYellow text-xs font-bold uppercase tracking-widest transition-colors"
+          >
+            Close
+          </button>
         </div>
       </section>
 
-      {/* Tree Diagram */}
-      <div className="w-full overflow-x-auto py-20 px-6">
-        <div className="tree min-w-max flex justify-center">
+      {/* Tree Diagram Container */}
+      <div className="flex-grow flex items-center justify-center overflow-auto p-4 bg-brandBg">
+        <div className="tree transform scale-90 origin-top-center">
           <ul>
             <TreeNode node={treeData} onNavigate={onNavigate} />
           </ul>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} onBookAudit={() => onNavigate('contact')} />
     </div>
   );
 };

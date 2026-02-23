@@ -49,7 +49,7 @@ export const QualificationProtocol: React.FC = () => {
                 
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: 'Revenue Base', val: '₹20L+ Monthly', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z M9 19v-6a2 2 0 012-2h2a2 2 0 012 2v10 M17 19v-2a2 2 0 00-2-2h-2a2 2 0 00-2 2v2' },
+                    { label: 'Revenue Base', val: '₹20L+ Monthly', icon: 'M12 20V10M6 20V16M18 20V4' },
                     { label: 'North Star', val: 'MER & Contribution', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
                     { label: 'Time Horizon', val: 'Compounding Weeks', icon: 'M7 12l3-3 3 3 4-4' },
                     { label: 'Infrastructure', val: 'Shopify Ecosystem', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' },
