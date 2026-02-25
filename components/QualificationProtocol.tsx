@@ -5,13 +5,13 @@ export const QualificationProtocol: React.FC = () => {
     <section className="w-full py-24 lg:py-32 px-6 bg-[#f9f6f2] overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-16 space-y-6">
+        <div className="text-center mb-12 space-y-6">
           <span className="text-[11px] font-bold tracking-[0.5em] uppercase text-[#a5a5a5] block">Qualification Protocol</span>
-          <h2 className="text-4xl lg:text-7xl font-black text-[#001d1a] tracking-tighter leading-[0.9]">
-            ARE YOU A SCALER OR <br className="hidden md:block" /> <span className="text-[#fbb632]">A GAMBLER?</span>
+          <h2 className="text-4xl lg:text-7xl font-black text-[#001d1a] tracking-tight leading-none">
+            ARE YOU A SCALER OR <br className="hidden lg:block" /> <span className="text-[#fbb632]">A GAMBLER?</span>
           </h2>
-          <p className="text-[#001d1a]/60 text-lg lg:text-xl font-bold max-w-2xl mx-auto leading-relaxed">
-            Alignment is the secret ingredient to a 100% success rate. We only <br className="hidden lg:block" /> partner with one of these characters.
+          <p className="text-[#001d1a]/60 text-lg lg:text-xl font-bold max-w-3xl mx-auto leading-relaxed">
+            Alignment is the secret ingredient to a 100% success rate. We only partner with one of these characters.
           </p>
         </div>
 
