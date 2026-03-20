@@ -45,7 +45,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
   ];
 
   return (
-    <section className="w-full lg:min-h-screen flex flex-col justify-center py-10 lg:py-12 px-6 bg-[#f9f7f2] font-sans overflow-hidden">
+    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-[#f9f7f2] font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         
         {/* Header */}

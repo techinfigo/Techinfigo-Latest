@@ -35,34 +35,34 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
   ];
 
   return (
-    <section className="w-full lg:min-h-screen flex flex-col justify-center py-10 lg:py-16 px-6 bg-white overflow-hidden font-sans">
-      <div className="max-w-7xl mx-auto w-full">
+    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-white overflow-hidden font-sans relative">
+      <div className="max-w-6xl mx-auto w-full">
         {/* Header Section */}
-        <div className="text-center mb-10 lg:mb-14 space-y-4 lg:space-y-6">
-          <div className="inline-block px-4 py-1 border border-brandDark/10 rounded-full">
-            <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.4em] uppercase text-brandDark/40 block">THE REAL PROBLEM</span>
+        <div className="text-center mb-6 lg:mb-8 space-y-3 lg:space-y-4">
+          <div className="inline-block px-3 py-0.5 border border-brandDark/10 rounded-full">
+            <span className="text-[8px] lg:text-[9px] font-bold tracking-[0.4em] uppercase text-brandDark/40 block">THE REAL PROBLEM</span>
           </div>
           
-          <h2 className="text-3xl lg:text-6xl font-black text-brandDark tracking-tighter leading-[1.1]">
+          <h2 className="text-2xl lg:text-4xl xl:text-5xl font-black text-brandDark tracking-tighter leading-[1.1]">
             Sales Are Coming In. <br />
             But <span className="text-brandYellow italic">Profit Isn’t Growing.</span>
           </h2>
           
-          <div className="max-w-2xl mx-auto space-y-3 lg:space-y-4">
-            <p className="text-brandDark/70 text-base lg:text-lg font-medium leading-relaxed">
+          <div className="max-w-xl mx-auto space-y-2 lg:space-y-3">
+            <p className="text-brandDark/70 text-sm lg:text-base font-medium leading-relaxed">
               You’re spending more on ads than ever. Orders are increasing.
               But when you check your bank account — it doesn’t feel like growth.
             </p>
-            <p className="text-brandDark font-black text-lg lg:text-xl uppercase tracking-tight">
+            <p className="text-brandDark font-black text-base lg:text-lg uppercase tracking-tight">
               That’s because <span className="text-brandYellow">revenue ≠ profit.</span>
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
           
           {/* Left Side: Pain Breakdown (Dark Card) */}
-          <div className="lg:col-span-7 bg-[#001d21] rounded-[2.5rem] lg:rounded-[3rem] p-8 lg:p-12 shadow-4xl flex flex-col justify-between relative overflow-hidden group">
+          <div className="lg:col-span-7 bg-[#001d21] rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 shadow-4xl flex flex-col justify-between relative overflow-hidden group">
             {/* Subtle Leakage Animation Effect */}
             <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none">
               <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -72,20 +72,20 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
               </svg>
             </div>
 
-            <div className="relative z-10 space-y-8 lg:space-y-10">
+            <div className="relative z-10 space-y-6 lg:space-y-8">
               <div className="space-y-1">
-                <h3 className="text-xl lg:text-2xl font-black text-white tracking-tight uppercase">Where Most Brands Lose <span className="text-brandYellow">Profit</span></h3>
+                <h3 className="text-lg lg:text-xl font-black text-white tracking-tight uppercase">Where Most Brands Lose <span className="text-brandYellow">Profit</span></h3>
               </div>
 
-              <div className="space-y-5 lg:space-y-6">
+              <div className="space-y-4 lg:space-y-5">
                 {painPoints.map((point, idx) => (
-                  <div key={idx} className="flex gap-4 lg:gap-6 group/item">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-brandYellow/10 transition-all duration-500">
-                      {point.icon}
+                  <div key={idx} className="flex gap-3 lg:gap-4 group/item">
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-brandYellow/10 transition-all duration-500">
+                      {React.cloneElement(point.icon as React.ReactElement, { className: "w-4 h-4 text-brandYellow" })}
                     </div>
                     <div className="space-y-0.5">
-                      <h4 className="text-base lg:text-lg font-black text-white tracking-tight">{point.title}</h4>
-                      <p className="text-white/40 text-xs lg:text-sm font-medium leading-relaxed">
+                      <h4 className="text-sm lg:text-base font-black text-white tracking-tight">{point.title}</h4>
+                      <p className="text-white/40 text-[10px] lg:text-xs font-medium leading-relaxed">
                         {point.desc}
                       </p>
                     </div>
@@ -94,60 +94,60 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
               </div>
             </div>
 
-            <div className="relative z-10 mt-10 lg:mt-12 pt-6 border-t border-white/5">
-              <p className="text-brandYellow/60 text-[10px] lg:text-xs font-black uppercase tracking-[0.3em]">
+            <div className="relative z-10 mt-6 lg:mt-8 pt-4 border-t border-white/5">
+              <p className="text-brandYellow/60 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em]">
                 “We don’t fix ads. We fix what’s leaking your profit.”
               </p>
             </div>
           </div>
 
           {/* Right Side: Shift in Belief (Light Card) */}
-          <div className="lg:col-span-5 flex flex-col gap-6 lg:gap-8">
-            <div className="flex-1 bg-[#fdf8f0] rounded-[2.5rem] lg:rounded-[3rem] p-8 lg:p-12 border border-brandDark/5 flex flex-col justify-center space-y-8 relative overflow-hidden">
-              <div className="space-y-4 lg:space-y-6 relative z-10">
-                <h3 className="text-2xl lg:text-3xl font-black text-brandDark tracking-tighter leading-none">
+          <div className="lg:col-span-5 flex flex-col gap-5 lg:gap-6">
+            <div className="flex-1 bg-[#fdf8f0] rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 border border-brandDark/5 flex flex-col justify-center space-y-6 relative overflow-hidden">
+              <div className="space-y-3 lg:space-y-4 relative z-10">
+                <h3 className="text-xl lg:text-2xl font-black text-brandDark tracking-tighter leading-none">
                   Scaling Shouldn’t Feel Like Gambling
                 </h3>
-                <div className="space-y-3">
-                  <p className="text-brandDark/60 text-base lg:text-lg font-medium leading-relaxed">
+                <div className="space-y-2">
+                  <p className="text-brandDark/60 text-sm lg:text-base font-medium leading-relaxed">
                     Most agencies focus on spending your budget.
                   </p>
-                  <p className="text-brandDark text-base lg:text-lg font-bold leading-relaxed">
+                  <p className="text-brandDark text-sm lg:text-base font-bold leading-relaxed">
                     We focus on building a system where every ₹1 you spend is tracked, optimized, and scaled <span className="text-brandDark font-black border-b-2 border-brandYellow">profitably.</span>
                   </p>
                 </div>
               </div>
 
               {/* Proof Block */}
-              <div className="bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8 border border-brandYellow/20 shadow-xl relative z-10">
-                <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em] block mb-3 lg:mb-4">REAL RESULT</span>
-                <div className="space-y-3 lg:space-y-4">
+              <div className="bg-white rounded-xl lg:rounded-2xl p-5 lg:p-6 border border-brandYellow/20 shadow-xl relative z-10">
+                <span className="text-[8px] lg:text-[9px] font-black text-brandYellow uppercase tracking-[0.4em] block mb-2 lg:mb-3">REAL RESULT</span>
+                <div className="space-y-2 lg:space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-brandDark/40 text-[10px] font-bold uppercase tracking-wider">Before</span>
-                    <span className="text-brandDark text-sm font-bold">₹12L spend → ₹1.2L profit</span>
+                    <span className="text-brandDark/40 text-[9px] font-bold uppercase tracking-wider">Before</span>
+                    <span className="text-brandDark text-xs font-bold">₹12L spend → ₹1.2L profit</span>
                   </div>
                   <div className="h-[1px] w-full bg-brandDark/5"></div>
                   <div className="flex items-center justify-between">
-                    <span className="text-brandYellow text-[10px] font-black uppercase tracking-wider">After</span>
-                    <span className="text-brandDark font-black text-base lg:text-lg">₹5.6L profit in 60 days</span>
+                    <span className="text-brandYellow text-[9px] font-black uppercase tracking-wider">After</span>
+                    <span className="text-brandDark font-black text-sm lg:text-base">₹5.6L profit in 60 days</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* CTA Section */}
-            <div className="bg-brandDark rounded-[2.5rem] lg:rounded-[3rem] p-8 lg:p-10 shadow-4xl flex flex-col items-center text-center space-y-4 lg:space-y-6">
+            <div className="bg-brandDark rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 shadow-4xl flex flex-col items-center text-center space-y-3 lg:space-y-4">
               <div className="relative group w-full">
                 <div className="absolute -inset-1 bg-brandYellow/20 rounded-xl blur-xl group-hover:bg-brandYellow/30 transition-all"></div>
                 <button 
                   onClick={onBookAudit}
-                  className="relative w-full py-4 lg:py-5 bg-brandYellow text-brandDark font-black text-[12px] lg:text-[14px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl hover:-translate-y-1 flex items-center justify-center gap-3"
+                  className="relative w-full py-3.5 lg:py-4 bg-brandYellow text-brandDark font-black text-[10px] lg:text-[12px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2"
                 >
                   Find Your Profit Leaks
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
-              <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">
+              <p className="text-white/40 text-[9px] font-bold uppercase tracking-[0.2em]">
                 Free audit. No fluff. Just numbers.
               </p>
             </div>

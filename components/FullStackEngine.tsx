@@ -156,38 +156,38 @@ export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit })
   const handleNext = () => setActiveIndex((prev) => (prev < MODULES.length - 1 ? prev + 1 : 0));
 
   return (
-    <section className="w-full py-16 lg:py-28 px-6 bg-brandDark font-sans overflow-hidden relative">
+    <section className="w-full py-12 lg:py-20 px-6 bg-brandDark font-sans overflow-hidden relative lg:min-h-screen flex flex-col justify-center">
       {/* Dynamic Background Glow to highlight the active section */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,_#fcb63208_0%,_transparent_60%)] pointer-events-none"></div>
       
-      <div className="max-w-7xl mx-auto space-y-12 relative z-10">
+      <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 relative z-10 w-full">
         
         {/* Header Section */}
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-none">
+        <div className="text-center space-y-2 lg:space-y-3">
+          <h2 className="text-3xl lg:text-5xl xl:text-6xl font-black text-white tracking-tighter leading-none">
             Your Full-Stack Growth Engine
           </h2>
-          <p className="text-white/40 text-lg lg:text-xl font-medium max-w-2xl mx-auto">
+          <p className="text-white/40 text-base lg:text-lg font-medium max-w-2xl mx-auto">
             One integrated team to manage strategy, creative, media, and retention.
           </p>
         </div>
 
         {/* Tab Navigation Pill */}
-        <div className="bg-white/5 border border-white/5 rounded-full p-2 flex flex-wrap lg:flex-nowrap items-center justify-between backdrop-blur-md max-w-6xl mx-auto">
+        <div className="bg-white/5 border border-white/5 rounded-full p-1.5 flex flex-wrap lg:flex-nowrap items-center justify-between backdrop-blur-md max-w-6xl mx-auto">
           {MODULES.map((module, idx) => {
             const isActive = activeIndex === idx;
             return (
               <button
                 key={module.id}
                 onClick={() => setActiveIndex(idx)}
-                className={`flex-1 min-w-[120px] py-4 flex flex-col items-center gap-2 transition-all duration-500 relative rounded-full ${
+                className={`flex-1 min-w-[100px] lg:min-w-0 py-3 lg:py-4 flex flex-col items-center gap-1.5 transition-all duration-500 relative rounded-full ${
                   isActive ? 'bg-brandDark text-white shadow-2xl z-10' : 'bg-transparent text-white/40 hover:bg-white/5'
                 }`}
               >
                 <div className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-brandYellow text-brandDark' : 'bg-white/5'}`}>
-                  {React.cloneElement(module.icon as React.ReactElement<any>)}
+                  {React.cloneElement(module.icon as React.ReactElement<any>, { className: 'w-3.5 h-3.5' })}
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-[0.15em]">{module.label}</span>
+                <span className="text-[8px] font-black uppercase tracking-[0.15em]">{module.label}</span>
                 {isActive && (
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-brandYellow rounded-full"></div>
                 )}
@@ -197,62 +197,62 @@ export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit })
         </div>
 
         {/* Main Content Card - High Contrast Split Design */}
-        <div className="bg-white rounded-[4rem] shadow-4xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:min-h-[620px] h-auto animate-fade-in transition-all duration-500">
+        <div className="bg-white rounded-[2.5rem] lg:rounded-[3rem] shadow-4xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:min-h-[480px] h-auto animate-fade-in transition-all duration-500">
           
           {/* Left Content Column (White Area) */}
-          <div className="lg:col-span-6 p-8 lg:p-12 flex flex-col justify-between h-full">
-            <div className="space-y-8">
+          <div className="lg:col-span-6 p-6 lg:p-8 xl:p-10 flex flex-col justify-between h-full">
+            <div className="space-y-6 lg:space-y-8">
               
               {/* Meta Headings */}
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 bg-brandDark rounded-xl flex items-center justify-center text-brandYellow shadow-lg">
-                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-6 h-6' })}
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-brandDark rounded-xl flex items-center justify-center text-brandYellow shadow-lg">
+                  {React.cloneElement(activeModule.icon as React.ReactElement<any>, { className: 'w-5 h-5' })}
                 </div>
                 <div className="space-y-0.5">
-                  <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">
+                  <span className="text-[8px] lg:text-[9px] font-black text-brandYellow uppercase tracking-[0.3em]">
                     INTEGRATED SYSTEM {activeModule.layer}
                   </span>
-                  <p className="text-[9px] lg:text-[10px] font-bold text-brandDark/20 uppercase tracking-[0.25em] leading-none">
+                  <p className="text-[8px] lg:text-[9px] font-bold text-brandDark/20 uppercase tracking-[0.25em] leading-none">
                     {activeModule.layerSub}
                   </p>
                 </div>
               </div>
 
               {/* Main Title */}
-              <h3 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none uppercase">
+              <h3 className="text-3xl lg:text-4xl xl:text-5xl font-black text-brandDark tracking-tighter leading-none uppercase">
                 {activeModule.title}
               </h3>
 
               {/* Strategic Mission Block */}
-              <div className="border-l-[6px] lg:border-l-[8px] border-brandYellow pl-6 lg:pl-8 space-y-1.5">
-                <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">STRATEGIC MISSION</span>
-                <p className="text-xl lg:text-2xl font-bold text-brandDark/70 italic leading-tight max-w-sm">
+              <div className="border-l-[6px] lg:border-l-[8px] border-brandYellow pl-5 lg:pl-6 space-y-1">
+                <span className="text-[8px] lg:text-[9px] font-black text-brandYellow uppercase tracking-[0.4em]">STRATEGIC MISSION</span>
+                <p className="text-lg lg:text-xl font-bold text-brandDark/70 italic leading-tight max-w-sm">
                   "{activeModule.mission}"
                 </p>
               </div>
 
               {/* Functional Details Grid */}
-              <div className="grid grid-cols-2 gap-8 pt-8 border-t border-brandDark/5">
-                <div className="space-y-3">
-                  <span className="text-[9px] font-bold text-brandDark/20 uppercase tracking-widest block mb-1">INPUTS</span>
-                  <ul className="space-y-2">
+              <div className="grid grid-cols-2 gap-6 pt-6 border-t border-brandDark/5">
+                <div className="space-y-2">
+                  <span className="text-[8px] font-bold text-brandDark/20 uppercase tracking-widest block mb-1">INPUTS</span>
+                  <ul className="space-y-1.5">
                     {activeModule.inputs.map((input, i) => (
-                      <li key={i} className="flex items-center gap-2.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brandYellow"></div>
-                        <span className="text-sm lg:text-lg font-black text-brandDark tracking-tight">{input}</span>
+                      <li key={i} className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-brandYellow"></div>
+                        <span className="text-xs lg:text-base font-black text-brandDark tracking-tight">{input}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-3">
-                  <span className="text-[9px] font-bold text-brandDark/20 uppercase tracking-widest block mb-1">IMPACT</span>
-                  <ul className="space-y-2">
+                <div className="space-y-2">
+                  <span className="text-[8px] font-bold text-brandDark/20 uppercase tracking-widest block mb-1">IMPACT</span>
+                  <ul className="space-y-1.5">
                     {activeModule.impact.map((impact, i) => (
-                      <li key={i} className="flex items-center gap-2.5">
-                        <svg className="w-4 h-4 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
+                      <li key={i} className="flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-brandYellow" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                         </svg>
-                        <span className="text-sm lg:text-lg font-black text-brandDark tracking-tight">{impact}</span>
+                        <span className="text-xs lg:text-base font-black text-brandDark tracking-tight">{impact}</span>
                       </li>
                     ))}
                   </ul>
@@ -261,32 +261,32 @@ export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit })
             </div>
 
             {/* Bottom Actions Area */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6">
               <button 
                 onClick={onBookAudit}
-                className="w-full sm:w-auto px-10 py-6 bg-brandYellow text-brandDark font-black text-[12px] uppercase tracking-[0.25em] rounded-xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105"
+                className="w-full sm:w-auto px-8 py-4 bg-brandYellow text-brandDark font-black text-[10px] lg:text-[11px] uppercase tracking-[0.25em] rounded-xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105"
               >
                 See Full Playbook →
               </button>
 
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-4 lg:gap-6">
                 <button 
                   onClick={handlePrev}
-                  className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border-2 border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
                 >
-                  <svg className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
-                <div className="text-center min-w-[80px]">
-                  <p className="text-[10px] font-bold text-brandDark/20 uppercase tracking-widest mb-1 leading-none">MODULE</p>
-                  <p className="text-xl lg:text-2xl font-black text-brandDark tracking-widest">{activeIndex + 1}/{MODULES.length}</p>
+                <div className="text-center min-w-[60px]">
+                  <p className="text-[8px] font-bold text-brandDark/20 uppercase tracking-widest mb-1 leading-none">MODULE</p>
+                  <p className="text-lg lg:text-xl font-black text-brandDark tracking-widest">{activeIndex + 1}/{MODULES.length}</p>
                 </div>
                 <button 
                   onClick={handleNext}
-                  className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border-2 border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-brandDark/10 flex items-center justify-center hover:bg-brandDark hover:text-white transition-all group"
                 >
-                  <svg className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -295,7 +295,7 @@ export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit })
           </div>
 
           {/* Right Visual Column (Dark Area) */}
-          <div className="lg:col-span-6 relative overflow-hidden group min-h-[450px] lg:min-h-0 bg-brandDark">
+          <div className="lg:col-span-6 relative overflow-hidden group min-h-[350px] lg:min-h-0 bg-brandDark">
             <img 
               key={activeModule.id}
               src={activeModule.image} 
@@ -308,16 +308,16 @@ export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit })
             <div className="absolute inset-0 bg-[#001d21]/20 mix-blend-multiply"></div>
             
             {/* Large Floating Metric Card - CRITICAL VISIBILITY FIX */}
-            <div className="absolute bottom-10 right-10 z-[30] bg-[#002a2f] border border-white/10 p-10 lg:p-14 rounded-[3.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] animate-float-high">
-               <span className="text-[11px] lg:text-[12px] font-black text-brandYellow uppercase tracking-[0.5em] block mb-4">
+            <div className="absolute bottom-6 right-6 lg:bottom-10 lg:right-10 z-[30] bg-[#002a2f] border border-white/10 p-6 lg:p-8 xl:p-10 rounded-[2.5rem] lg:rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] animate-float-high">
+               <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.5em] block mb-2 lg:mb-4">
                  {activeModule.metricLabel}
                </span>
-               <h4 className="text-6xl lg:text-[100px] font-black text-white tracking-tighter leading-none">
+               <h4 className="text-4xl lg:text-6xl xl:text-7xl font-black text-white tracking-tighter leading-none">
                  {activeModule.metricValue}
                </h4>
                
                {/* Decorative corner accent */}
-               <div className="absolute top-6 right-6 w-3 h-3 bg-brandYellow/20 rounded-full"></div>
+               <div className="absolute top-4 right-4 w-2 h-2 bg-brandYellow/20 rounded-full"></div>
             </div>
           </div>
 

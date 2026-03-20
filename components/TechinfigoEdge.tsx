@@ -3,7 +3,7 @@ import { X, Check, ArrowRight, TrendingUp } from 'lucide-react';
 
 export const TechinfigoEdge: React.FC<{ onBookAudit: () => void }> = ({ onBookAudit }) => {
   return (
-    <section className="w-full py-12 lg:py-16 px-6 bg-brandDark overflow-hidden font-sans relative lg:min-h-screen flex flex-col justify-center">
+    <section className="w-full py-12 lg:py-20 px-6 bg-brandDark overflow-hidden font-sans relative lg:min-h-screen flex flex-col justify-center">
       {/* Background Accents */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-brandYellow/5 blur-[120px] rounded-full pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brandYellow/5 blur-[120px] rounded-full pointer-events-none"></div>

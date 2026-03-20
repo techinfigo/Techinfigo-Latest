@@ -65,7 +65,7 @@ const App: React.FC = () => {
           <GrowthLifecycle onBookAudit={() => navigateTo('contact')} />
 
           {/* INTEGRATED: How we track performance */}
-          <section className="py-8 lg:py-10 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden lg:h-screen flex flex-col justify-center">
+          <section className="py-12 lg:py-20 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden lg:min-h-screen flex flex-col justify-center">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brandYellow/[0.02] blur-[150px] pointer-events-none"></div>
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center relative z-10 w-full">
               <div className="lg:col-span-6 space-y-8 lg:space-y-10">
