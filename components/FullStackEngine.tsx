@@ -144,7 +144,11 @@ const MODULES: ModuleData[] = [
   }
 ];
 
-export const FullStackEngine: React.FC = () => {
+interface FullStackEngineProps {
+  onBookAudit?: () => void;
+}
+
+export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit }) => {
   const [activeIndex, setActiveIndex] = useState(0); 
   const activeModule = MODULES[activeIndex];
 
@@ -258,7 +262,10 @@ export const FullStackEngine: React.FC = () => {
 
             {/* Bottom Actions Area */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pt-8">
-              <button className="w-full sm:w-auto px-10 py-6 bg-brandYellow text-brandDark font-black text-[12px] uppercase tracking-[0.25em] rounded-xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105">
+              <button 
+                onClick={onBookAudit}
+                className="w-full sm:w-auto px-10 py-6 bg-brandYellow text-brandDark font-black text-[12px] uppercase tracking-[0.25em] rounded-xl hover:bg-brandDark hover:text-white transition-all shadow-glow hover:scale-105"
+              >
                 See Full Playbook →
               </button>
 

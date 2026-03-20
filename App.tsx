@@ -58,11 +58,11 @@ const App: React.FC = () => {
       {currentPage === 'home' && (
         <div className="animate-fade-in">
           <Hero onBookAudit={() => navigateTo('contact')} />
-          <QualificationProtocol />
-          <DiagnosticSection />
+          <QualificationProtocol onBookAudit={() => navigateTo('contact')} />
+          <DiagnosticSection onBookAudit={() => navigateTo('contact')} />
 
           {/* INTEGRATED: Growth Lifecycle */}
-          <GrowthLifecycle />
+          <GrowthLifecycle onBookAudit={() => navigateTo('contact')} />
 
           {/* INTEGRATED: How we track performance */}
           <section className="py-24 lg:py-40 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden">
@@ -117,10 +117,10 @@ const App: React.FC = () => {
           </section>
           
           <TechinfigoEdge onBookAudit={() => navigateTo('contact')} />
-          <FullStackEngine />
-          <CaseStudySection />
-          <TestimonialsSection />
-          <RevenueAccelerator />
+          <FullStackEngine onBookAudit={() => navigateTo('contact')} />
+          <CaseStudySection onBookAudit={() => navigateTo('contact')} />
+          <TestimonialsSection onBookAudit={() => navigateTo('contact')} />
+          <RevenueAccelerator onBookAudit={() => navigateTo('contact')} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}

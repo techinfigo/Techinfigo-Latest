@@ -1,116 +1,141 @@
 import React from 'react';
+import { X, Check, ArrowRight, TrendingUp } from 'lucide-react';
 
 export const TechinfigoEdge: React.FC<{ onBookAudit: () => void }> = ({ onBookAudit }) => {
-  const pillars = [
-    {
-      label: "WE DON'T CHASE ROAS",
-      title: "We track MER",
-      desc: "Platform attribution is broken. We optimize for the only number that matters: Net Sales / Ad Spend.",
-      icon: (
-        <svg className="w-5 h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 12l3-3 3 3 4-4" />
-        </svg>
-      )
-    },
-    {
-      label: "WE DON'T SCALE EMOTIONALLY",
-      title: "We scale on data",
-      desc: "No 'gut feelings.' We use a rigorous 7-day statistically significant framework for every budget bump.",
-      icon: (
-        <svg className="w-5 h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-        </svg>
-      )
-    },
-    {
-      label: "WE DON'T SELL SERVICES",
-      title: "We build systems",
-      desc: "You aren't buying 'graphic design' or 'media buying.' You're deploying a repeatable creative lab.",
-      icon: (
-        <svg className="w-5 h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      )
-    },
-    {
-      label: "WE DON'T PROMISE NUMBERS",
-      title: "We promise process",
-      desc: "Outcomes are the result of excellence. Our daily inputs are what guarantee long-term stable scale.",
-      icon: (
-        <svg className="w-5 h-5 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-      )
-    }
-  ];
-
   return (
-    <section className="w-full py-24 lg:py-40 px-6 bg-brandDark overflow-hidden font-sans">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 mb-24">
-          
-          {/* Left Side: Manifesto */}
-          <div className="lg:col-span-5 space-y-10 lg:sticky lg:top-40 h-fit">
-            <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-brandYellow/40 block">THE TECHINFIGO EDGE</span>
-            <div className="space-y-4">
-              <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[0.9]">
-                We don't "run ads." <br />
-                <span className="text-brandYellow italic underline decoration-white/10 underline-offset-8">We engineer systems.</span>
-              </h2>
-            </div>
-            <p className="text-white/50 text-lg lg:text-xl font-medium leading-relaxed max-w-lg">
-              Comparison with standard agencies ends here. Most sell you labor; we deploy a <span className="text-white border-b border-brandYellow pb-0.5">profit-first engine</span> that compounds learnings every week.
-            </p>
+    <section className="w-full py-24 lg:py-48 px-6 bg-brandDark overflow-hidden font-sans relative">
+      {/* Background Accents */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brandYellow/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brandYellow/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-            <div className="inline-flex items-center gap-5 p-6 bg-white/[0.03] border border-white/5 rounded-3xl backdrop-blur-sm">
-              <div className="w-10 h-10 rounded-xl bg-brandYellow flex items-center justify-center shadow-glow">
-                <svg className="w-6 h-6 text-brandDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <p className="text-xs font-bold text-white uppercase tracking-wider leading-relaxed">
-                Eliminating the agency-founder <br /> attribution disconnect.
-              </p>
-            </div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header Infrastructure */}
+        <div className="text-center mb-24 space-y-8">
+          <div className="inline-block px-4 py-1.5 border border-white/10 rounded-full">
+            <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40 block">WHY MOST BRANDS FAIL</span>
           </div>
-
-          {/* Right Side: Differentiation Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {pillars.map((item, idx) => (
-              <div key={idx} className="bg-white/[0.04] border border-white/5 p-10 rounded-[2.5rem] space-y-8 hover:bg-white/[0.06] transition-all group">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-brandYellow/10 transition-all">
-                  {item.icon}
-                </div>
-                <div className="space-y-4">
-                  <span className="text-[9px] font-black text-brandYellow uppercase tracking-[0.3em] block opacity-80">{item.label}</span>
-                  <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tight">{item.title}</h3>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+          
+          <h2 className="text-4xl lg:text-8xl font-black text-white tracking-tighter leading-[0.9]">
+            We Don’t Scale Ad Spend. <br />
+            <span className="text-brandYellow italic">We Scale What Actually Makes You Money.</span>
+          </h2>
+          
+          <div className="max-w-3xl mx-auto space-y-6">
+            <p className="text-white/60 text-lg lg:text-2xl font-medium leading-relaxed">
+              Most agencies focus on increasing your ad budget.
+            </p>
+            <p className="text-white text-lg lg:text-2xl font-bold leading-relaxed">
+              We focus on fixing your unit economics first — <br className="hidden lg:block" />
+              so when you scale, you actually <span className="text-brandYellow">keep more profit.</span>
+            </p>
           </div>
         </div>
 
-        {/* Bottom CTA Card */}
-        <div className="bg-brandYellow rounded-[3rem] p-10 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-10 shadow-4xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+        {/* Split Comparison Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 items-center mb-24">
           
-          <div className="space-y-4 text-center md:text-left relative z-10">
-            <span className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.5em]">ENGAGEMENT MODEL</span>
-            <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none">
-              Productized <br className="hidden lg:block" /> Scaling. No <br className="hidden lg:block" /> Custom Chaos.
-            </h2>
+          {/* Left Card: Typical Agencies */}
+          <div className="lg:col-span-5 bg-white/[0.02] border border-white/5 rounded-[3rem] p-10 lg:p-14 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+            <div className="space-y-10">
+              <h3 className="text-2xl lg:text-3xl font-black text-white/80 tracking-tight uppercase">What Most Agencies Do</h3>
+              
+              <ul className="space-y-6">
+                {[
+                  "Increase ad spend to show growth",
+                  "Optimize for ROAS, not profit",
+                  "Ignore backend (AOV, LTV, retention)",
+                  "Scale before fixing fundamentals",
+                  "Short-term spikes, long-term instability"
+                ].map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 mt-1">
+                      <X className="w-3 h-3 text-red-500" />
+                    </div>
+                    <span className="text-white/60 font-medium text-lg">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          <button 
-            onClick={onBookAudit}
-            className="px-10 py-6 bg-brandDark text-white font-black text-xs uppercase tracking-[0.3em] rounded-full hover:bg-white hover:text-brandDark transition-all duration-500 shadow-2xl shrink-0 z-10"
-          >
-            Apply Free Growth Audit
-          </button>
+          {/* VS Visual */}
+          <div className="lg:col-span-1 flex justify-center">
+            <div className="w-16 h-16 rounded-full bg-brandYellow/10 border border-brandYellow/20 flex items-center justify-center">
+              <span className="text-brandYellow font-black italic text-xl">VS</span>
+            </div>
+          </div>
+
+          {/* Right Card: Your Approach (Highlighted) */}
+          <div className="lg:col-span-5 bg-white/[0.05] border-2 border-brandYellow/30 rounded-[3rem] p-10 lg:p-14 shadow-[0_0_50px_rgba(251,182,50,0.1)] relative group">
+            <div className="absolute top-0 right-0 p-8">
+              <TrendingUp className="w-8 h-8 text-brandYellow/20 group-hover:text-brandYellow/40 transition-colors" />
+            </div>
+            
+            <div className="space-y-10 relative z-10">
+              <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tight uppercase">What We Do <span className="text-brandYellow">Differently</span></h3>
+              
+              <ul className="space-y-6">
+                {[
+                  "Fix profit leaks before scaling",
+                  "Track real metrics (MER, CAC, Net Profit)",
+                  "Optimize full funnel (ads + landing + backend)",
+                  "Scale only when system is stable",
+                  "Build predictable, repeatable growth"
+                ].map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-brandYellow/20 flex items-center justify-center shrink-0 mt-1">
+                      <Check className="w-3 h-3 text-brandYellow" />
+                    </div>
+                    <span className="text-white font-bold text-lg">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Real Proof Block */}
+        <div className="flex justify-center mb-24">
+          <div className="bg-white rounded-3xl p-8 lg:p-12 border border-brandYellow/20 shadow-2xl relative overflow-hidden group max-w-2xl w-full">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 rounded-full blur-2xl"></div>
+            <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em] block mb-6">REAL IMPACT</span>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="text-center md:text-left">
+                <p className="text-brandDark/40 text-sm font-bold uppercase tracking-wider mb-1">Ad spend stayed the same</p>
+                <p className="text-brandDark font-black text-2xl lg:text-3xl tracking-tight">
+                  Profit increased from <br className="hidden md:block" />
+                  <span className="text-brandDark/40 line-through">₹2.1L</span> → <span className="text-brandDark">₹6.4L</span>
+                </p>
+              </div>
+              <div className="px-6 py-3 bg-brandYellow/10 rounded-xl border border-brandYellow/20">
+                <span className="text-brandYellow font-black text-xl tracking-tighter">IN 75 DAYS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Authority Line & CTA */}
+        <div className="text-center space-y-12">
+          <p className="text-2xl lg:text-4xl font-black text-white tracking-tight leading-tight max-w-3xl mx-auto">
+            “We don’t increase budget until <br className="hidden lg:block" />
+            <span className="text-brandYellow italic">your numbers make sense.</span>”
+          </p>
+
+          <div className="flex flex-col items-center space-y-6">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-brandYellow/20 rounded-xl blur-xl group-hover:bg-brandYellow/30 transition-all"></div>
+              <button 
+                onClick={onBookAudit}
+                className="relative px-12 py-6 bg-brandYellow text-brandDark font-black text-[14px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl flex items-center gap-3"
+              >
+                See Where You’re Losing Profit
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="text-white/40 text-xs font-bold uppercase tracking-[0.2em]">
+              Get your free audit breakdown
+            </p>
+          </div>
         </div>
       </div>
     </section>

@@ -1,104 +1,135 @@
 import React from 'react';
+import { Check, ArrowRight, ShieldCheck, Zap, BarChart3, Search } from 'lucide-react';
+import { motion } from 'motion/react';
 
-export const RevenueAccelerator: React.FC = () => {
-  const auditPoints = [
-    { label: "Ad structure architecture", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" },
-    { label: "Creative velocity & hook gaps", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
-    { label: "Funnel friction & leak analysis", icon: "M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" },
-    { label: "Scaling bottleneck identification", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" },
-    { label: "Net profit & COGS alignment", icon: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" }
-  ];
+interface RevenueAcceleratorProps {
+  onBookAudit?: () => void;
+}
 
+export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAudit }) => {
   return (
-    <section className="w-full py-24 lg:py-40 px-6 bg-[#001d21] font-sans relative overflow-hidden">
-      {/* Subtle Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brandYellow/[0.03] blur-[150px] pointer-events-none"></div>
+    <section className="w-full py-24 lg:py-48 px-6 bg-gradient-to-b from-[#001d21] to-[#000d0e] font-sans relative overflow-hidden">
+      {/* Abstract Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" 
+           style={{ backgroundImage: `radial-gradient(#facc15 1px, transparent 1px)`, backgroundSize: '40px 40px' }}>
+      </div>
+      
+      {/* Subtle Glow Behind CTA Area */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brandYellow/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center relative z-10">
+      <div className="max-w-5xl mx-auto text-center relative z-10">
         
-        {/* Left Side: Headline & Copy */}
-        <div className="lg:col-span-7 space-y-12 animate-slide-up">
-          <div className="space-y-8">
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-[2px] bg-brandYellow"></div>
-              <span className="text-[10px] font-bold tracking-[0.5em] uppercase text-brandYellow block">REVENUE ACCELERATOR</span>
-            </div>
-            
-            <h2 className="text-6xl lg:text-[100px] font-black text-white tracking-tighter leading-[0.85]">
-              Scale without <br />
-              the <span className="relative inline-block text-brandYellow italic">
-                "Squeeze."
-                <svg className="absolute -bottom-2 left-0 w-full h-3 text-brandYellow/20" viewBox="0 0 100 10" preserveAspectRatio="none">
-                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
-                </svg>
-              </span>
-            </h2>
+        {/* 1. MAIN HEADLINE */}
+        <div className="space-y-6 mb-12 animate-slide-up">
+          <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95]">
+            Still Scaling Without <br className="hidden md:block" />
+            Knowing Your Real Profit?
+          </h2>
+          <h3 className="text-2xl lg:text-4xl font-black text-brandYellow tracking-tight">
+            Let’s Fix That — Before You Spend Another ₹1
+          </h3>
+        </div>
 
-            <p className="text-white/60 text-lg lg:text-2xl font-medium leading-relaxed max-w-xl">
-              We review your unit economics first, then your ad accounts. <span className="text-white border-b-2 border-brandYellow/30 pb-0.5">If the math doesn't work, we don't sign.</span>
-            </p>
+        {/* 2. SUBTEXT */}
+        <div className="max-w-2xl mx-auto mb-16 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-white/60 text-lg lg:text-xl font-medium leading-relaxed">
+            In the next 15–20 minutes, we’ll break down exactly where your money is leaking — 
+            and what’s stopping your brand from scaling profitably.
+          </p>
+        </div>
+
+        {/* 3. VALUE BULLETS & PREVIEW BOX */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-20">
+          
+          {/* Left: Value Bullets */}
+          <div className="lg:col-span-7 space-y-6 text-left animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            {[
+              "Identify hidden profit leaks in your funnel",
+              "See what’s actually making you money (not just ROAS)",
+              "Get clarity on CAC, MER & real margins",
+              "Walk away with actionable insights (even if we don’t work together)"
+            ].map((bullet, idx) => (
+              <div key={idx} className="flex items-start gap-4 group">
+                <div className="w-6 h-6 rounded-full bg-brandYellow/10 flex items-center justify-center shrink-0 mt-1 group-hover:bg-brandYellow/20 transition-colors">
+                  <Check className="w-4 h-4 text-brandYellow" />
+                </div>
+                <span className="text-white/80 text-lg font-bold group-hover:text-white transition-colors">{bullet}</span>
+              </div>
+            ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <button className="w-full sm:w-auto px-10 py-6 bg-brandYellow text-brandDark font-black text-[11px] uppercase tracking-[0.3em] rounded-xl hover:bg-white transition-all shadow-glow">
-              Apply Free Growth Audit
-            </button>
-            
-            <button className="w-full sm:w-auto flex items-center justify-center gap-4 px-10 py-6 border border-white/10 rounded-xl text-white font-black text-[11px] uppercase tracking-[0.3em] hover:bg-white/5 transition-all">
-              <svg className="w-5 h-5 text-brandYellow" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.284l-.533 1.946 1.99-.522c.937.51 1.961.92 3.292.922 3.181 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.766-5.768-5.766zm3.23 7.913c-.14.397-.703.763-1.011.812-.27.042-.622.065-1.02-.063-.243-.078-.567-.208-1.432-.581-1.125-.483-1.848-1.631-1.905-1.706-.057-.075-.461-.611-.461-1.165 0-.554.29-.824.394-.937.104-.113.226-.141.3-.141h.216c.075 0 .175.003.254.19.08.189.273.666.297.715.024.049.037.105.006.168-.031.063-.047.104-.093.159-.046.055-.098.123-.139.165-.046.046-.095.097-.04.189.055.092.245.404.525.654.362.321.666.421.761.466.095.045.15.037.205-.025.055-.062.235-.274.297-.367.062-.093.125-.078.21-.047.085.031.542.256.635.303.093.047.155.07.178.109.023.04.023.23-.117.627z" />
-              </svg>
-              WhatsApp Strategist
-            </button>
-          </div>
-
-          {/* Availability Bar */}
-          <div className="flex flex-wrap items-center gap-10 pt-10 border-t border-white/5">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">SLA: 24H RESPONSE</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
-              <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">STATUS: LIMITED SPOTS</span>
+          {/* Right: Preview Box */}
+          <div className="lg:col-span-5 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 text-left space-y-6 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-2xl rounded-full -mr-16 -mt-16"></div>
+              
+              <h4 className="text-brandYellow text-[10px] font-black uppercase tracking-[0.3em]">What you’ll get in the audit:</h4>
+              
+              <div className="space-y-4">
+                {[
+                  { label: "Funnel breakdown", icon: Search },
+                  { label: "Profit leak report", icon: BarChart3 },
+                  { label: "Scaling roadmap", icon: Zap }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4">
+                    <item.icon className="w-5 h-5 text-white/40" />
+                    <span className="text-white font-bold text-sm tracking-wide">{item.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Right Side: Audit Card */}
-        <div className="lg:col-span-5 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <div className="bg-[#002a2f] border border-white/5 rounded-[3rem] p-10 lg:p-14 shadow-4xl space-y-12">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <h3 className="text-3xl font-black text-white tracking-tight leading-none">10-Point Audit</h3>
-                <p className="text-brandYellow text-[9px] font-black uppercase tracking-[0.3em]">DIAGNOSTIC PROTOCOL V4.2</p>
-              </div>
-              <div className="w-12 h-12 bg-brandYellow rounded-2xl flex items-center justify-center shadow-glow">
-                <svg className="w-6 h-6 text-brandDark" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
+        {/* 4. RISK REVERSAL */}
+        <div className="mb-12 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <div className="inline-block bg-brandYellow/10 border border-brandYellow/20 px-6 py-3 rounded-full">
+            <p className="text-brandYellow font-black text-sm uppercase tracking-widest flex items-center gap-3">
+              <ShieldCheck className="w-5 h-5" />
+              “If we can’t find improvement opportunities, we won’t pitch you anything.”
+            </p>
+          </div>
+        </div>
 
-            <div className="space-y-6">
-              {auditPoints.map((point, idx) => (
-                <div key={idx} className="flex items-center gap-6 group">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow/10 transition-colors">
-                    <svg className="w-4 h-4 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={point.icon} />
-                    </svg>
-                  </div>
-                  <span className="text-base lg:text-lg font-bold text-white/80 group-hover:text-white transition-colors">{point.label}</span>
-                </div>
-              ))}
-            </div>
+        {/* 5. URGENCY & CTA */}
+        <div className="space-y-10 animate-slide-up" style={{ animationDelay: '0.5s' }}>
+          <div className="space-y-2">
+            <p className="text-white font-black text-xl tracking-tight">
+              Only 10 D2C brands onboarded per month
+            </p>
+            <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">
+              Slots fill fast due to hands-on involvement
+            </p>
+          </div>
 
-            <div className="pt-10 border-t border-white/5 space-y-4">
-              <div className="flex flex-col items-center">
-                <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] mb-1">ESTIMATED DELIVERY</p>
-                <p className="text-3xl font-black text-white tracking-tighter border-b-2 border-brandYellow pb-1">24 HOURS</p>
-              </div>
+          <div className="relative inline-block">
+            {/* Pulsing Glow Effect */}
+            <motion.div 
+              animate={{ scale: [1, 1.05, 1], opacity: [0.5, 0.8, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-brandYellow blur-2xl rounded-xl"
+            />
+            
+            <button 
+              onClick={onBookAudit}
+              className="group relative px-16 py-8 bg-brandYellow text-brandDark font-black text-sm uppercase tracking-[0.4em] rounded-xl hover:bg-white transition-all shadow-2xl overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center gap-4">
+                Get My Free Profit Audit
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </span>
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            <p className="text-white/40 text-[11px] font-bold uppercase tracking-[0.3em]">
+              No spam. No sales pressure. Just clarity.
+            </p>
+            
+            <div className="pt-8 border-t border-white/5">
+              <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.5em]">
+                Trusted by growing D2C brands across India
+              </p>
             </div>
           </div>
         </div>
