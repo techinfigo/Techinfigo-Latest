@@ -8,6 +8,7 @@ import { FullStackEngine } from './components/FullStackEngine';
 import { CaseStudySection } from './components/CaseStudySection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { RevenueAccelerator } from './components/RevenueAccelerator';
+import { GrowthLifecycle } from './components/GrowthLifecycle';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
 import { ServicesPage } from './components/ServicesPage';
@@ -60,44 +61,8 @@ const App: React.FC = () => {
           <QualificationProtocol />
           <DiagnosticSection />
 
-          {/* INTEGRATED: Our Growth Lifecycle */}
-          <section className="py-16 lg:py-40 px-6 lg:px-12 bg-[#f9f7f2] border-y border-brandDark/5 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto relative z-10">
-              <div className="text-center mb-12 lg:mb-20 space-y-6">
-                <h2 className="text-4xl lg:text-[64px] font-black text-brandDark tracking-tighter leading-tight">
-                  Our Growth Lifecycle
-                </h2>
-                <p className="text-brandDark/50 text-lg lg:text-xl font-medium max-w-3xl mx-auto leading-relaxed">
-                  From first audit to stable scale, here is exactly how your brand moves through our system.
-                </p>
-              </div>
-
-              <div className="flex flex-col lg:flex-row gap-8 lg:gap-0 relative">
-                 {/* Connecting Line for Desktop */}
-                 <div className="hidden lg:block absolute top-[40px] left-[10%] right-[10%] h-0.5 bg-brandDark/10 z-0"></div>
-
-                 {lifecycleSteps.map((step, i) => (
-                   <div key={i} className="flex-1 relative z-10 group">
-                     <div className="flex flex-col items-center text-center">
-                       {/* Number Circle */}
-                       <div className="w-16 h-16 lg:w-20 lg:h-20 bg-white border-4 border-[#f9f7f2] outline outline-1 outline-brandDark/10 rounded-full flex items-center justify-center text-2xl lg:text-3xl font-black text-brandDark mb-6 lg:mb-8 shadow-xl group-hover:scale-110 group-hover:border-brandYellow transition-all duration-500 relative">
-                         {step.num}
-                         {/* Pulse effect */}
-                         <div className="absolute inset-0 rounded-full bg-brandYellow/20 animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                       </div>
-                       
-                       {/* Content Card */}
-                       <div className="bg-white p-6 lg:p-8 rounded-[2rem] border border-brandDark/5 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 w-full max-w-xs mx-auto min-h-[180px] lg:min-h-[200px] flex flex-col justify-center relative overflow-hidden">
-                         <div className="absolute top-0 left-0 w-full h-1 bg-brandDark/5 group-hover:bg-brandYellow transition-colors duration-500"></div>
-                         <h3 className="text-xl lg:text-2xl font-black text-brandDark uppercase tracking-tight mb-3">{step.title}</h3>
-                         <p className="text-brandDark/50 text-sm font-medium leading-relaxed">{step.desc}</p>
-                       </div>
-                     </div>
-                   </div>
-                 ))}
-              </div>
-            </div>
-          </section>
+          {/* INTEGRATED: Growth Lifecycle */}
+          <GrowthLifecycle />
 
           {/* INTEGRATED: How we track performance */}
           <section className="py-24 lg:py-40 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden">
