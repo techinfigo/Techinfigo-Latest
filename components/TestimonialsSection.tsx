@@ -1,6 +1,6 @@
-import React from 'react';
-import { Quote, Star, ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Quote, Star, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface Testimonial {
   brand: string;
@@ -31,6 +31,27 @@ const testimonials: Testimonial[] = [
     result: "₹1.2Cr Monthly Revenue",
     quote: "The audit alone found leaks we didn't know existed. If you're spending lakhs on ads, you need their eyes on your numbers.",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    brand: "Sugar Cosmetics",
+    founder: "Vineeta Singh",
+    result: "2.8x ROAS Improvement",
+    quote: "Their data-first approach to scaling is refreshing. They don't just show you dashboards; they show you profit.",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    brand: "Boat",
+    founder: "Aman Gupta",
+    result: "60% Increase in LTV",
+    quote: "The retention flows they built for us are a game changer. Our repeat customer rate has never been higher.",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200"
+  },
+  {
+    brand: "Mamaearth",
+    founder: "Ghazal Alagh",
+    result: "35% Lower Blended CAC",
+    quote: "They understand the nuances of the Indian D2C market like no one else. Highly recommended for serious brands.",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200"
   }
 ];
 
@@ -39,6 +60,42 @@ interface TestimonialsSectionProps {
 }
 
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBookAudit }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  }, []);
+
+  // Auto-slide every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
+  };
+
   return (
     <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-[#000d0e] font-sans relative overflow-hidden">
       {/* Background Accents */}
@@ -50,7 +107,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
           
           {/* Left: Header & CTA */}
-          <div className="lg:col-span-4 space-y-6 lg:space-y-10">
+          <div className="lg:col-span-5 space-y-6 lg:space-y-10">
             <div className="space-y-3 lg:space-y-4">
               <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em] block">REAL PROOF</span>
               <h2 className="text-3xl lg:text-5xl xl:text-6xl font-black text-white tracking-tighter leading-[0.95]">
@@ -78,49 +135,97 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
                 Limited to 10 brands per month.
               </p>
             </div>
+
+            {/* Navigation Controls (Desktop) */}
+            <div className="hidden lg:flex items-center gap-4 pt-4">
+              <button 
+                onClick={prevSlide}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow transition-all"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={nextSlide}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow transition-all"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+              <div className="flex gap-2 ml-4">
+                {testimonials.map((_, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => {
+                      setDirection(idx > currentIndex ? 1 : -1);
+                      setCurrentIndex(idx);
+                    }}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-brandYellow w-6' : 'bg-white/20'}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Right: Testimonials Grid */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-              {testimonials.map((t, i) => (
+          {/* Right: Testimonial Slider */}
+          <div className="lg:col-span-7 relative h-[350px] lg:h-[400px] flex items-center">
+            <div className="relative w-full h-full overflow-hidden lg:overflow-visible">
+              <AnimatePresence initial={false} custom={direction}>
                 <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 p-5 lg:p-6 rounded-[1.5rem] flex flex-col justify-between group hover:bg-white/10 transition-all duration-500"
+                  key={currentIndex}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 }
+                  }}
+                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  <div className="space-y-3 lg:space-y-4">
-                    <div className="flex justify-between items-start">
-                      <Quote className="w-5 h-5 text-brandYellow/40" />
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, starIdx) => (
-                          <Star key={starIdx} className="w-2 h-2 fill-brandYellow text-brandYellow" />
-                        ))}
-                      </div>
-                    </div>
+                  <div className="w-full max-w-xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 lg:p-10 rounded-[2rem] flex flex-col justify-between shadow-2xl relative group">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
                     
-                    <p className="text-white/80 text-[11px] lg:text-xs xl:text-sm font-medium leading-relaxed italic">
-                      "{t.quote}"
-                    </p>
-                  </div>
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-start">
+                        <Quote className="w-10 h-10 text-brandYellow/20" />
+                        <div className="flex gap-1">
+                          {[...Array(5)].map((_, starIdx) => (
+                            <Star key={starIdx} className="w-3 h-3 fill-brandYellow text-brandYellow" />
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <p className="text-white/90 text-lg lg:text-xl xl:text-2xl font-medium leading-relaxed italic">
+                        "{testimonials[currentIndex].quote}"
+                      </p>
+                    </div>
 
-                  <div className="mt-5 pt-4 border-t border-white/10 flex items-center gap-3">
-                    <img 
-                      src={t.image} 
-                      alt={t.founder} 
-                      className="w-8 h-8 lg:w-10 lg:h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="min-w-0">
-                      <h4 className="text-white font-black text-[11px] lg:text-xs tracking-tight truncate">{t.founder}</h4>
-                      <p className="text-brandYellow text-[8px] lg:text-[9px] font-bold uppercase tracking-wider truncate">{t.brand} · {t.result}</p>
+                    <div className="mt-10 pt-6 border-t border-white/10 flex items-center gap-4">
+                      <img 
+                        src={testimonials[currentIndex].image} 
+                        alt={testimonials[currentIndex].founder} 
+                        className="w-12 h-12 lg:w-16 lg:h-16 rounded-full object-cover border-2 border-brandYellow/20"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="min-w-0">
+                        <h4 className="text-white font-black text-base lg:text-lg tracking-tight">{testimonials[currentIndex].founder}</h4>
+                        <p className="text-brandYellow text-[10px] lg:text-[11px] font-bold uppercase tracking-widest">{testimonials[currentIndex].brand} · {testimonials[currentIndex].result}</p>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
-              ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Mobile Controls */}
+            <div className="flex lg:hidden absolute -bottom-12 left-1/2 -translate-x-1/2 items-center gap-6">
+              <button onClick={prevSlide} className="text-white/40 hover:text-brandYellow"><ChevronLeft className="w-8 h-8" /></button>
+              <div className="flex gap-2">
+                {testimonials.map((_, idx) => (
+                  <div key={idx} className={`w-1.5 h-1.5 rounded-full ${idx === currentIndex ? 'bg-brandYellow' : 'bg-white/20'}`} />
+                ))}
+              </div>
+              <button onClick={nextSlide} className="text-white/40 hover:text-brandYellow"><ChevronRight className="w-8 h-8" /></button>
             </div>
           </div>
         </div>
@@ -128,3 +233,4 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
     </section>
   );
 };
+
