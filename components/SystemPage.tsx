@@ -1,181 +1,432 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle2, AlertCircle, Search, TestTube, ShieldCheck, TrendingUp, Users } from 'lucide-react';
 
 interface SystemPageProps {
   onNavigate: (page: string) => void;
 }
 
 export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
+  const steps = [
+    {
+      id: 'audit',
+      num: '01',
+      title: 'Step 1: Identify Profit Leaks',
+      icon: <Search className="w-6 h-6 text-brandYellow" />,
+      explain: 'We break down your funnel, CAC, MER, and hidden costs.',
+      highlight: 'No scaling until this is fixed'
+    },
+    {
+      id: 'test',
+      num: '02',
+      title: 'Step 2: Find What Actually Works',
+      icon: <TestTube className="w-6 h-6 text-brandYellow" />,
+      explain: 'We test creatives, offers, and funnels systematically.'
+    },
+    {
+      id: 'stabilize',
+      num: '03',
+      title: 'Step 3: Build a Profit Baseline',
+      icon: <ShieldCheck className="w-6 h-6 text-brandYellow" />,
+      explain: 'We bring consistency before scaling.'
+    },
+    {
+      id: 'scale',
+      num: '04',
+      title: 'Step 4: Scale Without Breaking Margins',
+      icon: <TrendingUp className="w-6 h-6 text-brandYellow" />,
+      explain: 'We increase budgets only when system is stable.'
+    },
+    {
+      id: 'retain',
+      num: '05',
+      title: 'Step 5: Maximize Customer Value',
+      icon: <Users className="w-6 h-6 text-brandYellow" />,
+      explain: 'We improve LTV through retention & backend optimization.'
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* 1. Header Section */}
-      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
-        {/* Subtle Background Glow */}
+    <div className="min-h-screen bg-[#001d21] text-white font-sans selection:bg-brandYellow selection:text-brandDark">
+      {/* 1. HERO SECTION */}
+      <section className="relative pt-16 pb-10 lg:pt-24 lg:pb-16 px-6 lg:px-12 overflow-hidden min-h-[60vh] flex items-center">
+        {/* Background Glow */}
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
         
-        <div className="max-w-7xl mx-auto">
-          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
-            <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
-              THE SYSTEM
-            </span>
+        <div className="max-w-7xl mx-auto text-center relative z-10 w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-5"
+          >
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="w-8 h-[1px] bg-brandYellow/30"></div>
+              <span className="text-brandYellow font-mono text-[9px] lg:text-[10px] font-bold uppercase tracking-[0.5em] block">
+                THE GROWTH ENGINE
+              </span>
+              <div className="w-8 h-[1px] bg-brandYellow/30"></div>
+            </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl uppercase">
-              One System. <br />
-              No Custom Chaos.
+            <h1 className="text-5xl lg:text-[110px] font-black tracking-[-0.04em] leading-[0.82] max-w-6xl mx-auto uppercase">
+              A System Built to Scale <br />
+              <span className="text-brandYellow italic relative inline-block">
+                Profit
+                <svg className="absolute -bottom-2 left-0 w-full h-2 text-brandYellow/20" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" />
+                </svg>
+              </span>
+              <span className="text-white/20 mx-4">—</span>
+              Not Just Revenue
             </h1>
             
-            <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
-              You aren't paying for hours, freelancers, or random tasks. <br className="hidden lg:block" />
-              You are deploying a fixed growth framework that removes <br className="hidden lg:block" />
-              guesswork from scaling.
+            <p className="text-white/50 text-base lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed pt-2">
+              Most brands scale blindly and lose margins. <br className="hidden lg:block" />
+              Our system ensures you grow profitably, predictably, and sustainably.
             </p>
+            
+            <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button 
+                onClick={() => onNavigate('contact')}
+                className="group relative px-10 py-5 bg-brandYellow text-brandDark font-black text-[10px] uppercase tracking-[0.4em] rounded-2xl hover:bg-white transition-all duration-500 shadow-[0_0_30px_rgba(252,182,50,0.2)] overflow-hidden"
+              >
+                <span className="relative z-10">Get Free Profit Audit</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+              </button>
+              
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/5">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest">System Status: Active</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 2. THE CORE PROBLEM */}
+      <section className="py-12 lg:py-20 px-6 lg:px-12 bg-white/5 border-y border-white/5 relative overflow-hidden">
+        {/* Subtle Background Elements */}
+        <div className="absolute top-0 left-1/4 w-px h-full bg-white/[0.03] hidden lg:block"></div>
+        <div className="absolute top-0 right-1/4 w-px h-full bg-white/[0.03] hidden lg:block"></div>
+        
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-7 space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-md">
+                  <AlertCircle className="w-3 h-3 text-red-500" />
+                  <span className="text-[9px] font-mono font-bold text-red-500 uppercase tracking-widest">Diagnostic_Report // Critical_Inefficiency</span>
+                </div>
+                
+                <h2 className="text-4xl lg:text-[80px] font-black tracking-[-0.04em] leading-[0.82] uppercase">
+                  Why Most D2C <br />
+                  <span className="text-brandYellow italic">Struggle</span>
+                  <span className="text-white/20 mx-4">—</span>
+                  To Scale
+                </h2>
+                
+                <p className="text-white/70 text-sm lg:text-lg font-medium max-w-xl leading-relaxed">
+                  Scaling a broken system only accelerates losses. We identify the structural leaks before we ever touch the "scale" button.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { label: "AD_SPEND", issue: "Scaling without fixing profit", code: "ERR_01" },
+                  { label: "METRICS", issue: "No clarity on real MER/CAC", code: "ERR_02" },
+                  { label: "CREATIVE", issue: "Creative burnout & fatigue", code: "ERR_03" },
+                  { label: "BACKEND", issue: "AOV & Retention ignored", code: "ERR_04" }
+                ].map((point, i) => (
+                  <div key={i} className="p-5 bg-white/[0.02] border border-white/5 rounded-2xl group hover:border-brandYellow/30 transition-all duration-500 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-30 transition-opacity">
+                      <span className="text-[10px] font-mono font-bold">{point.code}</span>
+                    </div>
+                    <p className="text-[8px] font-mono text-white/50 uppercase tracking-widest mb-2">{point.label}</p>
+                    <p className="text-sm lg:text-base text-white/80 font-bold leading-tight group-hover:text-white transition-colors">{point.issue}</p>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="pt-6 border-t border-white/5 flex items-center gap-4">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-brandDark bg-white/10 flex items-center justify-center overflow-hidden">
+                      <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="User" referrerPolicy="no-referrer" className="w-full h-full object-cover grayscale opacity-50" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] lg:text-xs font-bold text-brandYellow uppercase tracking-widest">
+                  "More traffic doesn't fix a broken system."
+                </p>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-5 relative lg:pt-12">
+              <div className="bg-[#002a2f] border border-white/10 rounded-[2.5rem] p-8 space-y-8 shadow-2xl relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/50 via-brandYellow/50 to-emerald-500/50"></div>
+                
+                <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    <span className="text-[9px] font-mono font-bold text-white/60 uppercase tracking-widest">System_Error_Log</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-white/50">v3.1.0_AUDIT</span>
+                </div>
+                
+                <div className="space-y-6">
+                  {[
+                    { label: "PROFIT_LEAKAGE", val: 85, color: "bg-red-500", status: "CRITICAL" },
+                    { label: "SPEND_WASTE", val: 95, color: "bg-brandYellow", status: "HIGH" },
+                    { label: "RETENTION_GAP", val: 70, color: "bg-orange-500", status: "WARNING" }
+                  ].map((stat, i) => (
+                    <div key={i} className="space-y-3">
+                      <div className="flex justify-between items-end">
+                        <div className="space-y-1">
+                          <span className="text-[8px] font-mono font-bold text-white/40 uppercase tracking-widest block">{stat.label}</span>
+                          <span className={`text-[7px] font-mono font-bold px-1.5 py-0.5 rounded ${stat.status === 'CRITICAL' ? 'bg-red-500/10 text-red-500' : stat.status === 'HIGH' ? 'bg-brandYellow/10 text-brandYellow' : 'bg-orange-500/10 text-orange-500'}`}>
+                            {stat.status}
+                          </span>
+                        </div>
+                        <span className="text-xl font-black text-white/80 tracking-tighter">{stat.val}%</span>
+                      </div>
+                      <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                        <motion.div 
+                          initial={{ width: "0%" }}
+                          whileInView={{ width: `${stat.val}%` }}
+                          transition={{ duration: 1.5, ease: "easeOut", delay: i * 0.2 }}
+                          className={`h-full ${stat.color} opacity-60`}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="pt-4">
+                  <div className="p-4 bg-red-500/5 border border-red-500/10 rounded-2xl flex items-start gap-3">
+                    <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+                    <p className="text-[10px] font-mono text-red-500/80 uppercase tracking-widest leading-relaxed">
+                      CRITICAL: Scaling budget in current state will result in negative contribution margin. Fix leaks before deployment.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Decorative nodes */}
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-brandYellow/5 rounded-full blur-3xl"></div>
+            </div>
+          </div>
+        </div>
+      </section>      {/* 3. SYSTEM OVERVIEW (GROWTH PIPELINE) */}
+      <section className="py-12 lg:py-24 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden border-b border-white/5">
+        {/* Subtle Blueprint Grid */}
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, #ffffff10 1px, transparent 1px), linear-gradient(to bottom, #ffffff10 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brandYellow/20 to-transparent"></div>
+        
+        <div className="max-w-7xl mx-auto space-y-20 relative z-10">
+          <div className="text-center space-y-6">
+            <div className="flex items-center justify-center gap-4 mb-2">
+              <div className="h-[1px] w-8 bg-brandYellow/30"></div>
+              <span className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-[0.4em]">Growth_Architecture // v4.0</span>
+              <div className="h-[1px] w-8 bg-brandYellow/30"></div>
+            </div>
+            
+            <h2 className="text-4xl lg:text-8xl font-black tracking-[-0.04em] leading-[0.85] uppercase">
+              The <span className="text-brandYellow italic">Profit</span> Pipeline
+            </h2>
+            
+            <p className="text-white/70 text-sm lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+              Our proprietary 5-step deployment sequence designed to transform revenue into predictable, scalable profit.
+            </p>
+          </div>
+ 
+          <div className="relative">
+            {/* Main Flow Line (Animated) */}
+            <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 hidden lg:block -translate-y-1/2">
+              <motion.div 
+                initial={{ width: "0%" }}
+                whileInView={{ width: "100%" }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+                className="h-full bg-gradient-to-r from-brandYellow/0 via-brandYellow/40 to-brandYellow/0"
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-12 lg:gap-6 relative z-10">
+              {steps.map((step, i) => (
+                <motion.div 
+                  key={step.id} 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.15 }}
+                  className={`space-y-8 group relative ${i % 2 !== 0 ? 'lg:pt-16' : 'lg:pb-16'}`}
+                >
+                  {/* Step Indicator */}
+                  <div className="flex flex-col items-center text-center space-y-6">
+                    <div className="relative">
+                      {/* Outer Ring */}
+                      <div className="absolute -inset-4 border border-white/5 rounded-full group-hover:border-brandYellow/20 transition-colors duration-700"></div>
+                      
+                      {/* Main Icon Container */}
+                      <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-[#002a2f] border border-white/10 flex items-center justify-center relative z-10 group-hover:border-brandYellow/50 transition-all duration-500 shadow-2xl overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        {React.cloneElement(step.icon as React.ReactElement, { className: "w-8 h-8 lg:w-10 lg:h-10 text-brandYellow/40 group-hover:text-brandYellow transition-all duration-500 group-hover:scale-110" })}
+                        
+                        {/* Number Badge */}
+                        <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brandYellow text-brandDark rounded-full flex items-center justify-center text-[10px] font-black border-4 border-[#001d21]">
+                          0{step.num}
+                        </div>
+                      </div>
+
+                      {/* Connection Dots (Vertical) */}
+                      <div className={`absolute left-1/2 -translate-x-1/2 w-px h-12 bg-gradient-to-b from-brandYellow/40 to-transparent hidden lg:block ${i % 2 !== 0 ? '-top-12' : '-bottom-12'}`}></div>
+                    </div>
+                    
+                    <div className="space-y-3 max-w-[200px]">
+                      <div className="space-y-1">
+                        <h3 className="text-xl lg:text-2xl font-black uppercase tracking-tighter text-white group-hover:text-brandYellow transition-colors duration-500 leading-none">
+                          {step.id}
+                        </h3>
+                        <p className="text-[10px] font-mono text-brandYellow/90 font-bold uppercase tracking-widest">
+                          {step.title.split(':')[1]?.trim() || step.title}
+                        </p>
+                      </div>
+                      
+                      <div className="h-px w-8 bg-white/10 mx-auto group-hover:w-16 transition-all duration-500"></div>
+                      
+                      <p className="text-[11px] text-white/80 font-medium leading-relaxed group-hover:text-white transition-colors">
+                        {step.explain.split('.')[0]}.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          
+          {/* System Status Bar */}
+          <div className="pt-12 flex justify-center">
+            <div className="px-8 py-4 bg-white/[0.02] border border-white/5 rounded-full flex items-center gap-8 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest">Pipeline_Active</span>
+              </div>
+              <div className="w-px h-4 bg-white/10"></div>
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest">Efficiency:</span>
+                <span className="text-[9px] font-mono text-brandYellow font-bold uppercase tracking-widest">98.4%</span>
+              </div>
+              <div className="w-px h-4 bg-white/10"></div>
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest">Protocol:</span>
+                <span className="text-[9px] font-mono text-white/90 font-bold uppercase tracking-widest">MAX_PROFIT_v4</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Month 1: The Foundation */}
-      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-white border-b border-brandDark/5">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16 lg:mb-24 space-y-6 animate-slide-up">
-            <h2 className="text-4xl lg:text-[64px] font-black text-brandDark tracking-tighter leading-[1.1]">
-              Month 1: The Foundation
+      {/* 4. DEEP BREAKDOWN (STAGGERED TIMELINE) */}
+      <section className="py-12 lg:py-24 px-6 lg:px-12 bg-white/5 relative overflow-hidden border-b border-white/5">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <div className="text-center space-y-4">
+            <div className="inline-block px-3 py-1 bg-brandYellow/10 border border-brandYellow/20 rounded-md">
+              <span className="text-[9px] font-mono font-bold text-brandYellow uppercase tracking-widest text-center">System_Architecture // Deep_Dive</span>
+            </div>
+            <h2 className="text-3xl lg:text-7xl font-black tracking-tighter uppercase leading-none">
+              The <span className="text-brandYellow">5-Phase</span> Deployment
             </h2>
-            <p className="text-brandDark/50 text-lg lg:text-xl font-medium max-w-3xl mx-auto">
-              We don't 'test' in Month 1. We diagnose and build the infrastructure required for profit.
-            </p>
           </div>
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {[
-              {
-                title: "Audit & Diagnosis",
-                desc: "Deep dive into Unit Economics, past ad data, and pixel health to find the 'leaky' parts of your funnel.",
-                icon: (
-                  <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                )
-              },
-              {
-                title: "Paid Ads Structure",
-                desc: "Complete account rebuild using our Broad-Scaling framework. Simplified, stable, and ready for spend.",
-                icon: (
-                  <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                  </svg>
-                )
-              },
-              {
-                title: "Creative Testing Lab",
-                desc: "Setting up the testing environment to isolate winning hooks, angles, and formats without wasting budget.",
-                icon: (
-                  <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.183.244l-.28.19a2 2 0 00-.587 2.783l.19.28a2 2 0 002.783.587l.28-.19a2 2 0 002.244-1.183l-.317-1.583a6 6 0 01.517-3.86l.158-.318a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022" />
-                    <circle cx="12" cy="12" r="3" strokeWidth="2.5" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 3v2m6-2v2M4 11h2m12 0h2" />
-                  </svg>
-                )
-              },
-              {
-                title: "Funnel Review",
-                desc: "Technical and psychological review of your landing pages to ensure message-match with our new ads.",
-                icon: (
-                  <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                )
-              }
-            ].map((item, i) => (
-              <div key={i} className="bg-[#f8f8f8] border border-brandDark/5 rounded-[2.5rem] p-10 flex flex-col items-center text-center space-y-8 group hover:bg-white hover:shadow-4xl transition-all duration-700 animate-slide-up" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-brandDark flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:scale-110">
-                  {item.icon}
+          <div className="relative space-y-8">
+            {/* Vertical Center Line */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10 hidden lg:block -translate-x-1/2"></div>
+            
+            {steps.map((step, i) => (
+              <motion.div 
+                key={step.id}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-0 ${i % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}
+              >
+                {/* Content Card */}
+                <div className="w-full lg:w-[45%] group">
+                  <div className="p-8 rounded-[2rem] bg-[#002a2f]/40 border border-white/5 hover:border-brandYellow/30 transition-all duration-500 relative overflow-hidden">
+                    <div className="space-y-4 relative z-10">
+                      <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 rounded-xl bg-brandYellow/10 border border-brandYellow/20 flex items-center justify-center">
+                          {React.cloneElement(step.icon as React.ReactElement, { className: "w-5 h-5 text-brandYellow" })}
+                        </div>
+                        <span className="text-[10px] font-mono font-bold text-brandYellow/70 uppercase tracking-widest">Phase_0{step.num}</span>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <h3 className="text-2xl font-black uppercase tracking-tighter text-white/90 group-hover:text-brandYellow transition-colors">{step.id}</h3>
+                        <p className="text-sm text-white/80 font-medium leading-relaxed group-hover:text-white transition-colors">
+                          {step.explain}
+                        </p>
+                      </div>
+
+                      {step.highlight && (
+                        <div className="pt-4 flex items-center gap-2">
+                          <div className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/20 rounded text-[8px] font-mono text-emerald-500 font-bold uppercase tracking-widest">
+                            {step.highlight}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Hover Glow */}
+                    <div className="absolute inset-0 bg-brandYellow/5 opacity-0 group-hover:opacity-100 transition-opacity blur-3xl"></div>
+                  </div>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-xl lg:text-2xl font-black text-brandDark tracking-tight leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-brandDark/50 text-sm lg:text-base font-medium leading-relaxed">
-                    {item.desc}
-                  </p>
+
+                {/* Center Node */}
+                <div className="relative z-10 hidden lg:block">
+                  <div className="w-12 h-12 rounded-full bg-brandDark border-4 border-white/5 flex items-center justify-center group-hover:border-brandYellow/50 transition-all duration-500">
+                    <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
+                  </div>
                 </div>
-              </div>
+
+                {/* Spacer for Staggered Layout */}
+                <div className="hidden lg:block lg:w-[45%]"></div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. Month 2+: Execution Rhythm */}
-      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-[#fdfaf5] border-b border-brandDark/5 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Section Header */}
-          <div className="text-center mb-24 lg:mb-32 space-y-6 animate-slide-up">
-            <h2 className="text-4xl lg:text-[64px] font-black text-brandDark tracking-tighter leading-[1.1]">
-              Month 2+: Execution Rhythm
-            </h2>
-            <p className="text-brandDark/50 text-lg lg:text-xl font-medium max-w-3xl mx-auto">
-              Once the foundation is set, we move into a high-velocity feedback loop.
-            </p>
-          </div>
-
-          {/* Timeline Structure */}
-          <div className="relative">
-            {/* Vertical Line */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-brandDark/10 -translate-x-1/2 hidden lg:block"></div>
-
-            <div className="space-y-12 lg:space-y-24">
+      {/* 5. WHAT MAKES THIS DIFFERENT */}
+      <section className="py-12 lg:py-20 px-6 lg:px-12 bg-white text-brandDark overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+              <div className="inline-block px-3 py-1 bg-brandDark text-white rounded-md">
+                <span className="text-[9px] font-mono font-bold uppercase tracking-widest">Competitive_Edge // v1.0</span>
+              </div>
+              <h2 className="text-4xl lg:text-8xl font-black tracking-tighter leading-[0.82] uppercase">
+                Why This <br />
+                <span className="text-brandYellow">System <br />Works</span>
+              </h2>
+              <p className="text-lg lg:text-xl text-brandDark/80 font-medium leading-relaxed max-w-md">
+                We aren't just another agency running ads. We are growth partners who treat your bank balance as our primary KPI.
+              </p>
+            </div>
+            
+            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-px bg-brandDark/10 border border-brandDark/10">
               {[
-                { 
-                  num: "1", 
-                  title: "Testing", 
-                  desc: "Deploying weekly creative sprints to find new winners.", 
-                  align: "left" 
-                },
-                { 
-                  num: "2", 
-                  title: "Optimization", 
-                  desc: "Killing losers and trimming waste across Meta & Google.", 
-                  align: "right" 
-                },
-                { 
-                  num: "3", 
-                  title: "Scaling", 
-                  desc: "Systematically increasing budget on proven creative/offer combos.", 
-                  align: "left" 
-                },
-                { 
-                  num: "4", 
-                  title: "Strategy", 
-                  desc: "Weekly Loom walkthroughs + Monthly Scale Sessions.", 
-                  align: "right" 
-                }
-              ].map((step, i) => (
-                <div key={i} className={`flex flex-col lg:flex-row items-center relative ${step.align === 'right' ? 'lg:flex-row-reverse' : ''}`}>
-                  {/* Content Card */}
-                  <div className={`w-full lg:w-[42%] bg-white p-10 lg:p-12 rounded-[2.5rem] shadow-sm border border-brandDark/5 animate-slide-up ${step.align === 'left' ? 'lg:text-right' : 'lg:text-left'}`} style={{ animationDelay: `${i * 0.15}s` }}>
-                    <h3 className="text-2xl lg:text-3xl font-black text-brandDark mb-4 tracking-tight uppercase">
-                      {step.title}
-                    </h3>
-                    <p className="text-brandDark/50 text-base lg:text-lg font-medium leading-relaxed">
-                      {step.desc}
+                { title: "Profit First", desc: "We optimize for contribution margin, not just ROAS or vanity metrics." },
+                { title: "Full Funnel", desc: "We fix the backend (AOV, LTV) before we scale the frontend spend." },
+                { title: "Data Driven", desc: "Every decision is backed by real-time MER and CAC diagnostic data." },
+                { title: "Creative Ops", desc: "Systematic creative testing that identifies winners before they burn out." }
+              ].map((item, i) => (
+                <div key={i} className="bg-white p-8 lg:p-10 space-y-4 group hover:bg-brandYellow transition-colors duration-500">
+                  <span className="text-4xl lg:text-6xl font-black text-brandDark/5 group-hover:text-brandDark/10 transition-colors">0{i + 1}</span>
+                  <div className="space-y-2">
+                    <h3 className="text-xl lg:text-2xl font-black uppercase tracking-tighter leading-none">{item.title}</h3>
+                    <p className="text-sm lg:text-base text-brandDark/80 group-hover:text-brandDark font-medium leading-snug">
+                      {item.desc}
                     </p>
-                  </div>
-
-                  {/* Spacer for Desktop Line */}
-                  <div className="hidden lg:block w-[16%]"></div>
-
-                  {/* Timeline Number Node */}
-                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:flex w-12 h-12 rounded-full bg-brandYellow items-center justify-center text-brandDark font-black text-base shadow-glow border-4 border-[#fdfaf5] z-10 transition-transform hover:scale-110 duration-300">
-                    {step.num}
-                  </div>
-
-                  {/* Empty space for the other side */}
-                  <div className="hidden lg:block w-[42%]"></div>
-
-                  {/* Mobile Number Indicator (Only visible on small screens) */}
-                  <div className="lg:hidden mt-6 w-10 h-10 rounded-full bg-brandYellow flex items-center justify-center text-brandDark font-black text-sm shadow-md">
-                    {step.num}
                   </div>
                 </div>
               ))}
@@ -184,245 +435,77 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 4. The Filter: Engagement Rules (NEW SECTION) */}
-      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brandYellow/[0.02] blur-[150px] pointer-events-none"></div>
+      {/* FINAL CTA (COMPACT) */}
+      <section className="py-12 lg:py-16 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">
+        {/* Atmospheric Glow (Recipe 7) */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#fcb6320a_0%,_transparent_70%)]"></div>
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-brandYellow/5 rounded-full blur-[100px] animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-emerald-500/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }}></div>
         
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16 lg:mb-24 space-y-6 animate-slide-up">
-            <span className="text-brandYellow font-mono text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.4em] block">
-              THE FILTER
-            </span>
-            <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-none">
-              Engagement Rules
-            </h2>
-            <p className="text-white/40 text-lg lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-              We only work with founders who respect the process. Read these before booking.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 animate-slide-up">
-            {[
-              { 
-                label: "COMMITMENT", 
-                title: "3-Month Minimum", 
-                desc: "Growth takes time to compound. We don't do 'one-month trials'." 
-              },
-              { 
-                label: "RETAINER", 
-                title: "₹40k – ₹75k / Mo", 
-                desc: "Fixed monthly fee based on complexity, not % of spend." 
-              },
-              { 
-                label: "BILLING", 
-                title: "100% Advance", 
-                desc: "Monthly billing starts on the day of signup. No exceptions." 
-              },
-              { 
-                label: "GUARANTEES", 
-                title: "No ROI Guarantees", 
-                desc: "We guarantee the process and input. We don't control the market." 
-              },
-              { 
-                label: "DISCOUNTS", 
-                title: "No Discounts", 
-                desc: "Our system is productized for a reason. The price is the price." 
-              },
-              { 
-                label: "AVAILABILITY", 
-                title: "2 Brands / Quarter", 
-                desc: "We maintain a low client-to-strategist ratio for deep focus." 
-              }
-            ].map((rule, idx) => (
-              <div key={idx} className="bg-white/[0.03] border border-white/5 rounded-[2rem] p-10 lg:p-14 space-y-4 hover:bg-white/[0.05] transition-all duration-500 group">
-                <span className="text-[10px] font-bold text-brandYellow uppercase tracking-[0.3em] block opacity-60">
-                  {rule.label}
-                </span>
-                <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tight">
-                  {rule.title}
-                </h3>
-                <p className="text-white/40 text-base lg:text-lg font-medium leading-relaxed">
-                  {rule.desc}
-                </p>
+        <div className="max-w-4xl mx-auto bg-white/[0.02] border border-white/10 rounded-[2.5rem] lg:rounded-[3.5rem] p-8 lg:p-12 text-center space-y-8 relative overflow-hidden backdrop-blur-md">
+          {/* Top Scanline Effect */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brandYellow/30 to-transparent"></div>
+          
+          <div className="space-y-4 relative z-10">
+            <div className="flex flex-col items-center gap-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-[9px] font-mono font-bold text-emerald-500 uppercase tracking-[0.3em]">System_Ready_For_Deployment</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. The Modular Growth Stack */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandBg relative overflow-hidden">
-        {/* Background Grid */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-             style={{ backgroundImage: `radial-gradient(circle, #001d21 1.5px, transparent 1.5px)`, backgroundSize: '40px 40px' }} />
-             
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="mb-24 space-y-6">
-            <span className="text-[11px] font-black text-brandDark/20 uppercase tracking-[0.5em] font-mono">Modular Architecture</span>
-            <h2 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter">The Scaling Stack.</h2>
-          </div>
-
-          <div className="space-y-8 lg:space-y-4">
-            {[
-              { 
-                layer: "Layer 03", 
-                title: "Retention & LTV Compound", 
-                focus: "Klaviyo + SMS + Loyalty",
-                desc: "Where the real profit is made. We orchestrate automated loops that turn one-time buyers into lifetime advocates through behavioral segmentation.",
-                metrics: ["LTV: 2.4x Lift", "Repeat Rate: +18%"]
-              },
-              { 
-                layer: "Layer 02", 
-                title: "Acquisition Media Engine", 
-                focus: "Meta + Google + TikTok",
-                desc: "Performance-first media buying governed by contribution margin guardrails. No scaling happens without variable isolation and hook testing.",
-                metrics: ["CAC: -22%", "Spend Velocity: 3x"]
-              },
-              { 
-                layer: "Layer 01", 
-                title: "Infrastructure & Data", 
-                focus: "Tracking + Funnels + P&L",
-                desc: "The foundation. We implement server-side tracking and unit-economic dashboards to ensure we aren't flying blind on platform data.",
-                metrics: ["Data Integrity: 98%", "Latency: 0ms"]
-              }
-            ].map((item, i) => (
-              <div key={i} className="bg-white border-2 border-brandDark/5 rounded-[3rem] p-10 lg:p-16 grid grid-cols-1 lg:grid-cols-12 gap-12 group hover:border-brandYellow transition-all duration-500 shadow-sm hover:shadow-4xl">
-                <div className="lg:col-span-3 space-y-2">
-                  <span className="text-[11px] font-mono font-black text-brandYellow tracking-widest">{item.layer}</span>
-                  <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">{item.title}</h3>
-                  <p className="text-[10px] font-bold text-brandDark/30 uppercase tracking-widest">{item.focus}</p>
-                </div>
-                <div className="lg:col-span-6">
-                  <p className="text-xl lg:text-2xl text-brandDark/60 font-medium leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-                <div className="lg:col-span-3 flex flex-col justify-center gap-4 border-l border-brandDark/5 pl-8 lg:pl-12">
-                   {item.metrics.map((m, idx) => (
-                     <div key={idx}>
-                        <p className="text-[9px] font-bold text-brandDark/20 uppercase tracking-widest">Benchmark</p>
-                        <p className="text-2xl font-black text-brandDark">{m}</p>
-                     </div>
-                   ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Variable Isolation Protocol */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark text-white relative">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <div className="space-y-12">
-            <div className="space-y-6">
-              <span className="text-brandYellow font-mono text-[11px] font-bold tracking-[0.4em] uppercase">R&D Laboratory</span>
-              <h2 className="text-5xl lg:text-8xl font-black tracking-tighter leading-none">
-                Variable <br />
-                <span className="text-brandYellow italic">Isolation.</span>
-              </h2>
-            </div>
-            <p className="text-white/50 text-xl lg:text-2xl font-medium leading-relaxed">
-              Scaling is the process of removing uncertainty. We don't "test" everything at once. We isolate one variable—a hook, a price point, or a landing page—in a sandbox environment before we commit your scale budget.
-            </p>
-            <div className="grid grid-cols-2 gap-8 pt-6 border-t border-white/10">
-               <div className="space-y-2">
-                 <p className="text-4xl font-black text-brandYellow">25+</p>
-                 <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest leading-tight">Weekly Creative Hooks Isolated</p>
-               </div>
-               <div className="space-y-2">
-                 <p className="text-4xl font-black text-white">100%</p>
-                 <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest leading-tight">Statistical Significance Buffer</p>
-               </div>
-            </div>
-          </div>
-          <div className="relative">
-             <div className="bg-[#002a2f] border border-white/5 p-10 lg:p-16 rounded-[4rem] shadow-glow space-y-10 relative z-10">
-                <div className="space-y-6">
-                  {["Creative Hook backtesting", "Offer elasticity mapping", "Landing page delta tests", "Bidding protocol iterations"].map((step, i) => (
-                    <div key={i} className="flex items-center gap-6 group">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-brandYellow group-hover:bg-brandYellow group-hover:text-brandDark transition-all">
-                        <span className="font-mono font-bold text-xs">0{i+1}</span>
-                      </div>
-                      <span className="text-xl font-bold text-white/80 group-hover:text-white transition-colors">{step}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="h-[1px] w-full bg-white/10"></div>
-                <p className="text-[10px] font-bold text-brandYellow uppercase tracking-[0.4em] text-center">Protocol: Scientific Method V2</p>
-             </div>
-             {/* Decorative Elements */}
-             <div className="absolute -top-12 -right-12 w-32 h-32 bg-brandYellow/10 rounded-full blur-3xl"></div>
-             <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-brandYellow/5 rounded-full blur-[100px]"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. The MER Engine Section */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            <div className="lg:col-span-5 space-y-10">
-              <h2 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter leading-[0.9]">
-                The Profit <br />
-                Guardrails.
-              </h2>
-              <p className="text-xl lg:text-2xl text-brandDark/50 font-medium leading-relaxed">
-                Platform ROAS is a vanity metric. We ignore it. Our system optimizes for <span className="text-brandDark">Marketing Efficiency Ratio (MER)</span>—the direct correlation between total spend and net revenue—ensuring your scale doesn't cannibalize your profit.
-              </p>
-              <div className="p-8 bg-brandBg border-2 border-dotted border-brandYellow/30 rounded-3xl">
-                 <p className="text-sm font-bold text-brandDark italic">
-                   "If the blended MER drops below your contribution threshold, our system triggers a cooling protocol. Automatically."
-                 </p>
+              <div className="flex items-center gap-2">
+                <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest">Version: 3.1.0</span>
+                <div className="w-1 h-1 rounded-full bg-white/20"></div>
+                <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest">Build: STABLE</span>
               </div>
             </div>
             
-            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-px bg-brandDark/5 border border-brandDark/5 rounded-[3rem] overflow-hidden">
-               <div className="bg-white p-12 space-y-8">
-                  <span className="text-[11px] font-black text-brandDark/20 uppercase tracking-widest font-mono">Traditional Model</span>
-                  <div className="space-y-4 opacity-40">
-                    <p className="text-2xl font-black text-brandDark">Spend until <br /> the dashboard <br /> looks green.</p>
-                    <div className="w-full h-1 bg-brandDark/10 rounded-full"></div>
-                    <p className="text-xs font-bold text-brandDark/40">RESULT: THE PROFIT SQUEEZE</p>
-                  </div>
-               </div>
-               <div className="bg-[#fffcf5] p-12 space-y-8">
-                  <span className="text-[11px] font-black text-brandYellow uppercase tracking-widest font-mono">Techinfigo Model</span>
-                  <div className="space-y-4">
-                    <p className="text-2xl font-black text-brandDark">Spend only if <br /> contribution <br /> margin allows.</p>
-                    <div className="w-full h-1 bg-brandYellow rounded-full"></div>
-                    <p className="text-xs font-bold text-brandYellow">RESULT: ENGINEERED WEALTH</p>
-                  </div>
-               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Integration CTA */}
-      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-brandBg">
-        <div className="max-w-5xl mx-auto bg-brandDark rounded-[4rem] p-12 lg:p-24 text-center space-y-16 shadow-4xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#fcb63210_0%,_transparent_70%)]"></div>
-          
-          <div className="space-y-8 relative z-10">
-            <h2 className="text-4xl lg:text-8xl font-black text-white tracking-tighter leading-none">
-              Sync Your <br />
-              <span className="text-brandYellow">Ledger.</span>
+            <h2 className="text-3xl lg:text-6xl font-black text-white tracking-[-0.04em] leading-[0.82] uppercase">
+              Install <br />
+              <span className="text-brandYellow italic">The Profit Engine</span>
             </h2>
-            <p className="text-white/40 text-xl lg:text-2xl max-w-2xl mx-auto font-medium">
-              Ready to install a growth engine that actually cares about your bank balance?
+            
+            <p className="text-white/80 text-sm lg:text-lg max-w-xl mx-auto font-medium leading-relaxed">
+              Stop guessing. Start scaling. Get a clear roadmap to profitable growth and predictable margins.
             </p>
           </div>
 
-          <button 
-            onClick={() => onNavigate('contact')}
-            className="relative z-10 px-16 py-8 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.4em] rounded-2xl hover:bg-white transition-all duration-500 shadow-glow"
-          >
-            Request System Audit
-          </button>
-          
-          <div className="relative z-10 pt-12 border-t border-white/5 opacity-20">
-             <p className="text-[10px] font-mono font-bold text-white uppercase tracking-[0.5em]">SYSTEM_STANDBY_MODE // READY_FOR_DEPLOYMENT</p>
+          <div className="relative z-10 pt-2 space-y-6">
+            <div className="flex flex-col items-center gap-5">
+              <button 
+                onClick={() => onNavigate('contact')}
+                className="group relative px-12 py-6 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.5em] rounded-2xl hover:bg-white transition-all duration-700 shadow-[0_0_40px_rgba(252,182,50,0.2)] overflow-hidden scale-100 hover:scale-105 active:scale-95"
+              >
+                <span className="relative z-10">Initiate Profit Audit</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700"></div>
+              </button>
+              
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1 h-1 rounded-full bg-brandYellow"></div>
+                  <span className="text-[8px] font-mono text-white/50 uppercase tracking-widest">Free_Diagnostic</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1 h-1 rounded-full bg-brandYellow"></div>
+                  <span className="text-[8px] font-mono text-white/50 uppercase tracking-widest">30_Min_Strategy</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1 h-1 rounded-full bg-brandYellow"></div>
+                  <span className="text-[8px] font-mono text-white/50 uppercase tracking-widest">Zero_Commitment</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="pt-6 border-t border-white/10 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12">
+              <div className="flex items-center gap-3">
+                <p className="text-[8px] font-mono text-white/40 uppercase tracking-[0.2em]">Availability:</p>
+                <p className="text-[9px] font-mono text-white/90 font-bold uppercase tracking-widest">Q2 2024 Slots Opening</p>
+              </div>
+              <div className="hidden lg:block w-px h-4 bg-white/20"></div>
+              <div className="flex items-center gap-3">
+                <p className="text-[8px] font-mono text-white/40 uppercase tracking-[0.2em]">Queue:</p>
+                <p className="text-[9px] font-mono text-white/90 font-bold uppercase tracking-widest">3 Brands In Onboarding</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

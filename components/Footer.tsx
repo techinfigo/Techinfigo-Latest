@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface FooterProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, serviceId?: string) => void;
   onBookAudit: () => void;
 }
 
@@ -22,7 +22,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 mb-10 lg:mb-16">
           
           {/* Brand Intro */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             <div className="w-10 h-10 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
               <span className="text-brandDark font-black text-xl">TF</span>
             </div>
@@ -35,62 +35,65 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             </div>
           </div>
 
-          {/* Capabilities */}
-          <div className="lg:col-span-2 space-y-6">
-            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Capabilities</h4>
-            <ul className="space-y-3 lg:space-y-4">
-              {CAPABILITIES.map((item) => (
-                <li key={item}>
-                  <button 
-                    onClick={() => onNavigate('services')} 
-                    className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left"
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-              <li>
-                <button 
-                  onClick={() => onNavigate('services')} 
-                  className="text-[13px] font-normal text-brandYellow hover:underline underline-offset-4 tracking-tight flex items-center gap-2"
-                >
-                  All Levers <span className="text-base">→</span>
-                </button>
-              </li>
-            </ul>
-          </div>
-
           {/* Foundation */}
           <div className="lg:col-span-2 space-y-6">
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Foundation</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
+                <button onClick={() => onNavigate('about')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">About Us</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('how-it-works')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Our Approach</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('qualification')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Who We Fit</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('services')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Growth Engine</button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="lg:col-span-2 space-y-6">
+            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Company</h4>
+            <ul className="space-y-3 lg:space-y-4">
+              <li>
                 <button onClick={() => onNavigate('home')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Home</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Our Story</button>
+                <button onClick={() => onNavigate('case-studies')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Case Studies</button>
               </li>
-              
-              <li className="py-1">
-                <button 
-                  onClick={() => onNavigate('careers')}
-                  className="w-full border border-dashed border-brandYellow/40 rounded-xl px-3 py-2.5 text-[9px] font-bold text-brandYellow uppercase tracking-[0.3em] hover:bg-brandYellow/5 transition-all flex items-center justify-center group"
-                >
-                  <span className="whitespace-nowrap">Join the Team</span>
-                </button>
+              <li>
+                <button onClick={() => onNavigate('system')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">The System</button>
               </li>
+              <li>
+                <button onClick={() => onNavigate('careers')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Careers</button>
+              </li>
+            </ul>
+          </div>
 
+          {/* Capabilities */}
+          <div className="lg:col-span-2 space-y-6">
+            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Capabilities</h4>
+            <ul className="space-y-3 lg:space-y-4">
               <li>
-                <button onClick={() => onNavigate('contact')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Contact</button>
+                <button onClick={() => onNavigate('service-detail', 'performance-ads')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Performance Ads</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('contact')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Growth Audit</button>
+                <button onClick={() => onNavigate('service-detail', 'cro')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">CRO & Funnels</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('service-detail', 'seo')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">eCommerce SEO</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('service-detail', 'retention')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Retention Flows</button>
               </li>
             </ul>
           </div>
 
           {/* HQ Terminal Card */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3">
             <div className="bg-[#002a2f] border border-white/5 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/10">
               {/* Card Header */}
               <div className="flex justify-between items-center">

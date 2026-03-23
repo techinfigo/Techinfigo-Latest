@@ -7,7 +7,7 @@ interface CaseStudySectionProps {
 
 export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit }) => {
   return (
-    <section className="w-full py-12 lg:py-20 px-6 bg-[#f9f6f2] font-sans overflow-hidden lg:min-h-screen flex flex-col justify-center">
+    <section id="case-studies" className="w-full py-12 lg:py-20 px-6 bg-[#f9f6f2] font-sans overflow-hidden lg:min-h-screen flex flex-col justify-center">
       <div className="max-w-7xl mx-auto space-y-4 lg:space-y-6">
         
         {/* 1. SECTION HEADER */}
