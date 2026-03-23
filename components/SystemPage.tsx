@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, AlertCircle, Search, TestTube, ShieldCheck, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle2, AlertCircle, Search, TestTube, ShieldCheck, TrendingUp, Users, Check } from 'lucide-react';
 
 interface SystemPageProps {
   onNavigate: (page: string) => void;
@@ -11,38 +11,42 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
     {
       id: 'audit',
       num: '01',
-      title: 'Step 1: Identify Profit Leaks',
+      title: 'Audit (Find Profit Leaks)',
       icon: <Search className="w-6 h-6 text-brandYellow" />,
-      explain: 'We break down your funnel, CAC, MER, and hidden costs.',
-      highlight: 'No scaling until this is fixed'
+      explain: 'We break down your funnel, CAC, MER, and hidden costs to identify exactly where your money is leaking.',
+      highlight: 'No scaling until this is fixed.'
     },
     {
       id: 'test',
       num: '02',
-      title: 'Step 2: Find What Actually Works',
+      title: 'Test (Find What Actually Works)',
       icon: <TestTube className="w-6 h-6 text-brandYellow" />,
-      explain: 'We test creatives, offers, and funnels systematically.'
+      explain: 'We run structured creative, offer, and funnel tests to identify winning combinations — not random experiments.',
+      highlight: 'Decisions backed by data, not guesswork.'
     },
     {
       id: 'stabilize',
       num: '03',
-      title: 'Step 3: Build a Profit Baseline',
+      title: 'Stabilize (Build a Profit Baseline)',
       icon: <ShieldCheck className="w-6 h-6 text-brandYellow" />,
-      explain: 'We bring consistency before scaling.'
+      explain: 'We fix your unit economics and bring consistency before increasing spend.',
+      highlight: 'Consistency before scaling.'
     },
     {
       id: 'scale',
       num: '04',
-      title: 'Step 4: Scale Without Breaking Margins',
+      title: 'Scale (Increase Profit, Not Just Spend)',
       icon: <TrendingUp className="w-6 h-6 text-brandYellow" />,
-      explain: 'We increase budgets only when system is stable.'
+      explain: 'We scale budgets only after your system is stable — without breaking margins.',
+      highlight: 'Scale without killing profitability.'
     },
     {
       id: 'retain',
       num: '05',
-      title: 'Step 5: Maximize Customer Value',
+      title: 'Retain (Maximize Customer Value)',
       icon: <Users className="w-6 h-6 text-brandYellow" />,
-      explain: 'We improve LTV through retention & backend optimization.'
+      explain: 'We optimize backend flows like retention, upsells, and repeat purchases to increase LTV.',
+      highlight: 'More profit from the same customers.'
     }
   ];
 
@@ -222,16 +226,16 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
           <div className="text-center space-y-6">
             <div className="flex items-center justify-center gap-4 mb-2">
               <div className="h-[1px] w-8 bg-brandYellow/30"></div>
-              <span className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-[0.4em]">Growth_Architecture // v4.0</span>
+              <span className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-[0.4em]">THE SYSTEM BEHIND PROFITABLE SCALING</span>
               <div className="h-[1px] w-8 bg-brandYellow/30"></div>
             </div>
             
             <h2 className="text-4xl lg:text-6xl font-black tracking-[-0.03em] leading-[1] uppercase text-white">
-              The <span className="text-brandYellow italic">Profit</span> Pipeline
+              How We Turn Ad Spend Into <span className="text-brandYellow italic">Predictable Profit</span>
             </h2>
             
             <p className="text-white/70 text-sm lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-              Our proprietary 5-step deployment sequence designed to transform revenue into predictable, scalable profit.
+              A step-by-step system designed to eliminate guesswork and build scalable, repeatable growth.
             </p>
           </div>
  
@@ -279,27 +283,45 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                     <div className="space-y-3 max-w-[200px]">
                       <div className="space-y-1">
                         <h3 className="text-xl lg:text-2xl font-black uppercase tracking-tighter text-white group-hover:text-brandYellow transition-colors duration-500 leading-none">
-                          {step.id}
+                          {step.title.split('(')[0].trim().split(' ').map((word, i) => (
+                            <span key={i} className={['Audit', 'Profit', 'Scale'].includes(word) ? 'text-brandYellow' : ''}>
+                              {word}{' '}
+                            </span>
+                          ))}
                         </h3>
                         <p className="text-[10px] font-mono text-brandYellow/90 font-bold uppercase tracking-widest">
-                          {step.title.split(':')[1]?.trim() || step.title}
+                          ({step.title.split('(')[1]}
                         </p>
                       </div>
                       
                       <div className="h-px w-8 bg-white/10 mx-auto group-hover:w-16 transition-all duration-500"></div>
                       
                       <p className="text-[11px] text-white/80 font-medium leading-relaxed group-hover:text-white transition-colors">
-                        {step.explain.split('.')[0]}.
+                        {step.explain}
                       </p>
+
+                      {step.highlight && (
+                        <p className="text-[10px] font-bold text-brandYellow uppercase tracking-wider">
+                          {step.highlight}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
+
+          {/* Differentiation Strip */}
+          <div className="pt-8 text-center">
+            <p className="text-lg lg:text-2xl font-black uppercase tracking-tight text-white">
+              Most agencies jump to scaling. <br className="sm:hidden" />
+              <span className="text-brandYellow">We don’t scale until your numbers make sense.</span>
+            </p>
+          </div>
           
-          {/* System Status Bar */}
-          <div className="pt-12 flex justify-center">
+          {/* System Status Bar & Micro Proof */}
+          <div className="pt-12 flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="px-8 py-4 bg-white/[0.02] border border-white/5 rounded-full flex items-center gap-8 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -314,6 +336,22 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
               <div className="flex items-center gap-3">
                 <span className="text-[9px] font-mono text-white/60 uppercase tracking-widest">Protocol:</span>
                 <span className="text-[9px] font-mono text-white/90 font-bold uppercase tracking-widest">MAX_PROFIT_v4</span>
+              </div>
+            </div>
+
+            <div className="bg-brandYellow/5 border border-brandYellow/10 p-6 rounded-2xl space-y-4 max-w-md">
+              <p className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-widest">System_Performance_Metrics</p>
+              <div className="space-y-2">
+                {[
+                  "30–60% improvement in profitability",
+                  "Lower CAC within 45–60 days",
+                  "More stable, predictable scaling"
+                ].map((proof, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <CheckCircle2 className="w-3 h-3 text-brandYellow" />
+                    <span className="text-xs text-white/70 font-medium">{proof}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -356,7 +394,13 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                       </div>
                       
                       <div className="space-y-3">
-                        <h3 className="text-2xl lg:text-3xl font-black uppercase tracking-tighter text-white/90 group-hover:text-brandYellow transition-colors">{step.id}</h3>
+                        <h3 className="text-2xl lg:text-3xl font-black uppercase tracking-tighter text-white/90 group-hover:text-brandYellow transition-colors">
+                          {step.title.split('(')[0].trim().split(' ').map((word, i) => (
+                            <span key={i} className={['Audit', 'Profit', 'Scale'].includes(word) ? 'text-brandYellow' : ''}>
+                              {word}{' '}
+                            </span>
+                          ))}
+                        </h3>
                         <p className="text-sm lg:text-base text-white/70 font-medium leading-relaxed group-hover:text-white transition-colors">
                           {step.explain}
                         </p>
@@ -433,80 +477,120 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* FINAL CTA (OPTIMIZED) */}
+            {/* FINAL CTA (OPTIMIZED) */}
       <section className="py-20 lg:py-32 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">
         {/* Atmospheric Glow (Recipe 7) */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#fcb6320a_0%,_transparent_70%)]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-brandYellow/5 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brandYellow/5 blur-[150px] rounded-full pointer-events-none"></div>
         
-        <div className="max-w-4xl mx-auto bg-white/[0.03] border border-white/10 rounded-[3rem] lg:rounded-[4rem] p-10 lg:p-20 text-center space-y-10 relative overflow-hidden backdrop-blur-md shadow-2xl">
-          {/* Top Scanline Effect */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brandYellow/40 to-transparent"></div>
+        <div className="max-w-4xl mx-auto text-center space-y-12 lg:space-y-16 relative z-10">
           
-          <div className="space-y-6 relative z-10">
+          <div className="space-y-6">
             <div className="flex flex-col items-center gap-4">
               <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                 <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-[0.3em]">System_Ready_For_Deployment</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-[8px] font-mono text-white/30 uppercase tracking-widest">Version: 4.0.0</span>
-                <div className="w-1 h-1 rounded-full bg-white/10"></div>
-                <span className="text-[8px] font-mono text-white/30 uppercase tracking-widest">Build: STABLE_RELEASE</span>
-              </div>
             </div>
             
-            <h2 className="text-4xl lg:text-5xl font-black text-white tracking-[-0.03em] leading-[1.1] uppercase">
-              Install <br />
-              <span className="text-brandYellow italic">The Profit Engine</span>
+            <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95] uppercase">
+              Still Spending on Ads <br className="hidden md:block" />
+              Without Knowing Your Real Profit?
             </h2>
+            <h3 className="text-xl lg:text-3xl font-black text-brandYellow tracking-tight uppercase">
+              Let’s Fix That — Before You Spend Another ₹1
+            </h3>
             
-            <p className="text-white/60 text-base lg:text-xl max-w-xl mx-auto font-medium leading-relaxed">
-              Stop guessing. Start scaling. Get a clear roadmap to profitable growth and predictable margins.
+            <p className="text-white/60 text-base lg:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+              In the next 15–20 minutes, we’ll break down exactly where your money is leaking — 
+              and what’s stopping your brand from scaling profitably.
             </p>
           </div>
 
-          <div className="relative z-10 pt-4 space-y-10">
-            <div className="flex flex-col items-center gap-8">
+          <div className="space-y-6">
+            {[
+              { text: "Identify hidden profit leaks in your funnel", highlight: ["profit"] },
+              { text: "Understand what’s actually making you money", highlight: [] },
+              { text: "Get clarity on CAC, MER & real margins", highlight: ["CAC", "MER"] },
+              { text: "Walk away with actionable insights", highlight: [] }
+            ].map((bullet, idx) => (
+              <div key={idx} className="flex items-center justify-center gap-3 lg:gap-4 group">
+                <Check className="w-5 h-5 text-brandYellow shrink-0" />
+                <span className="text-white/80 text-base lg:text-xl font-bold group-hover:text-white transition-colors">
+                  {bullet.text.split(' ').map((word, i) => (
+                    <span key={i} className={bullet.highlight.some(h => word.includes(h)) ? 'text-brandYellow' : ''}>
+                      {word}{' '}
+                    </span>
+                  ))}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-10">
+            <div className="inline-block bg-brandYellow/10 border border-brandYellow/20 px-6 py-3 rounded-full">
+              <p className="text-brandYellow font-black text-xs lg:text-sm uppercase tracking-widest flex items-center gap-3">
+                <ShieldCheck className="w-5 h-5" />
+                “If we can’t find improvement opportunities, we won’t pitch you anything.”
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-white font-black text-xl lg:text-2xl tracking-tight uppercase">
+                We work with a limited number of brands at a time
+              </p>
+              <p className="text-white/40 text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.3em]">
+                Due to hands-on involvement
+              </p>
+            </div>
+
+            <div className="relative inline-block">
+              <motion.div 
+                animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 bg-brandYellow blur-3xl rounded-full"
+              />
               <button 
                 onClick={() => onNavigate('contact')}
-                className="group relative px-14 py-7 bg-brandYellow text-brandDark font-black text-[11px] uppercase tracking-[0.5em] rounded-2xl hover:bg-white transition-all duration-700 shadow-[0_0_50px_rgba(252,182,50,0.25)] overflow-hidden scale-100 hover:scale-105 active:scale-95"
+                className="group relative px-16 py-8 bg-brandYellow text-brandDark font-black text-sm lg:text-base uppercase tracking-[0.5em] rounded-2xl hover:bg-white transition-all duration-500 shadow-[0_0_50px_rgba(252,182,50,0.3)] overflow-hidden"
               >
-                <span className="relative z-10">Initiate Profit Audit</span>
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700"></div>
+                <span className="relative z-10 flex items-center gap-4">
+                  Show Me My Profit Gaps
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               </button>
-              
-              <div className="flex flex-wrap items-center justify-center gap-8">
-                {[
-                  { label: "Free_Diagnostic", icon: <Search className="w-3 h-3" /> },
-                  { label: "30_Min_Strategy", icon: <TrendingUp className="w-3 h-3" /> },
-                  { label: "Zero_Commitment", icon: <ShieldCheck className="w-3 h-3" /> }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2.5">
-                    <div className="text-brandYellow opacity-40">{item.icon}</div>
-                    <span className="text-[9px] font-mono text-white/40 uppercase tracking-widest">{item.label}</span>
-                  </div>
-                ))}
-              </div>
             </div>
-            
-            <div className="pt-10 border-t border-white/10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
-              <div className="flex items-center gap-4">
-                <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.2em]">Availability:</p>
-                <p className="text-[10px] font-mono text-white/80 font-bold uppercase tracking-widest">Q2 2024 Slots Opening</p>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <p className="text-white/40 text-[11px] lg:text-[12px] font-bold uppercase tracking-[0.4em]">
+                  No spam. No pressure. Just clarity.
+                </p>
+                <p className="text-brandYellow text-[10px] lg:text-[11px] font-black uppercase tracking-[0.5em]">
+                  Takes 15 minutes. Could save you lakhs.
+                </p>
               </div>
-              <div className="hidden lg:block w-px h-5 bg-white/10"></div>
-              <div className="flex items-center gap-4">
-                <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.2em]">Queue:</p>
-                <p className="text-[10px] font-mono text-white/80 font-bold uppercase tracking-widest">3 Brands In Onboarding</p>
+
+              <div className="pt-12 border-t border-white/5 max-w-md mx-auto space-y-6">
+                <p className="text-white/60 text-[11px] font-black uppercase tracking-[0.3em]">What happens next:</p>
+                <div className="flex flex-col items-center gap-4">
+                  {[
+                    "Fill a quick form",
+                    "Get your audit breakdown",
+                    "Decide if you want to go deeper"
+                  ].map((step, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-brandYellow"></div>
+                      <span className="text-white/40 text-[11px] font-bold uppercase tracking-[0.2em]">{step}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section>      </section>
     </div>
   );
 };
