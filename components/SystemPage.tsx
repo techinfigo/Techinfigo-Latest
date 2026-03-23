@@ -14,6 +14,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
       title: 'Audit (Find Profit Leaks)',
       icon: <Search className="w-6 h-6 text-brandYellow" />,
       explain: 'We break down your funnel, CAC, MER, and hidden costs to identify exactly where your money is leaking.',
+      meaning: 'What this means for you: You’ll know exactly where your money is leaking — and why profit isn’t growing.',
       highlight: 'No scaling until this is fixed.'
     },
     {
@@ -22,6 +23,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
       title: 'Test (Find What Actually Works)',
       icon: <TestTube className="w-6 h-6 text-brandYellow" />,
       explain: 'We run structured creative, offer, and funnel tests to identify winning combinations — not random experiments.',
+      meaning: 'What this means for you: You’ll know which creatives, offers, and products actually drive profitable results.',
       highlight: 'Decisions backed by data, not guesswork.'
     },
     {
@@ -30,6 +32,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
       title: 'Stabilize (Build a Profit Baseline)',
       icon: <ShieldCheck className="w-6 h-6 text-brandYellow" />,
       explain: 'We fix your unit economics and bring consistency before increasing spend.',
+      meaning: 'What this means for you: You’ll have consistent performance instead of unpredictable spikes and drops.',
       highlight: 'Consistency before scaling.'
     },
     {
@@ -38,6 +41,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
       title: 'Scale (Increase Profit, Not Just Spend)',
       icon: <TrendingUp className="w-6 h-6 text-brandYellow" />,
       explain: 'We scale budgets only after your system is stable — without breaking margins.',
+      meaning: 'What this means for you: You’ll be able to increase ad spend without breaking your margins.',
       highlight: 'Scale without killing profitability.'
     },
     {
@@ -46,6 +50,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
       title: 'Retain (Maximize Customer Value)',
       icon: <Users className="w-6 h-6 text-brandYellow" />,
       explain: 'We optimize backend flows like retention, upsells, and repeat purchases to increase LTV.',
+      meaning: 'What this means for you: You’ll make more profit from the same customers through repeat purchases and higher AOV.',
       highlight: 'More profit from the same customers.'
     }
   ];
@@ -296,9 +301,14 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                       
                       <div className="h-px w-8 bg-white/10 mx-auto group-hover:w-16 transition-all duration-500"></div>
                       
-                      <p className="text-[11px] text-white/80 font-medium leading-relaxed group-hover:text-white transition-colors">
-                        {step.explain}
-                      </p>
+                      <div className="space-y-2">
+                        <p className="text-[11px] text-white/80 font-medium leading-relaxed group-hover:text-white transition-colors">
+                          {step.explain}
+                        </p>
+                        <p className="text-[10px] text-white/40 font-medium leading-tight italic">
+                          {step.meaning}
+                        </p>
+                      </div>
 
                       {step.highlight && (
                         <p className="text-[10px] font-bold text-brandYellow uppercase tracking-wider">
@@ -358,7 +368,125 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 4. DEEP BREAKDOWN (STAGGERED TIMELINE) (OPTIMIZED) */}
+      {/* 4. REAL SCENARIO COMPARISON (NEW) */}
+      <section className="py-20 lg:py-32 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto space-y-20 relative z-10">
+          <div className="text-center space-y-6">
+            <h2 className="text-4xl lg:text-6xl font-black tracking-tighter uppercase text-white">
+              How This Plays Out in a <span className="text-brandYellow italic">Real Scenario</span>
+            </h2>
+            <p className="text-white/60 text-lg lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+              Here’s what typically happens when a D2C brand fixes its system before scaling.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0 relative items-center">
+            {/* Visual Flow Arrow (Desktop) */}
+            <div className="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-16 h-16 bg-brandYellow rounded-full items-center justify-center shadow-[0_0_30px_rgba(252,182,50,0.4)]">
+              <ArrowRight className="w-8 h-8 text-brandDark" />
+            </div>
+
+            {/* LEFT SIDE (BEFORE) */}
+            <div className="lg:pr-20 space-y-8 opacity-40 grayscale transition-all duration-700 hover:opacity-60">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                  <span className="text-[10px] font-mono font-bold text-white/40 uppercase tracking-widest">STATUS_QUO</span>
+                </div>
+                <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter text-white">Before Fixing the System</h3>
+              </div>
+
+              <ul className="space-y-6">
+                {[
+                  { label: "Ad Spend", val: "₹10–12L/month" },
+                  { label: "ROAS", val: "4–5x (looks good)" },
+                  { label: "Actual Profit", val: "₹1–1.5L", highlight: true },
+                  { label: "Performance", val: "High CAC and unstable" },
+                  { label: "Clarity", val: "No clarity on real margins" }
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-4 group">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+                    <p className="text-lg font-medium text-white/60">
+                      {item.highlight ? (
+                        <span className="text-brandYellow font-black">{item.val}</span>
+                      ) : (
+                        <span>{item.val}</span>
+                      )}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="text-sm font-bold text-white/40 uppercase tracking-widest italic border-l-2 border-white/10 pl-4">
+                “On the surface, everything looks fine — but profit is barely moving.”
+              </p>
+            </div>
+
+            {/* RIGHT SIDE (AFTER) */}
+            <div className="lg:pl-20 space-y-8 bg-white/[0.03] border border-brandYellow/20 p-10 lg:p-16 rounded-[3rem] shadow-[0_0_60px_rgba(252,182,50,0.05)] relative overflow-hidden group">
+              {/* Subtle Glow */}
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-brandYellow/10 blur-[100px] rounded-full group-hover:bg-brandYellow/20 transition-all duration-700"></div>
+              
+              <div className="space-y-4 relative z-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-brandYellow/10 border border-brandYellow/20 rounded-full">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse"></div>
+                  <span className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-widest">SYSTEM_DEPLOYED</span>
+                </div>
+                <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter text-white">After Fixing the System</h3>
+              </div>
+
+              <ul className="space-y-6 relative z-10">
+                {[
+                  { val: "Same ad spend maintained" },
+                  { val: "₹4–6L monthly profit potential", highlight: true },
+                  { val: "Lower CAC and better margins" },
+                  { val: "Improved AOV and backend revenue" },
+                  { val: "Stable, predictable growth" }
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-4">
+                    <CheckCircle2 className="w-6 h-6 text-brandYellow shrink-0" />
+                    <p className={`text-lg font-bold ${item.highlight ? 'text-brandYellow' : 'text-white/90'}`}>
+                      {item.val}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* CENTER HIGHLIGHT */}
+          <div className="text-center py-12 border-y border-white/5">
+            <p className="text-3xl lg:text-5xl font-black text-white tracking-tighter uppercase leading-tight">
+              Profit improves <span className="text-brandYellow italic">2–4x</span> — <br className="hidden lg:block" />
+              without increasing ad spend
+            </p>
+          </div>
+
+          {/* CTA & TRANSPARENCY */}
+          <div className="flex flex-col items-center gap-10">
+            <div className="flex flex-col items-center gap-4">
+              <button 
+                onClick={() => onNavigate('contact')}
+                className="group relative px-12 py-6 bg-brandYellow text-brandDark font-black text-[11px] uppercase tracking-[0.4em] rounded-2xl hover:bg-white transition-all duration-500 shadow-[0_0_40px_rgba(252,182,50,0.25)] overflow-hidden"
+              >
+                <span className="relative z-10">See My Profit Potential</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+              </button>
+              <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">
+                We’ll show you how this applies to your brand
+              </p>
+            </div>
+
+            <div className="h-px w-24 bg-white/10"></div>
+            
+            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] text-center max-w-md">
+              This is based on common patterns we see across D2C brands — not a single case.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. DEEP BREAKDOWN (STAGGERED TIMELINE) (OPTIMIZED) */}
       <section className="py-20 lg:py-32 px-6 lg:px-12 bg-white/5 relative overflow-hidden border-b border-white/5">
         <div className="max-w-5xl mx-auto space-y-20">
           <div className="text-center space-y-6">
@@ -401,9 +529,14 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                             </span>
                           ))}
                         </h3>
-                        <p className="text-sm lg:text-base text-white/70 font-medium leading-relaxed group-hover:text-white transition-colors">
-                          {step.explain}
-                        </p>
+                        <div className="space-y-3">
+                          <p className="text-sm lg:text-base text-white/70 font-medium leading-relaxed group-hover:text-white transition-colors">
+                            {step.explain}
+                          </p>
+                          <p className="text-xs lg:text-sm text-white/40 font-medium leading-relaxed italic">
+                            {step.meaning}
+                          </p>
+                        </div>
                       </div>
 
                       {step.highlight && (
@@ -444,11 +577,11 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                 <span className="text-[10px] font-mono font-bold uppercase tracking-widest">Competitive_Edge // v1.0</span>
               </div>
               <h2 className="text-4xl lg:text-6xl font-black tracking-[-0.03em] leading-[1] uppercase text-brandDark">
-                Why This <br />
-                <span className="text-brandYellow italic">System</span> Works
+                Why Most <span className="text-brandYellow italic">Systems</span> Fail <br />
+                — And This One Doesn't
               </h2>
               <p className="text-lg lg:text-xl text-brandDark/70 font-medium leading-relaxed max-w-md">
-                We aren't just another agency running ads. We are growth partners who treat your bank balance as our primary KPI.
+                Most growth strategies fail because they focus on performance, not <span className="text-brandYellow font-black">profitability</span>.
               </p>
               
               <div className="pt-8 flex items-center gap-4">
@@ -457,27 +590,70 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
               </div>
             </div>
             
-            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-px bg-brandDark/10 border border-brandDark/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
-              {[
-                { title: "Profit First", desc: "We optimize for contribution margin, not just ROAS or vanity metrics." },
-                { title: "Full Funnel", desc: "We fix the backend (AOV, LTV) before we scale the frontend spend." },
-                { title: "Data Driven", desc: "Every decision is backed by real-time MER and CAC diagnostic data." },
-                { title: "Creative Ops", desc: "Systematic creative testing that identifies winners before they burn out." }
-              ].map((item, i) => (
-                <div key={i} className="bg-white p-10 lg:p-12 space-y-6 group hover:bg-brandYellow transition-colors duration-700">
-                  <span className="text-5xl lg:text-7xl font-black text-brandDark/5 group-hover:text-brandDark/10 transition-colors">0{i + 1}</span>
-                  <div className="space-y-3">
-                    <h3 className="text-2xl lg:text-3xl font-black uppercase tracking-tighter leading-none">{item.title}</h3>
-                    <p className="text-base lg:text-lg text-brandDark/60 group-hover:text-brandDark font-medium leading-relaxed">
-                      {item.desc}
-                    </p>
+            <div className="lg:col-span-7 space-y-12">
+              <div className="grid grid-cols-1 gap-4">
+                {[
+                  { title: "Profit-first approach", desc: "We focus on real contribution margins, not vanity metrics like ROAS." },
+                  { title: "Full-funnel optimization", desc: "We align your ads, backend flows, and retention to maximize every rupee." },
+                  { title: "Data-backed decisions", desc: "Every move is based on real performance data, never on assumptions or 'gut feel'." },
+                  { title: "No scaling until stable", desc: "We never increase ad spend until the system is stable and margins are protected." },
+                  { title: "Long-term Profitability", desc: "We build for sustainable growth, not short-term spikes that kill your cash flow." }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-6 p-8 bg-brandDark/5 rounded-[2rem] border border-brandDark/5 group hover:bg-brandYellow transition-all duration-500">
+                    <div className="w-10 h-10 rounded-full bg-brandDark text-white flex items-center justify-center shrink-0 group-hover:bg-brandDark group-hover:text-brandYellow transition-colors">
+                      <Check className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-2xl font-black uppercase tracking-tight">{item.title}</h3>
+                      <p className="text-brandDark/60 group-hover:text-brandDark font-medium leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
+                ))}
+              </div>
+
+              <div className="text-center space-y-10 pt-8 border-t border-brandDark/10">
+                <p className="text-2xl lg:text-3xl font-black uppercase tracking-tight">
+                  Most agencies optimize for performance. <br />
+                  <span className="text-brandYellow italic">We optimize for profit.</span>
+                </p>
+
+                <div className="space-y-6 max-w-2xl mx-auto">
+                  <p className="text-sm font-bold text-brandDark/40 uppercase tracking-widest">
+                    This system is built on patterns consistently observed across D2C brands — not guesswork.
+                  </p>
+                  
+                  <div className="p-8 bg-brandDark text-white rounded-[2rem] space-y-6 shadow-xl">
+                    <p className="text-xs font-bold text-brandYellow uppercase tracking-[0.3em]">Brands applying this approach typically see:</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                      <div className="space-y-1">
+                        <p className="text-2xl font-black text-white tracking-tight">Improved</p>
+                        <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Profit Margins</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-2xl font-black text-white tracking-tight">Lower</p>
+                        <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">CAC</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-2xl font-black text-white tracking-tight">Stable</p>
+                        <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Scaling</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-lg lg:text-xl font-black uppercase tracking-tight text-brandDark">
+                    What this means for you: <br />
+                    <span className="text-brandYellow italic">You’re not relying on luck — you’re building a system that works.</span>
+                  </p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
-            {/* FINAL CTA (OPTIMIZED) */}
+      </section>
+
+      {/* FINAL CTA (OPTIMIZED) */}
       <section className="py-20 lg:py-32 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">
         {/* Atmospheric Glow (Recipe 7) */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#fcb6320a_0%,_transparent_70%)]"></div>
@@ -494,8 +670,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
             </div>
             
             <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95] uppercase">
-              Still Spending on Ads <br className="hidden md:block" />
-              Without Knowing Your Real Profit?
+              Still Scaling Without Knowing Your Real Profit?
             </h2>
             <h3 className="text-xl lg:text-3xl font-black text-brandYellow tracking-tight uppercase">
               Let’s Fix That — Before You Spend Another ₹1
@@ -590,7 +765,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
             </div>
           </div>
         </div>
-      </section>      </section>
+      </section>
     </div>
   );
 };

@@ -11,7 +11,9 @@ import {
   Zap, 
   ShieldCheck,
   ChevronRight,
-  MinusCircle
+  MinusCircle,
+  TestTube,
+  Users
 } from 'lucide-react';
 
 interface ProfitBreakdownPageProps {
@@ -168,41 +170,77 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
 
       {/* 6. VISUAL FLOW */}
       <section className="py-20 lg:py-32 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20 space-y-4">
             <span className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-[0.4em]">THE_LEAK_MAP</span>
             <h2 className="text-4xl lg:text-6xl font-black tracking-tighter uppercase">The Profit Pipeline</h2>
+            <p className="text-white/40 text-xs lg:text-sm font-medium uppercase tracking-widest">
+              Each step builds on the previous one — skipping a step breaks profitability.
+            </p>
           </div>
 
           <div className="relative flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-4">
             {/* Flow Line */}
-            <div className="absolute top-1/2 left-0 w-full h-px bg-white/10 hidden lg:block -translate-y-1/2"></div>
+            <div className="absolute top-[48px] left-0 w-full h-px bg-white/10 hidden lg:block"></div>
             
             {[
-              { label: "AD_SPEND", val: "₹10L", color: "text-white" },
-              { label: "REVENUE", val: "₹50L", color: "text-emerald-500" },
-              { label: "COSTS", val: "₹48.5L", color: "text-red-500", leak: true },
-              { label: "PROFIT", val: "₹1.5L", color: "text-brandYellow" }
+              { step: "Step 1", label: "Audit", summary: "Find where money is leaking", icon: Search },
+              { step: "Step 2", label: "Test", summary: "Identify what actually works", icon: TestTube },
+              { step: "Step 3", label: "Stabilize", summary: "Make performance consistent", icon: ShieldCheck },
+              { step: "Step 4", label: "Scale", summary: "Increase spend safely", icon: TrendingUp },
+              { step: "Step 5", label: "Retain", summary: "Maximize customer value", icon: Users }
             ].map((node, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-center text-center space-y-4 w-full lg:w-1/4">
-                <div className={`w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-brandDark border-2 ${node.leak ? 'border-red-500 animate-pulse' : 'border-white/10'} flex items-center justify-center shadow-2xl relative`}>
-                  <p className={`text-lg lg:text-xl font-black ${node.color}`}>{node.val}</p>
-                  {node.leak && (
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                      <span className="px-3 py-1 bg-red-500 text-white text-[9px] font-black uppercase rounded-full">MAJOR_LEAK_DETECTED</span>
-                    </div>
-                  )}
+              <div key={i} className="relative z-10 flex flex-col items-center text-center space-y-6 w-full lg:w-1/5 group">
+                <div className="flex flex-col items-center space-y-2">
+                  <span className="text-[10px] font-mono font-bold text-brandYellow uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">
+                    {node.step}
+                  </span>
+                  <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-brandDark border-2 border-white/10 flex items-center justify-center shadow-2xl relative group-hover:border-brandYellow/50 group-hover:shadow-[0_0_30px_rgba(252,182,50,0.2)] transition-all duration-500">
+                    <node.icon className="w-8 h-8 lg:w-10 lg:h-10 text-white/40 group-hover:text-brandYellow transition-colors" />
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-[10px] font-mono text-white/40 uppercase tracking-widest">{node.label}</p>
+                
+                <div className="space-y-2">
+                  <h3 className="text-xl lg:text-2xl font-black text-white uppercase tracking-tighter group-hover:text-brandYellow transition-colors">
+                    {node.label}
+                  </h3>
+                  <p className="text-white/40 text-[11px] lg:text-xs font-medium leading-tight max-w-[140px] mx-auto">
+                    {node.summary}
+                  </p>
                 </div>
-                {i < 3 && (
+
+                {i < 4 && (
                   <div className="lg:hidden">
-                    <ChevronRight className="w-6 h-6 text-white/10 rotate-90" />
+                    <ArrowRight className="w-6 h-6 text-brandYellow/20 rotate-90" />
+                  </div>
+                )}
+                
+                {/* Desktop Arrow Indicator */}
+                {i < 4 && (
+                  <div className="hidden lg:block absolute top-[48px] -right-2 translate-x-1/2 z-20">
+                    <ArrowRight className="w-4 h-4 text-brandYellow/30" />
                   </div>
                 )}
               </div>
             ))}
+          </div>
+
+          <div className="mt-24 space-y-8 text-center">
+            <div className="space-y-2">
+              <p className="text-white/20 text-[10px] lg:text-xs font-bold uppercase tracking-[0.3em]">
+                This isn’t a checklist — it’s a sequence.
+              </p>
+              <p className="text-white/40 text-[11px] lg:text-sm font-medium uppercase tracking-widest">
+                Each step depends on the previous one.
+              </p>
+            </div>
+
+            <div className="pt-8 border-t border-white/5">
+              <p className="text-lg lg:text-2xl font-black uppercase tracking-tight text-white/80">
+                What this means: <br className="lg:hidden" />
+                <span className="text-brandYellow italic">You don’t scale blindly — you scale with clarity and control.</span>
+              </p>
+            </div>
           </div>
         </div>
       </section>

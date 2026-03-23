@@ -182,6 +182,57 @@ export const CreativePage: React.FC<CreativePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
+      {/* In-House Production Capabilities */}
+      <section className="py-24 lg:py-32 px-6 lg:px-12 bg-[#f9f6f2] border-y border-brandDark/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-3 px-4 py-2 bg-brandDark/5 border border-brandDark/10 rounded-full">
+                <span className="text-[10px] font-bold text-brandDark uppercase tracking-[0.25em]">Studio Capabilities</span>
+              </div>
+              <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none">
+                In-House <br />
+                Production <br />
+                Standard.
+              </h2>
+              <p className="text-xl text-brandDark/60 font-medium leading-relaxed max-w-xl">
+                We don't just outsource to random freelancers. We own the production cycle. Our in-house studio is built for high-velocity, high-fidelity D2C content.
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="p-6 bg-white rounded-2xl border border-brandDark/5 shadow-sm">
+                  <h4 className="text-brandDark font-black uppercase tracking-tight mb-2">Pro Lighting</h4>
+                  <p className="text-brandDark/60 text-sm font-medium">Equipped with HIFFIN SL50 3-Point LED systems for cinematic, high-contrast product shots.</p>
+                </div>
+                <div className="p-6 bg-white rounded-2xl border border-brandDark/5 shadow-sm">
+                  <h4 className="text-brandDark font-black uppercase tracking-tight mb-2">High-Fidelity</h4>
+                  <p className="text-brandDark/60 text-sm font-medium">4K RAW capture and professional audio setups for premium brand perception.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="aspect-[4/5] bg-brandDark rounded-[3rem] overflow-hidden shadow-2xl relative group">
+                <img 
+                  src="https://picsum.photos/seed/studio/800/1000" 
+                  alt="In-House Studio" 
+                  className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brandDark via-transparent to-transparent"></div>
+                <div className="absolute bottom-10 left-10 right-10">
+                  <div className="p-6 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl">
+                    <p className="text-white font-bold text-sm tracking-tight italic">"The difference between a ₹500 CAC and a ₹200 CAC is often just the lighting and hook."</p>
+                  </div>
+                </div>
+              </div>
+              {/* Decorative nodes */}
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-brandYellow/10 rounded-full blur-3xl -z-10"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 px-6 lg:px-12 bg-brandYellow relative overflow-hidden">
         <div className="max-w-4xl mx-auto text-center space-y-10 relative z-10">

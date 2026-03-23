@@ -11,6 +11,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
       num: "1",
       title: "Audit (Find Profit Leaks)",
       desc: "We break down your funnel, CAC, MER, and hidden costs to identify exactly where you’re losing money.",
+      meaning: "What this means for you: You’ll know exactly where your money is leaking — and why profit isn’t growing.",
       highlight: "No scaling until this is fixed.",
       icon: <Search className="w-5 h-5 lg:w-6 lg:h-6 text-brandYellow" />
     },
@@ -18,6 +19,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
       num: "2",
       title: "Test (Find What Actually Works)",
       desc: "We run structured creative and offer tests to identify winning combinations — not random experiments.",
+      meaning: "What this means for you: You’ll know which creatives, offers, and products actually drive profitable results.",
       highlight: "Data-backed decisions only.",
       icon: <FlaskConical className="w-5 h-5 lg:w-6 lg:h-6 text-brandYellow" />
     },
@@ -25,6 +27,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
       num: "3",
       title: "Stabilize (Build a Profit Baseline)",
       desc: "We fix your unit economics and bring consistency before increasing spend.",
+      meaning: "What this means for you: You’ll have consistent performance instead of unpredictable spikes and drops.",
       highlight: "Consistent profit > random spikes",
       icon: <ShieldCheck className="w-5 h-5 lg:w-6 lg:h-6 text-brandYellow" />
     },
@@ -32,6 +35,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
       num: "4",
       title: "Scale (Increase Profit, Not Just Spend)",
       desc: "Once your system is stable, we scale budgets using proven winners — without breaking margins.",
+      meaning: "What this means for you: You’ll be able to increase ad spend without breaking your margins.",
       highlight: "Scale without killing profitability",
       icon: <TrendingUp className="w-5 h-5 lg:w-6 lg:h-6 text-brandYellow" />
     },
@@ -39,6 +43,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
       num: "5",
       title: "Retain (Maximize LTV & Repeat Revenue)",
       desc: "We optimize backend flows like retention, upsells, and repeat purchases to increase lifetime value.",
+      meaning: "What this means for you: You’ll make more profit from the same customers through repeat purchases and higher AOV.",
       highlight: "More profit from same customers",
       icon: <Users className="w-5 h-5 lg:w-6 lg:h-6 text-brandYellow" />
     }
@@ -85,9 +90,14 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
                   <h3 className="text-base lg:text-lg font-black text-[#001d21] tracking-tight leading-tight">
                     {step.title}
                   </h3>
-                  <p className="text-[#001d21]/50 text-[11px] lg:text-xs font-medium leading-relaxed">
-                    {step.desc}
-                  </p>
+                  <div className="space-y-2">
+                    <p className="text-[#001d21]/50 text-[11px] lg:text-xs font-medium leading-relaxed">
+                      {step.desc}
+                    </p>
+                    <p className="text-[#001d21]/30 text-[10px] lg:text-[11px] font-medium leading-tight italic">
+                      {step.meaning}
+                    </p>
+                  </div>
                   <div className="pt-3 border-t border-[#001d21]/5 w-full">
                     <span className="text-[9px] font-black text-brandYellow uppercase tracking-widest">
                       {step.highlight}
