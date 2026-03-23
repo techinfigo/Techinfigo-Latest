@@ -11,12 +11,13 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
       <div className="max-w-6xl mx-auto w-full flex flex-col justify-center h-full">
         {/* Header Section */}
         <div className="text-center mb-4 lg:mb-6 space-y-1 lg:space-y-3 animate-slide-up">
-          <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.5em] uppercase text-[#a5a5a5] block">QUALIFICATION STEP</span>
+          <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.5em] uppercase text-[#a5a5a5] block">KNOW WHERE YOU STAND</span>
           <h2 className="text-2xl lg:text-4xl font-black text-[#001d1a] tracking-tight leading-tight">
             Which Stage Is Your Brand <br className="hidden lg:block" /> In Right Now?
           </h2>
           <p className="text-[#001d1a]/60 text-xs lg:text-base font-medium max-w-xl mx-auto leading-relaxed">
-            Most D2C brands don’t fail because of ads — they fail because they scale without fixing fundamentals.
+            Most D2C brands don’t fail because of ads — <br className="hidden lg:block" />
+            they fail because they scale without fixing fundamentals.
           </p>
         </div>
 
@@ -37,9 +38,9 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
               <div className="space-y-2 lg:space-y-3">
                 {[
                   "Spending ₹2L+/month on ads",
-                  "Looking beyond ROAS (focus on profit)",
+                  "Looking beyond ROAS (focused on profit)",
+                  "Already getting orders but margins unstable",
                   "Want predictable, repeatable growth",
-                  "Already getting orders but profit unstable",
                   "Ready to fix backend before scaling"
                 ].map((point, idx) => (
                   <div key={idx} className="flex items-center gap-2 lg:gap-3 group/item">
@@ -63,17 +64,17 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
           <div className="flex-1 bg-[#fcfcfc] p-5 lg:p-8 flex flex-col relative overflow-hidden group/gambler">
             <div className="relative z-10 space-y-4 lg:space-y-6 flex-grow flex flex-col justify-between">
               <div className="space-y-1">
-                <h3 className="text-lg lg:text-xl font-black text-[#001d1a] tracking-tight uppercase leading-none">Brands Still Figuring It Out</h3>
-                <p className="text-[#001d1a]/40 text-[7px] lg:text-[8px] font-black uppercase tracking-[0.25em] opacity-80">This is completely normal at early stages</p>
+                <h3 className="text-lg lg:text-xl font-black text-[#001d1a] tracking-tight uppercase leading-none">Brands Still Building the Foundation</h3>
+                <p className="text-[#001d1a]/40 text-[7px] lg:text-[8px] font-black uppercase tracking-[0.25em] opacity-80">This is completely normal in early stages</p>
               </div>
 
               <div className="space-y-2 lg:space-y-3">
                 {[
-                  "Testing ads with small budgets",
-                  "Focusing only on ROAS or quick wins",
-                  "No clear funnel or backend system",
-                  "Scaling based on guesswork",
-                  "Inconsistent sales & performance"
+                  "Testing ads with smaller budgets",
+                  "Focusing on quick wins (ROAS)",
+                  "No clear funnel or backend system yet",
+                  "Scaling based on trial and error",
+                  "Inconsistent sales performance"
                 ].map((point, idx) => (
                   <div key={idx} className="flex items-center gap-2 lg:gap-3">
                     <div className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[#001d1a]/20 shrink-0"></div>
@@ -84,11 +85,18 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
 
               <div className="pt-3 border-t border-black/5">
                 <p className="text-[#001d1a]/50 text-xs lg:text-sm font-bold italic leading-relaxed">
-                  “If you’re here, focus on building basics first — scaling comes next.”
+                  “If you’re here, focus on building your basics first — scaling comes next.”
                 </p>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Micro Guidance Line */}
+        <div className="mt-4 text-center animate-slide-up" style={{ animationDelay: '0.15s' }}>
+          <p className="text-[#001d1a]/30 text-[9px] lg:text-[11px] font-bold uppercase tracking-[0.2em]">
+            Clarity on your stage = better decisions = better growth
+          </p>
         </div>
 
         {/* Bottom CTA */}
@@ -99,7 +107,7 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
               onClick={onBookAudit}
               className="relative px-6 lg:px-8 py-2.5 lg:py-3.5 bg-[#001d1a] text-white font-black text-[10px] lg:text-[12px] uppercase tracking-[0.2em] rounded-xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2"
             >
-              Get Free Profit Audit
+              Check My Growth Stage
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

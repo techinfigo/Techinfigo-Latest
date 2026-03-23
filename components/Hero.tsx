@@ -26,11 +26,11 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
         {/* Left Content Column */}
         <div className="lg:col-span-7 flex flex-col items-start space-y-4 lg:space-y-6 animate-slide-up">
           
-          {/* Status Badge */}
+          {/* Trust Line */}
           <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-brandYellow/10 border border-brandYellow/30 rounded-full shadow-[0_0_20px_rgba(252,182,50,0.1)]">
-            <div className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse shadow-[0_0_10px_#fcb632]"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse shadow-[0_0_10px_#fcb632"></div>
             <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.2em]">
-              FOR D2C BRANDS SPENDING ₹2L+ ON ADS
+              Used by D2C brands scaling from ₹20L to ₹2Cr/month
             </span>
           </div>
 
@@ -41,8 +41,8 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               on Ads… <br />
               But Profit Still Stuck?
             </h1>
-            <h2 className="text-[clamp(0.9rem,1.5vw,1.5rem)] font-bold text-brandYellow leading-tight font-sans">
-              We Fix Your Unit Economics — Not Just Your Ads.
+            <h2 className="text-[clamp(0.9rem,1.5vw,1.5rem)] font-bold text-white leading-tight font-sans">
+              We Fix Your <span className="text-brandYellow">Unit Economics</span> — Not Just Your Ads.
             </h2>
           </div>
 
@@ -51,9 +51,9 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
             <div className="border-l-2 border-brandYellow pl-4 py-0.5">
               <p className="text-[clamp(0.9rem,1.1vw,1.15rem)] text-white/80 leading-relaxed font-medium">
                 You’re getting orders. Revenue looks good. <br />
-                But at the end of the month — <span className="relative inline-block px-1.5 py-0.25">
-                  <span className="absolute inset-0 bg-brandYellow/20 -skew-x-6 rounded-sm"></span>
-                  <span className="relative z-10 text-white font-bold border-b-2 border-brandYellow">profit doesn’t move.</span>
+                But at the end of the month — profit doesn’t move. <br />
+                <span className="text-white/40 text-[0.85em] uppercase tracking-wider mt-2 block font-bold">
+                  That’s because you’re scaling revenue, not profitability.
                 </span>
               </p>
             </div>
@@ -63,7 +63,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 lg:gap-3.5 w-full max-w-xl">
             {[
               "Fix CAC & MER before scaling",
-              "Identify funnel leaks & wasted spend",
+              "Identify hidden profit leaks",
               "Build predictable profit systems"
             ].map((bullet, i) => (
               <div key={i} className="flex items-center gap-2.5 group">
@@ -76,17 +76,22 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           {/* CTA Section */}
           <div className="flex flex-col items-start space-y-4 pt-1 lg:pt-2">
             <div className="flex flex-col sm:flex-row items-center gap-5 lg:gap-8 w-full sm:w-auto">
-              <div className="relative group w-full sm:w-auto">
-                {/* Glow behind button */}
-                <div className="absolute -inset-1 bg-brandYellow/20 rounded-xl blur-xl group-hover:bg-brandYellow/30 transition-all"></div>
-                
-                <button 
-                  onClick={onBookAudit}
-                  className="relative w-full sm:w-auto px-8 py-3.5 lg:px-10 lg:py-4 bg-brandYellow text-brandDark font-black text-[11px] lg:text-[12px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2.5"
-                >
-                  Get Free Profit Audit
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+              <div className="flex flex-col items-center sm:items-start gap-3">
+                <div className="relative group w-full sm:w-auto">
+                  {/* Glow behind button */}
+                  <div className="absolute -inset-1 bg-brandYellow/20 rounded-xl blur-xl group-hover:bg-brandYellow/30 transition-all"></div>
+                  
+                  <button 
+                    onClick={onBookAudit}
+                    className="relative w-full sm:w-auto px-8 py-3.5 lg:px-10 lg:py-4 bg-brandYellow text-brandDark font-black text-[11px] lg:text-[12px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2.5"
+                  >
+                    Find My Profit Leaks
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                <p className="text-[9px] font-mono text-white/30 uppercase tracking-widest">
+                  Takes 15 minutes. Could save you lakhs.
+                </p>
               </div>
 
               <button 
