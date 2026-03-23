@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
 
   const navLinks = [
     { name: 'Home', id: 'home' },
-    { name: 'Case Studies', id: 'case-studies' },
+    { name: 'Profit Breakdown', id: 'profit-breakdown' },
     { name: 'The System', id: 'system' },
   ];
 

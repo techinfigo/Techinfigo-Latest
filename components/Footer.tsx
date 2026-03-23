@@ -62,7 +62,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                 <button onClick={() => onNavigate('home')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Home</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('case-studies')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Case Studies</button>
+                <button onClick={() => onNavigate('profit-breakdown')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Profit Breakdown</button>
               </li>
               <li>
                 <button onClick={() => onNavigate('system')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">The System</button>

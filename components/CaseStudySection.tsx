@@ -3,22 +3,23 @@ import { Check, ArrowRight, TrendingUp, Quote } from 'lucide-react';
 
 interface CaseStudySectionProps {
   onBookAudit?: () => void;
+  onNavigate?: (page: string) => void;
 }
 
-export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit }) => {
+export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit, onNavigate }) => {
   return (
     <section id="case-studies" className="w-full py-12 lg:py-20 px-6 bg-[#f9f6f2] font-sans overflow-hidden lg:min-h-screen flex flex-col justify-center">
       <div className="max-w-7xl mx-auto space-y-4 lg:space-y-6">
         
         {/* 1. SECTION HEADER */}
         <div className="text-center space-y-2 lg:space-y-3 max-w-3xl mx-auto animate-slide-up">
-          <span className="text-[9px] font-bold tracking-[0.4em] uppercase text-brandYellow block">WHAT THIS LOOKS LIKE IN REALITY</span>
+          <span className="text-[9px] font-bold tracking-[0.4em] uppercase text-brandYellow block">WHERE YOUR PROFIT IS ACTUALLY GOING</span>
           <h2 className="text-2xl lg:text-4xl xl:text-5xl font-black text-brandDark tracking-tighter leading-[0.95]">
-            How D2C Brands Typically Increase Profit <br />
-            Without Increasing Ad Spend
+            The Typical D2C Profit Leak <br />
+            (And How We Fix It)
           </h2>
           <p className="text-brandDark/60 text-sm lg:text-base font-medium">
-            This is based on common patterns we see across D2C brands — not a single case.
+            We don't show fake case studies. We show real patterns we consistently see across D2C brands.
           </p>
         </div>
 
@@ -114,14 +115,25 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit 
         </div>
 
         {/* 8. CTA BUTTON */}
-        <div className="text-center space-y-3 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
           <button 
             onClick={onBookAudit}
-            className="group relative px-8 py-4 bg-brandYellow text-brandDark font-black text-[9px] lg:text-[10px] uppercase tracking-[0.3em] rounded-xl hover:bg-white transition-all shadow-glow overflow-hidden"
+            className="group relative px-8 py-4 bg-brandYellow text-brandDark font-black text-[9px] lg:text-[10px] uppercase tracking-[0.3em] rounded-xl hover:bg-white transition-all shadow-glow overflow-hidden w-full sm:w-auto"
           >
             <span className="relative z-10">See My Profit Potential</span>
             <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
           </button>
+          
+          {onNavigate && (
+            <button 
+              onClick={() => onNavigate('profit-breakdown')}
+              className="group px-8 py-4 border border-brandDark/10 text-brandDark font-black text-[9px] lg:text-[10px] uppercase tracking-[0.3em] rounded-xl hover:bg-brandDark hover:text-white transition-all w-full sm:w-auto"
+            >
+              See Full Breakdown
+            </button>
+          )}
+        </div>
+        <div className="text-center">
           <p className="text-brandDark/40 text-[8px] font-bold uppercase tracking-[0.2em]">
             We’ll show you what this could look like for your brand
           </p>

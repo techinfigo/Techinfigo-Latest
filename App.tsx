@@ -21,6 +21,7 @@ import { PrivacyPage } from './components/PrivacyPage';
 import { TermsPage } from './components/TermsPage';
 import { SitemapPage } from './components/SitemapPage';
 import { CaseStudiesPage } from './components/CaseStudiesPage';
+import { ProfitBreakdownPage } from './components/ProfitBreakdownPage';
 import { Footer } from './components/Footer';
 import { PerformanceAdsPage } from './components/PerformanceAdsPage';
 import { CROPage } from './components/CROPage';
@@ -65,7 +66,7 @@ const App: React.FC = () => {
           {/* INTEGRATED: Growth Lifecycle */}
           <GrowthLifecycle onBookAudit={() => navigateTo('contact')} />
 
-          <CaseStudySection onBookAudit={() => navigateTo('contact')} />
+          <CaseStudySection onBookAudit={() => navigateTo('contact')} onNavigate={navigateTo} />
           <TestimonialsSection onBookAudit={() => navigateTo('contact')} />
           <RevenueAccelerator onBookAudit={() => navigateTo('contact')} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
@@ -76,6 +77,13 @@ const App: React.FC = () => {
       {currentPage === 'case-studies' && (
         <div className="animate-slide-up">
           <CaseStudiesPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+        </div>
+      )}
+
+      {currentPage === 'profit-breakdown' && (
+        <div className="animate-slide-up">
+          <ProfitBreakdownPage onNavigate={navigateTo} />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
         </div>
       )}
