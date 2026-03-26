@@ -215,7 +215,6 @@ const App: React.FC = () => {
             onNavigate={navigateTo}
             onBookAudit={() => navigateTo('lead-capture')}
           />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 

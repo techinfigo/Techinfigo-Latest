@@ -19,7 +19,6 @@ import {
   TrendingUp,
   Users
 } from 'lucide-react';
-import { InteractiveLeadForm } from './InteractiveLeadForm';
 
 interface AgraLandingPageProps {
   onNavigate: (page: string) => void;
@@ -241,7 +240,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             </div>
 
             <div className="relative">
-              <div className="aspect-square bg-brandBg rounded-[3rem] overflow-hidden border border-brandDark/5 flex items-center justify-center p-12">
+              <div className="aspect-square bg-brandBg rounded-[3rem] overflow-hidden border border-brandDark/20 flex items-center justify-center p-12 shadow-inner">
                 <div className="text-center space-y-6">
                   <div className="w-20 h-20 bg-brandYellow rounded-full flex items-center justify-center mx-auto shadow-2xl">
                     <Zap className="w-10 h-10 text-brandDark" />
@@ -257,7 +256,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                 </div>
               </div>
               {/* Floating badges */}
-              <div className="absolute -top-6 -right-6 bg-white shadow-2xl p-4 rounded-2xl border border-brandDark/5 animate-bounce-subtle">
+              <div className="absolute -top-6 -right-6 bg-white shadow-2xl p-4 rounded-2xl border border-brandDark/20 animate-bounce-subtle">
                 <p className="text-[10px] font-black uppercase text-brandDark/40">Efficiency</p>
                 <p className="text-lg font-black text-brandDark">+42%</p>
               </div>
@@ -283,10 +282,10 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             {services.map((service, i) => (
               <motion.div 
                 key={i}
-                whileHover={{ y: -10 }}
-                className="bg-white p-10 rounded-[2.5rem] border border-brandDark/5 shadow-sm hover:shadow-2xl transition-all duration-500 group"
+                whileHover={{ y: -12, scale: 1.02 }}
+                className="bg-white p-10 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:border-brandYellow/40 transition-all duration-500 group"
               >
-                <div className="w-14 h-14 bg-brandDark/5 rounded-2xl flex items-center justify-center text-brandDark group-hover:bg-brandYellow transition-colors duration-500 mb-8">
+                <div className="w-14 h-14 bg-brandDark/5 rounded-2xl flex items-center justify-center text-brandDark group-hover:bg-brandYellow transition-colors duration-500 mb-8 shadow-inner border border-brandDark/5">
                   {service.icon}
                 </div>
                 <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight mb-4 leading-tight">
@@ -366,7 +365,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
       </section>
 
       {/* SECTION 5: PROCESS */}
-      <section className="py-24 px-6 lg:px-12 bg-white">
+      <section className="py-24 px-6 lg:px-12 bg-brandBg/50">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center space-y-4">
             <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">The Roadmap</span>
@@ -377,15 +376,15 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
             {/* Connector line for desktop */}
-            <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-brandDark/5 -translate-y-1/2 z-0"></div>
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-brandDark/10 -translate-y-1/2 z-0"></div>
             
             {[
               { step: "01", title: "Free Audit", desc: "We analyze your current digital presence and identify profit leaks.", icon: <Search className="w-6 h-6" /> },
               { step: "02", title: "Strategy Plan", desc: "We build a custom growth roadmap with clear KPIs and timelines.", icon: <Target className="w-6 h-6" /> },
               { step: "03", title: "Execution & Growth", desc: "Our team deploys and optimizes, driving real-time results.", icon: <Zap className="w-6 h-6" /> }
             ].map((item, i) => (
-              <div key={i} className="relative z-10 bg-white p-8 rounded-[2.5rem] border border-brandDark/5 shadow-sm hover:shadow-xl transition-all duration-300 text-center space-y-6">
-                <div className="w-16 h-16 bg-brandDark text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black">
+              <div key={i} className="relative z-10 bg-white p-8 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-brandYellow/30 transition-all duration-300 text-center space-y-6">
+                <div className="w-16 h-16 bg-brandDark text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-xl">
                   {item.step}
                 </div>
                 <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">{item.title}</h3>
@@ -469,13 +468,13 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
 
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="border border-brandDark/5 rounded-2xl overflow-hidden">
+              <div key={i} className="border border-brandDark/20 rounded-2xl overflow-hidden bg-white shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-all duration-300">
                 <button 
                   onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-brandDark/[0.02] transition-colors"
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-brandDark/[0.01] transition-colors"
                 >
                   <span className="text-sm font-black uppercase tracking-tight text-brandDark">{faq.q}</span>
-                  <ChevronDown className={`w-5 h-5 text-brandDark/20 transition-transform duration-300 ${activeFaq === i ? 'rotate-180 text-brandYellow' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-brandDark/40 transition-transform duration-300 ${activeFaq === i ? 'rotate-180 text-brandYellow' : ''}`} />
                 </button>
                 <motion.div 
                   initial={false}
@@ -488,25 +487,6 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                 </motion.div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 9: FORM SECTION */}
-      <section id="audit-form" className="py-24 px-6 lg:px-12 bg-brandBg">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase">Start Your Audit.</h2>
-            <p className="text-brandDark/40 text-lg font-medium">Fill out the form below and our Agra growth team will get back to you.</p>
-          </div>
-          
-          {/* Reusing the InteractiveLeadForm component */}
-          <div className="max-w-5xl mx-auto">
-            <InteractiveLeadForm 
-              onBack={() => onNavigate('home')} 
-              onNavigate={onNavigate}
-              onBookAudit={onBookAudit}
-            />
           </div>
         </div>
       </section>
