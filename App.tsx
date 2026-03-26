@@ -23,6 +23,7 @@ import { SitemapPage } from './components/SitemapPage';
 import { CaseStudiesPage } from './components/CaseStudiesPage';
 import { ProfitBreakdownPage } from './components/ProfitBreakdownPage';
 import { InteractiveLeadForm } from './components/InteractiveLeadForm';
+import { AgraLandingPage } from './components/AgraLandingPage';
 import { Footer } from './components/Footer';
 import { PerformanceAdsPage } from './components/PerformanceAdsPage';
 import { CROPage } from './components/CROPage';
@@ -204,6 +205,16 @@ const App: React.FC = () => {
       {currentPage === 'sitemap' && (
         <div className="animate-slide-up">
           <SitemapPage onNavigate={navigateTo} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
+        </div>
+      )}
+
+      {currentPage === 'agra-landing' && (
+        <div className="animate-slide-up">
+          <AgraLandingPage 
+            onNavigate={navigateTo}
+            onBookAudit={() => navigateTo('lead-capture')}
+          />
           <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}

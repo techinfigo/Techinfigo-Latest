@@ -92,6 +92,16 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             </ul>
           </div>
 
+          {/* Local */}
+          <div className="lg:col-span-2 space-y-6">
+            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Local</h4>
+            <ul className="space-y-3 lg:space-y-4">
+              <li>
+                <button onClick={() => onNavigate('agra-landing')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Agra Agency</button>
+              </li>
+            </ul>
+          </div>
+
           {/* HQ Terminal Card */}
           <div className="lg:col-span-3">
             <div className="bg-[#002a2f] border border-white/5 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/10">
