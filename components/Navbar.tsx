@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
     setMobileMenuOpen(false);
   };
 
-  const isLightNav = isScrolled || ['contact', 'how-it-works', 'qualification', 'careers', 'privacy', 'terms', 'sitemap'].includes(activePage);
+  const isLightNav = isScrolled || ['contact', 'lead-capture', 'how-it-works', 'qualification', 'careers', 'privacy', 'terms', 'sitemap'].includes(activePage);
 
   return (
     <>
@@ -78,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
           {/* CTA Button */}
           <div className="flex items-center gap-4">
             <button 
-              onClick={() => onNavigate('contact')}
+              onClick={() => onNavigate('lead-capture')}
               className="hidden md:block px-6 py-2.5 bg-[#fcb632] text-brandDark text-[11px] font-bold uppercase tracking-[0.15em] rounded-full shadow-[0_0_15px_rgba(252,182,50,0.3)] hover:shadow-[0_0_25px_rgba(252,182,50,0.5)] hover:scale-105 transition-all duration-300"
             >
               Free Audit
@@ -110,7 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage }) => {
             </button>
           ))}
           <button 
-            onClick={() => handleLinkClick('contact')}
+            onClick={() => handleLinkClick('lead-capture')}
             className="w-full max-w-[280px] bg-[#fcb632] text-brandDark py-4 rounded-full text-sm font-bold uppercase tracking-[0.2em] shadow-lg text-center"
           >
             Free Audit

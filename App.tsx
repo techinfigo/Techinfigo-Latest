@@ -22,6 +22,7 @@ import { TermsPage } from './components/TermsPage';
 import { SitemapPage } from './components/SitemapPage';
 import { CaseStudiesPage } from './components/CaseStudiesPage';
 import { ProfitBreakdownPage } from './components/ProfitBreakdownPage';
+import { LeadCapturePage } from './components/LeadCapturePage';
 import { Footer } from './components/Footer';
 import { PerformanceAdsPage } from './components/PerformanceAdsPage';
 import { CROPage } from './components/CROPage';
@@ -59,17 +60,17 @@ const App: React.FC = () => {
       
       {currentPage === 'home' && (
         <div className="animate-fade-in">
-          <Hero onBookAudit={() => navigateTo('contact')} />
-          <QualificationProtocol onBookAudit={() => navigateTo('contact')} />
-          <DiagnosticSection onBookAudit={() => navigateTo('contact')} />
+          <Hero onBookAudit={() => navigateTo('lead-capture')} />
+          <QualificationProtocol onBookAudit={() => navigateTo('lead-capture')} />
+          <DiagnosticSection onBookAudit={() => navigateTo('lead-capture')} />
 
           {/* INTEGRATED: Growth Lifecycle */}
-          <GrowthLifecycle onBookAudit={() => navigateTo('contact')} />
+          <GrowthLifecycle onBookAudit={() => navigateTo('lead-capture')} />
 
-          <CaseStudySection onBookAudit={() => navigateTo('contact')} onNavigate={navigateTo} />
-          <TestimonialsSection onBookAudit={() => navigateTo('contact')} />
-          <RevenueAccelerator onBookAudit={() => navigateTo('contact')} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <CaseStudySection onBookAudit={() => navigateTo('lead-capture')} onNavigate={navigateTo} />
+          <TestimonialsSection onBookAudit={() => navigateTo('lead-capture')} />
+          <RevenueAccelerator onBookAudit={() => navigateTo('lead-capture')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
@@ -77,133 +78,133 @@ const App: React.FC = () => {
       {currentPage === 'case-studies' && (
         <div className="animate-slide-up">
           <CaseStudiesPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'profit-breakdown' && (
         <div className="animate-slide-up">
           <ProfitBreakdownPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'about' && (
         <div className="animate-slide-up">
           <AboutPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'system' && (
         <div className="animate-slide-up">
           <SystemPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'services' && (
         <div className="animate-slide-up">
           <ServicesPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'performance-ads' && (
         <div className="animate-slide-up">
           <PerformanceAdsPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'cro' && (
         <div className="animate-slide-up">
           <CROPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'seo' && (
         <div className="animate-slide-up">
           <SEOPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'retention' && (
         <div className="animate-slide-up">
           <RetentionPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'automation' && (
         <div className="animate-slide-up">
           <AutomationPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'creative' && (
         <div className="animate-slide-up">
           <CreativePage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService === 'influencer' && (
         <div className="animate-slide-up">
           <InfluencerPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'service-detail' && selectedService && selectedService !== 'performance-ads' && selectedService !== 'cro' && selectedService !== 'seo' && selectedService !== 'retention' && selectedService !== 'automation' && selectedService !== 'creative' && selectedService !== 'influencer' && (
         <div className="animate-slide-up">
           <ServiceDetailPage serviceId={selectedService} onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'how-it-works' && (
         <div className="animate-slide-up">
           <HowItWorksPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'qualification' && (
         <div className="animate-slide-up">
           <QualificationPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'careers' && (
         <div className="animate-slide-up">
           <CareersPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'privacy' && (
         <div className="animate-slide-up">
           <PrivacyPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'terms' && (
         <div className="animate-slide-up">
           <TermsPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
       {currentPage === 'sitemap' && (
         <div className="animate-slide-up">
           <SitemapPage onNavigate={navigateTo} />
-          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('contact')} />
+          <Footer onNavigate={navigateTo} onBookAudit={() => navigateTo('lead-capture')} />
         </div>
       )}
 
@@ -212,7 +213,17 @@ const App: React.FC = () => {
           <ContactPage 
             onBack={() => navigateTo('home')} 
             onNavigate={navigateTo}
-            onBookAudit={() => navigateTo('contact')}
+            onBookAudit={() => navigateTo('lead-capture')}
+          />
+        </div>
+      )}
+
+      {currentPage === 'lead-capture' && (
+        <div className="animate-slide-up">
+          <LeadCapturePage 
+            onBack={() => navigateTo('home')} 
+            onNavigate={navigateTo}
+            onBookAudit={() => navigateTo('lead-capture')}
           />
         </div>
       )}
