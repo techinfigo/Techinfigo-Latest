@@ -148,7 +148,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
             Our talent engine is reviewing your credentials. If there is a sync, you will receive a WhatsApp notification within 48 hours.
           </p>
           <button onClick={() => onNavigate('home')} className="inline-block mt-8 text-brandDark font-bold uppercase tracking-widest text-xs border-b-2 border-brandYellow pb-1 transition-all hover:text-brandYellow">
-            Return to Command Center
+            Go Back to Home
           </button>
         </div>
       </div>

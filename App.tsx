@@ -22,7 +22,7 @@ import { TermsPage } from './components/TermsPage';
 import { SitemapPage } from './components/SitemapPage';
 import { CaseStudiesPage } from './components/CaseStudiesPage';
 import { ProfitBreakdownPage } from './components/ProfitBreakdownPage';
-import { LeadCapturePage } from './components/LeadCapturePage';
+import { InteractiveLeadForm } from './components/InteractiveLeadForm';
 import { Footer } from './components/Footer';
 import { PerformanceAdsPage } from './components/PerformanceAdsPage';
 import { CROPage } from './components/CROPage';
@@ -220,7 +220,7 @@ const App: React.FC = () => {
 
       {currentPage === 'lead-capture' && (
         <div className="animate-slide-up">
-          <LeadCapturePage 
+          <InteractiveLeadForm 
             onBack={() => navigateTo('home')} 
             onNavigate={navigateTo}
             onBookAudit={() => navigateTo('lead-capture')}

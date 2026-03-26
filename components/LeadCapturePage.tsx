@@ -218,25 +218,90 @@ export const LeadCapturePage: React.FC<LeadCapturePageProps> = ({ onBack, onNavi
       <div className="min-h-screen bg-brandBg flex flex-col font-sans">
         <div className="flex-grow flex items-center justify-center px-6 py-20">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center space-y-8 max-w-2xl mx-auto"
+            className="text-center space-y-12 max-w-3xl mx-auto"
           >
-            <div className="w-24 h-24 bg-brandYellow rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
-              <Check className="w-12 h-12 text-brandDark" strokeWidth={3} />
+            {/* Success Header */}
+            <div className="space-y-4">
+              <div className="w-20 h-20 bg-brandYellow rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-brandYellow/20">
+                <Check className="w-10 h-10 text-brandDark" strokeWidth={3} />
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brandDark">
+                APPLICATION LOGGED.
+              </h2>
+              <p className="text-brandDark/60 text-lg font-medium max-w-xl mx-auto">
+                Your data is being processed by our growth engineers. We'll be in touch shortly.
+              </p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-brandDark">
-              Thank you!
-            </h2>
-            <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
-              If your business is a good fit, our team will contact you within 24 hours.
-            </p>
-            <div className="pt-8">
+
+            {/* The 3 Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { title: "Review Data", desc: "Our team analyzes your unit economics.", icon: <BarChart3 className="w-6 h-6" /> },
+                { title: "Identify Leaks", desc: "We find exactly where you're losing money.", icon: <Zap className="w-6 h-6" /> },
+                { title: "Share Audit", desc: "We deliver your custom scaling roadmap.", icon: <Target className="w-6 h-6" /> }
+              ].map((card, i) => (
+                <div key={i} className="bg-white p-8 rounded-[2rem] border border-brandDark/5 shadow-xl space-y-4 text-left relative overflow-hidden group hover:border-brandYellow/50 transition-colors">
+                  <div className="w-12 h-12 bg-brandDark/5 rounded-2xl flex items-center justify-center text-brandDark group-hover:bg-brandYellow transition-colors">
+                    {card.icon}
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="font-black uppercase text-sm tracking-tight">{card.title}</h3>
+                    <p className="text-brandDark/40 text-xs leading-relaxed font-medium">{card.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Primary Action */}
+            <div className="space-y-8 pt-4">
+              <div className="space-y-4">
+                <button 
+                  onClick={() => window.open('https://calendly.com', '_blank')}
+                  className="w-full md:w-auto px-12 py-6 bg-[#fcb632] text-brandDark font-black text-lg uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-brandYellow/30"
+                >
+                  Book Your Audit Call
+                </button>
+                
+                <div className="flex flex-col items-center gap-4">
+                  <a 
+                    href="https://wa.me/yournumber" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-brandDark/60 hover:text-brandDark font-bold text-sm flex items-center gap-2 transition-colors"
+                  >
+                    Want faster response? <span className="text-[#25D366] underline">Chat on WhatsApp</span>
+                  </a>
+                  
+                  <p className="text-brandYellow text-[11px] font-black uppercase tracking-[0.3em] animate-pulse">
+                    You’ll receive your audit within 24 hours
+                  </p>
+                </div>
+              </div>
+
+              {/* Value Reminder */}
+              <div className="bg-brandDark/5 rounded-[2.5rem] p-8 space-y-6 border border-brandDark/5">
+                <p className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.4em]">Your audit will include:</p>
+                <div className="flex flex-wrap justify-center gap-8">
+                  {[
+                    "Profit leak breakdown",
+                    "Funnel analysis",
+                    "Scaling roadmap"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
+                      <span className="text-xs font-black uppercase tracking-tight text-brandDark">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <button 
                 onClick={onBack}
-                className="px-10 py-5 bg-brandDark text-white font-black text-sm uppercase tracking-[0.4em] rounded-2xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-xl"
+                className="text-brandDark/40 hover:text-brandDark font-black text-[10px] uppercase tracking-[0.4em] transition-colors"
               >
-                Return to Home
+                Go Back to Home
               </button>
             </div>
           </motion.div>
