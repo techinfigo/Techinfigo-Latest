@@ -40,16 +40,16 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Foundation</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <button onClick={() => onNavigate('about')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">About Us</button>
+                <button onClick={() => onNavigate('about')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">About Us</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('how-it-works')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Our Approach</button>
+                <button onClick={() => onNavigate('how-it-works')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Our Approach</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('qualification')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Who We Fit</button>
+                <button onClick={() => onNavigate('qualification')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Who We Fit</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('services')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Growth Engine</button>
+                <button onClick={() => onNavigate('services')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Growth Engine</button>
               </li>
             </ul>
           </div>
@@ -59,16 +59,19 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Company</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <button onClick={() => onNavigate('home')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Home</button>
+                <button onClick={() => onNavigate('home')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Home</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('profit-breakdown')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Profit Breakdown</button>
+                <button onClick={() => onNavigate('profit-breakdown')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Profit Breakdown</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('system')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">The System</button>
+                <button onClick={() => onNavigate('system')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">The System</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('careers')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Careers</button>
+                <button onClick={() => onNavigate('agra-landing')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Agra Agency</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('careers')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Careers</button>
               </li>
             </ul>
           </div>
@@ -78,26 +81,16 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Capabilities</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <button onClick={() => onNavigate('service-detail', 'performance-ads')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Performance Ads</button>
+                <button onClick={() => onNavigate('service-detail', 'performance-ads')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Performance Ads</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('service-detail', 'cro')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">CRO & Funnels</button>
+                <button onClick={() => onNavigate('service-detail', 'cro')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">CRO & Funnels</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('service-detail', 'seo')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">eCommerce SEO</button>
+                <button onClick={() => onNavigate('service-detail', 'seo')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">eCommerce SEO</button>
               </li>
               <li>
-                <button onClick={() => onNavigate('service-detail', 'retention')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Retention Flows</button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Local */}
-          <div className="lg:col-span-2 space-y-6">
-            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Local</h4>
-            <ul className="space-y-3 lg:space-y-4">
-              <li>
-                <button onClick={() => onNavigate('agra-landing')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left">Agra Agency</button>
+                <button onClick={() => onNavigate('service-detail', 'retention')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Retention Flows</button>
               </li>
             </ul>
           </div>
