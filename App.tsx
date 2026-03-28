@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { QualificationProtocol } from './components/QualificationProtocol';
@@ -37,15 +38,40 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
-  const navigateTo = (page: string, serviceId?: string) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentPage(page);
-    if (serviceId) {
-      setSelectedService(serviceId);
-    } else {
-      setSelectedService(null);
-    }
+ const navigate = useNavigate();
+
+const navigateTo = (page: string, serviceId?: string) => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const routeMap: any = {
+    home: "/",
+    about: "/about",
+    services: "/services",
+    contact: "/contact",
+    "case-studies": "/case-studies",
+    "profit-breakdown": "/profit-breakdown",
+    system: "/system",
+    "how-it-works": "/how-it-works",
+    qualification: "/qualification",
+    careers: "/careers",
+    privacy: "/privacy",
+    terms: "/terms",
+    sitemap: "/sitemap",
+    "agra-landing": "/agra",
+    "lead-capture": "/lead"
   };
+
+  const path = routeMap[page] || "/";
+  navigate(path);
+
+  setCurrentPage(page);
+
+  if (serviceId) {
+    setSelectedService(serviceId);
+  } else {
+    setSelectedService(null);
+  }
+};
 
   const lifecycleSteps = [
     { num: "1", title: "Audit", desc: "Identifying leakage in current funnel & unit economics." },
