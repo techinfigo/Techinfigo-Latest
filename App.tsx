@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -37,8 +38,34 @@ import { InfluencerPage } from './components/InfluencerPage';
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  React.useEffect(() => {
+  const path = location.pathname;
+
+  const reverseRouteMap: any = {
+    "/": "home",
+    "/about": "about",
+    "/services": "services",
+    "/contact": "contact",
+    "/case-studies": "case-studies",
+    "/profit-breakdown": "profit-breakdown",
+    "/system": "system",
+    "/how-it-works": "how-it-works",
+    "/qualification": "qualification",
+    "/careers": "careers",
+    "/privacy": "privacy",
+    "/terms": "terms",
+    "/sitemap": "sitemap",
+    "/agra": "agra-landing",
+    "/lead": "lead-capture"
+  };
+
+  const page = reverseRouteMap[path] || "home";
+  setCurrentPage(page);
+}, [location.pathname]);
 
  const navigate = useNavigate();
+  const location = useLocation();
+  
 
 const navigateTo = (page: string, serviceId?: string) => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
