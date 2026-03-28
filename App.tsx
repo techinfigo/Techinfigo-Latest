@@ -42,6 +42,25 @@ const App: React.FC = () => {
 
  const navigate = useNavigate();
   const location = useLocation();
+  React.useEffect(() => {
+  const path = location.pathname;
+
+  if (path === "/about") setCurrentPage("about");
+  else if (path === "/services") setCurrentPage("services");
+  else if (path === "/contact") setCurrentPage("contact");
+  else if (path === "/case-studies") setCurrentPage("case-studies");
+  else if (path === "/profit-breakdown") setCurrentPage("profit-breakdown");
+  else if (path === "/system") setCurrentPage("system");
+  else if (path === "/how-it-works") setCurrentPage("how-it-works");
+  else if (path === "/qualification") setCurrentPage("qualification");
+  else if (path === "/careers") setCurrentPage("careers");
+  else if (path === "/privacy") setCurrentPage("privacy");
+  else if (path === "/terms") setCurrentPage("terms");
+  else if (path === "/sitemap") setCurrentPage("sitemap");
+  else if (path === "/agra") setCurrentPage("agra-landing");
+  else if (path === "/lead") setCurrentPage("lead-capture");
+  else setCurrentPage("home");
+}, [location.pathname]);
   
 
   
