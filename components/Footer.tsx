@@ -1,4 +1,5 @@
 import React from 'react';
+import { Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (page: string, serviceId?: string) => void;
@@ -32,6 +33,22 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <div className="inline-flex items-center gap-3 px-3 py-1.5 border border-white/10 rounded-full">
               <span className="w-1 h-1 rounded-full bg-brandYellow"></span>
               <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest">Partner-Led Execution</span>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-4 pt-2">
+              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Youtube className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
