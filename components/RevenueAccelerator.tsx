@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Check, ArrowRight, ShieldCheck, Search, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -8,7 +10,7 @@ interface RevenueAcceleratorProps {
 
 export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAudit }) => {
   return (
-    <section className="w-full py-16 lg:py-32 px-6 bg-gradient-to-b from-[#001d21] to-[#000d0e] font-sans relative overflow-hidden">
+    <section className="w-full py-16 lg:py-32 px-6 bg-brandDark font-sans relative overflow-hidden">
       {/* Abstract Background Pattern */}
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none" 
            style={{ backgroundImage: `radial-gradient(#facc15 1px, transparent 1px)`, backgroundSize: '40px 40px' }}>

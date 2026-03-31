@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 
@@ -10,8 +12,8 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
     <section className="relative min-h-screen flex flex-col justify-center pt-16 lg:pt-20 px-6 lg:px-12 overflow-hidden bg-brandDark border-b border-white/5">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Dark Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-brandDark via-[#002a2f]/20 to-brandDark"></div>
+        {/* Solid Background */}
+        <div className="absolute inset-0 bg-brandDark"></div>
         
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
@@ -116,8 +118,8 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
                className="w-full h-full object-cover grayscale brightness-[0.4] transition-transform duration-1000 group-hover:scale-105"
              />
              
-             {/* Subtle Inner Glow */}
-             <div className="absolute inset-0 bg-gradient-to-tr from-brandDark/40 via-transparent to-white/5 pointer-events-none"></div>
+             {/* Subtle Inner Overlay */}
+             <div className="absolute inset-0 bg-brandDark/40 pointer-events-none"></div>
              
              {/* Overlay Grid Pattern on Image */}
              <div className="absolute inset-0 opacity-[0.1] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>

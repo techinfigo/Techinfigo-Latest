@@ -1,4 +1,6 @@
 
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Footer } from './Footer';
 import { motion, AnimatePresence } from 'motion/react';

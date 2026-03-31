@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle2, AlertCircle, Search, TestTube, ShieldCheck, TrendingUp, Users, Check } from 'lucide-react';
@@ -273,7 +275,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                       {/* Main Icon Container */}
                       <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-[#002a2f] border border-white/10 flex items-center justify-center relative z-10 group-hover:border-brandYellow/50 transition-all duration-500 shadow-2xl overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        {React.cloneElement(step.icon as React.ReactElement, { className: "w-8 h-8 lg:w-10 lg:h-10 text-brandYellow/40 group-hover:text-brandYellow transition-all duration-500 group-hover:scale-110" })}
+                        {React.cloneElement(step.icon as React.ReactElement<{ className?: string }>, { className: "w-8 h-8 lg:w-10 lg:h-10 text-brandYellow/40 group-hover:text-brandYellow transition-all duration-500 group-hover:scale-110" })}
                         
                         {/* Number Badge */}
                         <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brandYellow text-brandDark rounded-full flex items-center justify-center text-[10px] font-black border-4 border-[#001d21]">
@@ -516,7 +518,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
                     <div className="space-y-6 relative z-10">
                       <div className="flex items-center justify-between">
                         <div className="w-12 h-12 rounded-2xl bg-brandYellow/10 border border-brandYellow/20 flex items-center justify-center">
-                          {React.cloneElement(step.icon as React.ReactElement, { className: "w-6 h-6 text-brandYellow" })}
+                          {React.cloneElement(step.icon as React.ReactElement<{ className?: string }>, { className: "w-6 h-6 text-brandYellow" })}
                         </div>
                         <span className="text-[11px] font-mono font-bold text-brandYellow/70 uppercase tracking-widest">Phase_0{step.num}</span>
                       </div>

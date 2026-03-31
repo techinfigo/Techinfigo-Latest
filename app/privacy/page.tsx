@@ -1,0 +1,20 @@
+'use client';
+
+import React from 'react';
+import { Navbar } from '../../components/Navbar';
+import { PrivacyPage } from '../../components/PrivacyPage';
+import { Footer } from '../../components/Footer';
+import { useRouter } from 'next/navigation';
+
+export default function Privacy() {
+  const router = useRouter();
+  return (
+    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
+      <Navbar activePage="privacy" />
+      <div className="animate-slide-up">
+        <PrivacyPage onNavigate={(page) => router.push(`/${page}`)} />
+        <Footer />
+      </div>
+    </main>
+  );
+}

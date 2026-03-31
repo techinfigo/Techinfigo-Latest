@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { TrendingDown, Zap, BarChart3, AlertCircle, ShieldAlert, ArrowRight } from 'lucide-react';
 
@@ -35,7 +37,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
   ];
 
   return (
-    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-white overflow-hidden font-sans relative">
+    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-brandBg overflow-hidden font-sans relative">
       <div className="max-w-6xl mx-auto w-full">
         {/* Header Section */}
         <div className="text-center mb-6 lg:mb-8 space-y-3 lg:space-y-4">
@@ -62,7 +64,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
           
           {/* Left Side: Pain Breakdown (Dark Card) */}
-          <div className="lg:col-span-7 bg-[#001d21] rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 shadow-4xl flex flex-col justify-between relative overflow-hidden group">
+          <div className="lg:col-span-7 bg-brandDark rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 shadow-4xl flex flex-col justify-between relative overflow-hidden group">
             {/* Subtle Leakage Animation Effect */}
             <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none">
               <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -81,7 +83,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
                 {painPoints.map((point, idx) => (
                   <div key={idx} className="flex gap-3 lg:gap-4 group/item">
                     <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-brandYellow/10 transition-all duration-500">
-                      {React.cloneElement(point.icon as React.ReactElement, { className: "w-4 h-4 text-brandYellow" })}
+                      {React.cloneElement(point.icon as React.ReactElement<{ className?: string }>, { className: "w-4 h-4 text-brandYellow" })}
                     </div>
                     <div className="space-y-0.5">
                       <h4 className="text-sm lg:text-base font-black text-white tracking-tight">{point.title}</h4>
@@ -103,7 +105,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
 
           {/* Right Side: Shift in Belief (Light Card) */}
           <div className="lg:col-span-5 flex flex-col gap-5 lg:gap-6">
-            <div className="flex-1 bg-[#fdf8f0] rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 border border-brandDark/5 flex flex-col justify-center space-y-6 relative overflow-hidden">
+            <div className="flex-1 bg-brandSurface/5 rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 border border-brandDark/5 flex flex-col justify-center space-y-6 relative overflow-hidden">
               <div className="space-y-3 lg:space-y-4 relative z-10">
                 <h3 className="text-xl lg:text-2xl font-black text-brandDark tracking-tighter leading-none">
                   Scaling Shouldn’t Feel Like Gambling

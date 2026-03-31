@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Search, FlaskConical, ShieldCheck, TrendingUp, Users, ArrowRight } from 'lucide-react';
 
@@ -50,15 +52,15 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
   ];
 
   return (
-    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-[#f9f7f2] font-sans overflow-hidden">
+    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-brandBg font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         
         {/* Header */}
         <div className="text-center mb-8 lg:mb-12 space-y-3 lg:space-y-4">
-          <h2 className="text-3xl lg:text-5xl font-black text-[#001d21] tracking-tighter leading-tight">
+          <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter leading-tight">
             How We Turn Ad Spend Into <span className="text-brandYellow italic">Predictable Profit</span>
           </h2>
-          <p className="text-[#001d21]/60 text-base lg:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-brandDark/60 text-base lg:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
             A step-by-step system designed to eliminate guesswork and build scalable, repeatable growth.
           </p>
         </div>
@@ -68,8 +70,8 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
           
           {/* Desktop Road Line */}
           <div className="hidden lg:block absolute top-[100px] left-0 w-full z-0">
-             <div className="w-full h-[2px] bg-[#001d21]/10 rounded-full overflow-hidden relative">
-                <div className="absolute inset-0 w-full h-full bg-[linear-gradient(90deg,transparent_50%,#fbb632_50%)] bg-[length:40px_100%] opacity-30 animate-road-flow"></div>
+             <div className="w-full h-[2px] bg-brandDark/10 rounded-full overflow-hidden relative">
+                <div className="absolute inset-0 w-full h-full bg-brandYellow/30 animate-road-flow"></div>
              </div>
           </div>
 
@@ -78,27 +80,27 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
               <div key={i} className="group flex flex-col items-center lg:w-1/5 relative">
                 
                 {/* Step Marker */}
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-[#001d21] rounded-2xl shadow-xl flex items-center justify-center text-lg font-black text-white relative z-20 ring-4 lg:ring-8 ring-[#f9f7f2] group-hover:scale-110 group-hover:bg-[#fbb632] group-hover:text-[#001d21] transition-all duration-500 mb-4 lg:mb-6">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-brandDark rounded-2xl shadow-xl flex items-center justify-center text-lg font-black text-white relative z-20 ring-4 lg:ring-8 ring-brandBg group-hover:scale-110 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500 mb-4 lg:mb-6">
                   {step.icon}
-                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-brandYellow text-[#001d21] text-[9px] font-black rounded-full flex items-center justify-center border-2 border-[#f9f7f2]">
+                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-brandYellow text-brandDark text-[9px] font-black rounded-full flex items-center justify-center border-2 border-brandBg">
                     {step.num}
                   </div>
                 </div>
 
                 {/* Content Card */}
-                <div className="bg-white rounded-[2rem] p-5 lg:p-6 w-full text-center shadow-sm hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-[#fbb632]/20 flex flex-col items-center space-y-3 group-hover:-translate-y-2">
-                  <h3 className="text-base lg:text-lg font-black text-[#001d21] tracking-tight leading-tight">
+                <div className="bg-white rounded-[2rem] p-5 lg:p-6 w-full text-center shadow-sm hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-brandYellow/20 flex flex-col items-center space-y-3 group-hover:-translate-y-2">
+                  <h3 className="text-base lg:text-lg font-black text-brandDark tracking-tight leading-tight">
                     {step.title}
                   </h3>
                   <div className="space-y-2">
-                    <p className="text-[#001d21]/50 text-[11px] lg:text-xs font-medium leading-relaxed">
+                    <p className="text-brandDark/50 text-[11px] lg:text-xs font-medium leading-relaxed">
                       {step.desc}
                     </p>
-                    <p className="text-[#001d21]/30 text-[10px] lg:text-[11px] font-medium leading-tight italic">
+                    <p className="text-brandDark/30 text-[10px] lg:text-[11px] font-medium leading-tight italic">
                       {step.meaning}
                     </p>
                   </div>
-                  <div className="pt-3 border-t border-[#001d21]/5 w-full">
+                  <div className="pt-3 border-t border-brandDark/5 w-full">
                     <span className="text-[9px] font-black text-brandYellow uppercase tracking-widest">
                       {step.highlight}
                     </span>
@@ -126,8 +128,8 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
         {/* Bottom Section: Proof + CTA */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Micro-Proof */}
-          <div className="bg-white rounded-[2rem] p-6 lg:p-10 border border-[#001d21]/5 shadow-xl space-y-4 lg:space-y-6">
-            <h4 className="text-lg lg:text-xl font-black text-[#001d21] tracking-tight">
+          <div className="bg-white rounded-[2rem] p-6 lg:p-10 border border-brandDark/5 shadow-xl space-y-4 lg:space-y-6">
+            <h4 className="text-lg lg:text-xl font-black text-brandDark tracking-tight">
               Brands that follow this system typically see:
             </h4>
             <ul className="space-y-3 lg:space-y-4">
@@ -140,7 +142,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
                   <div className="w-5 h-5 rounded-full bg-brandYellow/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow transition-colors">
                     <ArrowRight className="w-2.5 h-2.5 text-brandYellow group-hover:text-brandDark transition-colors" />
                   </div>
-                  <span className="text-base lg:text-lg font-bold text-[#001d21]/70">{item}</span>
+                  <span className="text-base lg:text-lg font-bold text-brandDark/70">{item}</span>
                 </li>
               ))}
             </ul>
@@ -149,10 +151,10 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
           {/* CTA Button */}
           <div className="flex flex-col items-center lg:items-start space-y-4 lg:space-y-6">
             <div className="space-y-1 lg:space-y-2 text-center lg:text-left">
-              <h4 className="text-2xl lg:text-3xl font-black text-[#001d21] tracking-tighter">
+              <h4 className="text-2xl lg:text-3xl font-black text-brandDark tracking-tighter">
                 Ready to fix your <span className="text-brandYellow italic">profit leaks?</span>
               </h4>
-              <p className="text-[#001d21]/50 text-base lg:text-lg font-medium">
+              <p className="text-brandDark/50 text-base lg:text-lg font-medium">
                 We’ll show you exactly where your profit is leaking.
               </p>
             </div>

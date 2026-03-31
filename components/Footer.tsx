@@ -1,12 +1,20 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
 import { Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (page: string, serviceId?: string) => void;
-  onBookAudit: () => void;
+  onNavigate?: (page: string, serviceId?: string) => void;
+  onBookAudit?: () => void;
 }
 
-const CAPABILITIES = ['Performance Ads', 'CRO & Funnels', 'eCommerce SEO', 'Retention Flows'];
+const CAPABILITIES = [
+  { name: 'Performance Ads', id: 'performance-ads' },
+  { name: 'CRO & Funnels', id: 'cro' },
+  { name: 'eCommerce SEO', id: 'seo' },
+  { name: 'Retention Flows', id: 'retention' }
+];
 
 const LEGAL_LINKS = [
   { name: 'Privacy', id: 'privacy' },
@@ -57,16 +65,16 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Foundation</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <button onClick={() => onNavigate('about')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">About Us</button>
+                <Link href="/about" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">About Us</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('how-it-works')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Our Approach</button>
+                <Link href="/how-it-works" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Our Approach</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('qualification')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Who We Fit</button>
+                <Link href="/qualification" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Who We Fit</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('services')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Growth Engine</button>
+                <Link href="/services" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Growth Engine</Link>
               </li>
             </ul>
           </div>
@@ -76,19 +84,19 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Company</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <button onClick={() => onNavigate('home')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Home</button>
+                <Link href="/" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Home</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('profit-breakdown')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Profit Breakdown</button>
+                <Link href="/profit-breakdown" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Profit Breakdown</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('system')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">The System</button>
+                <Link href="/system" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">The System</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('agra-landing')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Agra Agency</button>
+                <Link href="/agra-landing" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Agra Agency</Link>
               </li>
               <li>
-                <button onClick={() => onNavigate('careers')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Careers</button>
+                <Link href="/careers" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Careers</Link>
               </li>
             </ul>
           </div>
@@ -97,24 +105,17 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           <div className="lg:col-span-2 space-y-6">
             <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Capabilities</h4>
             <ul className="space-y-3 lg:space-y-4">
-              <li>
-                <button onClick={() => onNavigate('service-detail', 'performance-ads')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Performance Ads</button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('service-detail', 'cro')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">CRO & Funnels</button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('service-detail', 'seo')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">eCommerce SEO</button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('service-detail', 'retention')} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4">Retention Flows</button>
-              </li>
+              {CAPABILITIES.map((cap) => (
+                <li key={cap.id}>
+                  <Link href={`/services/${cap.id}`} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">{cap.name}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* HQ Terminal Card */}
           <div className="lg:col-span-3">
-            <div className="bg-[#002a2f] border border-white/5 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/10">
+            <div className="bg-brandSurface/5 border border-white/5 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/10">
               {/* Card Header */}
               <div className="flex justify-between items-center">
                 <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 font-mono">HQ TERMINAL</span>
@@ -212,13 +213,13 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           
           <div className="flex items-center justify-center gap-6 text-[9px] font-bold uppercase tracking-[0.4em] text-white/40">
             {LEGAL_LINKS.map((link) => (
-              <button 
+              <Link 
                 key={link.id} 
-                onClick={() => onNavigate(link.id)}
+                href={`/${link.id}`}
                 className="hover:text-brandYellow transition-colors uppercase tracking-[0.4em] font-normal"
               >
                 {link.name}
-              </button>
+              </Link>
             ))}
           </div>
         </div>
