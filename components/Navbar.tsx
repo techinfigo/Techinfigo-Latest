@@ -12,15 +12,27 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActivePage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isOverLightSection, setIsOverLightSection] = useState(false);
   const pathname = usePathname();
+
+  const activePage = propActivePage || (pathname === '/' ? 'home' : pathname.substring(1));
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 20);
+      
+      if (activePage === 'home') {
+        setIsOverLightSection(scrollY > (window.innerHeight * 0.8) && scrollY < (window.innerHeight * 5.5));
+      } else {
+        setIsOverLightSection(false);
+      }
     };
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activePage]);
 
   const navLinks = [
     { name: 'Home', id: '/', pageId: 'home' },
@@ -28,17 +40,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
     { name: 'The System', id: '/system', pageId: 'system' },
   ];
 
-  const activePage = propActivePage || (pathname === '/' ? 'home' : pathname.substring(1));
-
-  const isLightNav = isScrolled || ['contact', 'lead-capture', 'how-it-works', 'qualification', 'careers', 'privacy', 'terms', 'sitemap'].includes(activePage);
+  // isLightNav means "Use Dark Text"
+  const isLightNav = isOverLightSection || (isScrolled && ['lead-capture', 'qualification', 'careers', 'privacy', 'terms'].includes(activePage));
 
   return (
     <>
       <nav 
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 px-6 lg:px-12 ${
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 lg:px-12 ${
           isScrolled 
-            ? 'py-3 bg-white border-b border-brandDark/5 shadow-sm' 
-            : 'py-6 bg-transparent'
+            ? isLightNav
+              ? 'py-3 bg-white/80 backdrop-blur-lg border-b border-brandDark/5 shadow-sm' 
+              : 'py-3 bg-brandDark/80 backdrop-blur-lg border-b border-white/5 shadow-xl'
+            : isLightNav
+              ? 'py-5 bg-brandBg/50 backdrop-blur-sm'
+              : 'py-6 bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -47,8 +62,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
             href="/"
             className="flex items-center gap-2 cursor-pointer z-[110]" 
           >
-            <div className="w-8 h-8 flex items-center justify-center rounded-sm bg-brandDark">
-              <span className="font-black text-xl text-white select-none">T</span>
+            <div className={`w-8 h-8 flex items-center justify-center rounded-sm transition-colors duration-300 ${isLightNav ? 'bg-brandDark' : 'bg-brandYellow'}`}>
+              <span className={`font-black text-xl select-none ${isLightNav ? 'text-white' : 'text-brandDark'}`}>T</span>
             </div>
             <span className={`font-black text-lg lg:text-xl tracking-tighter uppercase transition-colors duration-300 ${isLightNav ? 'text-brandDark' : 'text-white'}`}>
               Techinfigo

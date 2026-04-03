@@ -1,223 +1,140 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Quote, Star, ArrowRight, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-
-interface Realization {
-  title: string;
-  text: string;
-  icon: React.ReactNode;
-}
-
-const realizations: Realization[] = [
-  {
-    title: "Revenue ≠ Profit",
-    text: "Most founders think they’re growing because revenue is increasing — until they actually look at profit.",
-    icon: <TrendingUp className="w-6 h-6 text-brandYellow" />
-  },
-  {
-    title: "ROAS Isn’t the Full Story",
-    text: "A good ROAS doesn’t always mean a profitable business. Real growth comes from understanding margins.",
-    icon: <Star className="w-6 h-6 text-brandYellow" />
-  },
-  {
-    title: "Scaling Without Clarity Is Risky",
-    text: "Increasing ad spend without stable unit economics often leads to higher losses — not growth.",
-    icon: <ChevronRight className="w-6 h-6 text-brandYellow" />
-  },
-  {
-    title: "Backend Matters More Than Ads",
-    text: "Retention, AOV, and repeat purchases often impact profit more than ads themselves.",
-    icon: <Quote className="w-6 h-6 text-brandYellow" />
-  }
-];
+import React from 'react';
+import { Quote, Star, ArrowRight, ShieldCheck, TrendingUp } from 'lucide-react';
 
 interface TestimonialsSectionProps {
   onBookAudit?: () => void;
 }
 
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBookAudit }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
-
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % realizations.length);
-  }, []);
-
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + realizations.length) % realizations.length);
-  }, []);
-
-  // Auto-slide every 6 seconds
-  useEffect(() => {
-    const timer = setInterval(nextSlide, 6000);
-    return () => clearInterval(timer);
-  }, [nextSlide]);
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
-  };
-
   return (
-    <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-brandDark font-sans relative overflow-hidden">
+    <section className="w-full py-20 lg:py-32 px-6 bg-brandDark font-sans relative overflow-hidden">
       {/* Background Accents */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brandYellow rounded-full blur-[150px]"></div>
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.05] pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brandYellow rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-brandYellow rounded-full blur-[120px]"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+          <div className="max-w-2xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-brandYellow/10 border border-brandYellow/20 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse"></span>
+              <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">The Clarity Protocol</span>
+            </div>
+            <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95] uppercase">
+              Clarity That Changes <br />
+              <span className="text-brandYellow italic">Everything.</span>
+            </h2>
+            <p className="text-white/50 text-lg font-medium max-w-xl">
+              We don’t use fake testimonials. We share the brutal realizations founders have after we audit their real numbers.
+            </p>
+          </div>
           
-          {/* Left: Header & CTA */}
-          <div className="lg:col-span-5 space-y-6 lg:space-y-10">
-            <div className="space-y-3 lg:space-y-4">
-              <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em] block">WHAT D2C FOUNDERS REALIZE</span>
-              <h2 className="text-3xl lg:text-5xl xl:text-6xl font-black text-white tracking-tighter leading-[0.95]">
-                Clarity That Changes <br />
-                How You Look at <br />
-                <span className="text-brandYellow italic">Growth.</span>
-              </h2>
-              <div className="space-y-2">
-                <p className="text-white/70 text-sm lg:text-base font-bold leading-relaxed">
-                  We don’t use fake testimonials.
-                </p>
-                <p className="text-white/40 text-xs lg:text-sm font-medium leading-relaxed">
-                  We share what founders usually realize after seeing their numbers clearly.
-                </p>
-              </div>
-            </div>
+          <div className="flex flex-col items-start lg:items-end gap-4">
+            <button 
+              onClick={onBookAudit}
+              className="group relative px-10 py-5 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.3em] rounded-2xl hover:bg-white transition-all duration-500 shadow-[0_0_40px_rgba(252,182,50,0.15)] flex items-center gap-3"
+            >
+              Get The Clarity Audit
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+            </button>
+            <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.4em]">No Fluff. Just Profit.</p>
+          </div>
+        </div>
 
-            <div className="space-y-4">
-              <div className="relative inline-block group">
-                <div className="absolute -inset-1 bg-brandYellow/20 rounded-xl blur-xl group-hover:bg-brandYellow/30 transition-all"></div>
-                <button 
-                  onClick={onBookAudit}
-                  className="relative px-8 py-4 bg-brandYellow text-brandDark font-black text-[11px] lg:text-[12px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl flex items-center justify-center gap-3"
-                >
-                  Understand My Numbers
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+        {/* BENTO GRID OF INSIGHTS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          
+          {/* CARD 1: REVENUE VS PROFIT (Large) */}
+          <div className="md:col-span-2 lg:col-span-2 group relative p-8 lg:p-12 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brandYellow/30 transition-all duration-500">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brandYellow/5 blur-3xl rounded-full -mr-32 -mt-32 group-hover:bg-brandYellow/10 transition-colors"></div>
+            <div className="relative z-10 flex flex-col h-full justify-between gap-12">
+              <div className="flex justify-between items-start">
+                <div className="w-14 h-14 rounded-2xl bg-brandYellow/10 flex items-center justify-center">
+                  <TrendingUp className="w-7 h-7 text-brandYellow" />
+                </div>
+                <span className="text-[10px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">Insight 01</span>
               </div>
-              <p className="text-white/30 text-[9px] font-bold uppercase tracking-[0.3em]">
-                No fluff. Just clarity on your business.
-              </p>
-            </div>
-
-            {/* Navigation Controls (Desktop) */}
-            <div className="hidden lg:flex items-center gap-4 pt-4">
-              <button 
-                onClick={prevSlide}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow transition-all"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button 
-                onClick={nextSlide}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow transition-all"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-              <div className="flex gap-2 ml-4">
-                {realizations.map((_, idx) => (
-                  <button 
-                    key={idx}
-                    onClick={() => {
-                      setDirection(idx > currentIndex ? 1 : -1);
-                      setCurrentIndex(idx);
-                    }}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-brandYellow w-6' : 'bg-white/20'}`}
-                  />
-                ))}
+              <div className="space-y-4">
+                <h3 className="text-3xl lg:text-4xl font-black text-white uppercase tracking-tight leading-none">
+                  Revenue is a <span className="text-brandYellow">Vanity Metric.</span>
+                </h3>
+                <p className="text-white/60 text-lg font-medium leading-relaxed max-w-2xl">
+                  Most founders think they’re growing because revenue is increasing — until they actually look at net profit. We've seen ₹10Cr brands making less profit than ₹2Cr brands because of hidden leaks.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Right: Testimonial Slider */}
-          <div className="lg:col-span-7 relative h-[400px] lg:h-[450px] flex flex-col justify-center">
-            <div className="relative w-full h-[300px] lg:h-[350px] overflow-hidden lg:overflow-visible mb-8">
-              <AnimatePresence initial={false} custom={direction}>
-                <motion.div 
-                  key={currentIndex}
-                  custom={direction}
-                  variants={variants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 }
-                  }}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  <div className="w-full max-w-xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 lg:p-12 rounded-[2rem] flex flex-col justify-center shadow-2xl relative group min-h-[280px]">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
-                    
-                    <div className="space-y-6">
-                      <div className="flex justify-between items-start">
-                        <div className="p-3 bg-brandYellow/10 rounded-xl">
-                          {realizations[currentIndex].icon}
-                        </div>
-                        <div className="text-[10px] font-black text-brandYellow/40 uppercase tracking-[0.3em]">
-                          INSIGHT {currentIndex + 1}
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tight">
-                          {realizations[currentIndex].title.split(' ').map((word, i) => (
-                            <span key={i} className={['Profit', 'ROAS', 'CAC'].includes(word) ? 'text-brandYellow' : ''}>
-                              {word}{' '}
-                            </span>
-                          ))}
-                        </h3>
-                        <p className="text-white/70 text-base lg:text-lg font-medium leading-relaxed">
-                          {realizations[currentIndex].text}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Authority Strip & Future Proof */}
-            <div className="space-y-4 text-center lg:text-left">
-              <div className="flex items-center gap-3 justify-center lg:justify-start">
-                <div className="h-[1px] w-8 bg-brandYellow/30"></div>
-                <p className="text-[10px] lg:text-[11px] font-bold text-brandYellow uppercase tracking-[0.3em]">
-                  These are patterns we consistently see across D2C brands
+          {/* CARD 2: ROAS (Small) */}
+          <div className="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brandYellow/30 transition-all duration-500">
+            <div className="relative z-10 space-y-8">
+              <div className="flex justify-between items-start">
+                <div className="w-12 h-12 rounded-xl bg-brandYellow/10 flex items-center justify-center">
+                  <Star className="w-6 h-6 text-brandYellow" />
+                </div>
+                <span className="text-[10px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">Insight 02</span>
+              </div>
+              <div className="space-y-4">
+                <h3 className="text-xl font-black text-white uppercase tracking-tight">The ROAS Trap</h3>
+                <p className="text-white/50 text-sm font-medium leading-relaxed">
+                  A 4x ROAS on a low-margin product is a loss. A 2.5x ROAS on a high-margin product is a goldmine. Stop chasing platform numbers.
                 </p>
               </div>
-              <p className="text-white/20 text-[9px] lg:text-[10px] font-medium italic">
-                Real case studies will be published as we work with more brands.
-              </p>
             </div>
+          </div>
 
-            {/* Mobile Controls */}
-            <div className="flex lg:hidden absolute -bottom-16 left-1/2 -translate-x-1/2 items-center gap-6">
-              <button onClick={prevSlide} className="text-white/40 hover:text-brandYellow"><ChevronLeft className="w-8 h-8" /></button>
-              <div className="flex gap-2">
-                {realizations.map((_, idx) => (
-                  <div key={idx} className={`w-1.5 h-1.5 rounded-full ${idx === currentIndex ? 'bg-brandYellow' : 'bg-white/20'}`} />
-                ))}
+          {/* CARD 3: SCALING RISK (Small) */}
+          <div className="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brandYellow/30 transition-all duration-500">
+            <div className="relative z-10 space-y-8">
+              <div className="flex justify-between items-start">
+                <div className="w-12 h-12 rounded-xl bg-brandYellow/10 flex items-center justify-center">
+                  <ShieldCheck className="w-6 h-6 text-brandYellow" />
+                </div>
+                <span className="text-[10px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">Insight 03</span>
               </div>
-              <button onClick={nextSlide} className="text-white/40 hover:text-brandYellow"><ChevronRight className="w-8 h-8" /></button>
+              <div className="space-y-4">
+                <h3 className="text-xl font-black text-white uppercase tracking-tight">Scaling = Bleeding?</h3>
+                <p className="text-white/50 text-sm font-medium leading-relaxed">
+                  Increasing ad spend without stable unit economics doesn't scale growth—it scales losses. We fix the foundation before we push the pedal.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 4: BACKEND (Large) */}
+          <div className="md:col-span-2 lg:col-span-2 group relative p-8 lg:p-12 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brandYellow/30 transition-all duration-500">
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-brandYellow/5 blur-3xl rounded-full -ml-32 -mb-32 group-hover:bg-brandYellow/10 transition-colors"></div>
+            <div className="relative z-10 flex flex-col lg:flex-row items-center gap-10">
+              <div className="w-full lg:w-1/3 space-y-6">
+                <div className="w-14 h-14 rounded-2xl bg-brandYellow/10 flex items-center justify-center">
+                  <Quote className="w-7 h-7 text-brandYellow" />
+                </div>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tight">The Retention <br /> Advantage</h3>
+              </div>
+              <div className="w-full lg:w-2/3">
+                <p className="text-white/60 text-lg font-medium leading-relaxed">
+                  "The profit isn't in the first purchase. It's in the 3rd, 4th, and 5th. If your backend retention isn't hitting 30%+, you're just renting customers from Meta, not owning a brand."
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="w-8 h-[1px] bg-brandYellow/30"></div>
+                  <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">Common Realization</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* FOOTER STRIP */}
+        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.5em]">Patterns observed across ₹50Cr+ D2C Portfolios</p>
+          <div className="flex items-center gap-8">
+            <div className="flex flex-col items-center md:items-end">
+              <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest">Next Case Study</span>
+              <span className="text-brandYellow text-[10px] font-black uppercase tracking-widest">Coming April 2024</span>
             </div>
           </div>
         </div>
