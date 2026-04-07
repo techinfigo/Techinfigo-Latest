@@ -1,4 +1,5 @@
 import React from 'react';
+import { Metadata } from 'next';
 import { Navbar } from '../components/Navbar';
 import { Hero } from '../components/Hero';
 import { QualificationProtocol } from '../components/QualificationProtocol';
@@ -8,6 +9,11 @@ import { CaseStudySection } from '../components/CaseStudySection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
 import { RevenueAccelerator } from '../components/RevenueAccelerator';
 import { Footer } from '../components/Footer';
+
+export const metadata: Metadata = {
+  title: "D2C Growth Agency for Ecommerce Brands | Techinfigo",
+  description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+};
 
 export default function Home() {
   return (
