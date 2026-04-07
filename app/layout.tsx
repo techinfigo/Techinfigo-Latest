@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   description: "We build compounding growth systems for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.",
 };
 
+export const viewport = {
+  themeColor: '#001d21',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

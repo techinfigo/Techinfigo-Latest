@@ -9,7 +9,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-16 lg:pt-20 px-6 lg:px-12 overflow-hidden bg-brandDark border-b border-white/5">
+    <section className="relative min-h-screen flex flex-col justify-center pt-24 lg:pt-32 px-6 lg:px-12 overflow-hidden bg-brandDark border-b border-white/5">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Solid Background */}

@@ -61,8 +61,8 @@ export const InfluencerPage: React.FC<InfluencerPageProps> = ({ onNavigate }) =>
                   "Zero usage rights, meaning you can't run ads with the content.",
                   "Measuring success by 'likes' instead of actual sales."
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-4 items-start p-6 bg-red-50/50 rounded-2xl border border-red-100">
-                    <svg className="w-6 h-6 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                  <div key={i} className="flex gap-4 items-start p-6 bg-brandYellow/5 rounded-2xl border border-brandYellow/10">
+                    <svg className="w-6 h-6 text-brandYellow shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     <p className="text-brandDark/80 font-medium">{item}</p>
                   </div>
                 ))}

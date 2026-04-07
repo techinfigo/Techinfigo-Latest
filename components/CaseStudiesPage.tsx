@@ -456,8 +456,8 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
                   <div className="lg:col-span-7 space-y-16">
                     <div className="space-y-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center border border-red-500/20">
-                          <Target className="w-4 h-4 text-red-500" />
+                        <div className="w-8 h-8 rounded-lg bg-brandYellow/10 flex items-center justify-center border border-brandYellow/20">
+                          <Target className="w-4 h-4 text-brandYellow" />
                         </div>
                         <h3 className="text-2xl font-bold tracking-tight">The Problem</h3>
                       </div>

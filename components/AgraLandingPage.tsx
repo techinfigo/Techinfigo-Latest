@@ -2,7 +2,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
 import { 
   Zap, 
   Target, 
@@ -91,10 +90,8 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
     <div className="bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       
       {/* Sticky CTA for Mobile/Desktop */}
-      <motion.div 
-        initial={{ y: 100 }}
-        animate={{ y: isStickyVisible ? 0 : 100 }}
-        className="fixed bottom-6 left-0 right-0 z-[100] px-6 md:hidden"
+      <div 
+        className={`fixed bottom-6 left-0 right-0 z-[100] px-6 md:hidden transition-transform duration-500 ${isStickyVisible ? 'translate-y-0' : 'translate-y-32'}`}
       >
         <button 
           onClick={onBookAudit}
@@ -103,79 +100,71 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           <Zap className="w-5 h-5 fill-current" />
           Get Free Audit
         </button>
-      </motion.div>
+      </div>
 
       {/* SECTION 1: HERO */}
-      <section className="relative min-h-[90vh] flex items-center pt-32 pb-20 px-6 lg:px-12 overflow-hidden bg-brandDark">
+      <section className="relative min-h-[75vh] flex items-center pt-24 pb-12 px-6 lg:px-12 overflow-hidden bg-[#001d21]">
         <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-brandYellow/5 rounded-full blur-[120px] -mr-20 -mt-20"></div>
         <div className="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-brandYellow/5 rounded-full blur-[100px] -ml-10 -mb-10"></div>
         
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+          <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
-              <MapPin className="w-4 h-4 text-brandYellow" />
+              <MapPin className="w-4 h-4 text-brandYellow" aria-hidden="true" />
               <span className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">Serving Agra Businesses</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter uppercase">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tighter uppercase">
               Digital Marketing <br/>
               <span className="text-brandYellow">Agency in Agra</span> <br/>
               That Actually Grows <br/>
               Your Business.
             </h1>
             
-            <p className="text-lg md:text-xl text-white/60 font-medium leading-relaxed max-w-xl">
+            <p className="text-base md:text-lg text-white/60 font-medium leading-relaxed max-w-xl">
               Stop settling for vanity metrics. We build performance-focused strategies that drive real leads, sales, and profit for brands in Agra.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
               <button 
                 onClick={onBookAudit}
-                className="w-full sm:w-auto px-10 py-5 bg-[#fcb632] text-brandDark font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(252,182,50,0.3)]"
+                aria-label="Get Free Growth Audit"
+                className="w-full sm:w-auto px-8 py-4 bg-[#fcb632] text-brandDark font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(252,182,50,0.3)]"
               >
                 Get Free Growth Audit
               </button>
               <button 
                 onClick={() => window.open('https://wa.me/yournumber', '_blank')}
-                className="w-full sm:w-auto px-10 py-5 bg-white/5 text-white border border-white/10 font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+                aria-label="Talk to Expert on WhatsApp"
+                className="w-full sm:w-auto px-8 py-4 bg-white/5 text-white border border-white/10 font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
               >
-                <MessageSquare className="w-5 h-5" />
+                <MessageSquare className="w-5 h-5" aria-hidden="true" />
                 Talk to Expert
               </button>
             </div>
 
-            <div className="flex items-center gap-8 pt-8 border-t border-white/5">
+            <div className="flex items-center gap-8 pt-6 border-t border-white/5">
               <div className="space-y-1">
-                <p className="text-2xl font-black text-white">100%</p>
+                <p className="text-xl font-black text-white">100%</p>
                 <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">ROI Focused</p>
               </div>
               <div className="space-y-1">
-                <p className="text-2xl font-black text-white">24h</p>
+                <p className="text-xl font-black text-white">24h</p>
                 <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Response Time</p>
               </div>
               <div className="space-y-1">
-                <p className="text-2xl font-black text-white">Agra</p>
+                <p className="text-xl font-black text-white">Agra</p>
                 <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Local Expertise</p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="hidden lg:block relative"
-          >
-            <div className="relative z-10 bg-white/5 border border-white/10 rounded-[3rem] p-10 backdrop-blur-sm">
-              <div className="space-y-8">
+          <div className="hidden lg:block relative">
+            <div className="relative z-10 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-sm">
+              <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-black text-white uppercase tracking-widest">Live Growth Feed</p>
-                  <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></div>
+                  <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse" aria-hidden="true"></div>
                 </div>
                 
                 {[
@@ -183,7 +172,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                   { label: "ROAS Optimized", time: "15 mins ago", val: "4.2x ROAS" },
                   { label: "SEO Ranking #1", time: "1 hour ago", val: "Agra Local" }
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-5 bg-white/5 rounded-2xl border border-white/5">
+                  <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
                     <div className="space-y-1">
                       <p className="text-sm font-bold text-white">{item.label}</p>
                       <p className="text-[10px] text-white/40 uppercase font-bold">{item.time}</p>
@@ -192,9 +181,9 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                   </div>
                 ))}
                 
-                <div className="pt-4">
-                  <div className="w-full h-32 bg-brandYellow/10 rounded-2xl border border-brandYellow/20 flex items-center justify-center">
-                    <BarChart3 className="w-12 h-12 text-brandYellow opacity-50" />
+                <div className="pt-2">
+                  <div className="w-full h-24 bg-brandYellow/10 rounded-2xl border border-brandYellow/20 flex items-center justify-center">
+                    <BarChart3 className="w-10 h-10 text-brandYellow opacity-50" aria-hidden="true" />
                   </div>
                 </div>
               </div>
@@ -202,7 +191,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             {/* Decorative elements */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-brandYellow/10 rounded-full blur-3xl"></div>
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-brandYellow/10 rounded-full blur-3xl"></div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -245,12 +234,13 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               <div className="aspect-square bg-brandBg rounded-[3rem] overflow-hidden border border-brandDark/20 flex items-center justify-center p-12 shadow-inner">
                 <div className="text-center space-y-6">
                   <div className="w-20 h-20 bg-brandYellow rounded-full flex items-center justify-center mx-auto shadow-2xl">
-                    <Zap className="w-10 h-10 text-brandDark" />
+                    <Zap className="w-10 h-10 text-brandDark" aria-hidden="true" />
                   </div>
                   <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">The Growth Engine</h3>
                   <p className="text-brandDark/40 font-medium">We audit your entire funnel to find where the money is leaking.</p>
                   <button 
                     onClick={onBookAudit}
+                    aria-label="See How Our Growth Engine Works"
                     className="text-brandDark font-black text-xs uppercase tracking-widest border-b-2 border-brandYellow pb-1 hover:text-brandYellow transition-colors"
                   >
                     See How It Works
@@ -282,13 +272,12 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, i) => (
-              <motion.div 
+              <div 
                 key={i}
-                whileHover={{ y: -12, scale: 1.02 }}
-                className="bg-white p-10 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:border-brandYellow/40 transition-all duration-500 group"
+                className="bg-white p-10 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:border-brandYellow/40 transition-all duration-500 group hover:-translate-y-3"
               >
                 <div className="w-14 h-14 bg-brandDark/5 rounded-2xl flex items-center justify-center text-brandDark group-hover:bg-brandYellow transition-colors duration-500 mb-8 shadow-inner border border-brandDark/5">
-                  {service.icon}
+                  <span aria-hidden="true">{service.icon}</span>
                 </div>
                 <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight mb-4 leading-tight">
                   {service.title}
@@ -298,20 +287,21 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                 </p>
                 <button 
                   onClick={onBookAudit}
+                  aria-label={`Get ${service.title} Plan`}
                   className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brandDark group-hover:text-brandYellow transition-colors"
                 >
                   Get {service.title.split(' ')[0]} Plan
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </button>
                 <p className="mt-4 text-[9px] font-bold text-brandDark/10 uppercase tracking-widest">{service.keyword}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* SECTION 4: WHY CHOOSE US */}
-      <section className="py-24 px-6 lg:px-12 bg-brandDark text-white overflow-hidden relative">
+      <section className="py-24 px-6 lg:px-12 bg-[#001d21] text-white overflow-hidden relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brandYellow/5 rounded-full blur-[150px] pointer-events-none"></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
@@ -420,10 +410,15 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             </div>
           </div>
           
-          <div className="relative">
-            <div className="aspect-video bg-brandDark/5 rounded-[3rem] border border-brandDark/5 overflow-hidden flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <MapPin className="w-12 h-12 text-brandYellow mx-auto" />
+          <div className="relative group">
+            <div className="aspect-video bg-brandDark/5 rounded-[3rem] border border-brandDark/5 overflow-hidden flex items-center justify-center relative">
+              <img 
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
+                alt="Agra Office" 
+                className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700"
+              />
+              <div className="text-center space-y-4 relative z-10">
+                <MapPin className="w-12 h-12 text-brandYellow mx-auto" aria-hidden="true" />
                 <p className="text-xs font-black uppercase text-brandDark/40 tracking-widest">Agra Operations Center</p>
                 <p className="text-sm font-bold text-brandDark">Serving Clients Across Agra & Beyond</p>
               </div>
@@ -438,7 +433,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
       </section>
 
       {/* SECTION 7: STRONG CTA */}
-      <section className="py-24 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
+      <section className="py-24 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto text-center space-y-10 relative z-10">
           <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
@@ -451,6 +446,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           <div className="pt-6">
             <button 
               onClick={onBookAudit}
+              aria-label="Get Your Free Strategy Plan Now"
               className="px-12 py-6 bg-[#fcb632] text-brandDark font-black text-xl uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_50px_rgba(252,182,50,0.4)]"
             >
               Get Free Strategy Plan
@@ -478,15 +474,13 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                   <span className="text-sm font-black uppercase tracking-tight text-brandDark">{faq.q}</span>
                   <ChevronDown className={`w-5 h-5 text-brandDark/40 transition-transform duration-300 ${activeFaq === i ? 'rotate-180 text-brandYellow' : ''}`} />
                 </button>
-                <motion.div 
-                  initial={false}
-                  animate={{ height: activeFaq === i ? 'auto' : 0 }}
-                  className="overflow-hidden"
+                <div 
+                  className={`overflow-hidden transition-all duration-500 ${activeFaq === i ? 'max-h-96' : 'max-h-0'}`}
                 >
                   <div className="p-6 pt-0 text-brandDark/60 text-sm font-medium leading-relaxed border-t border-brandDark/5">
                     {faq.a}
                   </div>
-                </motion.div>
+                </div>
               </div>
             ))}
           </div>
