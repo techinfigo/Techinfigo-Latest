@@ -39,9 +39,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           {/* Main Headline */}
           <div className="space-y-4 w-full max-w-4xl">
             <h1 className="text-[clamp(1.5rem,3.5vw,3.2rem)] font-black text-white leading-[1.1] tracking-tighter font-sans uppercase">
-              Spending Lakhs <br />
-              on Ads… <br />
-              But Profit Still Stuck?
+              Ecommerce Marketing Agency for D2C Brands Focused on Profitable Growth
             </h1>
             <h2 className="text-[clamp(0.9rem,1.5vw,1.5rem)] font-bold text-white leading-tight font-sans">
               We Fix Your <span className="text-brandYellow">Unit Economics</span> — Not Just Your Ads.
