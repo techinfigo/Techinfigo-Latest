@@ -13,6 +13,21 @@ import { Footer } from '../components/Footer';
 export const metadata: Metadata = {
   title: "D2C Growth Agency for Ecommerce Brands | Techinfigo",
   description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+  openGraph: {
+    title: "D2C Growth Agency for Ecommerce Brands | Techinfigo",
+    description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+    url: "https://techinfigo.com",
+    siteName: "Techinfigo",
+    images: ["https://techinfigo.com/og-image.jpg"],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "D2C Growth Agency for Ecommerce Brands | Techinfigo",
+    description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+    images: ["https://techinfigo.com/og-image.jpg"],
+  },
 };
 
 export default function Home() {
