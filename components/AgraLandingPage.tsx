@@ -41,48 +41,48 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
   const services = [
     {
       title: "Facebook & Instagram Ads",
-      desc: "Stop burning cash on 'boost posts'. We build high-ROAS funnels that turn Agra's social users into paying customers.",
+      desc: "Stop burning cash on 'boost posts'. We build high-ROAS funnels that turn Agra's social users into paying customers. Best for retail & showrooms in Sanjay Place.",
       icon: <Facebook className="w-6 h-6" />,
-      keyword: "ads agency agra"
+      keyword: "facebook ads agency agra"
     },
     {
       title: "Google Ads (PPC)",
-      desc: "Get found by people actively searching for your services in Agra. High-intent traffic that converts into immediate leads.",
+      desc: "Get found by people actively searching for your services in Agra. High-intent traffic that converts into immediate leads for hotels, schools, and hospitals.",
       icon: <Search className="w-6 h-6" />,
-      keyword: "ppc services agra"
+      keyword: "google ads services agra"
     },
     {
       title: "Website Development",
-      desc: "A slow website is a profit killer. We build lightning-fast, conversion-optimized websites for Agra businesses.",
+      desc: "A slow website is a profit killer. We build lightning-fast, conversion-optimized websites for Agra businesses that look great on mobile.",
       icon: <Globe className="w-6 h-6" />,
-      keyword: "web development agra"
+      keyword: "web design company agra"
     },
     {
       title: "Ecommerce (D2C) Growth",
-      desc: "Scaling your Agra-based brand to a national level. We handle everything from CAC optimization to LTV growth.",
+      desc: "Scaling your Agra-based brand to a national level. We handle everything from CAC optimization to LTV growth for leather & handicraft brands.",
       icon: <ShoppingCart className="w-6 h-6" />,
-      keyword: "ecommerce growth agra"
+      keyword: "ecommerce marketing agra"
     },
     {
       title: "SEO Services",
-      desc: "Dominate the local search results. We help you rank #1 on Google for keywords your Agra customers are using.",
+      desc: "Dominate the local search results. We help you rank #1 on Google for keywords your Agra customers are using every day.",
       icon: <TrendingUp className="w-6 h-6" />,
-      keyword: "seo services agra"
+      keyword: "best seo agency agra"
     }
   ];
 
   const faqs = [
     {
       q: "How much does digital marketing cost in Agra?",
-      a: "Our pricing is performance-linked. We don't have 'packages'. We build custom growth plans based on your revenue goals and current stage. We ensure every rupee spent generates a positive ROI."
+      a: "Our pricing is performance-linked. We don't have 'packages'. We build custom growth plans based on your revenue goals. Whether you're a small business in Kamla Nagar or a large brand in Sanjay Place, we ensure every rupee generates ROI."
     },
     {
-      q: "How soon can I see results?",
-      a: "For Paid Ads (FB/Google), you can see leads within 48-72 hours. For SEO and organic growth, it typically takes 3-6 months to see significant ranking shifts. We focus on 'quick wins' while building long-term assets."
+      q: "How soon can I see results for my Agra business?",
+      a: "For Paid Ads (FB/Google), you can see leads within 48-72 hours. For SEO in Agra, it typically takes 3-6 months to dominate local search results. We focus on 'quick wins' while building long-term assets for your brand."
     },
     {
-      q: "Do you work with small businesses in Agra?",
-      a: "Yes. We work with ambitious local businesses in Agra that are ready to scale. Whether you are a local showroom, a service provider, or an emerging D2C brand, we have a strategy for your budget."
+      q: "Do you work with local retail stores in Agra?",
+      a: "Absolutely. We specialize in driving footfall and online sales for Agra-based retail stores, showrooms, and D2C brands. We understand the local consumer behavior in markets like Shahganj and Raja Ki Mandi."
     }
   ];
 
@@ -115,14 +115,14 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             </div>
             
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tighter uppercase">
-              Digital Marketing <br/>
+              #1 Digital Marketing <br/>
               <span className="text-brandYellow">Agency in Agra</span> <br/>
-              That Actually Grows <br/>
-              Your Business.
+              To Scale Your <br/>
+              Business Profitably.
             </h1>
             
             <p className="text-base md:text-lg text-white/60 font-medium leading-relaxed max-w-xl">
-              Stop settling for vanity metrics. We build performance-focused strategies that drive real leads, sales, and profit for brands in Agra.
+              Stop settling for vanity metrics. We build performance-focused strategies that drive real leads, sales, and profit for brands in Sanjay Place, Fatehabad Road, and across Agra.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
@@ -210,10 +210,10 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               
               <div className="space-y-6">
                 {[
-                  "Not getting enough qualified leads in Agra?",
-                  "Ads running but not giving profitable results?",
-                  "Website looks good but doesn't convert visitors?",
-                  "Wasting money on agencies that only talk about 'reach'?"
+                  "Not getting enough qualified leads from Agra's local market?",
+                  "Running Facebook Ads but not seeing footfall in your Sanjay Place showroom?",
+                  "Website looks good but doesn't rank for 'Best Services in Agra'?",
+                  "Wasting money on generic agencies that don't understand the Agra consumer?"
                 ].map((pain, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <div className="w-6 h-6 rounded-full bg-brandDark/5 flex items-center justify-center shrink-0 mt-1">
@@ -360,9 +360,9 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
       <section className="py-24 px-6 lg:px-12 bg-brandBg/50">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center space-y-4">
-            <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">The Roadmap</span>
+            <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Your Growth Plan</span>
             <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase">
-              3 Steps to <br className="md:hidden"/> Scale.
+              3 Steps to <br className="md:hidden"/> Profit in Agra.
             </h2>
           </div>
 
@@ -371,9 +371,9 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-brandDark/10 -translate-y-1/2 z-0"></div>
             
             {[
-              { step: "01", title: "Free Audit", desc: "We analyze your current digital presence and identify profit leaks.", icon: <Search className="w-6 h-6" /> },
-              { step: "02", title: "Strategy Plan", desc: "We build a custom growth roadmap with clear KPIs and timelines.", icon: <Target className="w-6 h-6" /> },
-              { step: "03", title: "Execution & Growth", desc: "Our team deploys and optimizes, driving real-time results.", icon: <Zap className="w-6 h-6" /> }
+              { step: "01", title: "Free Profit Audit", desc: "We analyze your current ads and SEO to find exactly where you're losing money in Agra.", icon: <Search className="w-6 h-6" /> },
+              { step: "02", title: "Custom Strategy", desc: "We build a roadmap tailored for the Agra market, focusing on high-intent leads.", icon: <Target className="w-6 h-6" /> },
+              { step: "03", title: "Scale & Dominate", desc: "We execute the plan, optimize daily, and help you dominate your local competition.", icon: <Zap className="w-6 h-6" /> }
             ].map((item, i) => (
               <div key={i} className="relative z-10 bg-white p-8 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-brandYellow/30 transition-all duration-300 text-center space-y-6">
                 <div className="w-16 h-16 bg-brandDark text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-xl">
@@ -395,14 +395,14 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Agra's Growth Partner</span>
               <h2 className="text-4xl md:text-5xl font-black text-brandDark tracking-tighter uppercase leading-none">
                 Helping Agra <br/>
-                <span className="text-brandDark/30">Businesses Win.</span>
+                <span className="text-brandDark/30">Brands Dominate.</span>
               </h2>
             </div>
             <p className="text-lg text-brandDark/70 font-medium leading-relaxed">
-              Agra is a unique market. From the bustling markets of Sanjay Place to the emerging tech hubs, we understand the local consumer behavior better than anyone else. We don't just provide digital marketing; we provide local market dominance.
+              Agra is a unique market with deep-rooted traditions and rapidly evolving digital habits. From the bustling commercial hubs of Sanjay Place to the premium residential areas of Dayalbagh and Kamla Nagar, we understand the local consumer behavior better than any outside agency. We don't just run ads; we build local market authority.
             </p>
             <div className="flex flex-wrap gap-4">
-              {["Sanjay Place", "Civil Lines", "Kamla Nagar", "Dayalbagh", "Fatehabad Road"].map((loc, i) => (
+              {["Sanjay Place", "Sikandra", "Kamla Nagar", "Dayalbagh", "Fatehabad Road", "Shahganj", "Raja Ki Mandi"].map((loc, i) => (
                 <span key={i} className="px-4 py-2 bg-white rounded-full text-[10px] font-bold uppercase tracking-widest border border-brandDark/5 text-brandDark/40">
                   {loc}
                 </span>

@@ -19,8 +19,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 5);
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      setIsScrolled(scrollY > 10);
       
       if (activePage === 'home') {
         setIsOverLightSection(scrollY > 600);
@@ -28,12 +28,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
         setIsOverLightSection(scrollY > 600 && scrollY < 1600);
       } else if (activePage === 'qualification') {
         setIsOverLightSection(scrollY > 600);
-      } else if (activePage === 'agra-landing') {
-        // Hero (Dark) -> Problem (Light) -> Services (Light) -> Why Us (Dark) -> Process (Light) -> Trust (Light) -> CTA (Dark) -> FAQ (Light)
-        const isProblemServices = scrollY > 600 && scrollY < 2400;
-        const isProcessTrust = scrollY > 3200 && scrollY < 5200;
-        const isFAQ = scrollY > 6000;
-        setIsOverLightSection(isProblemServices || isProcessTrust || isFAQ);
+      } else if (activePage === 'digital-marketing-agency-agra') {
+        // Simple & Robust: If scrolled past Hero (~100px), use solid white nav with dark text.
+        // This ensures the navbar is ALWAYS visible on all sections of the Agra page.
+        setIsOverLightSection(scrollY > 100);
       } else {
         setIsOverLightSection(false);
       }
@@ -62,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
     'case-studies', 
     'about', 
     'how-it-works', 
-    'agra-landing',
+    'digital-marketing-agency-agra',
     'careers',
     'privacy',
     'terms',
@@ -85,8 +83,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
             ? 'py-3 bg-white'
             : isScrolled 
               ? isLightNav
-                ? 'py-3 bg-white border-b border-brandDark/10 shadow-xl' 
-                : 'py-3 bg-brandDark border-b border-white/10 shadow-2xl'
+                ? 'py-3 bg-white/95 backdrop-blur-md border-b border-brandDark/10 shadow-[0_10px_30px_rgba(0,0,0,0.1)]' 
+                : 'py-3 bg-brandDark/95 backdrop-blur-md border-b border-white/10 shadow-2xl'
               : 'py-5 bg-transparent'
         }`}
       >

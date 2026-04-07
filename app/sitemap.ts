@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/profit-breakdown',
     '/qualification',
     '/contact',
-    '/agra-landing',
+    '/digital-marketing-agency-agra',
   ];
 
   return routes.map((route) => ({

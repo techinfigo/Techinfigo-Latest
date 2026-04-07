@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Digital Marketing Agency in Agra | Techinfigo',
     description: 'Stop burning cash on ads. We build performance-focused strategies that drive real leads and profit for brands in Agra.',
-    url: 'https://techinfigo.com/agra-landing',
+    url: 'https://techinfigo.com/digital-marketing-agency-agra',
     siteName: 'Techinfigo',
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://techinfigo.com/agra-landing',
+    canonical: 'https://techinfigo.com/digital-marketing-agency-agra',
   },
 };
 
@@ -35,8 +35,8 @@ export default function AgraLanding() {
     "@type": "ProfessionalService",
     "name": "Techinfigo Digital Marketing Agency Agra",
     "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
-    "@id": "https://techinfigo.com/agra-landing",
-    "url": "https://techinfigo.com/agra-landing",
+    "@id": "https://techinfigo.com/digital-marketing-agency-agra",
+    "url": "https://techinfigo.com/digital-marketing-agency-agra",
     "telephone": "+91-YOUR-NUMBER",
     "priceRange": "$$",
     "description": "Agra's leading ROI-focused digital marketing agency. Specializing in SEO, Facebook Ads, and Google Ads for local businesses in Sanjay Place, Fatehabad Road, and Civil Lines.",
@@ -92,7 +92,7 @@ export default function AgraLanding() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar activePage="agra-landing" />
+      <Navbar activePage="digital-marketing-agency-agra" />
       <AgraLandingPageWrapper />
       <Footer />
     </main>

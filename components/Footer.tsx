@@ -93,7 +93,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                 <Link href="/system" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">The System</Link>
               </li>
               <li>
-                <Link href="/agra-landing" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Agra Agency</Link>
+                <Link href="/digital-marketing-agency-agra" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Agra Agency</Link>
               </li>
               <li>
                 <Link href="/careers" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Careers</Link>
