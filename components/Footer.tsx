@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Instagram, Linkedin, Twitter, Youtube, Facebook } from 'lucide-react';
 
 interface FooterProps {
   onNavigate?: (page: string, serviceId?: string) => void;
@@ -32,9 +32,20 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           
           {/* Brand Intro */}
           <div className="lg:col-span-3 space-y-6">
-            <div className="w-10 h-10 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
-              <span className="text-brandDark font-black text-xl">TF</span>
-            </div>
+            <Link href="/" className="block">
+              <img 
+                src="/logo.png" 
+                alt="Techinfigo Logo" 
+                className="h-10 lg:h-12 w-auto brightness-0 invert"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="hidden w-10 h-10 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
+                <span className="text-brandDark font-black text-xl">TF</span>
+              </div>
+            </Link>
             <p className="text-white/80 text-sm lg:text-base leading-relaxed font-normal tracking-tight max-w-sm">
               We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.
             </p>
@@ -47,6 +58,9 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <div className="flex items-center gap-4 pt-2">
               <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
                 <Instagram className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Facebook className="w-4 h-4" />
               </a>
               <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
                 <Linkedin className="w-4 h-4" />

@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Techinfigo | Growth Infrastructure",
   description: "We build compounding growth systems for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.",
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  }
 };
 
 export const viewport = {
