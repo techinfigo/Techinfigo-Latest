@@ -58,10 +58,10 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
         {/* Header */}
         <div className="text-center mb-8 lg:mb-12 space-y-3 lg:space-y-4">
           <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter leading-tight">
-            How We Turn Ad Spend Into <span className="text-brandYellow italic">Predictable Profit</span>
+            A Proven Growth System for Scaling <span className="text-brandYellow italic">Ecommerce Brands Profitably</span>
           </h2>
           <p className="text-brandDark/60 text-base lg:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-            A step-by-step system designed to eliminate guesswork and build scalable, repeatable growth.
+            A proven Performance Marketing system designed to eliminate guesswork and build scalable, repeatable growth for D2C brands.
           </p>
         </div>
 

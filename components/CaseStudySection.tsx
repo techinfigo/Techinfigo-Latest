@@ -24,11 +24,11 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
               <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">The Profit Audit</span>
             </div>
             <h2 className="text-5xl lg:text-8xl font-black text-brandDark tracking-tighter leading-[0.85] uppercase">
-              The Typical <br />
-              <span className="text-brandYellow italic">Profit Leak.</span>
+              Real Results: Profitable <br />
+              <span className="text-brandYellow italic">Growth for D2C.</span>
             </h2>
             <p className="text-brandDark/60 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed">
-              We don't show fake case studies. We show real patterns we consistently see across D2C brands scaling from ₹20L to ₹2Cr/month.
+              We don't show fake case studies. We show real Performance Marketing patterns we consistently see across D2C brands scaling from ₹20L to ₹2Cr/month.
             </p>
           </div>
         </div>

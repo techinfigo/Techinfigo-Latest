@@ -46,17 +46,16 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
           </div>
           
           <h2 className="text-2xl lg:text-4xl xl:text-5xl font-black text-brandDark tracking-tighter leading-[1.1]">
-            Sales Are Coming In. <br />
-            But <span className="text-brandYellow italic">Profit Isn’t Growing.</span>
+            Why Most D2C Brands Struggle with <span className="text-brandYellow italic">Performance Marketing</span>
           </h2>
           
           <div className="max-w-xl mx-auto space-y-2 lg:space-y-3">
             <p className="text-brandDark/70 text-sm lg:text-base font-medium leading-relaxed">
-              You’re spending more on ads than ever. Orders are increasing.
+              You’re spending more on Performance Marketing than ever. Orders are increasing.
               But when you check your bank account — it doesn’t feel like growth.
             </p>
             <p className="text-brandDark font-black text-base lg:text-lg uppercase tracking-tight">
-              That’s because <span className="text-brandYellow">revenue ≠ profit.</span>
+              As a results-driven Ecommerce Marketing Agency, we focus on building a system where every ₹1 you spend is tracked, optimized, and scaled for Profitable Growth.
             </p>
           </div>
         </div>

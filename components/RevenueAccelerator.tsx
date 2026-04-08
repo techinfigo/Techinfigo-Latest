@@ -29,12 +29,12 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                 <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">Revenue Accelerator</span>
               </div>
               <h2 className="text-4xl lg:text-6xl font-black text-white tracking-tighter leading-[1.05] uppercase">
-                Stop Guessing. <br />
-                Start <span className="text-brandYellow">Scaling</span>.
+                Partner with a Leading <br />
+                <span className="text-brandYellow">Ecommerce Marketing Agency</span>
               </h2>
               <p className="text-white/60 text-lg lg:text-xl font-medium max-w-xl leading-relaxed">
-                We find the hidden profit leaks in your D2C funnel that are killing your MER. 
-                Get a clear roadmap to ₹1Cr+ monthly profit.
+                As a leading Ecommerce Marketing Agency, we find the hidden profit leaks in your D2C funnel that are killing your MER. 
+                Get a clear roadmap to Profitable Growth.
               </p>
             </div>
 

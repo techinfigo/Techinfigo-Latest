@@ -15,11 +15,11 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
         <div className="text-center mb-4 lg:mb-6 space-y-1 lg:space-y-3 animate-slide-up">
           <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.5em] uppercase text-brandDark/40 block">KNOW WHERE YOU STAND</span>
           <h2 className="text-2xl lg:text-4xl font-black text-brandDark tracking-tight leading-tight">
-            Which Stage Is Your Brand <br className="hidden lg:block" /> In Right Now?
+            Is Your Ecommerce Brand Ready to Scale Profitably?
           </h2>
           <p className="text-brandDark/60 text-xs lg:text-base font-medium max-w-xl mx-auto leading-relaxed">
             Most D2C brands don’t fail because of ads — <br className="hidden lg:block" />
-            they fail because they scale without fixing fundamentals.
+            they fail because they lack a system for Profitable Growth.
           </p>
         </div>
 

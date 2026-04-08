@@ -42,7 +42,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               Ecommerce Marketing Agency for D2C Brands Focused on Profitable Growth
             </h1>
             <h2 className="text-[clamp(0.9rem,1.5vw,1.5rem)] font-bold text-white leading-tight font-sans">
-              We Fix Your <span className="text-brandYellow">Unit Economics</span> — Not Just Your Ads.
+              We Fix Your <span className="text-brandYellow">Unit Economics</span> — Not Just Your Performance Marketing.
             </h2>
           </div>
 
@@ -53,7 +53,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
                 You’re getting orders. Revenue looks good. <br />
                 But at the end of the month — profit doesn’t move. <br />
                 <span className="text-white/40 text-[0.85em] uppercase tracking-wider mt-2 block font-bold">
-                  That’s because you’re scaling revenue, not profitability.
+                  As a specialized Ecommerce Marketing Agency, we help you stop scaling revenue and start achieving Profitable Growth.
                 </span>
               </p>
             </div>

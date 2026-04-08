@@ -24,11 +24,11 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
               <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">The Clarity Protocol</span>
             </div>
             <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95] uppercase">
-              Clarity That Changes <br />
-              <span className="text-brandYellow italic">Everything.</span>
+              What Founders Say About Our <br />
+              <span className="text-brandYellow italic">Performance Strategy.</span>
             </h2>
             <p className="text-white/50 text-lg font-medium max-w-xl">
-              We don’t use fake testimonials. We share the brutal realizations founders have after we audit their real numbers.
+              We don’t use fake testimonials. We share the brutal realizations D2C founders have after we audit their Performance Marketing numbers.
             </p>
           </div>
           

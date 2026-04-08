@@ -1,22 +1,25 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: 'https://www.techinfigo.com',
-      lastModified: new Date(),
-    },
-    {
-      url: 'https://www.techinfigo.com/about',
-      lastModified: new Date(),
-    },
-    {
-      url: 'https://www.techinfigo.com/services',
-      lastModified: new Date(),
-    },
-    {
-      url: 'https://www.techinfigo.com/contact',
-      lastModified: new Date(),
-    },
-  ]
+  const baseUrl = 'https://techinfigo.com';
+  
+  const routes = [
+    '',
+    '/about',
+    '/services',
+    '/system',
+    '/how-it-works',
+    '/case-studies',
+    '/profit-breakdown',
+    '/qualification',
+    '/contact',
+    '/digital-marketing-agency-agra',
+  ];
+
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: route === '' ? 1 : 0.8,
+  }));
 }
