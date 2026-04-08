@@ -37,7 +37,7 @@ export default function RootLayout({
       <body>
 {/* Google Tag Manager (noscript) */}
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MHWPMKN5"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe></noscript>
 {/* End Google Tag Manager (noscript) */}
         {children}
       </body>
