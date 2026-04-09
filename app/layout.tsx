@@ -12,7 +12,11 @@ export const metadata: Metadata = {
   title: "Techinfigo | Growth Infrastructure",
   description: "We build compounding growth systems for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.",
   icons: {
-    icon: '/favicon.png',
+    icon: [
+      { url: '/favicon.png' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
     apple: '/favicon.png',
   }
 };
@@ -28,6 +32,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={poppins.variable}>
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+      </head>
       <body>
         {children}
       </body>
