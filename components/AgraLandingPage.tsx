@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { 
   Zap, 
   Target, 
@@ -412,10 +413,12 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           
           <div className="relative group">
             <div className="aspect-video bg-brandDark/5 rounded-[3rem] border border-brandDark/5 overflow-hidden flex items-center justify-center relative">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
                 alt="Agra Office" 
-                className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-700"
+                fill
+                className="object-cover opacity-20 group-hover:scale-110 transition-transform duration-700"
+                referrerPolicy="no-referrer"
               />
               <div className="text-center space-y-4 relative z-10">
                 <MapPin className="w-12 h-12 text-brandYellow mx-auto" aria-hidden="true" />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram, Linkedin, Twitter, Youtube, Facebook } from 'lucide-react';
 
 interface FooterProps {
@@ -33,15 +34,15 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           {/* Brand Intro */}
           <div className="lg:col-span-3 space-y-6">
             <Link href="/" className="block">
-              <img 
-                src="/logo.png" 
-                alt="Techinfigo Logo" 
-                className="h-10 lg:h-12 w-auto brightness-0 invert"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
+              <div className="relative h-10 lg:h-12 w-40 lg:w-48">
+                <Image 
+                  src="/logo.png" 
+                  alt="Techinfigo Logo" 
+                  fill
+                  className="object-contain brightness-0 invert"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
               <div className="hidden w-10 h-10 bg-brandYellow flex items-center justify-center rounded-lg shadow-lg">
                 <span className="text-brandDark font-black text-xl">TF</span>
               </div>

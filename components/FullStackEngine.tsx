@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 interface ModuleData {
   id: string;
@@ -296,11 +297,13 @@ export const FullStackEngine: React.FC<FullStackEngineProps> = ({ onBookAudit })
 
           {/* Right Visual Column (Dark Area) */}
           <div className="lg:col-span-6 relative overflow-hidden group min-h-[350px] lg:min-h-0 bg-brandDark">
-            <img 
+            <Image 
               key={activeModule.id}
               src={activeModule.image} 
               alt={activeModule.title} 
-              className="w-full h-full object-cover grayscale brightness-[0.25] transition-transform duration-[5000ms] group-hover:scale-110 opacity-70"
+              fill
+              className="object-cover grayscale brightness-[0.25] transition-transform duration-[5000ms] group-hover:scale-110 opacity-70"
+              referrerPolicy="no-referrer"
             />
             
             {/* Visual Overlays for depth */}

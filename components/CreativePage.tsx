@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Footer } from './Footer';
 
 interface CreativePageProps {
@@ -215,10 +216,11 @@ export const CreativePage: React.FC<CreativePageProps> = ({ onNavigate }) => {
             
             <div className="relative">
               <div className="aspect-[4/5] bg-brandDark rounded-[3rem] overflow-hidden shadow-2xl relative group">
-                <img 
+                <Image 
                   src="https://picsum.photos/seed/studio/800/1000" 
                   alt="In-House Studio" 
-                  className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brandDark via-transparent to-transparent"></div>

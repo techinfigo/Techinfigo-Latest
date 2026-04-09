@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 interface NavbarProps {
@@ -95,16 +96,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
             className="flex items-center gap-2 cursor-pointer z-[110] shrink-0" 
             onClick={() => setMobileMenuOpen(false)}
           >
-            <img 
-              src="/logo.png" 
-              alt="Techinfigo Logo" 
-              className={`h-8 lg:h-10 w-auto transition-all duration-300 ${!useDarkText ? 'brightness-0 invert' : ''}`}
-              onError={(e) => {
-                // Fallback if image not found
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.nextElementSibling?.classList.remove('hidden');
-              }}
-            />
+            <div className="relative h-8 lg:h-10 w-32 lg:w-40">
+              <Image 
+                src="/logo.png" 
+                alt="Techinfigo Logo" 
+                fill
+                className={`object-contain transition-all duration-300 ${!useDarkText ? 'brightness-0 invert' : ''}`}
+                priority
+                referrerPolicy="no-referrer"
+              />
+            </div>
             <div className="hidden flex items-center gap-2">
               <div className={`w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center rounded-sm transition-colors duration-300 ${useDarkText ? 'bg-brandDark' : 'bg-brandYellow'}`}>
                 <span className={`font-black text-lg lg:text-xl select-none ${useDarkText ? 'text-white' : 'text-brandDark'}`}>T</span>

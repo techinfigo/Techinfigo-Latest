@@ -6,7 +6,7 @@
   --color-brandYellow: #fcb632;
   --color-brandBg: #faf6ed;
   --color-brandText: #001d21;
-  --font-sans: 'Poppins', 'Inter', 'system-ui', 'sans-serif';
+  --font-sans: var(--font-poppins), 'Inter', 'system-ui', 'sans-serif';
   --shadow-glow: 0 0 30px -5px rgba(252, 182, 50, 0.3);
   --shadow-3xl: 0 35px 60px -15px rgba(0, 0, 0, 0.1);
   --shadow-4xl: 0 50px 100px -20px rgba(0, 0, 0, 0.15);

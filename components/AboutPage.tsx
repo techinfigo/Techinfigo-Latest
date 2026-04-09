@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface AboutPageProps {
   onNavigate: (page: string, serviceId?: string) => void;
@@ -171,10 +172,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="relative rounded-[2rem] overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-auto max-h-[450px]">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=1200" 
                 alt="Growth Architecture" 
-                className="w-full h-full object-cover grayscale brightness-90"
+                fill
+                className="object-cover grayscale brightness-90"
+                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-brandDark/10"></div>
             </div>
@@ -240,11 +243,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               key={idx} 
               className="flex-shrink-0 w-[180px] lg:w-[220px] group relative aspect-[3/4.2] rounded-[2rem] overflow-hidden border border-white/10 shadow-3xl bg-brandSurface"
             >
-              <img 
+              <Image 
                 src={member.image} 
                 alt={member.name} 
+                fill
                 draggable="false"
-                className="w-full h-full object-cover grayscale brightness-[0.45] group-hover:grayscale-0 group-hover:scale-105 group-hover:brightness-75 transition-all duration-1000 pointer-events-none"
+                className="object-cover grayscale brightness-[0.45] group-hover:grayscale-0 group-hover:scale-105 group-hover:brightness-75 transition-all duration-1000 pointer-events-none"
+                referrerPolicy="no-referrer"
               />
               
               {/* Card Overlay UI */}
@@ -373,8 +378,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                   </p>
                   
                   <div className="flex items-center gap-4 pt-4">
-                    <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 shadow-md">
-                      <img src={testimonial.image} alt={testimonial.name} className="w-full h-full object-cover" />
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 shadow-md relative">
+                      <Image 
+                        src={testimonial.image} 
+                        alt={testimonial.name} 
+                        fill
+                        className="object-cover" 
+                        referrerPolicy="no-referrer"
+                      />
                     </div>
                     <div className="space-y-0.5">
                       <p className="text-base lg:text-lg font-black text-brandDark leading-none">
@@ -409,10 +420,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 animate-slide-up">
             {/* Left Big Image */}
             <div className="relative aspect-[4/5] lg:aspect-auto lg:h-full rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden group shadow-2xl">
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
                 alt="Culture Landscape" 
-                className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                fill
+                className="object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-brandDark/5"></div>
             </div>
@@ -421,10 +434,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             <div className="flex flex-col gap-4 lg:gap-6">
               {/* Top Right Landscape */}
               <div className="relative aspect-[16/9] rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden group shadow-xl">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800" 
                   alt="Overhead View" 
-                  className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                  fill
+                  className="object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-brandDark/5"></div>
               </div>
@@ -432,18 +447,22 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               {/* Bottom Right Side-by-Side */}
               <div className="grid grid-cols-2 gap-4 lg:gap-6">
                 <div className="relative aspect-square rounded-[2rem] overflow-hidden group shadow-lg">
-                  <img 
+                  <Image 
                     src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=600" 
                     alt="Team Cityscape" 
-                    className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                    fill
+                    className="object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-brandDark/5"></div>
                 </div>
                 <div className="relative aspect-square rounded-[2rem] overflow-hidden group shadow-lg">
-                  <img 
+                  <Image 
                     src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600" 
                     alt="Coastal View" 
-                    className="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                    fill
+                    className="object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-[2s]"
+                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-brandDark/5"></div>
                 </div>
