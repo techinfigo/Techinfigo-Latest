@@ -101,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
                 src="/logo.png" 
                 alt="Techinfigo Logo" 
                 fill
-                className={`object-contain transition-all duration-300 ${!useDarkText ? 'brightness-0 invert' : ''}`}
+                className={`object-contain transition-all duration-300 ${!useDarkText ? 'invert brightness-200' : ''}`}
                 priority
                 referrerPolicy="no-referrer"
               />

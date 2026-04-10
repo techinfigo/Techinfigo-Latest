@@ -39,7 +39,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                   src="/logo.png" 
                   alt="Techinfigo Logo" 
                   fill
-                  className="object-contain brightness-0 invert"
+                  className="object-contain invert brightness-200"
                   referrerPolicy="no-referrer"
                 />
               </div>
