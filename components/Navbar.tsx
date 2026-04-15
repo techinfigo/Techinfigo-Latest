@@ -122,7 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
               <Link
                 key={link.id}
                 href={link.id}
-                className={`text-[9px] font-black uppercase tracking-[0.15em] transition-all relative py-2 px-1 whitespace-nowrap ${
+                className={`text-[11px] font-black uppercase tracking-[0.15em] transition-all relative py-2 px-1 whitespace-nowrap ${
                   activePage === link.pageId 
                     ? 'text-brandYellow' 
                     : isLightNav 
