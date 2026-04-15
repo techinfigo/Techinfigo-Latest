@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Linkedin, Twitter, Youtube, Facebook } from 'lucide-react';
+import { Instagram, Linkedin, Youtube, Facebook } from 'lucide-react';
 
 interface FooterProps {
   onNavigate?: (page: string, serviceId?: string) => void;
@@ -66,9 +66,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
-                <Twitter className="w-4 h-4" />
-              </a>
+
               <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
                 <Youtube className="w-4 h-4" />
               </a>
@@ -182,9 +180,6 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-[8px] font-bold text-white/20 uppercase tracking-[0.4em]">PARTNERSHIP STATUS</span>
-                  <div className="px-1.5 py-0.5 bg-brandYellow rounded shadow-[0_0_10px_rgba(252,182,50,0.3)]">
-                    <span className="text-[7px] font-black text-brandDark uppercase tracking-widest whitespace-nowrap">1 SPOT LEFT</span>
-                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2.5">
