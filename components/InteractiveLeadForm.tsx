@@ -22,6 +22,7 @@ import {
   MoreHorizontal,
   Target,
   BarChart3,
+  Building2,
   Clock,
   Wallet,
   ShieldCheck
@@ -53,6 +54,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   const [formData, setFormData] = useState({
     // Step 1
     fullName: '',
+    businessName: '',
+    businessModel: '',
     email: '',
     phone: '',
     website: '',
@@ -162,7 +165,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   };
 
   const isStepValid = () => {
-    if (currentStep === 1) return formData.fullName && formData.email;
+    if (currentStep === 1) return formData.fullName && formData.email && formData.businessName && formData.businessModel;
     if (currentStep === 2) return formData.services.length > 0;
     if (currentStep === 3) {
       const s = formData.services;
@@ -356,24 +359,29 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
             <div className="space-y-8">
               {/* Progress Header */}
               <div className="space-y-6">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                  <div className="space-y-2">
-                    <p className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.3em]">Strategy Application</p>
-                    <h1 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight uppercase leading-none">
-                      {currentStep === 1 && "Tell us about you"}
-                      {currentStep === 2 && "What do you need?"}
-                      {currentStep === 3 && "The Details"}
-                      {currentStep === 4 && "Qualification"}
-                    </h1>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-brandDark/40 text-[10px] font-bold uppercase tracking-widest mb-1">Step {currentStep} of 4</p>
-                    <div className="flex items-center gap-2 justify-end">
-                      <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></div>
-                      <p className="text-brandDark font-black text-xs uppercase tracking-tight">Active Session</p>
+                  <div className="space-y-4">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                      <div className="space-y-2">
+                        <p className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.3em]">Growth Audit Application</p>
+                        <h1 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight uppercase leading-none">
+                          {currentStep === 1 && "Tell us about your business"}
+                          {currentStep === 2 && "What do you need?"}
+                          {currentStep === 3 && "The Details"}
+                          {currentStep === 4 && "Qualification"}
+                        </h1>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-brandDark/40 text-[10px] font-bold uppercase tracking-widest mb-1">Step {currentStep} of 4</p>
+                        <div className="flex items-center gap-2 justify-end">
+                          <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></div>
+                          <p className="text-brandDark font-black text-xs uppercase tracking-tight">Active Session</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right sm:text-left">
+                      <p className="text-brandDark font-black text-xs uppercase tracking-tight">Takes 2 minutes. Could save you lakhs.</p>
                     </div>
                   </div>
-                </div>
 
                 {/* Progress Bar */}
                 <div className="h-2 w-full bg-brandDark/5 rounded-full overflow-hidden flex gap-1.5">
@@ -403,7 +411,21 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                       >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div className="space-y-3">
-                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Full Name</label>
+                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Business / Brand Name *</label>
+                            <div className="relative group">
+                              <input 
+                                required 
+                                type="text" 
+                                value={formData.businessName}
+                                onChange={(e) => updateField('businessName', e.target.value)}
+                                placeholder="e.g. Acme Corp" 
+                                className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-6 py-5 pl-14 text-sm font-bold focus:ring-2 focus:ring-brandYellow/20 focus:border-brandYellow outline-none rounded-2xl transition-all group-hover:border-brandDark/10" 
+                              />
+                              <Building2 className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
+                            </div>
+                          </div>
+                          <div className="space-y-3">
+                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Full Name *</label>
                             <div className="relative group">
                               <input 
                                 required 
@@ -416,6 +438,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                               <User className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
                             </div>
                           </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div className="space-y-3">
                             <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Email Address *</label>
                             <div className="relative group">
@@ -424,14 +448,12 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                                 type="email" 
                                 value={formData.email}
                                 onChange={(e) => updateField('email', e.target.value)}
-                                placeholder="rahul@brand.com" 
+                                placeholder="rahul@business.com" 
                                 className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-6 py-5 pl-14 text-sm font-bold focus:ring-2 focus:ring-brandYellow/20 focus:border-brandYellow outline-none rounded-2xl transition-all group-hover:border-brandDark/10" 
                               />
                               <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
                             </div>
                           </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div className="space-y-3">
                             <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Phone Number (Optional)</label>
                             <div className="relative group">
@@ -445,18 +467,35 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                               <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
                             </div>
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Website / Instagram (Optional)</label>
-                            <div className="relative group">
-                              <input 
-                                type="text" 
-                                value={formData.website}
-                                onChange={(e) => updateField('website', e.target.value)}
-                                placeholder="yourbrand.com or @handle" 
-                                className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-6 py-5 pl-14 text-sm font-bold focus:ring-2 focus:ring-brandYellow/20 focus:border-brandYellow outline-none rounded-2xl transition-all group-hover:border-brandDark/10" 
-                              />
-                              <Globe className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
-                            </div>
+                        </div>
+                        <div className="space-y-3">
+                          <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Business Model *</label>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {['D2C / Ecom', 'Service', 'B2B / SaaS', 'Other'].map(opt => (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => updateField('businessModel', opt)}
+                                className={`px-4 py-3 rounded-xl border-2 font-bold text-[10px] uppercase tracking-wider transition-all ${
+                                  formData.businessModel === opt ? 'border-brandYellow bg-brandYellow/10 text-brandDark' : 'border-[#f0f0f0] text-brandDark/40 hover:border-brandDark/10'
+                                }`}
+                              >
+                                {opt}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Website URL / Portfolio (Optional)</label>
+                          <div className="relative group">
+                            <input 
+                              type="text" 
+                              value={formData.website}
+                              onChange={(e) => updateField('website', e.target.value)}
+                              placeholder="https://yourbusiness.com" 
+                              className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-6 py-5 pl-14 text-sm font-bold focus:ring-2 focus:ring-brandYellow/20 focus:border-brandYellow outline-none rounded-2xl transition-all group-hover:border-brandDark/10" 
+                            />
+                            <Globe className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
                           </div>
                         </div>
                       </motion.div>
