@@ -58,7 +58,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
     website: '',
 
     // Step 2
-    service: '' as ServiceType | '',
+    services: [] as ServiceType[],
 
     // Step 3 - Conditional
     // Ecommerce
@@ -136,7 +136,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
 
     // Prepare data for submission
     const submissionData = {
-      _subject: `New Interactive Lead - ${formData.fullName} - ${formData.service}`,
+      _subject: `New Interactive Lead - ${formData.fullName} - ${formData.services.join(', ')}`,
       ...formData
     };
 
@@ -163,15 +163,43 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
 
   const isStepValid = () => {
     if (currentStep === 1) return formData.fullName && formData.email;
-    if (currentStep === 2) return formData.service !== '';
+    if (currentStep === 2) return formData.services.length > 0;
     if (currentStep === 3) {
-      const s = formData.service;
-      if (s === 'Ecommerce Growth (D2C)') return formData.revenue && formData.runningAds && formData.platform && formData.problems.length > 0;
-      if (s === 'Facebook / Instagram Ads' || s === 'Google Ads') return formData.adSpend && formData.performance && formData.adIssues.length > 0;
-      if (s === 'Website Development' || s === 'Landing Page') return formData.websiteType && formData.designReady && formData.websiteTimeline && formData.websiteBudget;
-      if (s === 'App Development') return formData.appType && formData.appStage && formData.appFeatures.length > 0 && formData.appBudget;
-      if (s === 'SEO') return formData.seoTraffic && formData.seoGoal.length > 0;
-      if (s === 'Other') return formData.otherHelp !== '';
+      const s = formData.services;
+      
+      // If none selected somehow (should be caught by step 2 validation)
+      if (s.length === 0) return true;
+
+      // Validate Ecommerce
+      if (s.includes('Ecommerce Growth (D2C)')) {
+        if (!(formData.revenue && formData.runningAds && formData.platform && formData.problems.length > 0)) return false;
+      }
+      
+      // Validate Ads
+      if (s.includes('Facebook / Instagram Ads') || s.includes('Google Ads')) {
+        if (!(formData.adSpend && formData.performance && formData.adIssues.length > 0)) return false;
+      }
+
+      // Validate Website
+      if (s.includes('Website Development') || s.includes('Landing Page')) {
+        if (!(formData.websiteType && formData.designReady && formData.websiteTimeline && formData.websiteBudget)) return false;
+      }
+
+      // Validate App
+      if (s.includes('App Development')) {
+        if (!(formData.appType && formData.appStage && formData.appFeatures.length > 0 && formData.appBudget)) return false;
+      }
+
+      // Validate SEO
+      if (s.includes('SEO')) {
+        if (!(formData.seoTraffic && formData.seoGoal.length > 0)) return false;
+      }
+
+      // Validate Other
+      if (s.includes('Other')) {
+        if (formData.otherHelp === '') return false;
+      }
+
       return true;
     }
     if (currentStep === 4) return formData.finalBudget && formData.finalTimeline;
@@ -458,20 +486,20 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                             <button
                               key={item.id}
                               type="button"
-                              onClick={() => updateField('service', item.id)}
+                              onClick={() => toggleChip('services', item.id)}
                               className={`p-6 rounded-3xl border-2 flex flex-col items-center gap-4 transition-all duration-300 group ${
-                                formData.service === item.id 
+                                formData.services.includes(item.id as ServiceType) 
                                   ? 'border-brandYellow bg-brandYellow/5 shadow-lg scale-[1.02]' 
                                   : 'border-[#f0f0f0] hover:border-brandDark/10 hover:bg-brandDark/[0.02]'
                               }`}
                             >
                               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                                formData.service === item.id ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5 text-brandDark/40 group-hover:bg-brandDark/10'
+                                formData.services.includes(item.id as ServiceType) ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5 text-brandDark/40 group-hover:bg-brandDark/10'
                               }`}>
                                 {item.icon}
                               </div>
                               <span className={`text-[10px] font-black uppercase tracking-tight text-center leading-tight ${
-                                formData.service === item.id ? 'text-brandDark' : 'text-brandDark/60'
+                                formData.services.includes(item.id as ServiceType) ? 'text-brandDark' : 'text-brandDark/60'
                               }`}>
                                 {item.id}
                               </span>
@@ -492,7 +520,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         className="space-y-10"
                       >
                         {/* ECOMMERCE GROWTH */}
-                        {formData.service === 'Ecommerce Growth (D2C)' && (
+                        {formData.services.includes('Ecommerce Growth (D2C)') && (
                           <div className="space-y-10">
                             <div className="space-y-4">
                               <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">Monthly Revenue</label>
@@ -608,7 +636,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         )}
 
                         {/* ADS */}
-                        {(formData.service === 'Facebook / Instagram Ads' || formData.service === 'Google Ads') && (
+                        {(formData.services.includes('Facebook / Instagram Ads') || formData.services.includes('Google Ads')) && (
                           <div className="space-y-10">
                             <div className="space-y-4">
                               <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">Monthly Ad Spend</label>
@@ -667,7 +695,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         )}
 
                         {/* WEBSITE */}
-                        {(formData.service === 'Website Development' || formData.service === 'Landing Page') && (
+                        {(formData.services.includes('Website Development') || formData.services.includes('Landing Page')) && (
                           <div className="space-y-10">
                             <div className="space-y-4">
                               <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">Website Type</label>
@@ -745,7 +773,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         )}
 
                         {/* APP */}
-                        {formData.service === 'App Development' && (
+                        {formData.services.includes('App Development') && (
                           <div className="space-y-10">
                             <div className="space-y-4">
                               <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">App Type</label>
@@ -822,7 +850,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         )}
 
                         {/* SEO */}
-                        {formData.service === 'SEO' && (
+                        {formData.services.includes('SEO') && (
                           <div className="space-y-10">
                             <div className="space-y-4">
                               <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">Current Traffic</label>
@@ -863,7 +891,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         )}
 
                         {/* OTHER */}
-                        {formData.service === 'Other' && (
+                        {formData.services.includes('Other') && (
                           <div className="space-y-4">
                             <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">What do you need help with?</label>
                             <textarea 
