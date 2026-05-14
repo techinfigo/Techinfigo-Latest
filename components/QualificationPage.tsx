@@ -68,8 +68,11 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
   return (
     <div className="min-h-screen bg-brandDark font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. HERO SECTION */}
-      <section className="bg-brandDark pt-32 pb-20 lg:pt-56 lg:pb-48 px-6 lg:px-12 relative overflow-hidden flex items-center min-h-[80vh]">
-        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <section className="bg-brandDark pt-24 pb-16 lg:pt-40 lg:pb-32 px-6 lg:px-12 relative overflow-hidden flex items-center min-h-[60vh]">
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-6xl mx-auto text-center relative z-10 w-full space-y-12 animate-slide-up">
           <div className="space-y-8">
             <motion.div
