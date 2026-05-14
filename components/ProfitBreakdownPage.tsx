@@ -119,10 +119,8 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
                 <p className="text-brandDark/60 text-base lg:text-xl font-medium leading-relaxed max-w-xl">
                   On the surface, everything looks fine. But profit is barely moving despite high revenue and "good" ROAS.
                 </p>
-              </div>
-
-              <div className="p-8 bg-rose-500/5 border border-rose-500/10 rounded-3xl space-y-4">
-                <div className="flex items-center gap-3 text-rose-500">
+              </div>                <div className="p-8 bg-brandYellow/5 border border-brandYellow/10 rounded-3xl space-y-4">
+                <div className="flex items-center gap-3 text-brandYellow">
                   <AlertCircle className="w-5 h-5" />
                   <span className="text-xs font-black uppercase tracking-widest">Efficiency Leak Detected</span>
                 </div>
@@ -139,25 +137,25 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
                   </div>
                   <div className="space-y-2">
                     <p className="text-[9px] lg:text-[10px] font-black text-brandDark/30 uppercase tracking-widest">ROAS</p>
-                    <p className="text-2xl lg:text-4xl font-black text-emerald-600 tracking-tighter">4.5x</p>
+                    <p className="text-2xl lg:text-4xl font-black text-brandYellow tracking-tighter">4.5x</p>
                   </div>
                 </div>
 
                 <div className="p-8 bg-brandDark text-white rounded-3xl space-y-6 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 blur-3xl rounded-full"></div>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full"></div>
                   <div className="relative z-10 flex justify-between items-end">
                     <div className="space-y-1">
                       <p className="text-[9px] lg:text-[10px] font-black text-white/40 uppercase tracking-widest">ACTUAL_NET_PROFIT</p>
-                      <p className="text-3xl lg:text-4xl font-black text-rose-500 tracking-tighter">₹1.2L</p>
+                      <p className="text-3xl lg:text-4xl font-black text-brandYellow tracking-tighter">₹1.2L</p>
                     </div>
-                    <TrendingDown className="w-8 h-8 text-rose-500/50" />
+                    <TrendingDown className="w-8 h-8 text-white/40" />
                   </div>
                   <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden relative z-10">
                     <motion.div 
                       initial={{ width: "0%" }}
                       whileInView={{ width: "12%" }}
                       transition={{ duration: 1.5, ease: "easeOut" }}
-                      className="h-full bg-rose-500"
+                      className="h-full bg-brandYellow"
                     />
                   </div>
                 </div>
@@ -172,7 +170,7 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
                       "Scaling spend only increases complexity"
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-4 text-brandDark/60 text-sm lg:text-base font-bold">
-                        <MinusCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+                        <MinusCircle className="w-5 h-5 text-brandYellow shrink-0 mt-0.5" />
                         {item}
                       </li>
                     ))}
@@ -212,10 +210,10 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
               { title: "Discount Dependency", desc: "Training customers to only buy when there's a heavy sale." }
             ].map((point, i) => (
               <div key={i} className="p-10 lg:p-14 bg-brandDark hover:bg-white/5 transition-colors group">
-                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-8 group-hover:bg-rose-500 transition-all duration-500">
-                  <TrendingDown className="w-6 h-6 text-rose-500 group-hover:text-white transition-colors" />
+                <div className="w-12 h-12 rounded-2xl bg-brandYellow/10 flex items-center justify-center mb-8 group-hover:bg-brandYellow transition-all duration-500">
+                  <TrendingDown className="w-6 h-6 text-brandYellow group-hover:text-brandDark transition-colors" />
                 </div>
-                <h3 className="text-xl lg:text-2xl font-black text-white mb-4 uppercase tracking-tight leading-none group-hover:text-rose-500 transition-colors">{point.title}</h3>
+                <h3 className="text-xl lg:text-2xl font-black text-white mb-4 uppercase tracking-tight leading-none group-hover:text-brandYellow transition-colors">{point.title}</h3>
                 <p className="text-white/40 text-sm lg:text-base font-medium leading-relaxed group-hover:text-white/60 transition-colors">{point.desc}</p>
               </div>
             ))}
@@ -305,7 +303,7 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
                   </div>
                   <div className="space-y-2">
                     <p className="text-[9px] lg:text-[10px] font-black text-brandDark/30 uppercase tracking-widest">CAC_STATUS</p>
-                    <p className="text-2xl lg:text-4xl font-black text-emerald-600 tracking-tighter">OPTIMIZED</p>
+                    <p className="text-2xl lg:text-4xl font-black text-brandYellow tracking-tighter">OPTIMIZED</p>
                   </div>
                 </div>
 
@@ -434,8 +432,8 @@ export const ProfitBreakdownPage: React.FC<ProfitBreakdownPageProps> = ({ onNavi
 
                 <div className="pt-10 border-t border-white/10 relative z-10">
                   <div className="flex items-center gap-4">
-                    <ShieldCheck className="w-6 h-6 text-emerald-500" />
-                    <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.4em]">Confidential & Data-Backed</span>
+                    <ShieldCheck className="w-6 h-6 text-brandYellow" />
+                    <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Confidential & Data-Backed</span>
                   </div>
                 </div>
               </div>

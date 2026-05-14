@@ -28,7 +28,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
       } else if (activePage === 'profit-breakdown') {
         setIsOverLightSection(scrollY > 600 && scrollY < 1600);
       } else if (activePage === 'qualification') {
-        setIsOverLightSection(scrollY > 600);
+        setIsOverLightSection(false);
+      } else if (activePage === 'system') {
+        // Section 6 (Why This Works Better) is light. It starts after many sections.
+        // Approx: Hero (800) + Problem (800) + Overview (1000) + Scenario (800) + Breakdown (1200)
+        // Let's set it to switch after ~3800px. 
+        setIsOverLightSection(scrollY > 3800 && scrollY < 4800);
       } else if (activePage === 'digital-marketing-agency-agra') {
         // Simple & Robust: If scrolled past Hero (~100px), use solid white nav with dark text.
         // This ensures the navbar is ALWAYS visible on all sections of the Agra page.

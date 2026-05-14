@@ -323,10 +323,10 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-[10px] text-white/60">CAC Reduction</span>
-                            <span className="text-xs font-mono text-emerald-400">-{cs.after.cacReduction}</span>
+                            <span className="text-xs font-mono text-brandYellow">-{cs.after.cacReduction}</span>
                           </div>
                         </div>
-                        <p className="text-[10px] text-emerald-400/80 font-bold leading-tight uppercase tracking-wider">{cs.after.gain}</p>
+                        <p className="text-[10px] text-brandYellow font-bold leading-tight uppercase tracking-wider">{cs.after.gain}</p>
                       </div>
                     </div>
 
@@ -485,8 +485,8 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
 
                     <div className="space-y-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                          <Zap className="w-4 h-4 text-emerald-500" />
+                        <div className="w-8 h-8 rounded-lg bg-brandYellow/10 flex items-center justify-center border-brandYellow/20 border">
+                          <Zap className="w-4 h-4 text-brandYellow" />
                         </div>
                         <h3 className="text-2xl font-bold tracking-tight">What We Did</h3>
                       </div>
@@ -494,7 +494,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
                         {selectedCaseStudy.details.solution.map((item, i) => (
                           <div key={i} className="flex gap-4 items-start">
                             <div className="mt-1.5">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                              <CheckCircle2 className="w-4 h-4 text-brandYellow" />
                             </div>
                             <p className="text-base text-white/80 leading-relaxed">{item}</p>
                           </div>

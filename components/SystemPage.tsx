@@ -70,9 +70,9 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-brandDark text-white font-sans selection:bg-brandYellow selection:text-brandDark">
+    <div className="bg-brandDark text-white font-sans">
       {/* 1. HERO SECTION (EDITORIAL & BOLD) */}
-      <section className="relative min-h-[80vh] pt-32 pb-20 lg:pt-56 lg:pb-48 px-6 lg:px-12 overflow-hidden flex items-center">
+      <section className="relative min-h-screen flex flex-col justify-center pt-24 pb-20 px-6 lg:px-12 overflow-hidden">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -171,7 +171,7 @@ export const SystemPage: React.FC<SystemPageProps> = ({ onNavigate }) => {
             
             <div className="lg:col-span-5 relative">
               <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] lg:rounded-[3rem] p-10 lg:p-14 space-y-10 shadow-2xl relative overflow-hidden backdrop-blur-md">
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brandYellow/50 via-brandYellow/50 to-emerald-500/50"></div>
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brandYellow/50 via-brandYellow/50 to-brandYellow/50"></div>
                 
                 <div className="flex justify-between items-center border-b border-white/10 pb-8">
                   <div className="flex items-center gap-3">

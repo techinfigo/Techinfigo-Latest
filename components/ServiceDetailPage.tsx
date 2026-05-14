@@ -240,7 +240,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId,
                    <span>CORE_ENGINE_V5.2</span>
                    <span>LATENCY: 0ms</span>
                 </div>
-                <span className="text-emerald-500">SYNC_STATUS: OPTIMAL</span>
+                <span className="text-brandYellow">SYNC_STATUS: OPTIMAL</span>
               </div>
             </div>
           </div>
@@ -250,7 +250,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId,
             <div className="bg-[#fff9f0] border-2 border-dotted border-brandYellow/40 p-12 rounded-[3rem] shadow-sm space-y-12 animate-slide-up">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-3 px-4 py-2 bg-brandDark text-white rounded-full">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></div>
                   <span className="text-[10px] font-bold uppercase tracking-[0.25em]">Ready for Deploy</span>
                 </div>
                 <h4 className="text-3xl font-black text-brandDark tracking-tighter leading-none">Activate this Node?</h4>

@@ -55,9 +55,9 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
 
   const getStatus = () => {
     if (score === 0) return { label: 'Select your current stage', color: 'text-brandDark/40' };
-    if (score <= 2) return { label: 'Building Foundation', color: 'text-blue-500' };
-    if (score <= 4) return { label: 'Growth Potential', color: 'text-brandYellow' };
-    return { label: 'Ready to Scale', color: 'text-emerald-500' };
+    if (score <= 2) return { label: 'Building Foundation', color: 'text-brandDark/60' };
+    if (score <= 4) return { label: 'Growth Potential', color: 'text-brandYellow/80' };
+    return { label: 'Ready to Scale', color: 'text-brandYellow' };
   };
 
   const status = getStatus();
@@ -183,7 +183,7 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
                     exit={{ opacity: 0, x: 20 }}
                     className="space-y-3"
                   >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-brandYellow/10 text-brandYellow rounded-full text-[10px] font-black uppercase tracking-widest">
                       <Sparkles className="w-3 h-3" />
                       High Compatibility
                     </div>
@@ -200,7 +200,7 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
                     exit={{ opacity: 0, x: 20 }}
                     className="space-y-3"
                   >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-brandDark/5 text-brandDark/60 rounded-full text-[10px] font-black uppercase tracking-widest">
                       <AlertCircle className="w-3 h-3" />
                       Foundation Stage
                     </div>

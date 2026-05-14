@@ -66,33 +66,38 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
   ];
 
   return (
-    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+    <div className="min-h-screen bg-brandDark font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. HERO SECTION */}
-      <section className="bg-brandDark pt-32 pb-20 lg:pt-56 lg:pb-48 px-6 lg:px-12 relative overflow-hidden">
+      <section className="bg-brandDark pt-32 pb-20 lg:pt-56 lg:pb-48 px-6 lg:px-12 relative overflow-hidden flex items-center min-h-[80vh]">
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-8 lg:space-y-12">
-            <motion.span 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="text-[10px] lg:text-[11px] font-bold text-brandYellow uppercase tracking-[0.5em] block"
+        <div className="max-w-6xl mx-auto text-center relative z-10 w-full space-y-12 animate-slide-up">
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex items-center justify-center gap-4"
             >
-              QUALIFICATION_PROTOCOL_v2.0
-            </motion.span>
+              <div className="w-8 lg:w-12 h-[1px] bg-brandYellow"></div>
+              <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">QUALIFICATION_PROTOCOL_v2.0</span>
+              <div className="w-8 lg:w-12 h-[1px] bg-brandYellow"></div>
+            </motion.div>
+
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl sm:text-5xl lg:text-9xl font-black text-white leading-[0.85] tracking-tighter max-w-5xl uppercase"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.85] uppercase text-white"
             >
               We Don't Work <br />
               With <span className="text-brandYellow italic">Everyone.</span>
             </motion.h1>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-base lg:text-2xl text-white/60 font-medium leading-relaxed max-w-3xl"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-base lg:text-2xl text-white/60 font-medium leading-relaxed max-w-3xl mx-auto"
             >
               Our growth infrastructure is high-performance and high-intensity. <br className="hidden lg:block" /> To maintain our 94% success rate, we only partner with brands <br className="hidden lg:block" /> that meet our operational and strategic criteria.
             </motion.p>
@@ -101,16 +106,16 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 2. GREEN LIGHTS (IDEAL PARTNER) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-white">
+      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark relative">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 lg:mb-32 space-y-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-[1px] bg-emerald-500"></div>
-              <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.4em]">Protocol: GREEN_LIGHT</span>
+              <div className="w-12 h-[1px] bg-brandYellow"></div>
+              <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Protocol: GREEN_LIGHT</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-8xl font-black text-brandDark tracking-tighter uppercase leading-none">
+            <h2 className="text-4xl sm:text-5xl lg:text-8xl font-black text-white tracking-tighter uppercase leading-none">
               The Ideal <br />
-              <span className="text-emerald-500 italic">Partner.</span>
+              <span className="text-brandYellow italic">Partner.</span>
             </h2>
           </div>
 
@@ -122,17 +127,17 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group p-8 lg:p-12 bg-brandBg border border-brandDark/5 rounded-[2.5rem] lg:rounded-[3rem] hover:border-emerald-500/20 transition-all duration-500 shadow-xl hover:shadow-2xl relative overflow-hidden"
+                className="group p-8 lg:p-12 bg-white/5 border border-white/10 rounded-[2.5rem] lg:rounded-[3rem] hover:border-brandYellow/40 transition-all duration-500 shadow-xl hover:shadow-2xl relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl rounded-full translate-x-16 -translate-y-16 group-hover:bg-emerald-500/10 transition-colors"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full translate-x-16 -translate-y-16 group-hover:bg-brandYellow/10 transition-colors"></div>
                 <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-10 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-500">
-                    <div className="text-emerald-500 group-hover:text-white transition-colors">
+                  <div className="w-16 h-16 rounded-2xl bg-brandYellow/10 flex items-center justify-center mb-10 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500">
+                    <div className="text-brandYellow group-hover:text-brandDark transition-colors">
                       {light.icon}
                     </div>
                   </div>
-                  <h3 className="text-2xl lg:text-3xl font-black text-brandDark tracking-tighter mb-4 uppercase group-hover:text-emerald-600 transition-colors">{light.title}</h3>
-                  <p className="text-brandDark/60 text-base lg:text-lg font-medium leading-relaxed group-hover:text-brandDark/80 transition-colors">{light.desc}</p>
+                  <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tighter mb-4 uppercase group-hover:text-brandYellow transition-colors">{light.title}</h3>
+                  <p className="text-white/60 text-base lg:text-lg font-medium leading-relaxed group-hover:text-white/80 transition-colors">{light.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -141,16 +146,16 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 3. RED FLAGS (NON-FIT) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandBg border-y border-brandDark/5">
+      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative">
         <div className="max-w-7xl mx-auto">
           <div className="mb-20 lg:mb-32 space-y-6 text-right flex flex-col items-end">
             <div className="flex items-center gap-4">
-              <span className="text-[10px] font-black text-rose-500 uppercase tracking-[0.4em]">Protocol: RED_FLAG</span>
-              <div className="w-12 h-[1px] bg-rose-500"></div>
+              <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Protocol: RED_FLAG</span>
+              <div className="w-12 h-[1px] bg-white/20"></div>
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-8xl font-black text-brandDark tracking-tighter uppercase leading-none">
+            <h2 className="text-4xl sm:text-5xl lg:text-8xl font-black text-white tracking-tighter uppercase leading-none">
               Not A <br />
-              <span className="text-rose-500 italic">Good Fit.</span>
+              <span className="text-white/40 italic">Good Fit.</span>
             </h2>
           </div>
 
@@ -162,17 +167,17 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group p-8 lg:p-12 bg-white border border-brandDark/5 rounded-[2.5rem] lg:rounded-[3rem] hover:border-rose-500/20 transition-all duration-500 shadow-xl hover:shadow-2xl relative overflow-hidden"
+                className="group p-8 lg:p-12 bg-white/5 border border-white/10 rounded-[2.5rem] lg:rounded-[3rem] hover:border-white/20 transition-all duration-500 shadow-xl hover:shadow-2xl relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 blur-3xl rounded-full translate-x-16 -translate-y-16 group-hover:bg-rose-500/10 transition-colors"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full translate-x-16 -translate-y-16 group-hover:bg-white/10 transition-colors"></div>
                 <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-rose-50 flex items-center justify-center mb-10 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500">
-                    <div className="text-rose-500 group-hover:text-white transition-colors">
+                  <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-10 group-hover:bg-white group-hover:text-brandDark transition-all duration-500">
+                    <div className="text-white/40 group-hover:text-brandDark transition-colors">
                       {flag.icon}
                     </div>
                   </div>
-                  <h3 className="text-2xl lg:text-3xl font-black text-brandDark tracking-tighter mb-4 uppercase group-hover:text-rose-600 transition-colors">{flag.title}</h3>
-                  <p className="text-brandDark/60 text-base lg:text-lg font-medium leading-relaxed group-hover:text-brandDark/80 transition-colors">{flag.desc}</p>
+                  <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tighter mb-4 uppercase group-hover:text-white transition-colors">{flag.title}</h3>
+                  <p className="text-white/60 text-base lg:text-lg font-medium leading-relaxed group-hover:text-white/80 transition-colors">{flag.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -237,14 +242,14 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 5. FINAL CTA */}
-      <section className="py-32 lg:py-64 bg-brandBg text-center relative overflow-hidden">
+      <section className="py-32 lg:py-64 bg-brandDark text-center relative overflow-hidden border-t border-white/5">
         <div className="max-w-5xl mx-auto px-6 relative z-10 space-y-16">
           <div className="space-y-8">
-            <h2 className="text-4xl sm:text-5xl lg:text-9xl font-black text-brandDark tracking-tighter leading-[0.85] uppercase">
+            <h2 className="text-4xl sm:text-5xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] uppercase">
               Ready To <br />
               <span className="text-brandYellow italic">Partner?</span>
             </h2>
-            <p className="text-brandDark/40 text-lg lg:text-2xl font-medium max-w-2xl mx-auto leading-relaxed">
+            <p className="text-white/40 text-lg lg:text-2xl font-medium max-w-2xl mx-auto leading-relaxed">
               If you meet the criteria and are ready to build a profit-first growth engine, let's talk.
             </p>
           </div>
@@ -252,19 +257,19 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
           <div className="flex flex-col items-center gap-10">
             <button 
               onClick={() => onNavigate('contact')}
-              className="group relative px-12 py-7 lg:px-16 lg:py-8 bg-brandDark text-white font-black text-xs lg:text-sm uppercase tracking-[0.5em] rounded-2xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-2xl overflow-hidden"
+              className="group relative px-12 py-7 lg:px-16 lg:py-8 bg-brandYellow text-brandDark font-black text-xs lg:text-sm uppercase tracking-[0.5em] rounded-2xl shadow-glow overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-4">
                 Apply for Growth Audit
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-brandYellow translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
             </button>
             
             <div className="flex items-center gap-6">
-              <div className="w-12 lg:w-16 h-[1px] bg-brandDark/10"></div>
-              <span className="text-[9px] lg:text-[10px] font-black text-brandDark/20 uppercase tracking-[0.5em]">Strict Selection // High Impact</span>
-              <div className="w-12 lg:w-16 h-[1px] bg-brandDark/10"></div>
+              <div className="w-12 lg:w-16 h-[1px] bg-white/10"></div>
+              <span className="text-[9px] lg:text-[10px] font-black text-white/20 uppercase tracking-[0.5em]">Strict Selection // High Impact</span>
+              <div className="w-12 lg:w-16 h-[1px] bg-white/10"></div>
             </div>
           </div>
         </div>

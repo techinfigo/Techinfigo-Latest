@@ -132,8 +132,8 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               {/* Card Header */}
               <div className="flex justify-between items-center">
                 <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 font-mono">HQ TERMINAL</span>
-                <span className="flex items-center gap-2 text-[8px] font-black text-emerald-400 uppercase tracking-widest">
-                  <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="flex items-center gap-2 text-[8px] font-black text-brandYellow uppercase tracking-widest">
+                  <span className="w-1 h-1 rounded-full bg-brandYellow animate-pulse"></span>
                   LIVE DESK
                 </span>
               </div>

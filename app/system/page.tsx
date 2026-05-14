@@ -9,12 +9,10 @@ import { useRouter } from 'next/navigation';
 export default function System() {
   const router = useRouter();
   return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
+    <main className="min-h-screen bg-brandDark text-white selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="system" />
-      <div className="animate-slide-up">
-        <SystemPage onNavigate={(page) => router.push(`/${page}`)} />
-        <Footer />
-      </div>
+      <SystemPage onNavigate={(page) => router.push(`/${page}`)} />
+      <Footer />
     </main>
   );
 }
