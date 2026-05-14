@@ -56,6 +56,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
     fullName: '',
     businessName: '',
     businessModel: '',
+    primaryObjective: '',
     email: '',
     phone: '',
     website: '',
@@ -165,7 +166,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   };
 
   const isStepValid = () => {
-    if (currentStep === 1) return formData.fullName && formData.email && formData.businessName && formData.businessModel;
+    if (currentStep === 1) return formData.fullName && formData.email && formData.businessName && formData.businessModel && formData.primaryObjective;
     if (currentStep === 2) return formData.services.length > 0;
     if (currentStep === 3) {
       const s = formData.services;
@@ -359,29 +360,34 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
             <div className="space-y-8">
               {/* Progress Header */}
               <div className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                      <div className="space-y-2">
-                        <p className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.3em]">Growth Audit Application</p>
-                        <h1 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight uppercase leading-none">
-                          {currentStep === 1 && "Tell us about your business"}
-                          {currentStep === 2 && "What do you need?"}
-                          {currentStep === 3 && "The Details"}
-                          {currentStep === 4 && "Qualification"}
-                        </h1>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-brandDark/40 text-[10px] font-bold uppercase tracking-widest mb-1">Step {currentStep} of 4</p>
-                        <div className="flex items-center gap-2 justify-end">
-                          <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse"></div>
-                          <p className="text-brandDark font-black text-xs uppercase tracking-tight">Active Session</p>
+                      <div className="space-y-4">
+                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <span className="w-8 h-px bg-brandYellow"></span>
+                              <p className="text-brandYellow text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em]">Growth Audit Application</p>
+                            </div>
+                            <h1 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tight uppercase leading-none">
+                              {currentStep === 1 && "Start Your Profile"}
+                              {currentStep === 2 && "Growth Tools"}
+                              {currentStep === 3 && "Unit Economics"}
+                              {currentStep === 4 && "Final Roadmap"}
+                            </h1>
+                          </div>
+                          <div className="text-right">
+                            <div className="bg-brandDark/5 px-4 py-2 rounded-full inline-flex items-center gap-3">
+                              <p className="text-brandDark/40 text-[10px] font-black uppercase tracking-widest leading-none">Step {currentStep} of 4</p>
+                              <div className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="bg-brandYellow/10 px-3 py-1.5 rounded-lg">
+                            <p className="text-brandDark font-black text-[10px] uppercase tracking-wider">Takes 2 minutes. Could save you lakhs.</p>
+                          </div>
+                          <div className="h-px flex-1 bg-brandDark/5"></div>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-right sm:text-left">
-                      <p className="text-brandDark font-black text-xs uppercase tracking-tight">Takes 2 minutes. Could save you lakhs.</p>
-                    </div>
-                  </div>
 
                 {/* Progress Bar */}
                 <div className="h-2 w-full bg-brandDark/5 rounded-full overflow-hidden flex gap-1.5">
@@ -396,8 +402,10 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                 </div>
               </div>
 
-              <div className="bg-white rounded-[3rem] p-8 lg:p-12 shadow-4xl border border-brandDark/5 relative overflow-hidden">
-                <form onSubmit={handleSubmit} className="space-y-10">
+                <div className="bg-white rounded-[3.5rem] p-8 lg:p-14 shadow-2xl shadow-brandDark/5 border border-brandDark/5 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-brandYellow/5 blur-[100px] rounded-full -mr-32 -mt-32"></div>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
                   <AnimatePresence mode="wait">
                     {/* STEP 1: BASIC INFO */}
                     {currentStep === 1 && (
@@ -409,9 +417,9 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         transition={{ duration: 0.4, ease: "circOut" }}
                         className="space-y-8"
                       >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Business / Brand Name *</label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                          <div className="space-y-4">
+                            <label className="text-[11px] font-bold text-brandDark/50 uppercase tracking-[0.2em] ml-1">Business / Brand Name *</label>
                             <div className="relative group">
                               <input 
                                 required 
@@ -419,13 +427,13 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                                 value={formData.businessName}
                                 onChange={(e) => updateField('businessName', e.target.value)}
                                 placeholder="e.g. Acme Corp" 
-                                className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-6 py-5 pl-14 text-sm font-bold focus:ring-2 focus:ring-brandYellow/20 focus:border-brandYellow outline-none rounded-2xl transition-all group-hover:border-brandDark/10" 
+                                className="w-full bg-[#fcfcfc] border-2 border-[#f0f0f0] px-7 py-6 pl-16 text-sm font-black focus:ring-4 focus:ring-brandYellow/10 focus:border-brandYellow outline-none rounded-[2rem] transition-all group-hover:border-brandDark/10 placeholder:text-brandDark/20" 
                               />
-                              <Building2 className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
+                              <Building2 className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-brandDark/30 group-focus-within:text-brandYellow transition-all group-focus-within:scale-110" />
                             </div>
                           </div>
-                          <div className="space-y-3">
-                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Full Name *</label>
+                          <div className="space-y-4">
+                            <label className="text-[11px] font-bold text-brandDark/50 uppercase tracking-[0.2em] ml-1">Full Name *</label>
                             <div className="relative group">
                               <input 
                                 required 
@@ -433,9 +441,9 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                                 value={formData.fullName}
                                 onChange={(e) => updateField('fullName', e.target.value)}
                                 placeholder="e.g. Rahul Sharma" 
-                                className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-6 py-5 pl-14 text-sm font-bold focus:ring-2 focus:ring-brandYellow/20 focus:border-brandYellow outline-none rounded-2xl transition-all group-hover:border-brandDark/10" 
+                                className="w-full bg-[#fcfcfc] border-2 border-[#f0f0f0] px-7 py-6 pl-16 text-sm font-black focus:ring-4 focus:ring-brandYellow/10 focus:border-brandYellow outline-none rounded-[2rem] transition-all group-hover:border-brandDark/10 placeholder:text-brandDark/20" 
                               />
-                              <User className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brandDark/20 group-focus-within:text-brandYellow transition-colors" />
+                              <User className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-brandDark/30 group-focus-within:text-brandYellow transition-all group-focus-within:scale-110" />
                             </div>
                           </div>
                         </div>
@@ -486,6 +494,30 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                           </div>
                         </div>
                         <div className="space-y-3">
+                          <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Primary Goal / Objective *</label>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {[
+                              'Scale Existing Revenue', 
+                              'Fix Unprofitable Ads', 
+                              'Launch New Business', 
+                              'Increase Lead Quality',
+                              'Build / Redesign Assets',
+                              'Other'
+                            ].map(opt => (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => updateField('primaryObjective', opt)}
+                                className={`px-4 py-3 rounded-xl border-2 font-bold text-[10px] uppercase tracking-wider transition-all ${
+                                  formData.primaryObjective === opt ? 'border-brandYellow bg-brandYellow/10 text-brandDark' : 'border-[#f0f0f0] text-brandDark/40 hover:border-brandDark/10'
+                                }`}
+                              >
+                                {opt}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="space-y-3">
                           <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Website URL / Portfolio (Optional)</label>
                           <div className="relative group">
                             <input 
@@ -522,27 +554,34 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                             { id: 'SEO', icon: <Target className="w-6 h-6" /> },
                             { id: 'Other', icon: <MoreHorizontal className="w-6 h-6" /> }
                           ].map((item) => (
-                            <button
-                              key={item.id}
-                              type="button"
-                              onClick={() => toggleChip('services', item.id)}
-                              className={`p-6 rounded-3xl border-2 flex flex-col items-center gap-4 transition-all duration-300 group ${
-                                formData.services.includes(item.id as ServiceType) 
-                                  ? 'border-brandYellow bg-brandYellow/5 shadow-lg scale-[1.02]' 
-                                  : 'border-[#f0f0f0] hover:border-brandDark/10 hover:bg-brandDark/[0.02]'
-                              }`}
-                            >
-                              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                                formData.services.includes(item.id as ServiceType) ? 'bg-brandYellow text-brandDark' : 'bg-brandDark/5 text-brandDark/40 group-hover:bg-brandDark/10'
-                              }`}>
-                                {item.icon}
-                              </div>
-                              <span className={`text-[10px] font-black uppercase tracking-tight text-center leading-tight ${
-                                formData.services.includes(item.id as ServiceType) ? 'text-brandDark' : 'text-brandDark/60'
-                              }`}>
-                                {item.id}
-                              </span>
-                            </button>
+                              <button
+                                key={item.id}
+                                type="button"
+                                onClick={() => toggleChip('services', item.id)}
+                                className={`p-8 rounded-[2.5rem] border-2 flex flex-col items-center gap-5 transition-all duration-500 group relative ${
+                                  formData.services.includes(item.id as ServiceType) 
+                                    ? 'border-brandYellow bg-brandYellow/[0.03] shadow-2xl shadow-brandYellow/10 scale-[1.05] z-10' 
+                                    : 'border-[#f0f0f0] hover:border-brandDark/10 hover:bg-brandDark/[0.01]'
+                                }`}
+                              >
+                                {formData.services.includes(item.id as ServiceType) && (
+                                  <div className="absolute top-4 right-4 w-6 h-6 bg-brandYellow rounded-full flex items-center justify-center">
+                                    <Check className="w-4 h-4 text-brandDark" strokeWidth={3} />
+                                  </div>
+                                )}
+                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+                                  formData.services.includes(item.id as ServiceType) 
+                                    ? 'bg-brandYellow text-brandDark rotate-3' 
+                                    : 'bg-brandDark/5 text-brandDark/30 group-hover:bg-brandDark/10'
+                                }`}>
+                                  {item.icon}
+                                </div>
+                                <span className={`text-[11px] font-black uppercase tracking-widest text-center leading-tight transition-colors duration-500 ${
+                                  formData.services.includes(item.id as ServiceType) ? 'text-brandDark' : 'text-brandDark/40'
+                                }`}>
+                                  {item.id}
+                                </span>
+                              </button>
                           ))}
                         </div>
                       </motion.div>
@@ -1006,52 +1045,52 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                     )}
                   </AnimatePresence>
 
-                  {/* NAVIGATION */}
-                  <div className="pt-10 flex flex-col sm:flex-row items-center gap-4">
-                    {currentStep > 1 && (
-                      <button 
-                        type="button"
-                        onClick={prevStep}
-                        className="w-full sm:w-auto px-10 py-5 bg-brandDark/5 text-brandDark font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-brandDark/10 transition-all flex items-center justify-center gap-3"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                        Back
-                      </button>
-                    )}
-                    
-                    {currentStep < 4 ? (
-                      <button 
-                        type="button"
-                        onClick={nextStep}
-                        disabled={!isStepValid()}
-                        className="flex-1 w-full py-5 bg-brandDark text-white font-black text-sm uppercase tracking-[0.4em] rounded-2xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-xl flex items-center justify-center gap-4 group disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
-                        Continue
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      </button>
-                    ) : (
-                      <button 
-                        type="submit" 
-                        disabled={loading || !isStepValid()}
-                        className="flex-1 w-full py-5 bg-brandDark text-white font-black text-sm uppercase tracking-[0.4em] rounded-2xl hover:bg-brandYellow hover:text-brandDark transition-all duration-500 shadow-xl flex items-center justify-center gap-4 group disabled:opacity-80"
-                      >
-                        {loading ? (
-                          <span className="flex items-center gap-3">
-                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            BUILDING PLAN...
-                          </span>
-                        ) : (
-                          <>
-                            Get Free Strategy Plan
-                            <Zap className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" />
-                          </>
-                        )}
-                      </button>
-                    )}
-                  </div>
+                    {/* NAVIGATION */}
+                    <div className="pt-12 flex flex-col sm:flex-row items-center gap-5">
+                      {currentStep > 1 && (
+                        <button 
+                          type="button"
+                          onClick={prevStep}
+                          className="w-full sm:w-auto px-12 py-6 bg-brandDark/5 text-brandDark font-black text-[11px] uppercase tracking-[0.3em] rounded-[1.5rem] hover:bg-brandDark/10 transition-all flex items-center justify-center gap-4 group"
+                        >
+                          <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                          Prev
+                        </button>
+                      )}
+                      
+                      {currentStep < 4 ? (
+                        <button 
+                          type="button"
+                          onClick={nextStep}
+                          disabled={!isStepValid()}
+                          className="flex-1 w-full py-6 bg-brandDark text-white font-black text-sm uppercase tracking-[0.5em] rounded-[1.5rem] hover:bg-[#fcb632] hover:text-brandDark transition-all duration-500 shadow-2xl shadow-brandDark/10 flex items-center justify-center gap-5 group disabled:opacity-30 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          Next Stage
+                          <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" strokeWidth={3} />
+                        </button>
+                      ) : (
+                        <button 
+                          type="submit" 
+                          disabled={loading || !isStepValid()}
+                          className="flex-1 w-full py-6 bg-[#fcb632] text-brandDark font-black text-sm uppercase tracking-[0.5em] rounded-[1.5rem] hover:bg-brandDark hover:text-white transition-all duration-500 shadow-2xl shadow-brandYellow/20 flex items-center justify-center gap-5 group disabled:opacity-80 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          {loading ? (
+                            <span className="flex items-center gap-4">
+                              <svg className="animate-spin h-6 w-6" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              ANALYZING...
+                            </span>
+                          ) : (
+                            <>
+                              Submit Application
+                              <Zap className="w-6 h-6 group-hover:scale-125 transition-transform" fill="currentColor" />
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
 
                   <div className="text-center">
                     <p className="text-[9px] font-black text-brandDark/20 uppercase tracking-[0.3em]">No credit card required. 100% Free Strategy Session.</p>
