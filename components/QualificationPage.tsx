@@ -68,13 +68,13 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
   return (
     <div className="min-h-screen bg-brandDark font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. HERO SECTION */}
-      <section className="bg-brandDark pt-24 pb-16 lg:pt-40 lg:pb-32 px-6 lg:px-12 relative overflow-hidden flex items-center min-h-[60vh]">
+      <section className="bg-brandDark pt-20 pb-12 lg:pt-32 lg:pb-24 px-6 lg:px-12 relative overflow-hidden flex items-center min-h-[50vh]">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="max-w-6xl mx-auto text-center relative z-10 w-full space-y-12 animate-slide-up">
-          <div className="space-y-8">
+        <div className="max-w-6xl mx-auto text-center relative z-10 w-full space-y-10 animate-slide-up">
+          <div className="space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -109,13 +109,13 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 2. GREEN LIGHTS (IDEAL PARTNER) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
+      <section className="py-16 lg:py-32 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brandYellow/5 rounded-full blur-[160px] pointer-events-none"></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="mb-20 lg:mb-32 space-y-8 text-center">
+          <div className="mb-12 lg:mb-20 space-y-6 text-center">
             <div className="flex items-center justify-center gap-4">
               <div className="w-12 h-[1px] bg-brandYellow"></div>
               <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Protocol: GREEN_LIGHT</span>
@@ -166,12 +166,12 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 3. RED FLAGS (NON-FIT) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative overflow-hidden">
+      <section className="py-16 lg:py-32 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative overflow-hidden">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="mb-20 lg:mb-32 space-y-8 text-center">
+          <div className="mb-12 lg:mb-20 space-y-6 text-center">
             <div className="flex items-center justify-center gap-4">
               <div className="w-12 h-[1px] bg-white/20"></div>
               <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Protocol: RED_FLAG</span>
@@ -222,12 +222,12 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 4. CULTURE OF NO */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden">
+      <section className="py-16 lg:py-32 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
         
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center relative z-10">
-          <div className="space-y-12 animate-slide-up">
-            <div className="space-y-8">
+          <div className="space-y-10 animate-slide-up">
+            <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-[1px] bg-brandYellow"></div>
                 <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">The Philosophy</span>
@@ -293,12 +293,12 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 5. FINAL CTA */}
-      <section className="py-32 lg:py-64 bg-brandDark text-center relative overflow-hidden border-t border-white/5">
+      <section className="py-20 lg:py-40 bg-brandDark text-center relative overflow-hidden border-t border-white/5">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-brandYellow/10 to-transparent"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1px] h-full bg-gradient-to-b from-transparent via-brandYellow/10 to-transparent"></div>
         
-        <div className="max-w-5xl mx-auto px-6 relative z-10 space-y-16">
-          <div className="space-y-8 animate-slide-up">
+        <div className="max-w-5xl mx-auto px-6 relative z-10 space-y-12">
+          <div className="space-y-6 animate-slide-up">
             <div className="flex items-center justify-center gap-4 mb-4">
               <span className="text-brandYellow animate-pulse">●</span>
               <span className="text-[9px] font-black text-brandYellow uppercase tracking-[0.4em]">Operational Status: OPEN</span>
