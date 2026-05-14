@@ -21,23 +21,23 @@ interface QualificationPageProps {
 export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate }) => {
   const greenLights = [
     {
-      title: "Long-Term Vision",
-      desc: "You aren't looking for a 'miracle month.' You understand that building a dominant D2C brand takes time, consistency, and a structured growth engine.",
+      title: "Profitable Foundation",
+      desc: "You are currently doing ₹50L–₹5Cr monthly and have a product that people actually want. We don't fix broken business models; we scale winners.",
       icon: <TrendingUp className="w-8 h-8" />
     },
     {
-      title: "Unit Economic Clarity",
-      desc: "You know your numbers — or at least you want to. You understand that ROAS is a vanity metric and profit contribution is the only thing that matters for scale.",
-      icon: <BarChart3 className="w-8 h-8" />
-    },
-    {
-      title: "Creative Velocity",
-      desc: "You are willing to invest in high-quality creative testing. You understand that the algorithm is fueled by content, and content is the new targeting.",
+      title: "Growth Mindset",
+      desc: "You aren't looking for a 'miracle month'. You understand that building a dominant D2C brand requires consistency, testing velocity, and a systems-first approach.",
       icon: <Zap className="w-8 h-8" />
     },
     {
-      title: "Operational Readiness",
-      desc: "Your backend can handle scale. You have the inventory, the fulfillment, and the customer support infrastructure to support 2x-5x growth without breaking.",
+      title: "Strong Unit Economics",
+      desc: "You know your COGS and contribution margins. You understand that scale is only healthy if the economics support high-intensity acquisition.",
+      icon: <BarChart3 className="w-8 h-8" />
+    },
+    {
+      title: "Operational Scalability",
+      desc: "Your backend — supply chain, fulfillment, and customer support — is ready to handle 2x–5x volume without collapsing under the pressure of growth.",
       icon: <ShieldCheck className="w-8 h-8" />
     }
   ];
@@ -45,22 +45,22 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
   const redFlags = [
     {
       title: "Short-Term Thinking",
-      desc: "If you need to see a 10x return in 7 days to keep the lights on, we aren't the right partner. We build systems, not gambling strategies.",
+      desc: "If you need a 'miracle month' just to keep the lights on, we aren't the right fit. We build high-performance systems, not gambling strategies.",
       icon: <AlertCircle className="w-8 h-8" />
     },
     {
-      title: "Low Margin Products",
-      desc: "If your product margins are razor-thin and don't allow for acquisition costs, no amount of 'good ads' can fix a broken business model.",
+      title: "Razor-Thin Margins",
+      desc: "If your product margins don't allow for scalable acquisition costs, no amount of 'optimization' can fix a broken business model.",
       icon: <TrendingDown className="w-8 h-8" />
     },
     {
-      title: "Lack of Transparency",
-      desc: "We need full access to your data to make informed decisions. If you aren't comfortable sharing your true numbers, we can't optimize for profit.",
+      title: "Data Silos",
+      desc: "We require full transparency into your numbers. If you aren't ready to share your true contribution margins, we can't optimize for profit.",
       icon: <Search className="w-8 h-8" />
     },
     {
-      title: "Resistance to Change",
-      desc: "Our system requires optimization of funnels, offers, and creative. If you are married to your current 'way' and won't test new ideas, we'll hit a ceiling.",
+      title: "Fixed Mindsets",
+      desc: "Our system thrives on testing new funnels, offers, and creatives. If you are married to 'your way' of doing things, we'll reach a ceiling early.",
       icon: <Zap className="w-8 h-8" />
     }
   ];
@@ -109,8 +109,12 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 2. GREEN LIGHTS (IDEAL PARTNER) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark relative">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brandYellow/5 rounded-full blur-[160px] pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="mb-20 lg:mb-32 space-y-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-[1px] bg-brandYellow"></div>
@@ -149,8 +153,11 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
       </section>
 
       {/* 3. RED FLAGS (NON-FIT) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative overflow-hidden">
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="mb-20 lg:mb-32 space-y-6 text-right flex flex-col items-end">
             <div className="flex items-center gap-4">
               <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Protocol: RED_FLAG</span>
