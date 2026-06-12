@@ -32,7 +32,7 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                 A Profit-First <br />
                 <span className="text-brandYellow">D2C Growth Agency</span>
               </h2>
-              <p className="text-white/60 text-lg lg:text-xl font-medium max-w-xl leading-relaxed">
+              <p className="text-white/90 text-lg lg:text-xl font-medium max-w-xl leading-relaxed">
                 We identify the hidden profit leaks in your D2C funnel that are killing your MER. 
                 Get a clear roadmap to Profitable Growth with our proprietary data infrastructure.
               </p>
@@ -52,7 +52,7 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-white font-bold text-sm uppercase tracking-wider">{item.title}</h4>
-                    <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
+                    <p className="text-white/70 text-xs leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -81,7 +81,7 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                   <h3 className="text-2xl font-black text-white uppercase tracking-tight">
                     Get Your Free <br /> Profit Audit
                   </h3>
-                  <p className="text-white/50 text-xs font-medium">
+                  <p className="text-white/80 text-xs font-medium">
                     "If we can't find real profit leaks, we won't pitch. No obligation."
                   </p>
                 </div>
@@ -103,7 +103,7 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                     ].map((step, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className="w-1 h-1 rounded-full bg-brandYellow"></div>
-                        <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">{step}</span>
+                        <span className="text-white/70 text-[10px] font-bold uppercase tracking-widest">{step}</span>
                       </div>
                     ))}
                   </div>

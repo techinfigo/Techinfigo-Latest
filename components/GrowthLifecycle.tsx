@@ -96,7 +96,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
                     <p className="text-brandDark/50 text-[11px] lg:text-xs font-medium leading-relaxed">
                       {step.desc}
                     </p>
-                    <p className="text-brandDark/70 text-[10px] lg:text-[11px] font-medium leading-tight italic">
+                    <p className="text-brandDark/80 text-[10px] lg:text-[11px] font-bold leading-tight italic">
                       {step.meaning}
                     </p>
                   </div>
