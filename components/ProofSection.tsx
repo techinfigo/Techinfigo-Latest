@@ -3,22 +3,22 @@ import React from 'react';
 export const ProofSection: React.FC = () => {
   const ledgers = [
     {
-      code: "REV-INF-01",
-      value: "₹65 Cr+",
-      label: "Influence",
-      desc: "Measured across active D2C mandates. We optimize for actual enterprise value."
+      code: "TARGET-01",
+      value: "₹2 Cr+",
+      label: "Scaling Target",
+      desc: "Our systems are built to stabilize margins while scaling revenue to ₹2Cr/month."
     },
     {
-      code: "AUDIT-SYS-42",
-      value: "42+",
-      label: "Restructures",
-      desc: "Re-engineering unit economics for brands plateaued by inefficient ops."
+      code: "LEAK-AUDIT",
+      value: "40%",
+      label: "Avg. Profit Leak",
+      desc: "The percentage of profit typically found leaking through inefficient unit economics in D2C."
     },
     {
-      code: "CAT-MULT-08",
-      value: "08+",
-      label: "Categories",
-      desc: "Frameworks adapted for FMCG, Lifestyle, and Premium Beauty LTV profiles."
+      code: "BENCHMARK",
+      value: "4.5x",
+      label: "System MER",
+      desc: "The Marketing Efficiency Ratio we target for high-growth, high-margin D2C categories."
     }
   ];
 

@@ -29,12 +29,12 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                 <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.3em]">Revenue Accelerator</span>
               </div>
               <h2 className="text-4xl lg:text-6xl font-black text-white tracking-tighter leading-[1.05] uppercase">
-                Partner with a Leading <br />
-                <span className="text-brandYellow">Ecommerce Marketing Agency</span>
+                A Profit-First <br />
+                <span className="text-brandYellow">D2C Growth Agency</span>
               </h2>
               <p className="text-white/60 text-lg lg:text-xl font-medium max-w-xl leading-relaxed">
-                As a leading Ecommerce Marketing Agency, we find the hidden profit leaks in your D2C funnel that are killing your MER. 
-                Get a clear roadmap to Profitable Growth.
+                We identify the hidden profit leaks in your D2C funnel that are killing your MER. 
+                Get a clear roadmap to Profitable Growth with our proprietary data infrastructure.
               </p>
             </div>
 
@@ -61,7 +61,7 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
             <div className="pt-4">
               <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em] flex items-center gap-3">
                 <span className="w-8 h-[1px] bg-white/10"></span>
-                Trusted by high-growth D2C founders
+                Built for ambitious D2C founders
               </p>
             </div>
           </div>
@@ -76,13 +76,13 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-brandYellow">
                     <Clock className="w-4 h-4" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Limited Availability</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Founding Partner Offer</span>
                   </div>
                   <h3 className="text-2xl font-black text-white uppercase tracking-tight">
-                    Book Your Free <br /> Profit Audit
+                    Get Your Free <br /> Profit Audit
                   </h3>
                   <p className="text-white/50 text-xs font-medium">
-                    15 minutes. No pressure. Just pure data and clarity on your next scale move.
+                    "If we can't find real profit leaks, we won't pitch. No obligation."
                   </p>
                 </div>
 
@@ -91,7 +91,7 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                     onClick={onBookAudit}
                     className="group relative w-full py-5 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.3em] rounded-2xl hover:bg-white transition-all duration-500 shadow-[0_0_30px_rgba(252,182,50,0.2)] flex items-center justify-center gap-3"
                   >
-                    Find My Profit Leaks
+                    Get My Free Profit Audit
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                   </button>
                   
@@ -110,8 +110,8 @@ export const RevenueAccelerator: React.FC<RevenueAcceleratorProps> = ({ onBookAu
                 </div>
 
                 <div className="pt-6 border-t border-white/5">
-                  <p className="text-brandYellow/60 text-[9px] font-black text-center uppercase tracking-[0.4em]">
-                    ₹50L - ₹50Cr Brands Only
+                  <p className="text-brandYellow/80 text-[9px] font-black text-center uppercase tracking-[0.4em]">
+                    D2C Brands Only
                   </p>
                 </div>
               </div>

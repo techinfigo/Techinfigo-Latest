@@ -57,11 +57,11 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
         
         {/* Header */}
         <div className="text-center mb-8 lg:mb-12 space-y-3 lg:space-y-4">
-          <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter leading-tight">
-            A Proven Growth System for Scaling <span className="text-brandYellow italic">Ecommerce Brands Profitably</span>
+          <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter leading-tight uppercase">
+            A Growth System Built <br /> For <span className="text-brandYellow italic">Contribution Margin.</span>
           </h2>
           <p className="text-brandDark/60 text-base lg:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-            A proven Performance Marketing system designed to eliminate guesswork and build scalable, repeatable growth for D2C brands.
+            Our Performance Marketing system is designed to eliminate guesswork and build scalable, repeatable profit centers for your brand.
           </p>
         </div>
 
@@ -129,14 +129,14 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Micro-Proof */}
           <div className="bg-white rounded-[2rem] p-6 lg:p-10 border border-brandDark/5 shadow-xl space-y-4 lg:space-y-6">
-            <h4 className="text-lg lg:text-xl font-black text-brandDark tracking-tight">
-              Brands that follow this system typically see:
+            <h4 className="text-lg lg:text-xl font-black text-brandDark tracking-tight uppercase">
+              Growth Target Benchmarks:
             </h4>
             <ul className="space-y-3 lg:space-y-4">
               {[
-                "30–60% improvement in profitability",
-                "Lower CAC within 45–60 days",
-                "Stable scaling without sudden drops"
+                "Target 30–60% contribution lift",
+                "Achieve stable blended MER (4x+)",
+                "Sustainable scaling infrastructure"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-center gap-3 group">
                   <div className="w-5 h-5 rounded-full bg-brandYellow/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow transition-colors">
@@ -165,7 +165,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
                 onClick={onBookAudit}
                 className="relative w-full py-4 lg:py-5 bg-brandYellow text-brandDark font-black text-[13px] lg:text-[14px] uppercase tracking-[0.2em] rounded-xl hover:bg-brandDark hover:text-white transition-all duration-500 shadow-xl flex items-center justify-center gap-3"
               >
-                Start With a Free Audit
+                Get My Free Profit Audit
                 <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
             </div>

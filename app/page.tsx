@@ -2,8 +2,10 @@ import React from 'react';
 import { Metadata } from 'next';
 import { Navbar } from '../components/Navbar';
 import { Hero } from '../components/Hero';
-import { QualificationProtocol } from '../components/QualificationProtocol';
+import { FounderSection } from '../components/FounderSection';
+import { EmotionalSection } from '../components/EmotionalSection';
 import { DiagnosticSection } from '../components/DiagnosticSection';
+import { QualificationProtocol } from '../components/QualificationProtocol';
 import { GrowthLifecycle } from '../components/GrowthLifecycle';
 import { CaseStudySection } from '../components/CaseStudySection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
@@ -11,11 +13,11 @@ import { RevenueAccelerator } from '../components/RevenueAccelerator';
 import { Footer } from '../components/Footer';
 
 export const metadata: Metadata = {
-  title: "Ecommerce Marketing Agency for D2C Brands | Techinfigo",
-  description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+  title: "Techinfigo | Profit-First D2C Growth Partner",
+  description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
   openGraph: {
-    title: "Ecommerce Marketing Agency for D2C Brands | Techinfigo",
-    description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+    title: "Techinfigo | Profit-First D2C Growth Partner",
+    description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
     url: "https://techinfigo.com",
     siteName: "Techinfigo",
     images: ["https://techinfigo.com/og-image.jpg"],
@@ -24,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ecommerce Marketing Agency for D2C Brands | Techinfigo",
-    description: "Techinfigo is a D2C-focused growth agency helping ecommerce brands scale profitably using performance marketing, CRO, and growth systems.",
+    title: "Techinfigo | Profit-First D2C Growth Partner",
+    description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
     images: ["https://techinfigo.com/og-image.jpg"],
   },
 };
@@ -35,8 +37,28 @@ export default function Home() {
     <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="home" />
       <Hero {...({} as any)} />
-      <QualificationProtocol {...({} as any)} />
+      
+      {/* Founding Partner Offer Strip */}
+      <div className="bg-brandYellow py-4 overflow-hidden relative border-y border-brandDark/5">
+        <div className="flex whitespace-nowrap animate-marquee">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="flex items-center gap-8 px-4">
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Now onboarding our first founding D2C partners</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Limited to 2 brands for Q3</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Founding-partner offer active</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <FounderSection />
+      <EmotionalSection />
       <DiagnosticSection />
+      <QualificationProtocol {...({} as any)} />
+      
       <GrowthLifecycle />
       <CaseStudySection />
       <TestimonialsSection />

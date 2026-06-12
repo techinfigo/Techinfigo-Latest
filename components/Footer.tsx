@@ -75,52 +75,52 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
 
           {/* Foundation */}
           <div className="lg:col-span-2 space-y-6">
-            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Foundation</h4>
+            <h4 className="text-[9px] font-bold text-white/40 uppercase tracking-[0.5em]">Foundation</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <Link href="/about" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">About Us</Link>
+                <Link href="/about" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">About Us</Link>
               </li>
               <li>
-                <Link href="/how-it-works" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Our Approach</Link>
+                <Link href="/how-it-works" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Our Approach</Link>
               </li>
               <li>
-                <Link href="/qualification" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Who We Fit</Link>
+                <Link href="/qualification" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Who We Fit</Link>
               </li>
               <li>
-                <Link href="/services" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Growth Engine</Link>
+                <Link href="/services" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Growth Engine</Link>
               </li>
             </ul>
           </div>
 
           {/* Company */}
           <div className="lg:col-span-2 space-y-6">
-            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Company</h4>
+            <h4 className="text-[9px] font-bold text-white/40 uppercase tracking-[0.5em]">Company</h4>
             <ul className="space-y-3 lg:space-y-4">
               <li>
-                <Link href="/" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Home</Link>
+                <Link href="/" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Home</Link>
               </li>
               <li>
-                <Link href="/profit-breakdown" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Profit Breakdown</Link>
+                <Link href="/profit-breakdown" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Profit Breakdown</Link>
               </li>
               <li>
-                <Link href="/system" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">The System</Link>
+                <Link href="/system" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">The System</Link>
               </li>
               <li>
-                <Link href="/digital-marketing-agency-agra" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Agra Agency</Link>
+                <Link href="/digital-marketing-agency-agra" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Agra Agency</Link>
               </li>
               <li>
-                <Link href="/careers" className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Careers</Link>
+                <Link href="/careers" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Careers</Link>
               </li>
             </ul>
           </div>
 
           {/* Capabilities */}
           <div className="lg:col-span-2 space-y-6">
-            <h4 className="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Capabilities</h4>
+            <h4 className="text-[9px] font-bold text-white/40 uppercase tracking-[0.5em]">Capabilities</h4>
             <ul className="space-y-3 lg:space-y-4">
               {CAPABILITIES.map((cap) => (
                 <li key={cap.id}>
-                  <Link href={`/services/${cap.id}`} className="text-[13px] font-normal text-white/60 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">{cap.name}</Link>
+                  <Link href={`/services/${cap.id}`} className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">{cap.name}</Link>
                 </li>
               ))}
             </ul>
@@ -128,10 +128,10 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
 
           {/* HQ Terminal Card */}
           <div className="lg:col-span-3">
-            <div className="bg-brandSurface/5 border border-white/5 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/10">
+            <div className="bg-brandSurface/5 border border-white/10 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/20">
               {/* Card Header */}
               <div className="flex justify-between items-center">
-                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 font-mono">HQ TERMINAL</span>
+                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40 font-mono">HQ TERMINAL</span>
                 <span className="flex items-center gap-2 text-[8px] font-black text-brandYellow uppercase tracking-widest">
                   <span className="w-1 h-1 rounded-full bg-brandYellow animate-pulse"></span>
                   LIVE DESK
@@ -184,16 +184,10 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
 
                 <div className="grid grid-cols-2 gap-2.5">
                   <div className="border border-white/10 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 bg-white/5 hover:bg-white/[0.08] transition-colors group">
-                    <svg className="w-4 h-4 text-white/40 group-hover:text-brandYellow transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                    </svg>
-                    <span className="text-[7px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">META BUSINESS<br />PARTNER</span>
+                    <span className="text-[7px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">D2C PROFIT<br />STRATEGISTS</span>
                   </div>
                   <div className="border border-white/10 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 bg-white/5 hover:bg-white/[0.08] transition-colors group">
-                    <svg className="w-4 h-4 text-white/40 group-hover:text-brandYellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    <span className="text-[7px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">SHOPIFY PLUS<br />CERTIFIED</span>
+                    <span className="text-[7px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">FOUNDING PARTNER<br />PROGRAM</span>
                   </div>
                 </div>
               </div>

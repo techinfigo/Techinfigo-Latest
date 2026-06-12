@@ -130,11 +130,11 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
 
         {/* FOOTER STRIP */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.5em]">Patterns observed across ₹50Cr+ D2C Portfolios</p>
+          <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.5em]">Systems Built on Industry Data & Economics</p>
           <div className="flex items-center gap-8">
             <div className="flex flex-col items-center md:items-end">
-              <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest">Next Case Study</span>
-              <span className="text-brandYellow text-[10px] font-black uppercase tracking-widest">Coming April 2024</span>
+              <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest">Founding Partner Slots</span>
+              <span className="text-brandYellow text-[10px] font-black uppercase tracking-widest">Currently Open (Q3)</span>
             </div>
           </div>
         </div>

@@ -45,8 +45,8 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
             <span className="text-[8px] lg:text-[9px] font-bold tracking-[0.4em] uppercase text-brandDark/40 block">THE REAL PROBLEM</span>
           </div>
           
-          <h2 className="text-2xl lg:text-4xl xl:text-5xl font-black text-brandDark tracking-tighter leading-[1.1]">
-            Why Most D2C Brands Struggle with <span className="text-brandYellow italic">Performance Marketing</span>
+          <h2 className="text-2xl lg:text-4xl xl:text-5xl font-black text-brandDark tracking-tighter leading-[1.1] uppercase">
+            Why Most D2C Brands Struggle with <span className="text-brandYellow italic">Profitability.</span>
           </h2>
           
           <div className="max-w-xl mx-auto space-y-2 lg:space-y-3">
@@ -55,7 +55,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
               But when you check your bank account — it doesn’t feel like growth.
             </p>
             <p className="text-brandDark font-black text-base lg:text-lg uppercase tracking-tight">
-              As a results-driven Ecommerce Marketing Agency, we focus on building a system where every ₹1 you spend is tracked, optimized, and scaled for Profitable Growth.
+              We focus on building a system where every ₹1 you spend is tracked, optimized, and scaled for Profitable Growth.
             </p>
           </div>
         </div>
@@ -86,7 +86,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
                     </div>
                     <div className="space-y-0.5">
                       <h4 className="text-sm lg:text-base font-black text-white tracking-tight">{point.title}</h4>
-                      <p className="text-white/40 text-[10px] lg:text-xs font-medium leading-relaxed">
+                      <p className="text-white/70 text-[10px] lg:text-xs font-medium leading-relaxed">
                         {point.desc}
                       </p>
                     </div>
@@ -121,16 +121,16 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
 
               {/* Proof Block */}
               <div className="bg-white rounded-xl lg:rounded-2xl p-5 lg:p-6 border border-brandYellow/20 shadow-xl relative z-10">
-                <span className="text-[8px] lg:text-[9px] font-black text-brandYellow uppercase tracking-[0.4em] block mb-2 lg:mb-3">REAL RESULT</span>
+                <span className="text-[8px] lg:text-[9px] font-black text-brandYellow uppercase tracking-[0.4em] block mb-2 lg:mb-3">SYSTEM TARGET</span>
                 <div className="space-y-2 lg:space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-brandDark/40 text-[9px] font-bold uppercase tracking-wider">Before</span>
-                    <span className="text-brandDark text-xs font-bold">₹12L spend → ₹1.2L profit</span>
+                    <span className="text-brandDark/40 text-[9px] font-bold uppercase tracking-wider">Industry Baseline</span>
+                    <span className="text-brandDark text-xs font-bold">₹10L+ spend → Net Drain</span>
                   </div>
                   <div className="h-[1px] w-full bg-brandDark/5"></div>
                   <div className="flex items-center justify-between">
-                    <span className="text-brandYellow text-[9px] font-black uppercase tracking-wider">After</span>
-                    <span className="text-brandDark font-black text-sm lg:text-base">₹5.6L profit in 60 days</span>
+                    <span className="text-brandYellow text-[9px] font-black uppercase tracking-wider">Our System Target</span>
+                    <span className="text-brandDark font-black text-sm lg:text-base">30%+ Operating Margin</span>
                   </div>
                 </div>
               </div>
@@ -141,10 +141,10 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
               <div className="relative group w-full">
                 <div className="absolute -inset-1 bg-brandYellow/20 rounded-xl blur-xl group-hover:bg-brandYellow/30 transition-all"></div>
                 <button 
-                  onClick={onBookAudit}
+                   onClick={onBookAudit}
                   className="relative w-full py-3.5 lg:py-4 bg-brandYellow text-brandDark font-black text-[10px] lg:text-[12px] uppercase tracking-[0.2em] rounded-xl hover:bg-white transition-all duration-500 shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2"
                 >
-                  Find Your Profit Leaks
+                  Get My Free Profit Audit
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

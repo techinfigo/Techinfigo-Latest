@@ -21,25 +21,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollY > 10);
+      setIsScrolled(scrollY > 20);
       
+      // Determine if we are over a light section
+      // We can do this by checking the scroll position
+      // For more reliability, we check the active page and scroll
       if (activePage === 'home') {
-        setIsOverLightSection(scrollY > 600);
+        // Hero (800) + Strip (50) + Founder (700) + Emotional (800)
+        // Light starts around 2300px
+        setIsOverLightSection(scrollY > 2300);
       } else if (activePage === 'profit-breakdown') {
-        setIsOverLightSection(scrollY > 600 && scrollY < 1600);
+        setIsOverLightSection(scrollY > 700 && scrollY < 1800);
       } else if (activePage === 'qualification') {
-        setIsOverLightSection(false);
-      } else if (activePage === 'system') {
-        // Section 6 (Why This Works Better) is light. It starts after many sections.
-        // Approx: Hero (800) + Problem (800) + Overview (1000) + Scenario (800) + Breakdown (1200)
-        // Let's set it to switch after ~3800px. 
-        setIsOverLightSection(scrollY > 3800 && scrollY < 4800);
-      } else if (activePage === 'digital-marketing-agency-agra') {
-        // Simple & Robust: If scrolled past Hero (~100px), use solid white nav with dark text.
-        // This ensures the navbar is ALWAYS visible on all sections of the Agra page.
+        // This page is mostly light background
         setIsOverLightSection(scrollY > 100);
+      } else if (activePage === 'system') {
+        setIsOverLightSection(scrollY > 3500 && scrollY < 5000);
+      } else if (activePage === 'digital-marketing-agency-agra') {
+        // Agra Hero is ~600px. Light starts after.
+        setIsOverLightSection(scrollY > 600);
       } else {
-        setIsOverLightSection(false);
+        // Fallback for other pages
+        setIsOverLightSection(scrollY > 400);
       }
     };
     
@@ -98,10 +101,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
           {/* Logo */}
           <Link 
             href="/"
-            className="flex items-center gap-2 cursor-pointer z-[110] shrink-0" 
+            className="flex items-center gap-2 cursor-pointer z-[110] shrink-0 group" 
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="relative h-8 lg:h-10 w-32 lg:w-40">
+            <div className="relative flex items-center gap-2">
+              <div className={`w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-xl transition-all duration-300 shadow-lg ${
+                useDarkText 
+                  ? 'bg-brandDark text-white' 
+                  : 'bg-brandYellow text-brandDark'
+              }`}>
+                <span className="font-black text-xl select-none">T</span>
+              </div>
+              <span className={`font-black text-xl lg:text-2xl tracking-tighter uppercase transition-colors duration-300 ${
+                useDarkText ? 'text-brandDark' : 'text-white'
+              }`}>
+                Techinfigo
+              </span>
+            </div>
+            {/* Logo Image Hidden for now as it's missing from assets */}
+            <div className="hidden relative h-8 lg:h-10 w-32 lg:w-40">
               <Image 
                 src="/logo.png" 
                 alt="Techinfigo Logo" 
@@ -110,14 +128,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
                 priority
                 referrerPolicy="no-referrer"
               />
-            </div>
-            <div className="hidden flex items-center gap-2">
-              <div className={`w-7 h-7 lg:w-8 lg:h-8 flex items-center justify-center rounded-sm transition-colors duration-300 ${useDarkText ? 'bg-brandDark' : 'bg-brandYellow'}`}>
-                <span className={`font-black text-lg lg:text-xl select-none ${useDarkText ? 'text-white' : 'text-brandDark'}`}>T</span>
-              </div>
-              <span className={`font-black text-base lg:text-lg tracking-tighter uppercase transition-colors duration-300 ${useDarkText ? 'text-brandDark' : 'text-white'}`}>
-                Techinfigo
-              </span>
             </div>
           </Link>
 

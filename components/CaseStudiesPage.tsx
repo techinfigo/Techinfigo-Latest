@@ -42,135 +42,91 @@ interface CaseStudy {
 
 const CASE_STUDIES: CaseStudy[] = [
   {
-    id: 'skincare-india',
-    brand: 'D2C Skincare Brand (India)',
+    id: 'skincare-bench',
+    brand: 'Skincare Scaling Target',
     category: 'Skincare',
     before: {
       spend: '₹12L/month',
       roas: '4.8x',
       profit: '₹1.2L',
-      pain: 'High CAC & unstable scaling'
+      pain: 'Industry leak: High CAC & unstable scaling'
     },
     after: {
       spend: '₹12L',
       profit: '₹5.6L/month',
       cacReduction: '32%',
-      gain: 'Stable & predictable growth'
+      gain: 'Target Profitability State'
     },
-    highlight: 'Profit Increased 4.6x Without Increasing Ad Spend',
+    highlight: 'Goal: Increase Profit 4.6x Without Increasing Ad Spend',
     details: {
       overview: {
         industry: 'Personal Care / Skincare',
         revenue: '₹50L - ₹1Cr / month',
         spend: '₹12L / month'
       },
-      problem: 'Scaling revenue but profit not growing. Every time they increased spend, CAC shot up, wiping out margins.',
+      problem: 'Common plateau: Revenue scales but profit stays flat due to unoptimized unit economics.',
       diagnosis: [
-        'High CAC due to broad targeting and weak creative hooks.',
-        'Poor backend retention; 85% of revenue was from first-time buyers.',
-        'Wrong scaling strategy: Scaling horizontally without stabilizing unit economics.'
+        'High CAC baseline due to broad targeting.',
+        'Weak backend retention patterns (Common in Q3).',
+        'Inefficient scaling without stabilizing contribution margins.'
       ],
       solution: [
-        'Fixed Funnel: Re-engineered the landing page for 4.2% CR (up from 1.8%).',
-        'Improved AOV: Bundling strategy increased AOV by 24%.',
-        'Reduced CAC: Creative-led growth strategy focused on high-intent hooks.',
-        'Stabilized: Built a 90-day LTV model before scaling spend.'
+        'Funnel Optimization: Targeting 4%+ Conversion Rate.',
+        'Unit Economics: Improving AOV through strategic bundling.',
+        'Profit Focus: Creative hooks that attract high-LTV buyers.',
+        'LTV Model: Building 90-day retention predictability.'
       ],
       results: {
         profitBefore: '₹1.2L',
-        profitAfter: '₹5.6L',
-        cacImprovement: '32% Reduction',
-        timeline: '75 Days'
+        profitAfter: '₹5.6L (Target)',
+        cacImprovement: '32% Reduction (Benchmark)',
+        timeline: '75-90 Days'
       },
-      quote: 'We finally understood where our money was going. Techinfigo didn’t just give us a higher ROAS; they gave us a healthier business.'
+      quote: 'This represents the typical profit recovery we identify during our initial audit process for skincare brands.'
     }
   },
   {
-    id: 'apparel-lifestyle',
-    brand: 'Premium Apparel Label',
+    id: 'apparel-bench',
+    brand: 'Apparel Growth Target',
     category: 'Apparel',
     before: {
       spend: '₹8L/month',
       roas: '3.2x',
       profit: '₹80K',
-      pain: 'Low AOV & high return rates'
+      pain: 'Industry leak: Low AOV & high return rates'
     },
     after: {
       spend: '₹10L',
       profit: '₹3.8L/month',
       cacReduction: '24%',
-      gain: 'High-LTV customer acquisition'
+      gain: 'Optimized Margin State'
     },
-    highlight: 'Net Profit Grew 4.7x While Scaling Spend by 25%',
+    highlight: 'Goal: Grow Net Profit 4.7x While Scaling Spend Sustainably',
     details: {
       overview: {
         industry: 'Fashion & Apparel',
         revenue: '₹30L - ₹50L / month',
         spend: '₹8L / month'
       },
-      problem: 'Brand was stuck in a "discount loop". Revenue was coming only during sales, and returns were eating 30% of revenue.',
+      problem: 'The "Discount Trap": Revenue coming only during sales with unsustainable return rates.',
       diagnosis: [
-        'Low AOV due to single-item purchases.',
-        'High RTO (Return to Origin) due to poor COD verification.',
-        'Ad creative focused on price rather than brand value.'
+        'Single-item purchase dependency lowering AOV.',
+        'High RTO baseline (Common in India D2C).',
+        'Price-led creative vs Value-led storytelling.'
       ],
       solution: [
-        'Value-Based Creative: Shifted from "Sale" ads to "Lifestyle" storytelling.',
-        'RTO Optimization: Implemented automated WhatsApp verification for COD.',
-        'Upsell Engine: Post-purchase upsells increased AOV by ₹450.',
-        'Profit-First Scaling: Only scaled products with >40% contribution margin.'
+        'Value-Based Creative: Shifting to Lifestyle hooks.',
+        'RTO Control: Implementing automated COD verification.',
+        'AOV Multiplier: Post-purchase upsell engine implementation.',
+        'Margin Scaling: Prioritizing high-margin SKU scalability.'
       ],
       results: {
         profitBefore: '₹80K',
-        profitAfter: '₹3.8L',
-        cacImprovement: '24% Reduction',
+        profitAfter: '₹3.8L (Target)',
+        cacImprovement: '24% Reduction (Benchmark)',
         timeline: '90 Days'
       },
-      quote: 'Techinfigo fixed our bottom line before they touched our top line. Our business is finally sustainable.'
-    }
-  },
-  {
-    id: 'supplements-growth',
-    brand: 'Performance Supplement Brand',
-    category: 'Supplements',
-    before: {
-      spend: '₹25L/month',
-      roas: '2.4x',
-      profit: '₹2L',
-      pain: 'Stagnant growth & high churn'
-    },
-    after: {
-      spend: '₹45L',
-      profit: '₹14L/month',
-      cacReduction: '41%',
-      gain: 'Dominant market share'
-    },
-    highlight: '7x Profit Growth Through Retention-First Scaling',
-    details: {
-      overview: {
-        industry: 'Health & Wellness',
-        revenue: '₹1Cr+ / month',
-        spend: '₹25L / month'
-      },
-      problem: 'High customer acquisition cost meant they were losing money on the first order. Churn was high, and LTV was low.',
-      diagnosis: [
-        'Negative contribution margin on first purchase.',
-        'No automated retention flows (Email/SMS/WhatsApp).',
-        'Inefficient creative testing: Spending 80% on "loser" creatives.'
-      ],
-      solution: [
-        'Subscription Model: Launched a "Subscribe & Save" program.',
-        'Retention Flows: Built a 12-step automated retention engine.',
-        'Creative Sandbox: Implemented a rapid testing framework to find winners.',
-        'LTV Scaling: Scaled spend based on 6-month LTV, not just 1-day ROAS.'
-      ],
-      results: {
-        profitBefore: '₹2L',
-        profitAfter: '₹14L',
-        cacImprovement: '41% Reduction',
-        timeline: '120 Days'
-      },
-      quote: 'They turned our supplement brand into a recurring revenue machine. The profit growth has been life-changing.'
+      quote: 'For apparel brands, the biggest lever is usually RTO control and AOV expansion before scaling spend.'
     }
   }
 ];
@@ -217,20 +173,20 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-4 py-1.5 rounded-full border border-brandYellow/20 bg-brandYellow/5 text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em] mb-6">
-              Case Studies
+              Industry Benchmarks
             </span>
             <h1 className="text-5xl lg:text-7xl font-black tracking-tighter mb-8 leading-[0.9]">
-              Real Profit.<br />
-              <span className="text-brandYellow">Not Just ROAS.</span>
+              Growth Targets.<br />
+              <span className="text-brandYellow">Not Fluff.</span>
             </h1>
             <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
-              See how we help D2C brands turn ad spend into predictable profit by fixing unit economics and scaling what actually matters.
+              We focus on the unit-economic targets required for high-growth D2C brands. These are the specific performance benchmarks our system aims to achieve for our founding partners.
             </p>
             <button 
               onClick={() => onNavigate('contact')}
               className="px-8 py-4 bg-brandYellow text-brandDark font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(252,182,50,0.3)] flex items-center gap-2 mx-auto"
             >
-              Get My Profit Audit <ArrowRight className="w-5 h-5" />
+              Get My Free Profit Audit <ArrowRight className="w-5 h-5" />
             </button>
           </motion.div>
         </div>

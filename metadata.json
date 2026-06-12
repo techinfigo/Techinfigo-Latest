@@ -1,5 +1,6 @@
 {
-  "name": "Techinfigo | Ecommerce Marketing Agency",
-  "description": "Techinfigo builds compounding growth systems for D2C brands. We focus on profitable growth and performance marketing for ecommerce businesses.",
-  "requestFramePermissions": []
+  "name": "Techinfigo | Profit-First D2C Growth Partner",
+  "description": "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -332,23 +332,26 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 rounded-[3rem] p-12 space-y-10">
+            </div>            <div className="bg-white/5 border border-white/10 rounded-[3rem] p-12 space-y-10">
               <div className="text-center space-y-2">
-                <p className="text-4xl font-black text-brandYellow">₹50Cr+</p>
-                <p className="text-xs font-bold text-white/40 uppercase tracking-widest">Revenue Generated for Clients</p>
+                <p className="text-4xl font-black text-brandYellow">₹10Cr+</p>
+                <p className="text-xs font-bold text-white/40 uppercase tracking-widest">System Revenue Benchmark</p>
               </div>
               <div className="h-px bg-white/10 w-full"></div>
-              <div className="space-y-6">
-                <p className="text-sm font-medium text-white/60 text-center italic">
-                  "Techinfigo transformed our local Agra store into a national brand. Our online sales grew by 300% in just 6 months."
-                </p>
+              <div className="space-y-6 text-center">
+                <div className="space-y-2">
+                  <p className="text-sm font-black uppercase text-white tracking-widest">Founding Partner Program</p>
+                  <p className="text-base font-medium text-white/60 italic">
+                    "We are currently reserving capacity for our first 3 core partners in the Agra market. Direct access to founding strategists only."
+                  </p>
+                </div>
                 <div className="flex items-center justify-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-brandYellow/20"></div>
+                  <div className="w-10 h-10 rounded-xl bg-brandYellow/10 flex items-center justify-center">
+                    <ShieldCheck className="w-5 h-5 text-brandYellow" />
+                  </div>
                   <div className="text-left">
-                    <p className="text-xs font-black uppercase text-white">Local Agra Founder</p>
-                    <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Retail Sector</p>
+                    <p className="text-xs font-black uppercase text-white">Full Transparency</p>
+                    <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Accountability First</p>
                   </div>
                 </div>
               </div>
@@ -362,8 +365,8 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center space-y-4">
             <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Your Growth Plan</span>
-            <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase">
-              3 Steps to <br className="md:hidden"/> Profit in Agra.
+            <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase leading-none">
+              The Path To <br className="md:hidden"/> Profit in Agra.
             </h2>
           </div>
 
@@ -372,15 +375,15 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-brandDark/10 -translate-y-1/2 z-0"></div>
             
             {[
-              { step: "01", title: "Free Profit Audit", desc: "We analyze your current ads and SEO to find exactly where you're losing money in Agra.", icon: <Search className="w-6 h-6" /> },
-              { step: "02", title: "Custom Strategy", desc: "We build a roadmap tailored for the Agra market, focusing on high-intent leads.", icon: <Target className="w-6 h-6" /> },
-              { step: "03", title: "Scale & Dominate", desc: "We execute the plan, optimize daily, and help you dominate your local competition.", icon: <Zap className="w-6 h-6" /> }
+              { step: "01", title: "Free Profit Audit", desc: "We analyze your unit economics and current spends to find exactly where the profit leaks are hiding.", icon: <Search className="w-6 h-6" /> },
+              { step: "02", title: "Custom Blueprint", desc: "No generic templates. We build a specialized growth roadmap for your specific margin profile.", icon: <Target className="w-6 h-6" /> },
+              { step: "03", title: "Scale with Margin", desc: "We execute the infrastructure upgrades and scale your spends only when it makes financial sense.", icon: <Zap className="w-6 h-6" /> }
             ].map((item, i) => (
               <div key={i} className="relative z-10 bg-white p-8 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-brandYellow/30 transition-all duration-300 text-center space-y-6">
                 <div className="w-16 h-16 bg-brandDark text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-xl">
                   {item.step}
                 </div>
-                <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">{item.title}</h3>
+                <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight leading-none">{item.title}</h3>
                 <p className="text-brandDark/60 text-sm font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -400,7 +403,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               </h2>
             </div>
             <p className="text-lg text-brandDark/70 font-medium leading-relaxed">
-              Agra is a unique market with deep-rooted traditions and rapidly evolving digital habits. From the bustling commercial hubs of Sanjay Place to the premium residential areas of Dayalbagh and Kamla Nagar, we understand the local consumer behavior better than any outside agency. We don't just run ads; we build local market authority.
+              Agra is a unique market with deep-rooted traditions and rapidly evolving digital habits. From the bustling commercial hubs of Sanjay Place to the premium residential areas of Dayalbagh and Kamla Nagar, we understand the local consumer behavior better than any outside agency. 
             </p>
             <div className="flex flex-wrap gap-4">
               {["Sanjay Place", "Sikandra", "Kamla Nagar", "Dayalbagh", "Fatehabad Road", "Shahganj", "Raja Ki Mandi"].map((loc, i) => (
@@ -422,14 +425,14 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               />
               <div className="text-center space-y-4 relative z-10">
                 <MapPin className="w-12 h-12 text-brandYellow mx-auto" aria-hidden="true" />
-                <p className="text-xs font-black uppercase text-brandDark/40 tracking-widest">Agra Operations Center</p>
-                <p className="text-sm font-bold text-brandDark">Serving Clients Across Agra & Beyond</p>
+                <p className="text-xs font-black uppercase text-brandDark/40 tracking-widest">Operating Focus</p>
+                <p className="text-sm font-bold text-brandDark">Agra Market Specialization</p>
               </div>
             </div>
             {/* Floating stats */}
             <div className="absolute -bottom-6 -right-6 bg-brandYellow p-6 rounded-2xl shadow-2xl">
-              <p className="text-[10px] font-black uppercase text-brandDark/60">Local Clients</p>
-              <p className="text-2xl font-black text-brandDark">50+</p>
+              <p className="text-[10px] font-black uppercase text-brandDark/60">Current Openings</p>
+              <p className="text-2xl font-black text-brandDark">03</p>
             </div>
           </div>
         </div>
@@ -439,23 +442,23 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
       <section className="py-24 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto text-center space-y-10 relative z-10">
-          <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
+          <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase leading-[0.85]">
             Stop Wasting Money <br/>
-            <span className="text-brandYellow">On Marketing That <br/> Doesn't Work.</span>
+            <span className="text-brandYellow">On Marketing That <br /> Doesn't Work.</span>
           </h2>
           <p className="text-xl text-white/60 font-medium max-w-2xl mx-auto">
-            Get a free growth audit and see exactly what’s holding your business back in the Agra market. No strings attached.
+            Get a free profit audit and see exactly what’s holding your business back in the Agra market. No strings attached.
           </p>
           <div className="pt-6">
             <button 
               onClick={onBookAudit}
-              aria-label="Get Your Free Strategy Plan Now"
+              aria-label="Get My Free Profit Audit Now"
               className="px-12 py-6 bg-[#fcb632] text-brandDark font-black text-xl uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_50px_rgba(252,182,50,0.4)]"
             >
-              Get Free Strategy Plan
+              Get My Free Profit Audit
             </button>
           </div>
-          <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.5em]">Limited Slots Available for Agra Businesses This Month</p>
+          <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.5em]">Limited slots available for founding partners this month</p>
         </div>
       </section>
 

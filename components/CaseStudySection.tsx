@@ -21,14 +21,14 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-[1px] bg-brandYellow"></div>
-              <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">The Profit Audit</span>
+              <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">The Analysis Engine</span>
             </div>
             <h2 className="text-5xl lg:text-8xl font-black text-brandDark tracking-tighter leading-[0.85] uppercase">
-              Real Results: Profitable <br />
-              <span className="text-brandYellow italic">Growth for D2C.</span>
+              Benchmarking <br />
+              <span className="text-brandYellow italic">D2C Performance.</span>
             </h2>
             <p className="text-brandDark/60 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed">
-              We don't show fake case studies. We show real Performance Marketing patterns we consistently see across D2C brands scaling from ₹20L to ₹2Cr/month.
+              We don't rely on unverified claims. We showcase the unit-economic targets we aim for based on industry data from high-growth D2C brands.
             </p>
           </div>
         </div>
@@ -39,19 +39,19 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
           {/* LEFT: THE INEFFICIENCY (CLEAN LIST) */}
           <div className="space-y-12">
             <div className="space-y-4">
-              <span className="text-[10px] font-black text-brandDark/30 uppercase tracking-[0.4em]">The Status Quo</span>
+              <span className="text-[10px] font-black text-brandDark/30 uppercase tracking-[0.4em]">Current Industry Baseline</span>
               <h3 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight leading-none uppercase">
-                Scaling Revenue, <br />
-                <span className="text-brandDark/40">Bleeding Profit.</span>
+                The Revenue <br />
+                <span className="text-brandDark/40">Efficiency Trap.</span>
               </h3>
             </div>
             
             <div className="space-y-0">
               {[
-                { label: "Ad Spend", value: "₹10–12L/month", desc: "High volume, low efficiency" },
-                { label: "ROAS", value: "4.5x", desc: "Looks good on dashboard" },
-                { label: "Net Profit", value: "₹1.2L", desc: "The brutal reality" },
-                { label: "CAC", value: "Unstable", desc: "Scaling kills margins" }
+                { label: "Typical Ad Spend", value: "₹15–20L/month", desc: "Scaling without system focus" },
+                { label: "Agency ROAS", value: "4.2x", desc: "Platform reported primary metric" },
+                { label: "Actual Net Margin", value: "5–8%", desc: "The harsh reality after all costs" },
+                { label: "Customer LTV", value: "Stagnant", desc: "One-time purchase dependency" }
               ].map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-6 border-b border-brandDark/10 group hover:bg-brandDark/5 transition-colors px-4 -mx-4 rounded-xl">
                   <div className="space-y-1">
@@ -76,19 +76,19 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
               
               <div className="relative z-10 space-y-12">
                 <div className="space-y-4">
-                  <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">The Techinfigo Way</span>
+                  <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Target Performance State</span>
                   <h3 className="text-3xl lg:text-5xl font-black text-white tracking-tight leading-none uppercase">
-                    Predictable <br />
-                    <span className="text-brandYellow italic">Profitability.</span>
+                    Compounding <br />
+                    <span className="text-brandYellow italic">Wealth.</span>
                   </h3>
                 </div>
 
                 <div className="space-y-8">
                   {[
-                    "Same ad spend, 4x more profit",
-                    "Fixed unit economics & margins",
-                    "Optimized AOV & retention",
-                    "Stable, data-backed scaling"
+                    "Fixed contribution margins (30%+)",
+                    "Predictable blended MER (4.5x+)",
+                    "Data-backed scaling thresholds",
+                    "Automated retention & LTV loops"
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-5 group/item">
                       <div className="w-8 h-8 rounded-full bg-brandYellow/10 flex items-center justify-center shrink-0 border border-brandYellow/20 group-hover/item:bg-brandYellow/30 transition-all">
@@ -101,10 +101,10 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
 
                 <div className="pt-12 border-t border-white/10">
                   <div className="flex items-baseline gap-3">
-                    <span className="text-6xl lg:text-8xl font-black text-brandYellow tracking-tighter">3.2x</span>
+                    <span className="text-6xl lg:text-8xl font-black text-brandYellow tracking-tighter">40%</span>
                     <div className="flex flex-col">
-                      <span className="text-white/40 text-[10px] font-black uppercase tracking-widest">Average</span>
-                      <span className="text-white/80 text-sm font-black uppercase tracking-widest">Profit Increase</span>
+                      <span className="text-white/40 text-[10px] font-black uppercase tracking-widest">Target</span>
+                      <span className="text-white/80 text-sm font-black uppercase tracking-widest">Net Profit Lift</span>
                     </div>
                   </div>
                 </div>
@@ -117,10 +117,10 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 p-10 lg:p-16 bg-white border border-brandDark/5 rounded-[3rem] shadow-xl">
           <div className="space-y-4 text-center lg:text-left">
             <h4 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter uppercase leading-none">
-              Stop Scaling <br />
-              <span className="text-brandDark/30">Inefficiency.</span>
+              Get Your Free <br />
+              <span className="text-brandDark/30">Profit Audit.</span>
             </h4>
-            <p className="text-brandDark/40 text-sm font-bold uppercase tracking-[0.3em]">Start scaling profit instead.</p>
+            <p className="text-brandDark/40 text-sm font-bold uppercase tracking-[0.3em]">No pitch. No pressure. Just patterns.</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-8">
@@ -128,7 +128,7 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
               onClick={onBookAudit}
               className="group relative px-12 py-6 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.4em] rounded-2xl hover:bg-brandDark hover:text-white transition-all duration-500 shadow-2xl"
             >
-              See My Profit Potential
+              Get My Free Profit Audit
             </button>
             
             {onNavigate && (
