@@ -61,7 +61,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
                 <h3 className="text-3xl lg:text-4xl font-black text-white uppercase tracking-tight leading-none">
                   Revenue is a <span className="text-brandYellow">Vanity Metric.</span>
                 </h3>
-                <p className="text-white/60 text-lg font-medium leading-relaxed max-w-2xl">
+                <p className="text-white/80 text-lg font-medium leading-relaxed max-w-2xl">
                   Most founders think they’re growing because revenue is increasing — until they actually look at net profit. We've seen ₹10Cr brands making less profit than ₹2Cr brands because of hidden leaks.
                 </p>
               </div>
@@ -79,7 +79,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
               </div>
               <div className="space-y-4">
                 <h3 className="text-xl font-black text-white uppercase tracking-tight">The ROAS Trap</h3>
-                <p className="text-white/50 text-sm font-medium leading-relaxed">
+                <p className="text-white/80 text-sm font-medium leading-relaxed">
                   A 4x ROAS on a low-margin product is a loss. A 2.5x ROAS on a high-margin product is a goldmine. Stop chasing platform numbers.
                 </p>
               </div>
@@ -97,7 +97,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
               </div>
               <div className="space-y-4">
                 <h3 className="text-xl font-black text-white uppercase tracking-tight">Scaling = Bleeding?</h3>
-                <p className="text-white/50 text-sm font-medium leading-relaxed">
+                <p className="text-white/80 text-sm font-medium leading-relaxed">
                   Increasing ad spend without stable unit economics doesn't scale growth—it scales losses. We fix the foundation before we push the pedal.
                 </p>
               </div>
@@ -115,7 +115,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
                 <h3 className="text-2xl font-black text-white uppercase tracking-tight">The Retention <br /> Advantage</h3>
               </div>
               <div className="w-full lg:w-2/3">
-                <p className="text-white/60 text-lg font-medium leading-relaxed">
+                <p className="text-white/80 text-lg font-medium leading-relaxed">
                   "The profit isn't in the first purchase. It's in the 3rd, 4th, and 5th. If your backend retention isn't hitting 30%+, you're just renting customers from Meta, not owning a brand."
                 </p>
                 <div className="mt-6 flex items-center gap-3">

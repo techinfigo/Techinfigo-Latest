@@ -6,7 +6,7 @@ import { TrendingUp, Wallet, AlertCircle } from 'lucide-react';
 
 export const EmotionalSection: React.FC = () => {
   return (
-    <section className="w-full py-24 lg:py-48 px-6 bg-brandDark text-white relative overflow-hidden">
+    <section className="w-full py-20 lg:py-32 px-6 bg-brandDark text-white relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
         <div className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vw] bg-brandYellow/10 rounded-full blur-[150px]"></div>
@@ -47,7 +47,7 @@ export const EmotionalSection: React.FC = () => {
                 <TrendingUp className="w-6 h-6 text-red-400 rotate-180" />
               </div>
               <h3 className="text-2xl font-black uppercase tracking-tight">The Revenue Trap</h3>
-              <p className="text-white/60 text-lg font-medium leading-relaxed">
+              <p className="text-white/80 text-lg font-medium leading-relaxed">
                 Platform dashboards show record sales, but by the time you pay Meta, Shopify, Logistics, and COGS—there's almost nothing left for the founder.
               </p>
             </div>
@@ -57,7 +57,7 @@ export const EmotionalSection: React.FC = () => {
                 <Wallet className="w-6 h-6 text-brandYellow" />
               </div>
               <h3 className="text-2xl font-black uppercase tracking-tight text-brandYellow">The Profit Fix</h3>
-              <p className="text-white/80 text-lg font-medium leading-relaxed">
+              <p className="text-white text-lg font-medium leading-relaxed">
                 We re-engineer your growth around <span className="text-white font-black underline decoration-brandYellow decoration-2 underline-offset-4">Contribution Margin</span>. We stop renting customers and start building a sustainable, profitable asset.
               </p>
             </div>
