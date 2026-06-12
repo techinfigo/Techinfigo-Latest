@@ -6,11 +6,11 @@ import { Quote, Linkedin } from 'lucide-react';
 
 export const FounderSection: React.FC = () => {
   return (
-    <section className="w-full py-32 lg:py-48 px-6 bg-white font-sans relative overflow-hidden">
+    <section className="w-full py-16 lg:py-24 px-6 bg-white font-sans relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #001d21 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           
           {/* Founder Visual Column (Video/Photo) */}
           <div className="lg:col-span-5 relative">
@@ -45,7 +45,7 @@ export const FounderSection: React.FC = () => {
           </div>
 
           {/* Founder Mission Column */}
-          <div className="lg:col-span-7 space-y-16">
+          <div className="lg:col-span-7 space-y-12">
             <div className="space-y-8">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-[2px] bg-brandYellow"></div>
@@ -57,19 +57,19 @@ export const FounderSection: React.FC = () => {
               </h2>
             </div>
 
-            <div className="space-y-10 relative">
+            <div className="space-y-8 relative">
               <Quote className="absolute -top-12 -left-12 w-24 h-24 text-brandDark/[0.04] -z-10" />
               
-              <div className="space-y-8 text-xl lg:text-2xl font-medium text-brandDark/80 leading-relaxed max-w-2xl">
+              <div className="space-y-6 text-lg lg:text-xl font-medium text-brandDark/80 leading-relaxed max-w-2xl">
                 <p>
                   "I watched too many D2C founders celebrate record revenue months while their bank accounts stayed flat. They were renting customers from Meta, not building assets."
                 </p>
                 <p>
-                  "Techinfigo was built to be the anti-agency. We don't focus on ROAS; we focus on <span className="text-brandDark font-black border-b-4 border-brandYellow">Contribution Margin</span>. We are here to build your wealth, not just your top-line."
+                  "Techinfigo was built to be the anti-agency. We don't focus on ROAS; we focus on <span className="text-brandDark font-black border-b-2 border-brandYellow">Contribution Margin</span>. We are here to build your wealth, not just your top-line."
                 </p>
               </div>
 
-              <div className="pt-12 border-t-2 border-brandDark/5 flex flex-wrap gap-12 lg:gap-20">
+              <div className="pt-10 border-t-2 border-brandDark/5 flex flex-wrap gap-12 lg:gap-20">
                 <div className="space-y-2">
                   <p className="text-3xl font-black text-brandDark tracking-tighter">100%</p>
                   <p className="text-[10px] font-black text-brandDark/40 uppercase tracking-widest">Skin in the Game</p>

@@ -6,7 +6,7 @@ import { TrendingUp, Wallet, AlertCircle } from 'lucide-react';
 
 export const EmotionalSection: React.FC = () => {
   return (
-    <section className="w-full py-20 lg:py-32 px-6 bg-brandDark text-white relative overflow-hidden">
+    <section className="w-full py-12 lg:py-16 px-6 bg-brandDark text-white relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
         <div className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vw] bg-brandYellow/20 rounded-full blur-[150px]"></div>
