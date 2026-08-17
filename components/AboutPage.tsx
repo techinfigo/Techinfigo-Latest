@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Target, ShieldCheck, Users, ArrowRight, Zap, CheckCircle2, MessageSquare, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
+import { site } from '../config/site';
 
 interface AboutPageProps {
   onNavigate: (page: string, serviceId?: string) => void;
@@ -200,7 +201,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-xl font-black text-brandDark uppercase tracking-tight">Core D2C Segment</h3>
-                    <p className="text-brandDark/50 font-medium">Brands doing ₹20L–₹2Cr/month seeking a systematic protocol to scale their contribution margin.</p>
+                    <p className="text-brandDark/50 font-medium">Brands doing {site.icpBand}/month seeking a systematic protocol to scale their contribution margin.</p>
                   </div>
                 </div>
                 

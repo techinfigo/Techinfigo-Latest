@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { site } from "../config/site";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -10,7 +11,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Techinfigo | Growth Infrastructure",
-  description: "We build compounding growth systems for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.",
+  description: `We build compounding growth systems for D2C brands doing ${site.icpBand}/mo who value profit over vanity.`,
   icons: {
     icon: [
       { url: '/favicon.png' },

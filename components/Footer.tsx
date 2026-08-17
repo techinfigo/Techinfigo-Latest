@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Instagram, Linkedin, Youtube, Facebook } from 'lucide-react';
+import { site } from '../config/site';
 
 interface FooterProps {
   onNavigate?: (page: string, serviceId?: string) => void;
@@ -48,7 +49,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               </div>
             </Link>
             <p className="text-white/80 text-sm lg:text-base leading-relaxed font-normal tracking-tight max-w-sm">
-              We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing ₹20L–₹2Cr/mo who value profit over vanity.
+              We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing {site.icpBand}/mo who value profit over vanity.
             </p>
             <div className="inline-flex items-center gap-3 px-3 py-1.5 border border-white/10 rounded-full">
               <span className="w-1 h-1 rounded-full bg-brandYellow"></span>
