@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Navbar } from '../../components/Navbar';
 import { AgraLandingPageWrapper } from '../../components/AgraLandingPageWrapper';
 import { Footer } from '../../components/Footer';
+import { site } from '../../config/site';
 
 export const metadata: Metadata = {
   title: 'Digital Marketing Agency in Agra | #1 ROI-Focused Agency - Techinfigo',
@@ -37,7 +38,8 @@ export default function AgraLanding() {
     "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
     "@id": "https://techinfigo.com/digital-marketing-agency-agra",
     "url": "https://techinfigo.com/digital-marketing-agency-agra",
-    "telephone": "+91-YOUR-NUMBER",
+    // Omitted entirely while unset — an invalid telephone is worse than none.
+    ...(site.phone ? { "telephone": site.phone } : {}),
     "priceRange": "$$",
     "description": "Agra's leading ROI-focused digital marketing agency. Specializing in SEO, Facebook Ads, and Google Ads for local businesses in Sanjay Place, Fatehabad Road, and Civil Lines.",
     "address": {

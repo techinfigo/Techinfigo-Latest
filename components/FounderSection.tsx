@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Quote, Linkedin } from 'lucide-react';
+import { site } from '../config/site';
 
 export const FounderSection: React.FC = () => {
   return (
@@ -30,12 +31,16 @@ export const FounderSection: React.FC = () => {
               <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap">Founder Name</h3>
-                    <p className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Chief Profit Strategist</p>
+                    {site.founder.name && (
+                      <h3 className="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap">{site.founder.name}</h3>
+                    )}
+                    <p className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">{site.founder.role}</p>
                   </div>
-                  <a href="#" className="w-12 h-12 rounded-full bg-brandYellow text-brandDark flex items-center justify-center hover:bg-white transition-all shadow-lg">
-                    <Linkedin className="w-5 h-5" />
-                  </a>
+                  {site.founder.linkedin && (
+                    <a href={site.founder.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${site.founder.name || 'Founder'} on LinkedIn`} className="w-12 h-12 rounded-full bg-brandYellow text-brandDark flex items-center justify-center hover:bg-white transition-all shadow-lg">
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
