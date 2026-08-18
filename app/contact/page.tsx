@@ -1,28 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { ContactPage } from '../../components/ContactPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'Contact | Talk to a D2C Profit Strategist',
+  description: 'Talk to a D2C profit strategist about where your margin is leaking and what it would take to fix it.',
+  alternates: {
+    canonical: '/contact',
+  },
+  openGraph: {
+    title: 'Contact | Talk to a D2C Profit Strategist',
+    description: 'Talk to a D2C profit strategist about where your margin is leaking and what it would take to fix it.',
+    url: '/contact',
+  },
+};
 
-export default function Contact() {
-  const router = useRouter();
-
-  const handleBookAudit = () => {
-    router.push('/lead-capture');
-  };
-
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="contact" />
-      <div className="animate-slide-up">
-        <ContactPage 
-          onNavigate={(page) => router.push(`/${page}`)} 
-          onBack={() => router.back()}
-          onBookAudit={handleBookAudit}
-        />
-      </div>
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

@@ -1,23 +1,69 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../../components/Navbar';
-import { ServiceDetailPage } from '../../../components/ServiceDetailPage';
-import { Footer } from '../../../components/Footer';
-import { useRouter, useParams } from 'next/navigation';
+type ServiceMeta = { title: string; description: string };
 
-export default function ServiceDetail() {
-  const router = useRouter();
-  const params = useParams();
-  const id = params.id as string;
+/** Keyed by the ids ServiceDetailPage knows about. */
+const SERVICE_META: Record<string, ServiceMeta> = {
+  'performance-ads': {
+    title: 'D2C Performance Ads | Meta & Google Built for Margin',
+    description: 'Offer-led creative and full-funnel Meta and Google campaigns tuned to contribution margin rather than ROAS screenshots.',
+  },
+  cro: {
+    title: 'Conversion Rate Optimization | Turn Traffic into Margin',
+    description: 'Funnel diagnostics, speed work and structured A/B testing that lift conversion rate and session value on the traffic you already pay for.',
+  },
+  seo: {
+    title: 'eCommerce SEO | High-Intent Organic Traffic for D2C',
+    description: 'Technical fixes, topical content and authority building that win high-intent organic rankings and cut your blended CAC.',
+  },
+  retention: {
+    title: 'Email & SMS Retention Flows | Compound Your LTV',
+    description: 'Automated email and SMS flows that drive repeat purchase, raise LTV and make your paid acquisition affordable again.',
+  },
+};
 
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="service-detail" />
-      <div className="animate-slide-up">
-        <ServiceDetailPage serviceId={id} onNavigate={(page, sid) => router.push(sid ? `/services/${sid}` : `/${page}`)} />
-        <Footer />
-      </div>
-    </main>
-  );
+const FALLBACK: ServiceMeta = {
+  title: 'D2C Growth Services',
+  description: 'Profit-first growth services for D2C brands: performance ads, CRO, SEO and retention.',
+};
+
+export function generateStaticParams() {
+  return [
+    { id: 'performance-ads' },
+    { id: 'cro' },
+    { id: 'seo' },
+    { id: 'retention' },
+  ];
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const meta = SERVICE_META[id] ?? FALLBACK;
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: `/services/${id}`,
+    },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: `/services/${id}`,
+    },
+  };
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  return <PageClient id={id} />;
 }

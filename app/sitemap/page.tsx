@@ -1,20 +1,20 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { SitemapPage } from '../../components/SitemapPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'Sitemap',
+  description: 'A complete index of every page on the Techinfigo website, organised by section.',
+  robots: { index: false, follow: true },
+  alternates: {
+    canonical: '/sitemap',
+  },
+  openGraph: {
+    title: 'Sitemap',
+    description: 'A complete index of every page on the Techinfigo website, organised by section.',
+    url: '/sitemap',
+  },
+};
 
-export default function Sitemap() {
-  const router = useRouter();
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="sitemap" />
-      <div className="animate-slide-up">
-        <SitemapPage onNavigate={(page, id) => router.push(id ? `/services/${id}` : `/${page}`)} />
-        <Footer />
-      </div>
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

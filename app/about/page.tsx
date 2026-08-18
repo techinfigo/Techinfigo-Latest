@@ -1,20 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { AboutPage } from '../../components/AboutPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'About Us | Profit-First D2C Growth Agency',
+  description: 'Meet the profit-first growth team that treats your bottom line, not your ad spend, as the only scoreboard that matters.',
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: 'About Us | Profit-First D2C Growth Agency',
+    description: 'Meet the profit-first growth team that treats your bottom line, not your ad spend, as the only scoreboard that matters.',
+    url: '/about',
+  },
+};
 
-export default function About() {
-  const router = useRouter();
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="about" />
-      <div className="animate-slide-up">
-        <AboutPage onNavigate={(page) => router.push(`/${page}`)} />
-        <Footer />
-      </div>
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

@@ -1,18 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { SystemPage } from '../../components/SystemPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'The System | Profit Infrastructure for D2C',
+  description: 'The profit infrastructure we install so D2C brands can scale ad spend without scaling their losses.',
+  alternates: {
+    canonical: '/system',
+  },
+  openGraph: {
+    title: 'The System | Profit Infrastructure for D2C',
+    description: 'The profit infrastructure we install so D2C brands can scale ad spend without scaling their losses.',
+    url: '/system',
+  },
+};
 
-export default function System() {
-  const router = useRouter();
-  return (
-    <main className="min-h-screen bg-brandDark text-white selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="system" />
-      <SystemPage onNavigate={(page) => router.push(`/${page}`)} />
-      <Footer />
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

@@ -1,18 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { QualificationPage } from '../../components/QualificationPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'Who We Work With | Partner Criteria',
+  description: 'The partner criteria we use to decide which D2C brands we take on, and why we turn most of them down.',
+  alternates: {
+    canonical: '/qualification',
+  },
+  openGraph: {
+    title: 'Who We Work With | Partner Criteria',
+    description: 'The partner criteria we use to decide which D2C brands we take on, and why we turn most of them down.',
+    url: '/qualification',
+  },
+};
 
-export default function Qualification() {
-  const router = useRouter();
-  return (
-    <main className="min-h-screen bg-brandDark text-white selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="qualification" />
-      <QualificationPage onNavigate={(page) => router.push(`/${page}`)} />
-      <Footer />
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

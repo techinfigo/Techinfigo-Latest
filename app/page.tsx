@@ -13,7 +13,7 @@ import { RevenueAccelerator } from '../components/RevenueAccelerator';
 import { Footer } from '../components/Footer';
 
 export const metadata: Metadata = {
-  title: "Techinfigo | Profit-First D2C Growth Partner",
+  title: { absolute: "Techinfigo | Profit-First D2C Growth Partner" },
   description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
   openGraph: {
     title: "Techinfigo | Profit-First D2C Growth Partner",

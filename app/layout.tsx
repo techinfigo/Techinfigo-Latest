@@ -10,7 +10,14 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Techinfigo | Growth Infrastructure",
+  metadataBase: new URL('https://www.techinfigo.com'),
+  title: {
+    default: 'Techinfigo | Profit-First D2C Growth Agency',
+    template: '%s | Techinfigo',
+  },
+  alternates: {
+    canonical: '/',
+  },
   description: `We build compounding growth systems for D2C brands doing ${site.icpBand}/mo who value profit over vanity.`,
   icons: {
     icon: [

@@ -6,7 +6,7 @@ import { Footer } from '../../components/Footer';
 import { site } from '../../config/site';
 
 export const metadata: Metadata = {
-  title: 'Digital Marketing Agency in Agra | #1 ROI-Focused Agency - Techinfigo',
+  title: { absolute: 'Digital Marketing Agency in Agra | #1 ROI-Focused Agency - Techinfigo' },
   description: 'Techinfigo is the leading digital marketing agency in Agra. We help brands in Sanjay Place, Fatehabad Road & beyond scale with Facebook Ads, Google Ads, and SEO. Get a free audit today.',
   keywords: 'digital marketing agency agra, seo services agra, facebook ads agra, google ads agency agra, web development agra, ecommerce growth agra, marketing agency in agra uttar pradesh',
   openGraph: {

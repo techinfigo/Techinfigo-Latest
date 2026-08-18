@@ -1,28 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { InteractiveLeadForm } from '../../components/InteractiveLeadForm';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'Free D2C Profit Audit | Find Your Margin Leaks',
+  description: 'Book a free D2C profit audit and get a clear map of the margin leaks costing you money right now.',
+  alternates: {
+    canonical: '/lead-capture',
+  },
+  openGraph: {
+    title: 'Free D2C Profit Audit | Find Your Margin Leaks',
+    description: 'Book a free D2C profit audit and get a clear map of the margin leaks costing you money right now.',
+    url: '/lead-capture',
+  },
+};
 
-export default function LeadCapture() {
-  const router = useRouter();
-
-  const handleBookAudit = () => {
-    router.push('/lead-capture');
-  };
-
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="lead-capture" />
-      <div className="animate-slide-up">
-        <InteractiveLeadForm 
-          onBack={() => router.push('/')} 
-          onNavigate={(page) => router.push(`/${page}`)}
-          onBookAudit={handleBookAudit}
-        />
-      </div>
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

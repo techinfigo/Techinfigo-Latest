@@ -1,18 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { ProfitBreakdownPage } from '../../components/ProfitBreakdownPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'D2C Profit Breakdown | Where Your Margin Actually Leaks',
+  description: 'A line-by-line breakdown of where D2C margin actually leaks, from CAC and COGS to shipping, discounts and returns.',
+  alternates: {
+    canonical: '/profit-breakdown',
+  },
+  openGraph: {
+    title: 'D2C Profit Breakdown | Where Your Margin Actually Leaks',
+    description: 'A line-by-line breakdown of where D2C margin actually leaks, from CAC and COGS to shipping, discounts and returns.',
+    url: '/profit-breakdown',
+  },
+};
 
-export default function ProfitBreakdown() {
-  const router = useRouter();
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="profit-breakdown" />
-      <ProfitBreakdownPage onNavigate={(page) => router.push(`/${page}`)} />
-      <Footer />
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }

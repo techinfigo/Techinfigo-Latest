@@ -1,20 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import PageClient from './PageClient';
 
-import React from 'react';
-import { Navbar } from '../../components/Navbar';
-import { CareersPage } from '../../components/CareersPage';
-import { Footer } from '../../components/Footer';
-import { useRouter } from 'next/navigation';
+export const metadata: Metadata = {
+  title: 'Careers | Growth Roles in Agra',
+  description: 'Open growth roles at our Agra studio for marketers and operators who care about profit over vanity metrics.',
+  alternates: {
+    canonical: '/careers',
+  },
+  openGraph: {
+    title: 'Careers | Growth Roles in Agra',
+    description: 'Open growth roles at our Agra studio for marketers and operators who care about profit over vanity metrics.',
+    url: '/careers',
+  },
+};
 
-export default function Careers() {
-  const router = useRouter();
-  return (
-    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
-      <Navbar activePage="careers" />
-      <div className="animate-slide-up">
-        <CareersPage onNavigate={(page) => router.push(`/${page}`)} />
-        <Footer />
-      </div>
-    </main>
-  );
+export default function Page() {
+  return <PageClient />;
 }
