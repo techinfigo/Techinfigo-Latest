@@ -7,21 +7,30 @@
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "admin:hash": "node scripts/hash-password.mjs",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.0",
+    "drizzle-orm": "^0.45.2",
+    "jose": "^6.2.9",
     "lucide-react": "^0.475.0",
     "motion": "^12.0.0",
     "next": "^16.2.2",
+    "postgres": "^3.4.9",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^10.1.0",
     "eslint-config-next": "^16.2.2",
     "typescript": "^5.0.0"

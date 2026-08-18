@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { submitLead } from '../lib/submit-lead';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Check, 
@@ -138,27 +139,20 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
     e.preventDefault();
     setLoading(true);
 
-    // Prepare data for submission
-    const submissionData = {
-      _subject: `New Interactive Lead - ${formData.fullName} - ${formData.services.join(', ')}`,
-      ...formData
-    };
+    const { fullName, email, phone, businessName, website, revenue, adSpend, ...rest } = formData;
 
-    fetch("https://formsubmit.co/ajax/thetechinfigo@gmail.com", {
-      method: "POST",
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(submissionData)
-    })
-    .then(() => {
-      setLoading(false);
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    })
-    .catch((error) => {
-      console.error('Form submission error:', error);
+    submitLead({
+      sourceForm: 'lead-capture',
+      name: fullName,
+      email,
+      phone,
+      brandName: businessName,
+      website,
+      monthlyRevenue: revenue,
+      adSpend,
+      // Every conditional branch of the questionnaire, so nothing is dropped.
+      extra: rest,
+    }).finally(() => {
       setLoading(false);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });

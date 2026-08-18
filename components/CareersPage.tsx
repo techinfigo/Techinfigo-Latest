@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { submitLead } from '../lib/submit-lead';
 
 interface Option {
   label: string;
@@ -110,25 +111,22 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
     e.preventDefault();
     setLoading(true);
 
-    fetch("https://formsubmit.co/ajax/thetechinfigo@gmail.com", {
-      method: "POST",
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+    submitLead({
+      sourceForm: 'careers',
+      name: formData.fullName,
+      email: formData.email,
+      phone: formData.whatsapp,
+      website: formData.portfolio,
+      message: formData.pitch,
+      extra: {
+        linkedin: formData.linkedin,
+        specialization: formData.specialization,
+        experience: formData.experience,
+        expectedCtc: formData.expectedCtc,
       },
-      body: JSON.stringify({
-        _subject: "New Job Application - Techinfigo",
-        ...formData
-      })
-    })
-    .then(() => {
+    }).finally(() => {
       setLoading(false);
       setSubmitted(true);
-    })
-    .catch((error) => {
-      console.error('Form submission error:', error);
-      setLoading(false);
-      setSubmitted(true); // Fallback to success screen
     });
   };
 

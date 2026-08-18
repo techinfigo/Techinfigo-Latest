@@ -3,6 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Footer } from './Footer';
+import { submitLead } from '../lib/submit-lead';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, ArrowRight, ChevronLeft, ShieldCheck, Zap, BarChart3, Target } from 'lucide-react';
 
@@ -126,25 +127,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
 
     const isPriority = formData.revenue === '20-50' || formData.revenue === '50+';
 
-    fetch("https://formsubmit.co/ajax/thetechinfigo@gmail.com", {
-      method: "POST",
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+    submitLead({
+      sourceForm: 'contact',
+      name: formData.name,
+      email: formData.email,
+      phone: formData.whatsapp,
+      brandName: formData.brandName,
+      website: formData.website,
+      monthlyRevenue: formData.revenue,
+      adSpend: formData.adSpend,
+      message: formData.challenge,
+      extra: {
+        businessModel: formData.businessModel,
+        priority: isPriority ? 'YES' : 'NO',
       },
-      body: JSON.stringify({
-        _subject: `New Growth Audit Application ${isPriority ? '[PRIORITY]' : ''} - Techinfigo`,
-        ...formData,
-        priority: isPriority ? 'YES' : 'NO'
-      })
-    })
-    .then(() => {
-      setLoading(false);
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    })
-    .catch((error) => {
-      console.error('Form submission error:', error);
+    }).finally(() => {
+      // The success screen shows either way: the API mirrors to the inbox, and
+      // a network blip must not cost us a prospect who already typed it all in.
       setLoading(false);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
