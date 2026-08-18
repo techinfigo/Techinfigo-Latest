@@ -1,19 +1,17 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { and, desc, eq, gte } from 'drizzle-orm';
-import { getDb, isDbConfigured } from '../../../lib/db';
-import { leads, LEAD_STATUSES, type LeadStatus } from '../../../lib/db/schema';
+import { createLead, isDbConfigured, queryLeads } from '../../../lib/firestore';
 import { mirrorToInbox, parseLead } from '../../../lib/leads';
 import { SESSION_COOKIE, readSession } from '../../../lib/auth';
 
-// scrypt/pg both need Node; and this route must never be cached.
+// scrypt and firebase-admin both need Node; and this route must never be cached.
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
  * POST — public form endpoint.
  *
- * Contract: if validation passes, the caller gets ok:true. A database outage
+ * Contract: if validation passes, the caller gets ok:true. A Firestore outage
  * changes `stored`, never `ok`. Losing a prospect to a connection timeout is
  * not an acceptable failure mode, so the inbox mirror runs regardless.
  */
@@ -40,11 +38,11 @@ export async function POST(request: Request) {
   let stored = false;
   if (isDbConfigured()) {
     try {
-      await getDb().insert(leads).values(parsed.lead);
+      await createLead(parsed.lead);
       stored = true;
     } catch (error) {
       // Swallowed on purpose: the lead is already in the inbox.
-      console.error('[leads] database insert failed:', error);
+      console.error('[leads] firestore write failed:', error);
     }
   }
 
@@ -64,30 +62,18 @@ export async function GET(request: Request) {
   }
 
   const params = new URL(request.url).searchParams;
-  const status = params.get('status');
-  const source = params.get('source');
-  const days = Number(params.get('days'));
-
-  const filters = [];
-  if (status && (LEAD_STATUSES as readonly string[]).includes(status)) {
-    filters.push(eq(leads.status, status as LeadStatus));
-  }
-  if (source) {
-    filters.push(eq(leads.sourceForm, source));
-  }
-  if (Number.isFinite(days) && days > 0) {
-    filters.push(gte(leads.createdAt, new Date(Date.now() - days * 86_400_000)));
-  }
 
   try {
-    const rows = await getDb()
-      .select()
-      .from(leads)
-      .where(filters.length ? and(...filters) : undefined)
-      .orderBy(desc(leads.createdAt))
-      .limit(500);
+    const leads = await queryLeads(
+      {
+        status: params.get('status'),
+        source: params.get('source'),
+        days: Number(params.get('days')),
+      },
+      500,
+    );
 
-    return NextResponse.json({ ok: true, dbConfigured: true, leads: rows });
+    return NextResponse.json({ ok: true, dbConfigured: true, leads });
   } catch (error) {
     console.error('[leads] query failed:', error);
     return NextResponse.json({ ok: false, error: 'query failed' }, { status: 500 });

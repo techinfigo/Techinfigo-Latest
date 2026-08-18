@@ -1,6 +1,6 @@
-import type { NewLead } from './db/schema';
+import type { NewLead } from './leads-schema';
 
-/** Per-column caps. Postgres text is unbounded; these stop a bot posting a novel. */
+/** Per-field caps. Firestore strings are effectively unbounded; these stop a bot posting a novel. */
 export const FIELD_LIMITS = {
   name: 200,
   email: 320,

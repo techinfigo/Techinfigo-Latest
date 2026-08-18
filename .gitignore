@@ -39,3 +39,9 @@ build/
 .env.local
 .env*.local
 !.env.example
+
+# Service-account keys. Credentials belong in .env.local, never in a tracked
+# file — a committed key stays a live credential in the clone history forever.
+firebase-key.json
+*-key.json
+*serviceAccount*.json

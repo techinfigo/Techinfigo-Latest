@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { and, desc, eq, gte } from 'drizzle-orm';
-import { getDb, isDbConfigured } from '../../lib/db';
-import { leads, LEAD_STATUSES, type Lead, type LeadStatus } from '../../lib/db/schema';
+import { isDbConfigured, queryLeads } from '../../lib/firestore';
+import { LEAD_STATUSES, type Lead, type LeadStatus } from '../../lib/leads-schema';
 import { SetupNotice } from './SetupNotice';
 import { SignOutButton } from './SignOutButton';
 import { formatTimestamp } from './format';
@@ -11,24 +10,11 @@ export const dynamic = 'force-dynamic';
 type Search = { status?: string; source?: string; days?: string };
 
 async function loadLeads(search: Search): Promise<{ rows: Lead[]; failed: boolean }> {
-  const filters = [];
-  if (search.status && (LEAD_STATUSES as readonly string[]).includes(search.status)) {
-    filters.push(eq(leads.status, search.status as LeadStatus));
-  }
-  if (search.source) filters.push(eq(leads.sourceForm, search.source));
-
-  const days = Number(search.days);
-  if (Number.isFinite(days) && days > 0) {
-    filters.push(gte(leads.createdAt, new Date(Date.now() - days * 86_400_000)));
-  }
-
   try {
-    const rows = await getDb()
-      .select()
-      .from(leads)
-      .where(filters.length ? and(...filters) : undefined)
-      .orderBy(desc(leads.createdAt))
-      .limit(200);
+    const rows = await queryLeads(
+      { status: search.status, source: search.source, days: Number(search.days) },
+      200,
+    );
     return { rows, failed: false };
   } catch (error) {
     console.error('[admin] lead query failed:', error);
@@ -75,8 +61,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       {failed ? (
         <div className="border border-red-500/20 bg-red-500/5 rounded-2xl p-6">
           <p className="text-red-300 text-sm font-medium">
-            The database is configured but the query failed. Check DATABASE_URL and that migrations
-            have run (<code>npm run db:push</code>).
+            Firestore is configured but the query failed. Check the service-account credentials and
+            that the Firestore database exists in this project.
           </p>
         </div>
       ) : null}

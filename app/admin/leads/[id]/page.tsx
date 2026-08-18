@@ -1,28 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { asc, eq } from 'drizzle-orm';
-import { getDb, isDbConfigured } from '../../../../lib/db';
-import { leadNotes, leads, type Lead, type LeadNote } from '../../../../lib/db/schema';
+import { getLeadWithNotes, isDbConfigured, isValidLeadId } from '../../../../lib/firestore';
+import { type Lead } from '../../../../lib/leads-schema';
 import { SetupNotice } from '../../SetupNotice';
 import { formatTimestamp } from '../../format';
 import { LeadControls } from './LeadControls';
 
 export const dynamic = 'force-dynamic';
-
-async function loadLead(id: number): Promise<{ lead: Lead; notes: LeadNote[] } | null> {
-  const db = getDb();
-
-  const found = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
-  if (!found.length) return null;
-
-  const notes = await db
-    .select()
-    .from(leadNotes)
-    .where(eq(leadNotes.leadId, id))
-    .orderBy(asc(leadNotes.createdAt));
-
-  return { lead: found[0], notes };
-}
 
 /** Attribution fields, in the order they are useful when qualifying a lead. */
 const ATTRIBUTION: ReadonlyArray<[label: string, key: keyof Lead]> = [
@@ -47,8 +31,9 @@ const DETAILS: ReadonlyArray<[label: string, key: keyof Lead]> = [
 ];
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const id = Number((await params).id);
-  if (!Number.isInteger(id) || id <= 0) notFound();
+  // Firestore document ids are opaque strings, not serial integers.
+  const id = (await params).id;
+  if (!isValidLeadId(id)) notFound();
 
   if (!isDbConfigured()) {
     return (
@@ -61,9 +46,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     );
   }
 
-  let data: Awaited<ReturnType<typeof loadLead>>;
+  let data: Awaited<ReturnType<typeof getLeadWithNotes>>;
   try {
-    data = await loadLead(id);
+    data = await getLeadWithNotes(id);
   } catch (error) {
     console.error('[admin] lead detail query failed:', error);
     return (
@@ -72,7 +57,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           ← Pipeline
         </Link>
         <p className="text-red-300 text-sm font-medium">
-          Could not load this lead. Check the database connection.
+          Could not load this lead. Check the Firestore connection.
         </p>
       </main>
     );

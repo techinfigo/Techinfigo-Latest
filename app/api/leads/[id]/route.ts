@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { eq } from 'drizzle-orm';
-import { getDb, isDbConfigured } from '../../../../lib/db';
-import { leads, LEAD_STATUSES, type LeadStatus } from '../../../../lib/db/schema';
+import {
+  LEAD_STATUSES,
+  isDbConfigured,
+  isValidLeadId,
+  updateLeadStatus,
+  type LeadStatus,
+} from '../../../../lib/firestore';
 import { SESSION_COOKIE, readSession } from '../../../../lib/auth';
 
 export const runtime = 'nodejs';
@@ -16,8 +20,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
 
-  const id = Number((await params).id);
-  if (!Number.isInteger(id) || id <= 0) {
+  // Firestore document ids are opaque strings, not serial integers.
+  const id = (await params).id;
+  if (!isValidLeadId(id)) {
     return NextResponse.json({ ok: false, error: 'invalid id' }, { status: 400 });
   }
 
@@ -32,16 +37,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 
   try {
-    const updated = await getDb()
-      .update(leads)
-      .set({ status: status as LeadStatus, updatedAt: new Date() })
-      .where(eq(leads.id, id))
-      .returning();
+    const updated = await updateLeadStatus(id, status as LeadStatus);
 
-    if (!updated.length) {
+    if (!updated) {
       return NextResponse.json({ ok: false, error: 'not found' }, { status: 404 });
     }
-    return NextResponse.json({ ok: true, lead: updated[0] });
+    return NextResponse.json({ ok: true, lead: updated });
   } catch (error) {
     console.error('[leads] status update failed:', error);
     return NextResponse.json({ ok: false, error: 'update failed' }, { status: 500 });

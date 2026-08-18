@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getDb, isDbConfigured } from '../../../../../lib/db';
-import { leadNotes } from '../../../../../lib/db/schema';
+import { addNote, isDbConfigured, isValidLeadId } from '../../../../../lib/firestore';
 import { SESSION_COOKIE, readSession } from '../../../../../lib/auth';
 import { clean } from '../../../../../lib/leads';
 
@@ -16,8 +15,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
 
-  const leadId = Number((await params).id);
-  if (!Number.isInteger(leadId) || leadId <= 0) {
+  // Firestore document ids are opaque strings, not serial integers.
+  const leadId = (await params).id;
+  if (!isValidLeadId(leadId)) {
     return NextResponse.json({ ok: false, error: 'invalid id' }, { status: 400 });
   }
 
@@ -32,8 +32,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   }
 
   try {
-    const inserted = await getDb().insert(leadNotes).values({ leadId, body: noteBody }).returning();
-    return NextResponse.json({ ok: true, note: inserted[0] });
+    const note = await addNote(leadId, noteBody);
+
+    // A subcollection write under a missing parent would otherwise succeed
+    // silently — the foreign key used to make this a constraint violation.
+    if (!note) {
+      return NextResponse.json({ ok: false, error: 'not found' }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true, note });
   } catch (error) {
     console.error('[leads] note insert failed:', error);
     return NextResponse.json({ ok: false, error: 'insert failed' }, { status: 500 });

@@ -1,0 +1,16 @@
+rules_version = '2';
+
+// Deny every client SDK request.
+//
+// Nothing in this app talks to Firestore from a browser: the only reader and
+// writer is firebase-admin, running server-side in Next route handlers, and the
+// Admin SDK bypasses these rules entirely. So a blanket deny costs nothing and
+// closes the hole a database created in "test mode" leaves open — leads are PII
+// (name, email, phone), and test-mode rules make them world-readable.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
