@@ -89,13 +89,34 @@ then for each row in the table above: collection ID `leads`, query scope
 
 Building takes a few minutes per index on a small collection.
 
-### If you skip this step
+### Current state: deliberately not deployed
 
-`queryLeads()` catches the `FAILED_PRECONDITION` a missing index produces, logs a
-warning, and falls back to one ordered fetch filtered in memory. The panel keeps
-working rather than returning a 500. At current volume — well under 500 leads —
-that fallback is genuinely cheap; the indexes matter once the collection grows
-past what a single 500-document fetch should carry.
+**The three indexes above are not live, by choice.** The pipeline runs on the
+in-memory fallback described below, which is a supported configuration at this
+volume — not an outstanding bug.
+
+So this in the server log is expected, not a fault:
+
+    [leads] composite index missing for this filter combination;
+    falling back to in-memory filtering. Deploy firestore.indexes.json to remove this.
+
+Two things to know if you decide to deploy them later:
+
+- The `firebase-adminsdk-*` service account can read and write documents but
+  **cannot create indexes** — that needs `datastore.indexes.create`, from a
+  separate role (`roles/datastore.indexAdmin`) it does not carry by default.
+  Grant that role, or deploy as a human via `firebase login`.
+- `npm run db:indexes` needs the firebase CLI on PATH (`npm i -g firebase-tools`).
+  It is not a dependency of this project.
+
+### How the fallback works
+
+`queryLeads()` catches the `FAILED_PRECONDITION` a missing index produces, logs the
+warning above, and falls back to one ordered fetch filtered in memory. The panel
+keeps working rather than returning a 500. At current volume — well under 500
+leads — that fallback is genuinely cheap; the indexes matter once the collection
+grows past what a single 500-document fetch should carry. That threshold is the
+signal to revisit this.
 
 ## 4. Run it
 
