@@ -26,3 +26,16 @@ next-env.d.ts
 *.njsproj
 *.sln
 *.sw?
+
+# Next.js / TypeScript build output
+# (.next/ and next-env.d.ts are already covered above)
+out/
+build/
+*.tsbuildinfo
+
+# Local environment files — never commit real IDs or secrets.
+# .env.example is the documented template and stays tracked.
+.env
+.env.local
+.env*.local
+!.env.example

@@ -88,3 +88,17 @@ export const PROOF_MODE: 'benchmark' | 'client' = 'benchmark';
 /** Shown wherever benchmark figures appear, so the framing is unambiguous. */
 export const PROOF_DISCLAIMER =
   'Target benchmark based on published D2C industry data — not a delivered client result.';
+
+/**
+ * Analytics IDs, read from NEXT_PUBLIC_* env vars at build time.
+ *
+ * Each defaults to an empty string, and components/Analytics.tsx renders a
+ * given vendor's script only when its ID is non-empty. That keeps the site
+ * shippable with no analytics configured — an unset var means no script tag,
+ * not a broken tag pointed at an undefined ID.
+ */
+export const ANALYTICS = {
+  ga4: process.env.NEXT_PUBLIC_GA4_ID ?? '',
+  metaPixel: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? '',
+  clarity: process.env.NEXT_PUBLIC_CLARITY_ID ?? '',
+} as const;
