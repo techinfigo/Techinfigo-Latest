@@ -20,3 +20,71 @@ export const site = {
   /** Target customer revenue band, without the /mo or /month suffix. */
   icpBand: '₹20L–₹2Cr',
 } as const;
+
+/**
+ * Canonical site identity.
+ *
+ * Kept separate from `site` above so that block can stay a pure "fill these in"
+ * TODO list, while metadata, JSON-LD and OG tags read the host, locale and
+ * share image from one authoritative place instead of hardcoding them per file.
+ */
+export const SITE = {
+  name: 'Techinfigo',
+  url: 'https://www.techinfigo.com',
+  locale: 'en_IN',
+  themeColor: '#001d21',
+  ogImage: '/og-image.jpg',
+} as const;
+
+/** Calendar quarter (1-4) and year for a given date. */
+function quarterOf(date: Date) {
+  return { quarter: Math.floor(date.getMonth() / 3) + 1, year: date.getFullYear() };
+}
+
+/**
+ * Availability and scarcity messaging.
+ *
+ * Slot counts and batch labels were hardcoded across five components and had
+ * already gone stale ("Q3", "June 2026") — a visitor in August 2026 was being
+ * told to join a batch that closed months earlier. The batch names are now
+ * derived from the current date, and every scarcity claim sits behind
+ * `showScarcity`, which stays false until there is a real waitlist to back it.
+ */
+export const CAPACITY = {
+  showScarcity: false,
+  slotsOpen: 2,
+  /** e.g. "Q3 2026" — the batch currently being filled. */
+  get currentBatch() {
+    const { quarter, year } = quarterOf(new Date());
+    return `Q${quarter} ${year}`;
+  },
+  /** The following quarter, rolling over to Q1 of the next year after Q4. */
+  get nextBatch() {
+    const { quarter, year } = quarterOf(new Date());
+    return quarter === 4 ? `Q1 ${year + 1}` : `Q${quarter + 1} ${year}`;
+  },
+} as const;
+
+/**
+ * Positioning statements that replaced invented statistics.
+ *
+ * The site previously claimed "we decline 80% of inquiries" and "audit accuracy
+ * 94%". Neither number was measured, so neither could survive a prospect asking
+ * how it was calculated. These say the same thing without inventing a figure.
+ */
+export const CLAIMS = {
+  selectivity: 'We cap active partnerships to protect delivery quality.',
+} as const;
+
+/**
+ * Whether the headline figures represent delivered client outcomes ('client')
+ * or industry targets we work toward ('benchmark'). While it is 'benchmark' the
+ * UI labels them as targets and prints PROOF_DISCLAIMER, so we never imply a
+ * case-study result we cannot name a client for. Flip to 'client' only once
+ * there is an attributable engagement behind the numbers.
+ */
+export const PROOF_MODE: 'benchmark' | 'client' = 'benchmark';
+
+/** Shown wherever benchmark figures appear, so the framing is unambiguous. */
+export const PROOF_DISCLAIMER =
+  'Target benchmark based on published D2C industry data — not a delivered client result.';

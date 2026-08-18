@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Search, FlaskConical, ShieldCheck, TrendingUp, Users, ArrowRight, Check, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CAPACITY } from '../config/site';
 
 interface GrowthLifecycleProps {
   onBookAudit?: () => void;
@@ -170,7 +171,7 @@ export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit })
               
               <div className="flex flex-col items-center sm:items-start">
                 <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest">Next Batch</span>
-                <span className="text-brandYellow text-[10px] font-black uppercase tracking-widest">June 2026 (2 Slots Left)</span>
+                <span className="text-brandYellow text-[10px] font-black uppercase tracking-widest">{CAPACITY.nextBatch}</span>
               </div>
             </div>
           </div>

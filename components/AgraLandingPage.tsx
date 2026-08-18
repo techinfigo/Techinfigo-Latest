@@ -440,7 +440,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
 
       {/* SECTION 7: STRONG CTA */}
       <section className="py-24 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('/carbon-fibre.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto text-center space-y-10 relative z-10">
           <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase leading-[0.85]">
             Stop Wasting Money <br/>

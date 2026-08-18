@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Digital Marketing Agency in Agra | Techinfigo',
     description: 'Stop burning cash on ads. We build performance-focused strategies that drive real leads and profit for brands in Agra.',
-    url: 'https://techinfigo.com/digital-marketing-agency-agra',
+    url: 'https://www.techinfigo.com/digital-marketing-agency-agra',
     siteName: 'Techinfigo',
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://techinfigo.com/digital-marketing-agency-agra',
+    canonical: 'https://www.techinfigo.com/digital-marketing-agency-agra',
   },
 };
 
@@ -36,8 +36,8 @@ export default function AgraLanding() {
     "@type": "ProfessionalService",
     "name": "Techinfigo Digital Marketing Agency Agra",
     "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
-    "@id": "https://techinfigo.com/digital-marketing-agency-agra",
-    "url": "https://techinfigo.com/digital-marketing-agency-agra",
+    "@id": "https://www.techinfigo.com/digital-marketing-agency-agra",
+    "url": "https://www.techinfigo.com/digital-marketing-agency-agra",
     // Omitted entirely while unset — an invalid telephone is worse than none.
     ...(site.phone ? { "telephone": site.phone } : {}),
     "priceRange": "$$",

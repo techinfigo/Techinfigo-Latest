@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Quote, Star, ArrowRight, ShieldCheck, TrendingUp } from 'lucide-react';
+import { CAPACITY } from '../config/site';
 
 interface TestimonialsSectionProps {
   onBookAudit?: () => void;
@@ -139,7 +140,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
           <div className="flex items-center gap-8">
             <div className="flex flex-col items-center md:items-end">
               <span className="text-white/40 text-[8px] font-bold uppercase tracking-widest">Founding Partner Slots</span>
-              <span className="text-brandYellow text-[9px] font-black uppercase tracking-widest">Currently Open (Q3)</span>
+              <span className="text-brandYellow text-[9px] font-black uppercase tracking-widest">Currently Open ({CAPACITY.currentBatch})</span>
             </div>
           </div>
         </div>

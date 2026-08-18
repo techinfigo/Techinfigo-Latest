@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { SITE } from '../config/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://techinfigo.com';
+  const baseUrl = SITE.url;
   
   const routes = [
     '',

@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { CheckCircle2, ArrowRight, Zap, Target, TrendingUp, Settings, BarChart3, AlertCircle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CAPACITY } from '../config/site';
 
 interface QualificationProtocolProps {
   onBookAudit: () => void;
@@ -225,7 +226,11 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
                 </span>
                 <div className="absolute inset-0 bg-brandDark opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
               </motion.button>
-              <p className="mt-4 text-center text-[10px] font-black text-brandDark/30 uppercase tracking-[0.3em]">Founding Partner Batch: 2 Spots Left</p>
+              {CAPACITY.showScarcity && (
+                <p className="mt-4 text-center text-[10px] font-black text-brandDark/30 uppercase tracking-[0.3em]">
+                  Founding Partner Batch: {CAPACITY.slotsOpen} Spots Left
+                </p>
+              )}
             </div>
           </div>
         </div>

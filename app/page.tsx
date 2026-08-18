@@ -11,6 +11,7 @@ import { CaseStudySection } from '../components/CaseStudySection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
 import { RevenueAccelerator } from '../components/RevenueAccelerator';
 import { Footer } from '../components/Footer';
+import { CAPACITY } from '../config/site';
 
 export const metadata: Metadata = {
   title: { absolute: "Techinfigo | Profit-First D2C Growth Partner" },
@@ -18,9 +19,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Techinfigo | Profit-First D2C Growth Partner",
     description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
-    url: "https://techinfigo.com",
+    url: "https://www.techinfigo.com",
     siteName: "Techinfigo",
-    images: ["https://techinfigo.com/og-image.jpg"],
+    images: ["https://www.techinfigo.com/og-image.jpg"],
     locale: "en_IN",
     type: "website",
   },
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Techinfigo | Profit-First D2C Growth Partner",
     description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
-    images: ["https://techinfigo.com/og-image.jpg"],
+    images: ["https://www.techinfigo.com/og-image.jpg"],
   },
 };
 
@@ -45,7 +46,7 @@ export default function Home() {
             <div key={i} className="flex items-center gap-8 px-4">
               <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Now onboarding our first founding D2C partners</span>
               <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Limited to 2 brands for Q3</span>
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{CAPACITY.showScarcity ? `Limited to ${CAPACITY.slotsOpen} brands for ${CAPACITY.currentBatch}` : 'Senior strategists only — no junior account managers'}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
               <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Founding-partner offer active</span>
               <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>

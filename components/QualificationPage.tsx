@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
+import { CAPACITY, CLAIMS } from '../config/site';
 import { 
   TrendingUp, 
   BarChart3, 
@@ -243,7 +244,7 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
                 <span className="text-brandYellow italic">"Yes Agency."</span>
               </h2>
               <p className="text-white/50 text-lg lg:text-xl font-medium leading-relaxed max-w-xl">
-                Most agencies say yes to any brand with a budget. We decline <span className="text-white font-bold">80% of inquiries</span> so we can maintain an obsessive focus on our existing partners.
+                Most agencies say yes to any brand with a budget. <span className="text-white font-bold">{CLAIMS.selectivity}</span> That is how we keep an obsessive focus on the partners we already have.
               </p>
             </div>
 
@@ -285,7 +286,8 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
                 </motion.div>
                 <div className="space-y-1">
                   <p className="text-[9px] font-black text-brandYellow uppercase tracking-[0.5em]">Guarded_Quality</p>
-                  <p className="text-2xl lg:text-4xl font-black text-white tracking-tighter uppercase whitespace-nowrap">Audit Accuracy: 94%</p>
+                  <p className="text-2xl lg:text-4xl font-black text-white tracking-tighter uppercase whitespace-nowrap">Full P&amp;L Transparency</p>
+                  <p className="text-2xl lg:text-4xl font-black text-brandYellow tracking-tighter uppercase whitespace-nowrap">Or No Engagement</p>
                 </div>
               </div>
             </div>
@@ -324,17 +326,19 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
               <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
             </button>
             
-            <div className="flex items-center gap-6">
-              <div className="flex flex-col items-center">
-                <span className="text-lg lg:text-2xl font-black text-white">02</span>
-                <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Slots Left</span>
+            {CAPACITY.showScarcity && (
+              <div className="flex items-center gap-6">
+                <div className="flex flex-col items-center">
+                  <span className="text-lg lg:text-2xl font-black text-white">{String(CAPACITY.slotsOpen).padStart(2, '0')}</span>
+                  <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Slots Left</span>
+                </div>
+                <div className="w-[1px] h-10 bg-white/10"></div>
+                <div className="flex flex-col items-center">
+                  <span className="text-lg lg:text-2xl font-black text-white">{CAPACITY.currentBatch}</span>
+                  <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Founding Batch</span>
+                </div>
               </div>
-              <div className="w-[1px] h-10 bg-white/10"></div>
-              <div className="flex flex-col items-center">
-                <span className="text-lg lg:text-2xl font-black text-white">Q3</span>
-                <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Founding Batch</span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>

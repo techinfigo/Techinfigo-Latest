@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ArrowRight, ShieldCheck, TrendingUp, TrendingDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Counter } from './Counter';
+import { PROOF_DISCLAIMER, PROOF_MODE } from '../config/site';
 
 interface HeroProps {
   onBookAudit: () => void;
@@ -112,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               <div className="space-y-8 relative pl-8 border-l border-white/10">
                 <div className="space-y-1">
                   <span className="text-[10px] font-black text-brandYellow uppercase tracking-widest">Techinfigo System</span>
-                  <p className="text-xl font-black text-white uppercase">The Result</p>
+                  <p className="text-xl font-black text-white uppercase">{PROOF_MODE === 'client' ? 'The Result' : 'The Target'}</p>
                 </div>
                 <div className="space-y-4">
                   <div className="text-4xl lg:text-6xl font-black text-brandYellow tracking-tighter">
@@ -131,6 +132,12 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
             {/* Decorative Connection */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-2/3 bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
           </motion.div>
+
+          {PROOF_MODE !== 'client' && (
+            <p className="mt-4 px-2 text-[10px] font-medium text-white/30 leading-relaxed">
+              {PROOF_DISCLAIMER}
+            </p>
+          )}
 
           {/* Floating Accents */}
           <motion.div 
