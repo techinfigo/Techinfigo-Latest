@@ -3,9 +3,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { Quote, Linkedin } from 'lucide-react';
-import { site } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 
 export const FounderSection: React.FC = () => {
+  const { founder } = useSiteSettings();
+
   return (
     <section className="w-full py-16 lg:py-24 px-6 bg-white font-sans relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #001d21 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
@@ -31,13 +33,13 @@ export const FounderSection: React.FC = () => {
               <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 shadow-2xl">
                 <div className="flex justify-between items-center">
                   <div>
-                    {site.founder.name && (
-                      <h3 className="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap">{site.founder.name}</h3>
+                    {founder.name && (
+                      <h3 className="text-2xl font-black text-white tracking-tighter uppercase whitespace-nowrap">{founder.name}</h3>
                     )}
-                    <p className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">{site.founder.role}</p>
+                    <p className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">{founder.role}</p>
                   </div>
-                  {site.founder.linkedin && (
-                    <a href={site.founder.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${site.founder.name || 'Founder'} on LinkedIn`} className="w-12 h-12 rounded-full bg-brandYellow text-brandDark flex items-center justify-center hover:bg-white transition-all shadow-lg">
+                  {founder.linkedin && (
+                    <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${founder.name || 'Founder'} on LinkedIn`} className="w-12 h-12 rounded-full bg-brandYellow text-brandDark flex items-center justify-center hover:bg-white transition-all shadow-lg">
                       <Linkedin className="w-5 h-5" />
                     </a>
                   )}

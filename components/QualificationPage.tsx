@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { CAPACITY, CLAIMS } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 import { 
   TrendingUp, 
   BarChart3, 
@@ -20,6 +21,7 @@ interface QualificationPageProps {
 }
 
 export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate }) => {
+  const { capacity } = useSiteSettings();
   const greenLights = [
     {
       title: "Profitable Foundation",
@@ -326,10 +328,10 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate
               <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
             </button>
             
-            {CAPACITY.showScarcity && (
+            {capacity.showScarcity && (
               <div className="flex items-center gap-6">
                 <div className="flex flex-col items-center">
-                  <span className="text-lg lg:text-2xl font-black text-white">{String(CAPACITY.slotsOpen).padStart(2, '0')}</span>
+                  <span className="text-lg lg:text-2xl font-black text-white">{String(capacity.slotsOpen).padStart(2, '0')}</span>
                   <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Slots Left</span>
                 </div>
                 <div className="w-[1px] h-10 bg-white/10"></div>

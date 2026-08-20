@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { isDbConfigured, queryLeads } from '../../lib/firestore';
-import { LEAD_STATUSES, type Lead, type LeadStatus } from '../../lib/leads-schema';
-import { SetupNotice } from './SetupNotice';
-import { SignOutButton } from './SignOutButton';
-import { formatTimestamp } from './format';
+import { isDbConfigured, queryLeads } from '../../../lib/firestore';
+import { LEAD_STATUSES, type Lead, type LeadStatus } from '../../../lib/leads-schema';
+import { SetupNotice } from '../SetupNotice';
+import { formatTimestamp } from '../format';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,17 +42,14 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-12 space-y-10">
-      <header className="flex flex-wrap justify-between items-end gap-4">
-        <div className="space-y-2">
-          <div className="w-10 h-[2px] bg-brandYellow" />
-          <h1 className="text-3xl font-black uppercase tracking-tighter">Lead Pipeline</h1>
-          <p className="text-white/40 text-sm font-medium">
-            {configured
-              ? `${rows.length} lead${rows.length === 1 ? '' : 's'} in view`
-              : 'Read-only until a database is configured'}
-          </p>
-        </div>
-        <SignOutButton />
+      <header className="space-y-2">
+        <div className="w-10 h-[2px] bg-brandYellow" />
+        <h1 className="text-3xl font-black uppercase tracking-tighter">Lead Pipeline</h1>
+        <p className="text-white/40 text-sm font-medium">
+          {configured
+            ? `${rows.length} lead${rows.length === 1 ? '' : 's'} in view`
+            : 'Read-only until a database is configured'}
+        </p>
       </header>
 
       {!configured ? <SetupNotice /> : null}

@@ -5,13 +5,18 @@ import Image from 'next/image';
 import { ArrowRight, ShieldCheck, TrendingUp, TrendingDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Counter } from './Counter';
-import { PROOF_DISCLAIMER, PROOF_MODE } from '../config/site';
+// PROOF_DISCLAIMER stays hardcoded: it is legal-adjacent wording that has to
+// stay accurate to what 'benchmark' means, not a value to be edited casually.
+import { PROOF_DISCLAIMER } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 
 interface HeroProps {
   onBookAudit: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
+  const { proofMode, targets } = useSiteSettings();
+
   return (
     <section className="relative min-h-screen flex flex-col justify-center pt-24 lg:pt-32 px-6 lg:px-12 overflow-hidden bg-brandDark border-b border-white/5">
       {/* Background Effects */}
@@ -113,15 +118,15 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               <div className="space-y-8 relative pl-8 border-l border-white/10">
                 <div className="space-y-1">
                   <span className="text-[10px] font-black text-brandYellow uppercase tracking-widest">Techinfigo System</span>
-                  <p className="text-xl font-black text-white uppercase">{PROOF_MODE === 'client' ? 'The Result' : 'The Target'}</p>
+                  <p className="text-xl font-black text-white uppercase">{proofMode === 'client' ? 'The Result' : 'The Target'}</p>
                 </div>
                 <div className="space-y-4">
                   <div className="text-4xl lg:text-6xl font-black text-brandYellow tracking-tighter">
-                    <Counter value={4.8} decimals={1} suffix="x" /> <br />
+                    <Counter value={targets.blendedMer} decimals={1} suffix="x" /> <br />
                     <span className="text-xs uppercase tracking-widest text-white/40 font-bold block mt-1">Blended MER</span>
                   </div>
                   <div className="text-4xl lg:text-6xl font-black text-white tracking-tighter">
-                    <Counter value={3.2} decimals={1} suffix="x" /> <br />
+                    <Counter value={targets.netProfit} decimals={1} suffix="x" /> <br />
                     <span className="text-xs uppercase tracking-widest text-white/40 font-bold block mt-1">Net Profit</span>
                   </div>
                 </div>
@@ -133,7 +138,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-2/3 bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
           </motion.div>
 
-          {PROOF_MODE !== 'client' && (
+          {proofMode !== 'client' && (
             <p className="mt-4 px-2 text-[10px] font-medium text-white/30 leading-relaxed">
               {PROOF_DISCLAIMER}
             </p>
@@ -145,7 +150,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -top-6 -right-6 px-6 py-3 bg-brandYellow rounded-2xl shadow-2xl z-20"
           >
-            <span className="text-[10px] font-black text-brandDark uppercase tracking-widest">+40% Contribution</span>
+            <span className="text-[10px] font-black text-brandDark uppercase tracking-widest">+{targets.contributionLift}% Contribution</span>
           </motion.div>
         </div>
       </div>

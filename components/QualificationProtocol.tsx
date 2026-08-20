@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { CheckCircle2, ArrowRight, Zap, Target, TrendingUp, Settings, BarChart3, AlertCircle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CAPACITY } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 
 interface QualificationProtocolProps {
   onBookAudit: () => void;
@@ -43,6 +43,7 @@ const CRITERIA = [
 ];
 
 export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ onBookAudit }) => {
+  const { capacity } = useSiteSettings();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const toggleCriteria = (id: string) => {
@@ -226,9 +227,9 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
                 </span>
                 <div className="absolute inset-0 bg-brandDark opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
               </motion.button>
-              {CAPACITY.showScarcity && (
+              {capacity.showScarcity && (
                 <p className="mt-4 text-center text-[10px] font-black text-brandDark/30 uppercase tracking-[0.3em]">
-                  Founding Partner Batch: {CAPACITY.slotsOpen} Spots Left
+                  Founding Partner Batch: {capacity.slotsOpen} Spots Left
                 </p>
               )}
             </div>

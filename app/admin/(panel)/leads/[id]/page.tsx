@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getLeadWithNotes, isDbConfigured, isValidLeadId } from '../../../../lib/firestore';
-import { type Lead } from '../../../../lib/leads-schema';
-import { SetupNotice } from '../../SetupNotice';
-import { formatTimestamp } from '../../format';
+import { getLeadWithNotes, isDbConfigured, isValidLeadId } from '../../../../../lib/firestore';
+import { type Lead } from '../../../../../lib/leads-schema';
+import { SetupNotice } from '../../../SetupNotice';
+import { formatTimestamp } from '../../../format';
 import { LeadControls } from './LeadControls';
 
 export const dynamic = 'force-dynamic';

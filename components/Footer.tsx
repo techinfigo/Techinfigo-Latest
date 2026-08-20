@@ -4,7 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Instagram, Linkedin, Youtube, Facebook } from 'lucide-react';
-import { site } from '../config/site';
+import { brandAssetUrl } from '../lib/settings-schema';
+import { useSiteSettings } from './SiteSettingsProvider';
 
 interface FooterProps {
   onNavigate?: (page: string, serviceId?: string) => void;
@@ -25,6 +26,9 @@ const LEGAL_LINKS = [
 ];
 
 export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
+  const { icpBand, contact, brand } = useSiteSettings();
+  const logo = brandAssetUrl('logo', brand.logo);
+
   return (
     <footer className="bg-brandDark text-white pt-10 lg:pt-12 pb-8 px-6 lg:px-12 overflow-hidden border-t border-white/5 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -36,10 +40,15 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           <div className="lg:col-span-3 space-y-6">
             <Link href="/" className="block">
               <div className="relative h-10 lg:h-12 w-40 lg:w-48">
-                <Image 
-                  src="/logo.png" 
-                  alt="Techinfigo Logo" 
+                <Image
+                  src={logo}
+                  alt="Techinfigo Logo"
                   fill
+                  /* An uploaded logo is already served from a content-hashed,
+                     immutably-cached route, and may be an SVG, which the image
+                     optimiser refuses by default. The bundled PNG still goes
+                     through it. */
+                  unoptimized={Boolean(brand.logo)}
                   className="object-contain brightness-0 invert"
                   referrerPolicy="no-referrer"
                 />
@@ -49,7 +58,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               </div>
             </Link>
             <p className="text-white/80 text-sm lg:text-base leading-relaxed font-normal tracking-tight max-w-sm">
-              We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing {site.icpBand}/mo who value profit over vanity.
+              We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing {icpBand}/mo who value profit over vanity.
             </p>
             <div className="inline-flex items-center gap-3 px-3 py-1.5 border border-white/10 rounded-full">
               <span className="w-1 h-1 rounded-full bg-brandYellow"></span>
@@ -166,10 +175,10 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                     </svg>
                   </div>
                   <a 
-                    href="mailto:contact@techinfigo.com" 
+                    href={`mailto:${contact.email}`} 
                     className="text-[14px] font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors"
                   >
-                    contact@techinfigo.com
+                    {contact.email}
                   </a>
                 </div>
               </div>

@@ -4,6 +4,14 @@
  * Empty strings are intentional: consumers below treat "" as "not set yet"
  * and omit the corresponding UI or structured-data field rather than
  * rendering a placeholder. Fill these in and the UI appears automatically.
+ *
+ * DEFAULTS, NOT LIVE VALUES. Since the admin panel gained an editable settings
+ * document (lib/settings.ts), the founder block, `phone`, `icpBand`, the two
+ * capacity fields, `PROOF_MODE` and `TARGETS` below are the fallback the site
+ * renders when Firestore holds no settings document or is unreachable. Nothing
+ * should import them to render a page — read getSiteSettings() instead, which
+ * layers the saved values over these. They stay here on purpose: the public
+ * site must never break or render blank because of a database problem.
  */
 export const site = {
   founder: {
@@ -19,6 +27,35 @@ export const site = {
 
   /** Target customer revenue band, without the /mo or /month suffix. */
   icpBand: '₹20L–₹2Cr',
+} as const;
+
+/**
+ * Public contact details.
+ *
+ * The address was previously written out in three places — the LocalBusiness
+ * JSON-LD, the Agra landing page's schema and the footer's mailto: — which is
+ * why changing it meant a code edit. `phone` mirrors `site.phone` so the whole
+ * contact block has one shape for the settings document to override.
+ */
+export const CONTACT = {
+  email: 'contact@techinfigo.com',
+  phone: site.phone,
+} as const;
+
+/**
+ * The three headline figures in the hero's before/after panel.
+ *
+ * Framed by PROOF_MODE below: while that is 'benchmark' the UI labels these as
+ * targets and prints PROOF_DISCLAIMER beneath them. They were hardcoded inside
+ * components/Hero.tsx, so correcting a number meant a deploy.
+ */
+export const TARGETS = {
+  /** Blended marketing efficiency ratio, rendered as "4.8x". */
+  blendedMer: 4.8,
+  /** Net profit multiple, rendered as "3.2x". */
+  netProfit: 3.2,
+  /** Contribution-margin lift, rendered as "+40% Contribution" on the floating badge. */
+  contributionLift: 40,
 } as const;
 
 /**
@@ -49,6 +86,11 @@ function quarterOf(date: Date) {
  * told to join a batch that closed months earlier. The batch names are now
  * derived from the current date, and every scarcity claim sits behind
  * `showScarcity`, which stays false until there is a real waitlist to back it.
+ *
+ * `showScarcity` and `slotsOpen` are now defaults only — the live values come
+ * from getSiteSettings(). `currentBatch` and `nextBatch` deliberately stayed
+ * here rather than becoming editable: they are derived from today's date, and
+ * a hand-typed batch label is exactly the thing that went stale before.
  */
 export const CAPACITY = {
   showScarcity: false,

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { LEAD_STATUSES, type LeadStatus } from '../../../../lib/leads-schema';
+import { LEAD_STATUSES, type LeadStatus } from '../../../../../lib/leads-schema';
 
 // leadId is a Firestore document id — an opaque string, not a serial integer.
 export function LeadControls({ leadId, status }: { leadId: string; status: LeadStatus }) {
