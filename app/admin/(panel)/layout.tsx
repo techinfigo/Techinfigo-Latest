@@ -20,24 +20,24 @@ import { MobileNav } from '../MobileNav';
  * cannot scroll away with the page — only the right-hand column scrolls. That
  * is also why the sidebar needs no position: fixed and the content no offset.
  *
- * BACKGROUND. The content column stays on brandDark, inherited from
- * app/admin/layout.tsx. Every page in here renders text-white on white/10
- * borders, so a light column would need all four pages restyled first; the
- * columns are separated by the same border-white/10 rule the panel already
- * uses everywhere else.
+ * SURFACES. Two tones, both already in the palette: the rail sits on
+ * brandDark, the deepest one, and the page on brandSurface a step above it, so
+ * the boundary is a change of surface and not just a hairline. A single shared
+ * tone with a 10%-white rule between them read as one slab. The pages' cards
+ * and table borders were lifted to match the lighter ground they now sit on.
  */
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-dvh overflow-hidden">
-      <aside className="hidden w-[220px] shrink-0 border-r border-white/10 lg:block">
+      <aside className="hidden w-[220px] shrink-0 border-r border-white/20 bg-brandDark lg:block">
         <AdminSidebar />
       </aside>
 
       {/* min-w-0 so the pipeline's wide table scrolls inside its own container
           instead of stretching this column past the viewport. */}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col bg-brandSurface">
         {/* The sidebar's stand-in below lg, on the same 16px rhythm. */}
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-5 lg:hidden">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/15 px-5 lg:hidden">
           <span className="flex items-center gap-3">
             <span
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brandYellow"
@@ -45,7 +45,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             >
               <span className="text-sm font-black text-brandDark">TF</span>
             </span>
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/55">
               Admin
             </span>
           </span>

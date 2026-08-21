@@ -119,16 +119,16 @@ export function BrandUpload({
   const preview = brandAssetUrl(kind, meta);
 
   return (
-    <div className="border border-white/10 rounded-2xl p-6 space-y-5">
+    <div className="border border-white/15 rounded-2xl p-6 space-y-5">
       <div className="space-y-1">
         <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-brandYellow">
           {copy.title}
         </h3>
-        <p className="text-white/40 text-sm font-medium">{copy.where}</p>
+        <p className="text-white/55 text-sm font-medium">{copy.where}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-5">
-        <div className="w-28 h-20 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-3 shrink-0">
+        <div className="w-28 h-20 rounded-xl bg-white/8 border border-white/15 flex items-center justify-center p-3 shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element -- the source is
               a database-backed route with a content-hashed URL, already the
               cache strategy next/image would add, and it may be an SVG. */}
@@ -142,17 +142,17 @@ export function BrandUpload({
                 {meta.mime.replace('image/', '').replace('svg+xml', 'svg').toUpperCase()} ·{' '}
                 {formatBytes(meta.size)}
               </p>
-              <p className="text-white/35">
+              <p className="text-white/55">
                 Uploaded {meta.uploadedAt ? meta.uploadedAt.slice(0, 16).replace('T', ' ') : '—'}
               </p>
             </>
           ) : (
-            <p className="text-white/35 max-w-xs leading-relaxed">
+            <p className="text-white/55 max-w-xs leading-relaxed">
               Nothing uploaded — the site is using the {kind === 'logo' ? 'logo.png' : 'favicon.png'}{' '}
               that ships with it.
             </p>
           )}
-          <p className="text-white/25 max-w-xs leading-relaxed pt-1">{copy.hint}</p>
+          <p className="text-white/55 max-w-xs leading-relaxed pt-1">{copy.hint}</p>
         </div>
       </div>
 
@@ -174,7 +174,7 @@ export function BrandUpload({
           type="button"
           disabled={busy || !configured}
           onClick={() => input.current?.click()}
-          className="px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-white/80 disabled:opacity-40 transition-colors"
+          className="px-5 py-3 bg-white/8 hover:bg-white/15 border border-white/15 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-white/80 disabled:opacity-40 transition-colors"
         >
           {busy ? state.verb : meta ? `Replace ${copy.title.toLowerCase()}` : `Upload ${copy.title.toLowerCase()}`}
         </button>
@@ -184,13 +184,13 @@ export function BrandUpload({
             type="button"
             disabled={busy}
             onClick={() => void remove()}
-            className="px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white/80 disabled:opacity-40 transition-colors"
+            className="px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-white/60 hover:text-white/80 disabled:opacity-40 transition-colors"
           >
             Remove
           </button>
         ) : null}
 
-        <span className="text-white/25 text-xs font-medium">
+        <span className="text-white/55 text-xs font-medium">
           PNG, JPEG, SVG or WebP · up to {formatBytes(BRAND_MAX_BYTES)}
         </span>
       </div>

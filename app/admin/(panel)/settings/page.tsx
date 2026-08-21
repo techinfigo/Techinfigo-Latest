@@ -42,7 +42,7 @@ export default async function SettingsPage() {
       <header className="space-y-2">
         <div className="w-10 h-[2px] bg-brandYellow" />
         <h1 className="text-3xl font-black uppercase tracking-tighter">Site Settings</h1>
-        <p className="text-white/40 text-sm font-medium max-w-2xl leading-relaxed">
+        <p className="text-white/55 text-sm font-medium max-w-2xl leading-relaxed">
           Everything here appears on the public website. Changes go live on the next visit to a
           page — there is no rebuild and no deploy.
         </p>
@@ -65,7 +65,7 @@ export default async function SettingsPage() {
       <section className="space-y-4">
         <div className="space-y-1">
           <h2 className="text-lg font-black uppercase tracking-tighter">Brand assets</h2>
-          <p className="text-white/40 text-sm font-medium max-w-2xl leading-relaxed">
+          <p className="text-white/55 text-sm font-medium max-w-2xl leading-relaxed">
             Images are stored in the database, not in the code, so replacing one takes effect
             without a deploy. Remove an upload and the site falls back to the image it ships with.
           </p>

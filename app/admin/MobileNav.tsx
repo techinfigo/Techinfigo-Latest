@@ -114,7 +114,7 @@ export function MobileNav({ children }: { children: ReactNode }) {
             role="dialog"
             aria-modal="true"
             aria-label="Admin navigation"
-            className="absolute inset-y-0 left-0 w-[220px] max-w-[80%] border-r border-white/10 bg-brandDark"
+            className="absolute inset-y-0 left-0 w-[220px] max-w-[80%] border-r border-white/20 bg-brandDark"
             // Delegated because `children` is server-rendered markup and a
             // callback cannot cross that boundary. It also covers the case the
             // pathname effect cannot: tapping the section you are already on,
@@ -127,7 +127,7 @@ export function MobileNav({ children }: { children: ReactNode }) {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close navigation"
-              className="absolute right-0 top-0 z-10 flex h-16 w-12 items-center justify-center text-white/40 transition-colors hover:text-white"
+              className="absolute right-0 top-0 z-10 flex h-16 w-12 items-center justify-center text-white/55 transition-colors hover:text-white"
             >
               <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden>
                 <path

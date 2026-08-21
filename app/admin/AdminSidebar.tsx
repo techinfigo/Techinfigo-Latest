@@ -24,7 +24,7 @@ export function AdminSidebar() {
         >
           <span className="text-sm font-black text-brandDark">TF</span>
         </span>
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/55">
           Admin
         </span>
       </div>
@@ -39,7 +39,7 @@ export function AdminSidebar() {
           href="/"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-between rounded-r-lg border-l-2 border-transparent px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white/70"
+          className="flex items-center justify-between rounded-r-lg border-l-2 border-transparent px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white/70"
         >
           View site
           <span aria-hidden>↗</span>

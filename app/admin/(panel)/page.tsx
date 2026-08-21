@@ -27,7 +27,7 @@ const STATUS_STYLES: Record<LeadStatus, string> = {
   qualified: 'bg-purple-400/15 text-purple-300',
   proposal: 'bg-orange-400/15 text-orange-300',
   won: 'bg-emerald-400/15 text-emerald-300',
-  lost: 'bg-white/10 text-white/40',
+  lost: 'bg-white/10 text-white/55',
 };
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<Search> }) {
@@ -45,7 +45,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       <header className="space-y-2">
         <div className="w-10 h-[2px] bg-brandYellow" />
         <h1 className="text-3xl font-black uppercase tracking-tighter">Lead Pipeline</h1>
-        <p className="text-white/40 text-sm font-medium">
+        <p className="text-white/55 text-sm font-medium">
           {configured
             ? `${rows.length} lead${rows.length === 1 ? '' : 's'} in view`
             : 'Read-only until a database is configured'}
@@ -70,10 +70,10 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <Link
                 key={status}
                 href={`/admin?status=${status}`}
-                className="border border-white/10 rounded-xl p-4 hover:border-brandYellow/30 transition-colors"
+                className="border border-white/15 rounded-xl p-4 hover:border-brandYellow/30 transition-colors"
               >
                 <p className="text-2xl font-black">{count}</p>
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 mt-1">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/55 mt-1">
                   {status}
                 </p>
               </Link>
@@ -83,7 +83,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           <div className="flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
             <Link
               href="/admin"
-              className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+              className="px-3 py-2 rounded-lg bg-white/8 hover:bg-white/15 transition-colors"
             >
               All
             </Link>
@@ -91,7 +91,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <Link
                 key={days}
                 href={`/admin?days=${days}`}
-                className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                className="px-3 py-2 rounded-lg bg-white/8 hover:bg-white/15 transition-colors"
               >
                 Last {days}d
               </Link>
@@ -99,13 +99,13 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </div>
 
           {rows.length === 0 ? (
-            <p className="text-white/40 text-sm font-medium py-12 text-center border border-white/10 rounded-2xl">
+            <p className="text-white/55 text-sm font-medium py-12 text-center border border-white/15 rounded-2xl">
               No leads match this view.
             </p>
           ) : (
-            <div className="overflow-x-auto border border-white/10 rounded-2xl">
+            <div className="overflow-x-auto border border-white/15 rounded-2xl">
               <table className="w-full text-sm">
-                <thead className="bg-white/[0.03] text-[9px] font-black uppercase tracking-[0.2em] text-white/40">
+                <thead className="bg-white/[0.06] text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
                   <tr>
                     <th className="text-left px-4 py-3">Lead</th>
                     <th className="text-left px-4 py-3">Source</th>
@@ -114,9 +114,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     <th className="text-left px-4 py-3">Received</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-white/10">
                   {rows.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={lead.id} className="hover:bg-white/[0.04] transition-colors">
                       <td className="px-4 py-3">
                         <Link
                           href={`/admin/leads/${lead.id}`}
@@ -124,7 +124,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                         >
                           {lead.name}
                         </Link>
-                        <p className="text-white/40 text-xs">{lead.email}</p>
+                        <p className="text-white/55 text-xs">{lead.email}</p>
                       </td>
                       <td className="px-4 py-3 text-white/60 text-xs">{lead.sourceForm}</td>
                       <td className="px-4 py-3 text-white/60 text-xs">
@@ -137,7 +137,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                           {lead.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-white/40 text-xs whitespace-nowrap">
+                      <td className="px-4 py-3 text-white/55 text-xs whitespace-nowrap">
                         {formatTimestamp(lead.createdAt)}
                       </td>
                     </tr>

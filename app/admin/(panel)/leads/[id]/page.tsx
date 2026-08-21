@@ -38,7 +38,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   if (!isDbConfigured()) {
     return (
       <main className="max-w-4xl mx-auto px-6 py-12 space-y-8">
-        <Link href="/admin" className="text-white/40 text-xs font-black uppercase tracking-[0.2em]">
+        <Link href="/admin" className="text-white/55 text-xs font-black uppercase tracking-[0.2em]">
           ← Pipeline
         </Link>
         <SetupNotice />
@@ -53,7 +53,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     console.error('[admin] lead detail query failed:', error);
     return (
       <main className="max-w-4xl mx-auto px-6 py-12 space-y-8">
-        <Link href="/admin" className="text-white/40 text-xs font-black uppercase tracking-[0.2em]">
+        <Link href="/admin" className="text-white/55 text-xs font-black uppercase tracking-[0.2em]">
           ← Pipeline
         </Link>
         <p className="text-red-300 text-sm font-medium">
@@ -69,12 +69,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   return (
     <main className="max-w-4xl mx-auto px-6 py-12 space-y-10">
       <div className="space-y-4">
-        <Link href="/admin" className="text-white/40 text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors">
+        <Link href="/admin" className="text-white/55 text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors">
           ← Pipeline
         </Link>
         <div className="space-y-1">
           <h1 className="text-3xl font-black uppercase tracking-tighter">{lead.name}</h1>
-          <p className="text-white/40 text-sm font-medium">
+          <p className="text-white/55 text-sm font-medium">
             Received {formatTimestamp(lead.createdAt)} UTC
           </p>
         </div>
@@ -83,12 +83,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <LeadControls leadId={lead.id} status={lead.status} />
 
       <section className="grid sm:grid-cols-2 gap-6">
-        <div className="border border-white/10 rounded-2xl p-6 space-y-3">
+        <div className="border border-white/15 rounded-2xl p-6 space-y-3">
           <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-brandYellow">Details</h2>
           <dl className="space-y-2">
             {DETAILS.map(([label, key]) => (
               <div key={key} className="flex justify-between gap-4 text-sm">
-                <dt className="text-white/40 font-medium">{label}</dt>
+                <dt className="text-white/55 font-medium">{label}</dt>
                 <dd className="text-white/80 font-medium text-right break-all">
                   {(lead[key] as string | null) ?? '—'}
                 </dd>
@@ -97,14 +97,14 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </dl>
         </div>
 
-        <div className="border border-white/10 rounded-2xl p-6 space-y-3">
+        <div className="border border-white/15 rounded-2xl p-6 space-y-3">
           <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-brandYellow">
             Attribution
           </h2>
           <dl className="space-y-2">
             {ATTRIBUTION.map(([label, key]) => (
               <div key={key} className="flex justify-between gap-4 text-sm">
-                <dt className="text-white/40 font-medium">{label}</dt>
+                <dt className="text-white/55 font-medium">{label}</dt>
                 <dd className="text-white/80 font-medium text-right break-all">
                   {(lead[key] as string | null) ?? '—'}
                 </dd>
@@ -115,7 +115,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       </section>
 
       {lead.message ? (
-        <section className="border border-white/10 rounded-2xl p-6 space-y-3">
+        <section className="border border-white/15 rounded-2xl p-6 space-y-3">
           <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-brandYellow">Message</h2>
           <p className="text-white/70 text-sm font-medium leading-relaxed whitespace-pre-wrap">
             {lead.message}
@@ -128,12 +128,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           Notes ({notes.length})
         </h2>
         {notes.length === 0 ? (
-          <p className="text-white/30 text-sm font-medium">No notes yet.</p>
+          <p className="text-white/60 text-sm font-medium">No notes yet.</p>
         ) : (
           <ul className="space-y-3">
             {notes.map((note) => (
-              <li key={note.id} className="border border-white/10 rounded-xl p-4 space-y-2">
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/30">
+              <li key={note.id} className="border border-white/15 rounded-xl p-4 space-y-2">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
                   {formatTimestamp(note.createdAt)} UTC
                 </p>
                 <p className="text-white/70 text-sm font-medium whitespace-pre-wrap">{note.body}</p>

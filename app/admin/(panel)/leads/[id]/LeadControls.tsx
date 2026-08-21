@@ -63,7 +63,7 @@ export function LeadControls({ leadId, status }: { leadId: string; status: LeadS
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Status</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/55">Status</p>
         <div className="flex flex-wrap gap-2">
           {LEAD_STATUSES.map((option) => (
             <button
@@ -73,7 +73,7 @@ export function LeadControls({ leadId, status }: { leadId: string; status: LeadS
               className={`px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] transition-colors disabled:opacity-50 ${
                 option === current
                   ? 'bg-brandYellow text-brandDark'
-                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+                  : 'bg-white/8 text-white/60 hover:bg-white/15'
               }`}
             >
               {option}
@@ -85,7 +85,7 @@ export function LeadControls({ leadId, status }: { leadId: string; status: LeadS
       <form onSubmit={addNote} className="space-y-3">
         <label
           htmlFor="note"
-          className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/40"
+          className="block text-[10px] font-black uppercase tracking-[0.3em] text-white/55"
         >
           Add note
         </label>
@@ -96,7 +96,7 @@ export function LeadControls({ leadId, status }: { leadId: string; status: LeadS
           rows={3}
           maxLength={5000}
           placeholder="What happened on this call?"
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brandYellow/50 transition-colors resize-y"
+          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brandYellow/50 transition-colors resize-y"
         />
         <button
           type="submit"

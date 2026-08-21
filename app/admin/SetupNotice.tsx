@@ -14,7 +14,7 @@ export function SetupNotice() {
         Leads are still being captured — every submission is mirrored to the inbox regardless of
         database state. They are just not queryable here yet.
       </p>
-      <ol className="text-white/40 text-sm font-medium space-y-1 list-decimal list-inside">
+      <ol className="text-white/55 text-sm font-medium space-y-1 list-decimal list-inside">
         <li>
           Set <code className="text-white/70">FIREBASE_PROJECT_ID</code>,{' '}
           <code className="text-white/70">FIREBASE_CLIENT_EMAIL</code> and{' '}

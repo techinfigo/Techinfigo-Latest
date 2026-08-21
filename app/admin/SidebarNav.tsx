@@ -29,7 +29,7 @@ export function SidebarNav() {
             className={`flex items-center rounded-r-lg border-l-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
               active
                 ? 'border-brandYellow bg-white/[0.06] text-brandYellow'
-                : 'border-transparent text-white/40 hover:bg-white/5 hover:text-white'
+                : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white'
             }`}
           >
             {section.label}
