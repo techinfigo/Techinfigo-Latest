@@ -4,6 +4,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { CAPACITY, CLAIMS } from '../config/site';
 import { useSiteSettings } from './SiteSettingsProvider';
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
 import { 
   TrendingUp, 
   BarChart3, 
@@ -17,57 +19,20 @@ import {
 } from 'lucide-react';
 
 interface QualificationPageProps {
+  /** Editable copy. Defaults to what shipped, so the lists never render empty. */
+  greenLights?: SiteContent['qualification']['greenLights'];
+  redFlags?: SiteContent['qualification']['redFlags'];
   onNavigate: (page: string) => void;
 }
 
-export const QualificationPage: React.FC<QualificationPageProps> = ({ onNavigate }) => {
+export const QualificationPage: React.FC<QualificationPageProps> = ({
+  onNavigate,
+  greenLights = DEFAULT_CONTENT.qualification.greenLights,
+  redFlags = DEFAULT_CONTENT.qualification.redFlags,
+}) => {
   const { capacity } = useSiteSettings();
-  const greenLights = [
-    {
-      title: "Profitable Foundation",
-      desc: "You are currently doing ₹50L–₹5Cr monthly and have a product that people actually want. We don't fix broken business models; we scale winners.",
-      icon: <TrendingUp className="w-8 h-8" />
-    },
-    {
-      title: "Growth Mindset",
-      desc: "You aren't looking for a 'miracle month'. You understand that building a dominant D2C brand requires consistency, testing velocity, and a systems-first approach.",
-      icon: <Zap className="w-8 h-8" />
-    },
-    {
-      title: "Strong Unit Economics",
-      desc: "You know your COGS and contribution margins. You understand that scale is only healthy if the economics support high-intensity acquisition.",
-      icon: <BarChart3 className="w-8 h-8" />
-    },
-    {
-      title: "Operational Scalability",
-      desc: "Your backend — supply chain, fulfillment, and customer support — is ready to handle 2x–5x volume without collapsing under the pressure of growth.",
-      icon: <ShieldCheck className="w-8 h-8" />
-    }
-  ];
-
-  const redFlags = [
-    {
-      title: "Short-Term Thinking",
-      desc: "If you need a 'miracle month' just to keep the lights on, we aren't the right fit. We build high-performance systems, not gambling strategies.",
-      icon: <AlertCircle className="w-8 h-8" />
-    },
-    {
-      title: "Razor-Thin Margins",
-      desc: "If your product margins don't allow for scalable acquisition costs, no amount of 'optimization' can fix a broken business model.",
-      icon: <TrendingDown className="w-8 h-8" />
-    },
-    {
-      title: "Data Silos",
-      desc: "We require full transparency into your numbers. If you aren't ready to share your true contribution margins, we can't optimize for profit.",
-      icon: <Search className="w-8 h-8" />
-    },
-    {
-      title: "Fixed Mindsets",
-      desc: "Our system thrives on testing new funnels, offers, and creatives. If you are married to 'your way' of doing things, we'll reach a ceiling early.",
-      icon: <Zap className="w-8 h-8" />
-    }
-  ];
-
+  
+  
   return (
     <div className="min-h-screen bg-brandDark font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. HERO SECTION (EDITORIAL & BOLD - MATCHING PROFIT BREAKDOWN) */}

@@ -9,12 +9,19 @@ import { Counter } from './Counter';
 // stay accurate to what 'benchmark' means, not a value to be edited casually.
 import { PROOF_DISCLAIMER } from '../config/site';
 import { useSiteSettings } from './SiteSettingsProvider';
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
 
 interface HeroProps {
   onBookAudit: () => void;
+  /** Editable copy. Defaults to what shipped, so the hero is never blank. */
+  content?: SiteContent['home']['hero'];
 }
 
-export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
+export const Hero: React.FC<HeroProps> = ({
+  onBookAudit,
+  content = DEFAULT_CONTENT.home.hero,
+}) => {
   const { proofMode, targets } = useSiteSettings();
 
   return (
@@ -38,7 +45,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
           >
             <div className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse"></div>
             <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.2em]">
-              Profit-First Growth for D2C Brands
+              {content.eyebrow}
             </span>
           </motion.div>
 
@@ -49,9 +56,8 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               transition={{ delay: 0.1 }}
               className="text-5xl lg:text-7xl font-black text-white leading-[0.95] tracking-tighter uppercase"
             >
-              Scaling Revenue <br /> 
-              is Easy. Scaling <br />
-              <span className="text-brandYellow italic">Profit is Hard.</span>
+              {content.headline}{' '}
+              <span className="text-brandYellow italic">{content.headlineAccent}</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -59,7 +65,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
               transition={{ delay: 0.2 }}
               className="text-xl lg:text-2xl text-white/80 font-medium max-w-xl leading-relaxed"
             >
-              We find the hidden profit leaks in your funnel and build the system to scale your bottom line.
+              {content.subhead}
             </motion.p>
           </div>
 
@@ -75,13 +81,13 @@ export const Hero: React.FC<HeroProps> = ({ onBookAudit }) => {
                 onClick={onBookAudit}
                 className="relative px-10 py-5 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.3em] rounded-2xl hover:bg-white transition-all duration-500 shadow-2xl flex items-center justify-center gap-3"
               >
-                Get My Free Profit Audit
+                {content.ctaLabel}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
             <p className="mt-6 text-[10px] font-black text-white/30 uppercase tracking-[0.3em] flex items-center gap-3">
               <ShieldCheck className="w-3 h-3 text-brandYellow" />
-              No Junior Account Managers. Only Strategists.
+              {content.ctaNote}
             </p>
           </motion.div>
         </div>

@@ -1,40 +1,21 @@
 'use client';
 
 import React from 'react';
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
 
 interface HowItWorksPageProps {
+  /** Editable copy. Defaults to what shipped, so the section never renders empty. */
+  steps?: SiteContent['howItWorks']['steps'];
   onNavigate: (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => void;
 }
 
-export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) => {
-  const lifecycleSteps = [
-    {
-      num: "01",
-      title: "Funnel Audit",
-      desc: "Neutralizing leakages in unit economics before a single rupee is spent."
-    },
-    {
-      num: "02",
-      title: "Variable Testing",
-      desc: "Weekly creative sprints to isolate high-conviction hooks and angles."
-    },
-    {
-      num: "03",
-      title: "Stabilization",
-      desc: "Eliminating waste and establishing a predictable baseline CAC."
-    },
-    {
-      num: "04",
-      title: "Controlled Scale",
-      desc: "Injecting capital into proven creative/offer clusters with MER guardrails."
-    },
-    {
-      num: "05",
-      title: "LTV Optimization",
-      desc: "Compounding the back-end through high-retention automation loops."
-    }
-  ];
-
+export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
+  onNavigate,
+  steps = DEFAULT_CONTENT.howItWorks.steps,
+}) => {
+  const lifecycleSteps = steps;
+  
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. Impact Header Section */}

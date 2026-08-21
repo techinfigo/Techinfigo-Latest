@@ -4,30 +4,25 @@ import React, { useState } from 'react';
 import { Search, FlaskConical, ShieldCheck, TrendingUp, Users, ArrowRight, Check, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CAPACITY } from '../config/site';
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
 
 interface GrowthLifecycleProps {
+  /** Editable copy. Defaults to what shipped, so the lists never render empty. */
+  profitLeaks?: SiteContent['home']['profitLeaks'];
+  protocolSteps?: SiteContent['home']['protocolSteps'];
   onBookAudit?: () => void;
 }
 
-export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({ onBookAudit }) => {
+export const GrowthLifecycle: React.FC<GrowthLifecycleProps> = ({
+  onBookAudit,
+  profitLeaks = DEFAULT_CONTENT.home.profitLeaks,
+  protocolSteps = DEFAULT_CONTENT.home.protocolSteps,
+}) => {
   const [selectedLeaks, setSelectedLeaks] = useState<number[]>([]);
 
-  const profitLeaks = [
-    { id: 1, text: "ROAS looks good, but margins are shrinking" },
-    { id: 2, text: "Scaling revenue kills my profitability" },
-    { id: 3, text: "Creatives burn out faster than we replace them" },
-    { id: 4, text: "Hidden costs (Logistics/COD) are eating my cash" },
-    { id: 5, text: "Unsure which product/ad is actually making money" }
-  ];
-
-  const protocolSteps = [
-    { id: "01", label: "Diagnostic Audit" },
-    { id: "02", label: "Margin Engineering" },
-    { id: "03", label: "Scientific Testing" },
-    { id: "04", label: "Profit Scaling" },
-    { id: "05", label: "Asset Stabilization" }
-  ];
-
+  
+  
   const toggleLeak = (id: number) => {
     setSelectedLeaks(prev => 
       prev.includes(id) ? prev.filter(l => l !== id) : [...prev, id]

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import PageClient from './PageClient';
+import { getPageContent } from '../../lib/content';
 
 export const metadata: Metadata = {
   title: 'Who We Work With | Partner Criteria',
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <PageClient />;
+// Cached, tagged read — not per request — so this route stays prerendered.
+export default async function Page() {
+  const { greenLights, redFlags } = await getPageContent('qualification');
+  return <PageClient greenLights={greenLights} redFlags={redFlags} />;
 }

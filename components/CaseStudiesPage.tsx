@@ -1,143 +1,25 @@
 'use client';
 
+import { DEFAULT_CASE_STUDY_LIST, publishedCaseStudies, type CaseStudy } from '../lib/content-schema';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, TrendingUp, Target, Zap, BarChart3, Quote, X, CheckCircle2, Filter, ChevronRight } from 'lucide-react';
 
-interface CaseStudy {
-  id: string;
-  brand: string;
-  category: string;
-  before: {
-    spend: string;
-    roas: string;
-    profit: string;
-    pain: string;
-  };
-  after: {
-    spend: string;
-    profit: string;
-    cacReduction: string;
-    gain: string;
-  };
-  highlight: string;
-  details: {
-    overview: {
-      industry: string;
-      revenue: string;
-      spend: string;
-    };
-    problem: string;
-    diagnosis: string[];
-    solution: string[];
-    results: {
-      profitBefore: string;
-      profitAfter: string;
-      cacImprovement: string;
-      timeline: string;
-    };
-    quote: string;
-  };
-}
 
-const CASE_STUDIES: CaseStudy[] = [
-  {
-    id: 'skincare-bench',
-    brand: 'Skincare Scaling Target',
-    category: 'Skincare',
-    before: {
-      spend: '₹12L/month',
-      roas: '4.8x',
-      profit: '₹1.2L',
-      pain: 'Industry leak: High CAC & unstable scaling'
-    },
-    after: {
-      spend: '₹12L',
-      profit: '₹5.6L/month',
-      cacReduction: '32%',
-      gain: 'Target Profitability State'
-    },
-    highlight: 'Goal: Increase Profit 4.6x Without Increasing Ad Spend',
-    details: {
-      overview: {
-        industry: 'Personal Care / Skincare',
-        revenue: '₹50L - ₹1Cr / month',
-        spend: '₹12L / month'
-      },
-      problem: 'Common plateau: Revenue scales but profit stays flat due to unoptimized unit economics.',
-      diagnosis: [
-        'High CAC baseline due to broad targeting.',
-        'Weak backend retention patterns (Common in Q3).',
-        'Inefficient scaling without stabilizing contribution margins.'
-      ],
-      solution: [
-        'Funnel Optimization: Targeting 4%+ Conversion Rate.',
-        'Unit Economics: Improving AOV through strategic bundling.',
-        'Profit Focus: Creative hooks that attract high-LTV buyers.',
-        'LTV Model: Building 90-day retention predictability.'
-      ],
-      results: {
-        profitBefore: '₹1.2L',
-        profitAfter: '₹5.6L (Target)',
-        cacImprovement: '32% Reduction (Benchmark)',
-        timeline: '75-90 Days'
-      },
-      quote: 'This represents the typical profit recovery we identify during our initial audit process for skincare brands.'
-    }
-  },
-  {
-    id: 'apparel-bench',
-    brand: 'Apparel Growth Target',
-    category: 'Apparel',
-    before: {
-      spend: '₹8L/month',
-      roas: '3.2x',
-      profit: '₹80K',
-      pain: 'Industry leak: Low AOV & high return rates'
-    },
-    after: {
-      spend: '₹10L',
-      profit: '₹3.8L/month',
-      cacReduction: '24%',
-      gain: 'Optimized Margin State'
-    },
-    highlight: 'Goal: Grow Net Profit 4.7x While Scaling Spend Sustainably',
-    details: {
-      overview: {
-        industry: 'Fashion & Apparel',
-        revenue: '₹30L - ₹50L / month',
-        spend: '₹8L / month'
-      },
-      problem: 'The "Discount Trap": Revenue coming only during sales with unsustainable return rates.',
-      diagnosis: [
-        'Single-item purchase dependency lowering AOV.',
-        'High RTO baseline (Common in India D2C).',
-        'Price-led creative vs Value-led storytelling.'
-      ],
-      solution: [
-        'Value-Based Creative: Shifting to Lifestyle hooks.',
-        'RTO Control: Implementing automated COD verification.',
-        'AOV Multiplier: Post-purchase upsell engine implementation.',
-        'Margin Scaling: Prioritizing high-margin SKU scalability.'
-      ],
-      results: {
-        profitBefore: '₹80K',
-        profitAfter: '₹3.8L (Target)',
-        cacImprovement: '24% Reduction (Benchmark)',
-        timeline: '90 Days'
-      },
-      quote: 'For apparel brands, the biggest lever is usually RTO control and AOV expansion before scaling spend.'
-    }
-  }
-];
 
-const CATEGORIES = ['All', 'Skincare', 'Apparel', 'Supplements', 'Lifestyle'];
+const CATEGORIES: string[] = ['All', 'Skincare', 'Apparel', 'Supplements', 'Lifestyle'];
 
 interface CaseStudiesPageProps {
+  /** Published studies, in order. Defaults to what shipped so the page is never empty. */
+  studies?: CaseStudy[];
   onNavigate: (page: string) => void;
 }
 
-export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) => {
+export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
+  onNavigate,
+  studies = publishedCaseStudies(DEFAULT_CASE_STUDY_LIST),
+}) => {
+  const CASE_STUDIES = studies;
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
 
@@ -220,7 +102,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({ onNavigate }) 
             <AnimatePresence mode="popLayout">
               {filteredCaseStudies.map((cs, index) => (
                 <motion.div
-                  key={cs.id}
+                  key={cs.slug}
                   layout
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}

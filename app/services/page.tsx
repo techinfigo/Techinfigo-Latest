@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import PageClient from './PageClient';
+import { getPageContent } from '../../lib/content';
 
 export const metadata: Metadata = {
   title: 'D2C Growth Services | Performance Ads, CRO, SEO & Retention',
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <PageClient />;
+// Cached, tagged read — not per request — so this route stays prerendered and
+// regenerates when the copy is saved, never on traffic.
+export default async function Page() {
+  const { pillars } = await getPageContent('services');
+  return <PageClient pillars={pillars} />;
 }

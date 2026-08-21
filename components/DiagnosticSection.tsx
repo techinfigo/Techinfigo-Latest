@@ -1,41 +1,37 @@
 'use client';
 
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
 import React from 'react';
-import { TrendingDown, Zap, BarChart3, AlertCircle, ShieldAlert, ArrowRight } from 'lucide-react';
+import { TrendingDown, Zap, BarChart3, AlertCircle, ShieldAlert, ArrowRight, type LucideIcon } from 'lucide-react';
+
+/**
+ * Icons stay in code, keyed by the record's `icon` name.
+ *
+ * A Firestore document cannot hold a React element, so the content model
+ * carries a key and this map carries the glyph. An unknown key renders nothing
+ * rather than crashing the card.
+ */
+const PAIN_ICONS: Record<string, LucideIcon> = {
+  'trending-down': TrendingDown,
+  zap: Zap,
+  'shield-alert': ShieldAlert,
+  'bar-chart': BarChart3,
+  'alert-circle': AlertCircle,
+};
+
 
 interface DiagnosticSectionProps {
+  /** Editable copy. Defaults to what shipped, so the list never renders empty. */
+  painPoints?: SiteContent['home']['painPoints'];
   onBookAudit?: () => void;
 }
 
-export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudit }) => {
-  const painPoints = [
-    {
-      title: "ROAS looks good, but margins are shrinking",
-      desc: "Platform data is inflating your ego while hidden costs kill your actual take-home pay.",
-      icon: <TrendingDown className="w-5 h-5 text-brandYellow" />
-    },
-    {
-      title: "Scaling increases revenue but kills profitability",
-      desc: "Whenever you push budgets, the unit economics crumble instantly, leaving you with less.",
-      icon: <Zap className="w-5 h-5 text-brandYellow" />
-    },
-    {
-      title: "Creatives burn out faster than you can replace them",
-      desc: "Ad fatigue hits within days because you lack a structured, high-velocity testing lab.",
-      icon: <ShieldAlert className="w-5 h-5 text-brandYellow" />
-    },
-    {
-      title: "You don’t know which product/ad is actually making money",
-      desc: "Attribution mess means you're guessing where to put your next rupee of capital.",
-      icon: <BarChart3 className="w-5 h-5 text-brandYellow" />
-    },
-    {
-      title: "Hidden costs (discounts, shipping, COD, returns) eating profit",
-      desc: "The silent killers that don't show up on your Meta dashboard but drain your bank account.",
-      icon: <AlertCircle className="w-5 h-5 text-brandYellow" />
-    }
-  ];
-
+export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({
+  onBookAudit,
+  painPoints = DEFAULT_CONTENT.home.painPoints,
+}) => {
+  
   return (
     <section className="w-full lg:min-h-screen flex flex-col justify-center py-12 lg:py-20 px-6 bg-brandBg overflow-hidden font-sans relative">
       <div className="max-w-6xl mx-auto w-full">
@@ -79,10 +75,13 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
               </div>
 
               <div className="space-y-4 lg:space-y-5">
-                {painPoints.map((point, idx) => (
+                {painPoints.map((point, idx) => {
+                  // Unknown key renders no glyph rather than crashing the card.
+                  const Icon = PAIN_ICONS[point.icon];
+                  return (
                   <div key={idx} className="flex gap-3 lg:gap-4 group/item">
                     <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-brandYellow/10 transition-all duration-500">
-                      {React.cloneElement(point.icon as React.ReactElement<{ className?: string }>, { className: "w-4 h-4 text-brandYellow" })}
+                      {Icon ? <Icon className="w-4 h-4 text-brandYellow" /> : null}
                     </div>
                     <div className="space-y-0.5">
                       <h4 className="text-sm lg:text-base font-black text-white tracking-tight">{point.title}</h4>
@@ -91,7 +90,8 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onBookAudi
                       </p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 

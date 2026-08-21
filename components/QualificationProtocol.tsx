@@ -4,45 +4,34 @@ import React, { useState, useMemo } from 'react';
 import { CheckCircle2, ArrowRight, Zap, Target, TrendingUp, Settings, BarChart3, AlertCircle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSiteSettings } from './SiteSettingsProvider';
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
+
+/**
+ * Icons stay in code, keyed by the record's `icon` name.
+ *
+ * lucide components cannot be stored in Firestore, so the content model
+ * carries a key and this map carries the component. An unknown key falls back
+ * to a neutral glyph rather than crashing the card.
+ */
+const CRITERION_ICONS: Record<string, typeof Zap> = {
+  zap: Zap,
+  target: Target,
+  'bar-chart': BarChart3,
+  'trending-up': TrendingUp,
+  settings: Settings,
+};
 
 interface QualificationProtocolProps {
+  /** Editable copy. Defaults to what shipped, so the list never renders empty. */
+  criteria?: SiteContent['home']['criteria'];
   onBookAudit: () => void;
 }
 
-const CRITERIA = [
-  {
-    id: 'spend',
-    label: 'Spending ₹2L+/mo',
-    description: 'You have a proven product and are already investing in traffic.',
-    icon: Zap,
-  },
-  {
-    id: 'profit',
-    label: 'Profit Focused',
-    description: 'You care about bottom-line margins more than vanity ROAS.',
-    icon: Target,
-  },
-  {
-    id: 'orders',
-    label: 'Stable Orders',
-    description: 'You have consistent sales but your margins feel unstable.',
-    icon: BarChart3,
-  },
-  {
-    id: 'predictable',
-    label: 'Repeatable Growth',
-    description: 'You want a system that works every month, not just by luck.',
-    icon: TrendingUp,
-  },
-  {
-    id: 'backend',
-    label: 'Backend Ready',
-    description: 'You are willing to fix operations to support 10x volume.',
-    icon: Settings,
-  }
-];
 
-export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ onBookAudit }) => {
+export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ onBookAudit,
+  criteria = DEFAULT_CONTENT.home.criteria,
+}) => {
   const { capacity } = useSiteSettings();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -53,7 +42,7 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
   };
 
   const score = selectedIds.length;
-  const progress = (score / CRITERIA.length) * 100;
+  const progress = (score / criteria.length) * 100;
 
   const getStatus = () => {
     if (score === 0) return { label: 'Select your current stage', color: 'text-brandDark/40' };
@@ -117,7 +106,7 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
                 <p className="text-brandYellow text-[11px] font-black uppercase tracking-[0.4em]">Readiness Score</p>
                 <div className="flex items-baseline gap-4">
                   <span className="text-7xl lg:text-8xl font-black tracking-tighter">{score}</span>
-                  <span className="text-white/30 text-3xl font-bold">/ {CRITERIA.length}</span>
+                  <span className="text-white/30 text-3xl font-bold">/ {criteria.length}</span>
                 </div>
               </div>
               <div className="flex-1 max-w-xl">
@@ -139,9 +128,9 @@ export const QualificationProtocol: React.FC<QualificationProtocolProps> = ({ on
 
             {/* Grid of Criteria */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {CRITERIA.map((item) => {
+              {criteria.map((item) => {
                 const isSelected = selectedIds.includes(item.id);
-                const Icon = item.icon;
+                const Icon = CRITERION_ICONS[item.icon] ?? Zap;
                 
                 return (
                   <motion.div

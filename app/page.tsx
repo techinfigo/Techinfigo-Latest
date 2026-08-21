@@ -16,6 +16,7 @@ import { Footer } from '../components/Footer';
 // scarcity toggle and slot count come from the settings document.
 import { CAPACITY } from '../config/site';
 import { getSiteSettings } from '../lib/settings';
+import { getPageContent } from '../lib/content';
 
 export const metadata: Metadata = {
   title: { absolute: "Techinfigo | Profit-First D2C Growth Partner" },
@@ -42,22 +43,26 @@ export default async function Home() {
   // a per-request one, so this page stays statically prerendered — it
   // regenerates when the admin panel saves, not on every visit.
   const { capacity } = await getSiteSettings();
+  // Same cached, tagged contract as the settings read above: this is not a
+  // per-request read, so the page stays prerendered and regenerates only when
+  // the copy is saved in the admin panel.
+  const home = await getPageContent('home');
 
   return (
     <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="home" />
-      <Hero {...({} as any)} />
+      <Hero {...({} as any)} content={home.hero} />
       
       {/* Founding Partner Offer Strip */}
       <div className="bg-brandYellow py-4 overflow-hidden relative border-y border-brandDark/5">
         <div className="flex whitespace-nowrap animate-marquee">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex items-center gap-8 px-4">
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Now onboarding our first founding D2C partners</span>
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{home.marquee.onboarding}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{capacity.showScarcity ? `Limited to ${capacity.slotsOpen} brands for ${CAPACITY.currentBatch}` : 'Senior strategists only — no junior account managers'}</span>
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{capacity.showScarcity ? `Limited to ${capacity.slotsOpen} brands for ${CAPACITY.currentBatch}` : home.marquee.capacityOff}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">Founding-partner offer active</span>
+              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{home.marquee.offer}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
             </div>
           ))}
@@ -66,12 +71,12 @@ export default async function Home() {
 
       <FounderSection />
       <EmotionalSection />
-      <DiagnosticSection />
-      <QualificationProtocol {...({} as any)} />
+      <DiagnosticSection painPoints={home.painPoints} />
+      <QualificationProtocol {...({} as any)} criteria={home.criteria} />
       
-      <GrowthLifecycle />
+      <GrowthLifecycle profitLeaks={home.profitLeaks} protocolSteps={home.protocolSteps} />
       <CaseStudySection />
-      <TestimonialsSection />
+      <TestimonialsSection intro={home.insightsIntro} insights={home.insights} />
       <RevenueAccelerator />
       <Footer />
     </main>

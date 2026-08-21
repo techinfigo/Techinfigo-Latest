@@ -3,12 +3,20 @@
 import React from 'react';
 import { Quote, Star, ArrowRight, ShieldCheck, TrendingUp } from 'lucide-react';
 import { CAPACITY } from '../config/site';
+import { DEFAULT_CONTENT } from '../config/content';
+import type { SiteContent } from '../lib/content-schema';
 
 interface TestimonialsSectionProps {
+  /** Editable copy. Defaults to what shipped. */
+  intro?: string;
+  insights?: SiteContent['home']['insights'];
   onBookAudit?: () => void;
 }
 
-export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBookAudit }) => {
+export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBookAudit,
+  intro = DEFAULT_CONTENT.home.insightsIntro,
+  insights = DEFAULT_CONTENT.home.insights,
+}) => {
   return (
     <section className="w-full py-12 lg:py-16 px-6 bg-brandDark font-sans relative overflow-hidden">
       {/* Subtle Background Text */}
@@ -34,7 +42,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
               <span className="text-brandYellow italic">Performance Strategy.</span>
             </h2>
             <p className="text-white/70 text-base lg:text-lg font-medium max-w-xl">
-              We don’t use fake testimonials. We share the brutal realizations D2C founders have after we audit their Performance Marketing numbers.
+              {intro}
             </p>
           </div>
           
@@ -61,14 +69,14 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
                 <div className="w-12 h-12 rounded-xl bg-brandYellow/10 flex items-center justify-center border border-white/5">
                   <TrendingUp className="w-6 h-6 text-brandYellow" />
                 </div>
-                <span className="text-[9px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">Insight 01</span>
+                <span className="text-[9px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">{insights[1]?.label}</span>
               </div>
               <div className="space-y-4">
                 <h3 className="text-2xl lg:text-4xl font-black text-white uppercase tracking-tight leading-none">
                   Revenue is a <span className="text-brandYellow italic">Vanity Metric.</span>
                 </h3>
                 <p className="text-white/90 text-lg font-medium leading-relaxed max-w-2xl">
-                  Most founders think they’re growing because revenue is increasing — until they actually look at net profit. We've seen ₹10Cr brands making less profit than ₹2Cr brands.
+                  {insights[0]?.text}
                 </p>
               </div>
             </div>
@@ -81,12 +89,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
                 <div className="w-10 h-10 rounded-lg bg-brandYellow/10 flex items-center justify-center border border-white/5">
                   <Star className="w-5 h-5 text-brandYellow" />
                 </div>
-                <span className="text-[9px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">Insight 02</span>
+                <span className="text-[9px] font-black text-brandYellow/40 uppercase tracking-[0.4em]">{insights[2]?.label}</span>
               </div>
               <div className="space-y-3">
                 <h3 className="text-xl font-black text-white uppercase tracking-tight">The ROAS Trap</h3>
                 <p className="text-white/80 text-sm font-medium leading-relaxed">
-                  A 4x ROAS on a low-margin product is a loss. A 2.5x ROAS on a high-margin product is a goldmine.
+                  {insights[1]?.text}
                 </p>
               </div>
             </div>
@@ -104,7 +112,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
               <div className="space-y-3">
                 <h3 className="text-xl font-black text-white uppercase tracking-tight">Scaling = Bleeding?</h3>
                 <p className="text-white/80 text-sm font-medium leading-relaxed">
-                  Increasing ad spend without stable unit economics scales losses. We fix the foundation before we push the pedal.
+                  {insights[2]?.text}
                 </p>
               </div>
             </div>
@@ -118,15 +126,15 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ onBook
                 <div className="w-12 h-12 rounded-xl bg-brandYellow/10 flex items-center justify-center border border-white/5">
                   <Quote className="w-6 h-6 text-brandYellow" />
                 </div>
-                <h3 className="text-2xl font-black text-white uppercase tracking-tight">The Retention Advantage</h3>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tight">{insights[3]?.label}</h3>
               </div>
               <div className="w-full lg:w-2/3">
                 <p className="text-white/90 text-lg font-medium leading-relaxed">
-                  "The profit isn't in the first purchase. It's in the 3rd, 4th, and 5th. If your backend retention isn't hitting 30%+, you're just renting customers, not owning a brand."
+                  {insights[3]?.text}
                 </p>
                 <div className="mt-4 flex items-center gap-3">
                   <div className="w-6 h-[1px] bg-brandYellow/30"></div>
-                  <span className="text-[9px] font-black text-brandYellow uppercase tracking-[0.2em]">Common Realization</span>
+                  <span className="text-[9px] font-black text-brandYellow uppercase tracking-[0.2em]">{insights[0]?.label}</span>
                 </div>
               </div>
             </div>
