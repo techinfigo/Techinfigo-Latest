@@ -53,6 +53,13 @@ const LEAD_CAP = 1000;
 const HATCH =
   'repeating-linear-gradient(45deg, transparent 0 3px, var(--color-brandSurface) 3px 6px)';
 
+/** Hours → the coarsest unit that still reads precisely. */
+function formatDuration(hours: number): string {
+  if (hours < 1) return `${Math.round(hours * 60)} min`;
+  if (hours < 48) return `${hours} h`;
+  return `${Math.round(hours / 24)} days`;
+}
+
 async function loadSummary(
   now: Date,
 ): Promise<{ summary: AnalyticsSummary | null; failed: boolean }> {
@@ -409,22 +416,65 @@ export default async function AnalyticsPage() {
                   Reached qualified or beyond
                 </p>
                 <Figure r={summary.qualifiedRate} unit="of all leads" />
+                {summary.qualifiedInferredFor > 0 ? (
+                  <p className="text-white/55 text-xs font-medium leading-relaxed pt-1">
+                    {summary.qualifiedInferredFor} of these predate the sticky flag, so{' '}
+                    {summary.qualifiedInferredFor === 1 ? 'it counts' : 'they count'} only if
+                    currently at or past qualified — one that qualified and then lost looks like
+                    it never did.
+                  </p>
+                ) : null}
               </div>
             </div>
           </Card>
 
-          <Card title="Median time to first contact" period="not available — see below">
+          <Card
+            title="Median time to first contact"
+            period={
+              summary.timeToFirstContact.available
+                ? `created → first move off "new" · ${summary.timeToFirstContact.sample} lead${
+                    summary.timeToFirstContact.sample === 1 ? '' : 's'
+                  } with a recorded time`
+                : 'not available yet — see below'
+            }
+          >
             <div className="space-y-3 max-w-2xl">
-              <p className="text-white/80 text-sm font-medium leading-relaxed">
-                {summary.timeToFirstContact.available
-                  ? null
-                  : summary.timeToFirstContact.reason}
-              </p>
-              <p className="text-white/55 text-sm font-medium leading-relaxed">
-                Recording the timestamp when a lead first moves off &quot;new&quot; would make this
-                a median over that field. Nothing approximate is shown in the meantime: a
-                confidently wrong response time is worse than an admitted gap.
-              </p>
+              {summary.timeToFirstContact.available ? (
+                <>
+                  <p className="text-3xl font-black text-brandYellow leading-none">
+                    {formatDuration(summary.timeToFirstContact.medianHours)}
+                  </p>
+                  {/* A median is not a rate, so MIN_SAMPLE does not suppress it —
+                      but a median of two observations is still two observations,
+                      and saying so costs nothing. */}
+                  {summary.timeToFirstContact.sample < MIN_SAMPLE ? (
+                    <p className="text-white/80 text-sm font-medium leading-relaxed">
+                      From {summary.timeToFirstContact.sample} lead
+                      {summary.timeToFirstContact.sample === 1 ? '' : 's'} — too few to describe a
+                      habit yet, so read it as those {summary.timeToFirstContact.sample} and
+                      nothing more.
+                    </p>
+                  ) : null}
+                </>
+              ) : (
+                <p className="text-white/80 text-sm font-medium leading-relaxed">
+                  {summary.timeToFirstContact.reason}
+                </p>
+              )}
+
+              {/* The exclusion count is the honest part. These leads were
+                  contacted; nobody wrote down when, and no median should quietly
+                  pretend they were never in the pool. */}
+              {summary.timeToFirstContact.excluded > 0 ? (
+                <p className="text-white/55 text-sm font-medium leading-relaxed">
+                  Excludes {summary.timeToFirstContact.excluded} lead
+                  {summary.timeToFirstContact.excluded === 1 ? '' : 's'} that moved off
+                  &quot;new&quot; before first-contact times were recorded. That moment cannot be
+                  recovered for {summary.timeToFirstContact.excluded === 1 ? 'it' : 'them'}, so{' '}
+                  {summary.timeToFirstContact.excluded === 1 ? 'it is' : 'they are'} left out
+                  rather than guessed at.
+                </p>
+              ) : null}
             </div>
           </Card>
         </>

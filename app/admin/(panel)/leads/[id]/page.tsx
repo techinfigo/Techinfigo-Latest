@@ -123,6 +123,64 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </section>
       ) : null}
 
+      {/* Status history sits beside the notes because they answer the same
+          question from two directions — what was done, and what changed. */}
+      <section className="space-y-4">
+        <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-brandYellow">
+          Status history
+        </h2>
+        <ol className="border border-white/15 rounded-2xl p-6 space-y-4">
+          {/* Arrival is not a transition and is not stored as one, so it is
+              rendered from createdAt rather than faked into the history. */}
+          <li className="flex gap-4 items-baseline">
+            <span className="w-40 shrink-0 text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
+              {formatTimestamp(lead.createdAt)} UTC
+            </span>
+            <span className="text-white/80 text-sm font-medium">
+              Arrived via <span className="font-bold text-white">{lead.sourceForm}</span>
+            </span>
+          </li>
+
+          {lead.statusHistory.map((change, index) => (
+            <li
+              key={`${change.at.toISOString()}-${index}`}
+              className="flex gap-4 items-baseline"
+            >
+              <span className="w-40 shrink-0 text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
+                {formatTimestamp(change.at)} UTC
+              </span>
+              <span className="text-white/80 text-sm font-medium">
+                <span className="text-white/55">{change.from}</span>
+                <span aria-hidden className="px-2 text-white/55">
+                  →
+                </span>
+                <span className="font-bold text-white">{change.to}</span>
+              </span>
+            </li>
+          ))}
+
+          {lead.statusHistory.length === 0 ? (
+            <li className="flex gap-4 items-baseline">
+              <span className="w-40 shrink-0 text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
+                —
+              </span>
+              <span className="text-white/55 text-sm font-medium leading-relaxed">
+                {lead.status === 'new'
+                  ? 'No status change yet — this lead has not been picked up.'
+                  : `This lead reached "${lead.status}" before status changes were recorded, so the steps it took are not known.`}
+              </span>
+            </li>
+          ) : null}
+        </ol>
+
+        {lead.firstContactedAt ? (
+          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
+            First contacted {formatTimestamp(lead.firstContactedAt)} UTC
+            {lead.reachedQualified ? ' · reached qualified' : null}
+          </p>
+        ) : null}
+      </section>
+
       <section className="space-y-4">
         <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-brandYellow">
           Notes ({notes.length})

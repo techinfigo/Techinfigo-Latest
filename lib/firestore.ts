@@ -10,10 +10,12 @@ import {
 import { getFirestore } from 'firebase-admin/firestore';
 import {
   LEAD_STATUSES,
+  isQualifiedStatus,
   type Lead,
   type LeadNote,
   type LeadStatus,
   type NewLead,
+  type StatusChange,
 } from './leads-schema';
 
 /**
@@ -161,7 +163,42 @@ function leadFromDoc(doc: QueryDocumentSnapshot<DocumentData>): Lead {
     status: toStatus(d.status),
     createdAt: toDate(d.createdAt),
     updatedAt: toDate(d.updatedAt),
+    statusHistory: parseHistory(d.statusHistory),
+    // Absent on every lead written before this field existed. Deliberately not
+    // defaulted to createdAt or updatedAt: null means "unknown", and inventing
+    // a value here would put a fabricated response time into the median.
+    firstContactedAt: d.firstContactedAt ? toDate(d.firstContactedAt) : null,
+    // null, not false, when the field is absent — the analytics layer needs to
+    // tell "did not qualify" apart from "predates the flag" and fall back to
+    // the current status only for the latter.
+    reachedQualified: typeof d.reachedQualified === 'boolean' ? d.reachedQualified : null,
   };
+}
+
+/**
+ * Stored transitions → StatusChange[], oldest first.
+ *
+ * Entries whose statuses are not recognised are dropped rather than coerced:
+ * a timeline is a record of what happened, and a malformed entry shown as
+ * 'new → new' would be a claim the data does not support.
+ */
+function parseHistory(value: unknown): StatusChange[] {
+  if (!Array.isArray(value)) return [];
+  const known = LEAD_STATUSES as readonly string[];
+  return value
+    .filter(
+      (entry): entry is DocumentData =>
+        Boolean(entry) &&
+        typeof entry === 'object' &&
+        known.includes((entry as DocumentData).from) &&
+        known.includes((entry as DocumentData).to),
+    )
+    .map((entry) => ({
+      from: entry.from as LeadStatus,
+      to: entry.to as LeadStatus,
+      at: toDate(entry.at),
+    }))
+    .sort((a, b) => a.at.getTime() - b.at.getTime());
 }
 
 function noteFromDoc(leadId: string, doc: QueryDocumentSnapshot<DocumentData>): LeadNote {
@@ -179,11 +216,19 @@ function noteFromDoc(leadId: string, doc: QueryDocumentSnapshot<DocumentData>): 
 /** Insert one lead. Returns the generated document id. */
 export async function createLead(lead: NewLead): Promise<string> {
   const now = Timestamp.now();
+  const status = lead.status ?? 'new';
   const ref = await leadsCollection().add({
     ...lead,
-    status: lead.status ?? 'new',
+    status,
     createdAt: now,
     updatedAt: now,
+    // Creation is not a transition, so the history starts empty — the timeline
+    // renders the arrival from createdAt. What matters is that these three
+    // fields exist from the first write, so a lead created from here on can
+    // never be mistaken for one that predates the recording.
+    statusHistory: [],
+    firstContactedAt: null,
+    reachedQualified: isQualifiedStatus(status),
   });
   return ref.id;
 }
@@ -253,15 +298,66 @@ export async function getLead(id: string): Promise<Lead | null> {
   return leadFromDoc(doc as QueryDocumentSnapshot<DocumentData>);
 }
 
-/** Moves a lead along the pipeline. Returns null when the lead does not exist. */
+/**
+ * Moves a lead along the pipeline, recording the move. Returns null when the
+ * lead does not exist.
+ *
+ * Runs in a transaction because two of the three things written here are
+ * write-once invariants — firstContactedAt must never be overwritten and
+ * reachedQualified must never be unset — and a read-then-write outside a
+ * transaction cannot promise that. The history append is inside the same
+ * transaction so an entry can never be recorded without the status it
+ * describes actually landing.
+ *
+ * A no-op update (same status resubmitted) writes nothing at all: it is not a
+ * transition, and recording it would put a phantom step in the timeline and,
+ * worse, could stamp firstContactedAt on a lead nobody contacted.
+ */
 export async function updateLeadStatus(id: string, status: LeadStatus): Promise<Lead | null> {
   const ref = leadsCollection().doc(id);
-  const doc = await ref.get();
-  if (!doc.exists) return null;
 
-  await ref.update({ status, updatedAt: Timestamp.now() });
+  const found = await getDb().runTransaction(async (tx) => {
+    const doc = await tx.get(ref);
+    if (!doc.exists) return false;
+
+    const data = doc.data() ?? {};
+    const current = toStatus(data.status);
+    if (current === status) return true;
+
+    const now = Timestamp.now();
+    const update: DocumentData = {
+      status,
+      updatedAt: now,
+      statusHistory: [
+        ...toStatusHistory(data.statusHistory),
+        // Stored as a Timestamp like every other instant in the document, so
+        // the read path converts it the same way.
+        { from: current, to: status, at: now },
+      ],
+    };
+
+    // First move off 'new', and only if nothing was stamped before — a lead
+    // pushed back to 'new' and picked up again keeps its original response
+    // time rather than resetting it to look faster.
+    if (current === 'new' && !data.firstContactedAt) update.firstContactedAt = now;
+
+    // Sticky: only ever written true. Nothing in this function writes false,
+    // so a later move to 'lost' cannot erase that the lead qualified.
+    if (isQualifiedStatus(status)) update.reachedQualified = true;
+
+    tx.update(ref, update);
+    return true;
+  });
+
+  if (!found) return null;
+
   const updated = await ref.get();
   return leadFromDoc(updated as QueryDocumentSnapshot<DocumentData>);
+}
+
+/** Stored transitions → StatusChange[], dropping anything malformed. */
+function toStatusHistory(value: unknown): DocumentData[] {
+  return Array.isArray(value) ? (value as DocumentData[]) : [];
 }
 
 /**
@@ -306,9 +402,12 @@ export async function getLeadWithNotes(
 // from lib/leads-schema.ts directly — see the note at the top of this file.
 export {
   LEAD_STATUSES,
+  QUALIFIED_STATUSES,
+  isQualifiedStatus,
   type Lead,
   type LeadNote,
   type LeadStatus,
   type NewLead,
+  type StatusChange,
 } from './leads-schema';
 

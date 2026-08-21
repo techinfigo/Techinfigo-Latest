@@ -1,4 +1,4 @@
-import { LEAD_STATUSES, type Lead, type LeadStatus } from './leads-schema';
+import { LEAD_STATUSES, isQualifiedStatus, type Lead, type LeadStatus } from './leads-schema';
 
 /**
  * Turns a list of leads into the figures the analytics page renders.
@@ -111,20 +111,28 @@ function weeklyVolume(leads: readonly Lead[], now: Date): WeekBucket[] {
 // --- source performance -----------------------------------------------------
 
 /**
- * Statuses that mean the lead got past qualification.
+ * Whether a lead ever reached qualification.
  *
- * Deliberately excludes 'lost'. A lead that qualified and then lost did reach
- * this bar, but nothing in the stored shape records that it ever did — only
- * its current status survives. Counting 'lost' here would inflate the figure
- * with leads that may never have qualified at all, so the number is defined as
- * "currently at or past qualified" and labelled that way in the UI.
+ * Prefers the sticky reachedQualified flag, which survives a later move to
+ * 'lost' — that was the whole point of recording it. Leads written before the
+ * flag existed carry null, and only those fall back to their current status,
+ * which undercounts them exactly where it always did: a lead that qualified
+ * and then lost looks like it never qualified. qualifiedIsInferred() counts
+ * how many leads are on that older footing so the page can say so.
  */
-export const QUALIFIED_PLUS: readonly LeadStatus[] = ['qualified', 'proposal', 'won'];
+export function everQualified(lead: Lead): boolean {
+  return lead.reachedQualified ?? isQualifiedStatus(lead.status);
+}
+
+/** True when the answer came from the current status rather than a recorded flag. */
+export function qualifiedIsInferred(lead: Lead): boolean {
+  return lead.reachedQualified === null || lead.reachedQualified === undefined;
+}
 
 export type SourceRow = {
   key: string;
   total: number;
-  /** Currently at or past 'qualified'. */
+  /** Ever reached qualified — sticky flag where recorded, current status otherwise. */
   qualified: number;
   qualifiedRate: Rate;
   won: number;
@@ -147,7 +155,7 @@ function groupBy(leads: readonly Lead[], keyOf: (lead: Lead) => string | null): 
 
   const rows: SourceRow[] = [];
   for (const [key, group] of groups) {
-    const qualified = group.filter((l) => QUALIFIED_PLUS.includes(l.status)).length;
+    const qualified = group.filter(everQualified).length;
     const won = group.filter((l) => l.status === 'won').length;
     const lost = group.filter((l) => l.status === 'lost').length;
     rows.push({
@@ -172,38 +180,79 @@ function groupBy(leads: readonly Lead[], keyOf: (lead: Lead) => string | null): 
  * The complementary `?: undefined` members are what make this narrow under
  * this project's non-strict tsconfig — the same reason BrandValidation in
  * lib/brand-assets.ts is shaped this way.
+ *
+ * `excluded` is on both arms deliberately: leads that were contacted before
+ * firstContactedAt existed are missing from the median whether or not one can
+ * be computed, and that count has to be shown either way.
  */
 export type TimeToFirstContact =
-  | { available: true; medianHours: number; sample: number; reason?: undefined }
-  | { available: false; medianHours?: undefined; sample?: undefined; reason: string };
+  | {
+      available: true;
+      medianHours: number;
+      sample: number;
+      excluded: number;
+      reason?: undefined;
+    }
+  | {
+      available: false;
+      medianHours?: undefined;
+      sample?: undefined;
+      excluded: number;
+      reason: string;
+    };
 
 /**
- * Median createdAt → first status change away from 'new'.
+ * Median createdAt → firstContactedAt.
  *
- * Not computable from what is stored, and deliberately not approximated. The
- * lead document carries `createdAt`, `updatedAt` and the *current* `status`;
- * there is no status history and no first-contacted timestamp. `updatedAt` is
- * the last write of any kind, so on a lead that moved new → contacted →
- * qualified it describes the qualification, not the contact — using it would
- * report a number that looks precise and is wrong.
+ * Only leads carrying a recorded firstContactedAt contribute. Two other groups
+ * exist and are handled differently on purpose:
  *
- * The notes subcollection has its own createdAt and would proxy "when someone
- * first wrote something down", but a note is not a status change, and reading
- * one subcollection per lead is exactly the per-lead query the analytics page
- * is built to avoid.
+ *  - Still in 'new': never contacted, so they are not a gap in the data. They
+ *    belong outside the sample and are not counted as excluded — a lead that
+ *    has not been contacted has no response time to be missing.
+ *  - Moved off 'new' with no firstContactedAt: contacted before the field
+ *    existed. These *are* a gap, they are counted in `excluded`, and the page
+ *    prints that count. Dropping them silently would quietly bias the median
+ *    toward whatever happened after the change shipped.
  *
- * Recording `firstContactedAt` in updateLeadStatus() on the first move off
- * 'new' would make this a one-line median from then on. Until something stores
- * it, this returns the reason instead of a figure.
+ * Nothing here falls back to updatedAt. It is the last write of any kind, so
+ * on a lead that moved twice it describes the wrong event entirely.
  */
-function timeToFirstContact(_leads: readonly Lead[]): TimeToFirstContact {
+function timeToFirstContact(leads: readonly Lead[]): TimeToFirstContact {
+  const contacted = leads.filter((lead) => lead.firstContactedAt);
+  const excluded = leads.filter(
+    (lead) => !lead.firstContactedAt && lead.status !== 'new',
+  ).length;
+
+  if (contacted.length === 0) {
+    return {
+      available: false,
+      excluded,
+      reason:
+        excluded > 0
+          ? `No lead yet carries a recorded first-contact time. ${excluded} lead${
+              excluded === 1 ? ' was' : 's were'
+            } contacted before that was being recorded, so ${
+              excluded === 1 ? 'its' : 'their'
+            } response time cannot be recovered — the figure will fill in as leads move off "new" from now on.`
+          : 'No lead has moved off "new" yet, so there is no response time to measure.',
+    };
+  }
+
+  const hours = contacted
+    .map((lead) => (lead.firstContactedAt.getTime() - lead.createdAt.getTime()) / 3_600_000)
+    .sort((a, b) => a - b);
+
+  // Even count takes the mean of the middle pair, which is what "median" means
+  // for an even sample — not the lower of the two.
+  const mid = Math.floor(hours.length / 2);
+  const median = hours.length % 2 === 0 ? (hours[mid - 1] + hours[mid]) / 2 : hours[mid];
+
   return {
-    available: false,
-    reason:
-      'Lead documents store createdAt, updatedAt and the current status — but no status ' +
-      'history, so the moment a lead first moved off "new" was never recorded. updatedAt is ' +
-      'the most recent change of any kind, which is a different thing and would overstate ' +
-      'how fast contact happened on any lead that has moved more than once.',
+    available: true,
+    medianHours: Math.round(median * 10) / 10,
+    sample: contacted.length,
+    excluded,
   };
 }
 
@@ -248,6 +297,8 @@ export type AnalyticsSummary = {
   winRate: Rate;
   qualifiedRate: Rate;
   timeToFirstContact: TimeToFirstContact;
+  /** Leads whose qualified-or-beyond answer came from current status, not the sticky flag. */
+  qualifiedInferredFor: number;
   staleNew: StaleLead[];
 };
 
@@ -259,7 +310,7 @@ export function summarize(
   const times = leads.map((l) => l.createdAt.getTime());
   const won = leads.filter((l) => l.status === 'won').length;
   const lost = leads.filter((l) => l.status === 'lost').length;
-  const qualified = leads.filter((l) => QUALIFIED_PLUS.includes(l.status)).length;
+  const qualified = leads.filter((l) => everQualified(l)).length;
 
   return {
     totalLeads: leads.length,
@@ -276,6 +327,7 @@ export function summarize(
     winRate: rate(won, won + lost),
     qualifiedRate: rate(qualified, leads.length),
     timeToFirstContact: timeToFirstContact(leads),
+    qualifiedInferredFor: leads.filter(qualifiedIsInferred).length,
     staleNew: staleNew(leads, now),
   };
 }

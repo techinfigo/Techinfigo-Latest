@@ -16,6 +16,33 @@ export const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'proposal', 'won'
 export type LeadStatus = (typeof LEAD_STATUSES)[number];
 
 /**
+ * Statuses that mean the lead got past qualification.
+ *
+ * Lives here rather than in lib/analytics.ts because both sides need it now:
+ * the write path stamps reachedQualified from it, and the read path falls back
+ * to it for leads that predate that field. One definition, so the sticky flag
+ * and the fallback can never disagree about what 'qualified' means.
+ */
+export const QUALIFIED_STATUSES: readonly LeadStatus[] = ['qualified', 'proposal', 'won'];
+
+export function isQualifiedStatus(status: LeadStatus): boolean {
+  return QUALIFIED_STATUSES.includes(status);
+}
+
+/**
+ * One recorded move along the pipeline.
+ *
+ * `from` is kept as well as `to` so the timeline reads as a sentence without
+ * having to reconstruct it from the previous entry — and so a gap in the
+ * history is visible as one, rather than silently closing up.
+ */
+export type StatusChange = {
+  from: LeadStatus;
+  to: LeadStatus;
+  at: Date;
+};
+
+/**
  * One document per form submission, in the `leads` collection.
  *
  * The attribution fields (landingPage, utm*, referrer) are the entire point:
@@ -57,6 +84,33 @@ export type Lead = {
   status: LeadStatus;
   createdAt: Date;
   updatedAt: Date;
+
+  /**
+   * Every recorded transition, oldest first. Empty on leads that have not
+   * moved, and also on leads that moved before this was recorded — the two are
+   * told apart by whether status is still 'new'.
+   */
+  statusHistory: StatusChange[];
+
+  /**
+   * When the lead first moved off 'new'. Written once and never overwritten,
+   * so a lead bounced back to 'new' and picked up again keeps its original
+   * response time.
+   *
+   * null means one of two different things, and callers must not conflate
+   * them: the lead has never been contacted (status is still 'new'), or it was
+   * contacted before this field existed. lib/analytics.ts separates the two.
+   */
+  firstContactedAt: Date | null;
+
+  /**
+   * Sticky: set true on any transition into qualified, proposal or won, and
+   * never unset. A lead that qualified and then lost still qualified, which
+   * the current status alone cannot tell you.
+   *
+   * null means the lead predates the field, not that it failed to qualify.
+   */
+  reachedQualified: boolean | null;
 };
 
 /**
@@ -64,7 +118,12 @@ export type Lead = {
  * three stateful fields default at write time, mirroring the column defaults
  * the Postgres table carried.
  */
-export type NewLead = Omit<Lead, 'id' | 'status' | 'createdAt' | 'updatedAt'> & {
+export type NewLead = Omit<
+  Lead,
+  // The three history fields are stamped by createLead, not supplied: a caller
+  // must not be able to hand in a firstContactedAt.
+  'id' | 'status' | 'createdAt' | 'updatedAt' | 'statusHistory' | 'firstContactedAt' | 'reachedQualified'
+> & {
   status?: LeadStatus;
   createdAt?: Date;
   updatedAt?: Date;
