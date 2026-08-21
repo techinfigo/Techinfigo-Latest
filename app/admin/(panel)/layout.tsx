@@ -28,16 +28,32 @@ import { MobileNav } from '../MobileNav';
  */
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-dvh overflow-hidden">
+    <div className="flex min-h-screen bg-brandSurface">
+      {/* Sticky, not a fixed-height flex box.
+
+          This used to be `h-dvh overflow-hidden` on the row with the content
+          column scrolling inside it, and that is what produced the endless
+          scroll ending in white: a fixed-height box cannot grow, so anything
+          taller escaped it, and the page underneath is cream. Normal document
+          flow removes the trap — the row grows with its content, so there is
+          nothing to escape from — while `sticky` keeps the rail visually
+          parked exactly as the fixed-height version did. */}
       <aside className="hidden w-[220px] shrink-0 border-r border-white/20 bg-brandDark lg:block">
-        <AdminSidebar />
+        {/* dvh here, not vh: a sticky rail should track the *visible*
+            viewport. Its height cannot leave a gap — the <aside> around it
+            carries bg-brandDark and stretches to the row. */}
+        <div className="sticky top-0 h-dvh overflow-y-auto">
+          <AdminSidebar />
+        </div>
       </aside>
 
       {/* min-w-0 so the pipeline's wide table scrolls inside its own container
           instead of stretching this column past the viewport. */}
       <div className="flex min-w-0 flex-1 flex-col bg-brandSurface">
-        {/* The sidebar's stand-in below lg, on the same 16px rhythm. */}
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/15 px-5 lg:hidden">
+        {/* The sidebar's stand-in below lg, on the same 16px rhythm. Sticky for
+            the same reason the rail is: it must stay reachable now that the
+            document scrolls rather than an inner box. */}
+        <div className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-white/15 bg-brandSurface px-5 lg:hidden">
           <span className="flex items-center gap-3">
             <span
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brandYellow"
@@ -54,7 +70,10 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           </MobileNav>
         </div>
 
-        <div className="flex-1 overflow-y-auto">{children}</div>
+        {/* No overflow-y-auto: the document scrolls, so this column simply
+            grows. An inner scroller here would re-create the fixed-height
+            trap one level down. */}
+        <div className="flex-1">{children}</div>
       </div>
     </div>
   );
