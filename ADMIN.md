@@ -207,6 +207,47 @@ needs none.
 - `createdAt` / `updatedAt` are stored as Firestore `Timestamp`s and converted to
   JS `Date` in `lib/firestore.ts`, so nothing downstream ever holds a
   non-serialisable value.
+- A lead carries three history fields. `createLead()` initialises them at insert
+  and `updateLeadStatus()` maintains them on every move; a caller can never
+  supply one, because `NewLead` omits all three:
+  - **`statusHistory`** — an array of `{ from, to, at }`, oldest first. Only
+    *transitions* are recorded. Creation is not a transition and is not in the
+    array; the lead detail timeline renders arrival from `createdAt` instead.
+  - **`firstContactedAt`** — stamped on the first move away from `'new'` and
+    **never overwritten**. A lead pushed back to `'new'` and picked up again
+    keeps its original response time rather than resetting to look faster.
+  - **`reachedQualified`** — sticky. `createLead()` stamps it once at creation
+    (`false` for the usual `'new'` lead); after that `updateLeadStatus()` only
+    ever writes `true`, on any transition into `qualified`, `proposal` or
+    `won`. No code path sets it back to `false`, so a later move to `lost`
+    cannot erase that the lead qualified — which current status alone cannot
+    tell you, and is the whole reason the flag exists.
+- `updateLeadStatus()` runs in a **transaction** because two of those are
+  write-once invariants — a read-then-write outside one cannot promise them.
+  Resubmitting the status a lead already has writes nothing at all: it is not a
+  transition, and recording it would stamp a first contact nobody made.
+- **Nothing backfills.** Leads written before these fields existed have none of
+  them, and the missing values are unrecoverable — the moment a lead was first
+  picked up was simply never recorded. So on read, absent fields become `null`
+  rather than a default: `firstContactedAt: null` means *unknown*, never
+  *instant*, and `reachedQualified: null` means *predates the flag*, never *did
+  not qualify*. Defaulting either one would push a fabricated number into the
+  analytics. Only `null` `reachedQualified` falls back to current status, and
+  `lib/analytics.ts` counts how many leads are on that older footing so the page
+  can say so.
+- The median time-to-first-contact therefore splits leads **three ways**, and
+  the distinction matters:
+
+  | Lead | Treatment |
+  | --- | --- |
+  | has `firstContactedAt` | in the sample |
+  | no timestamp, status ≠ `new` | **excluded, and the count is shown** — it was contacted before recording existed |
+  | no timestamp, status = `new` | in neither: never contacted is not a missing measurement |
+
+  Excluded leads are reported rather than silently dropped, because dropping
+  them would bias the median toward whatever happens after the change shipped.
+  Nothing falls back to `updatedAt` — it is the last write of any kind, so on a
+  lead that moved twice it describes the wrong event entirely.
 - Types and `LEAD_STATUSES` live in `lib/leads-schema.ts`, not
   `lib/firestore.ts`. Client components import from there — importing the value
   `LEAD_STATUSES` from the storage module would drag `firebase-admin`, and
@@ -226,5 +267,8 @@ needs none.
   label is exactly the thing that went stale before. Only `showScarcity` and
   `slotsOpen` moved into the settings document.
 - Route group `app/admin/(panel)/` is the set of pages past the auth gate; it
-  renders the header nav and sign-out. `/admin/login` sits outside it, since it
-  is the one `/admin` page you reach without a session.
+  renders the sidebar and sign-out. `/admin/login` sits outside it, since it is
+  the one `/admin` page you reach without a session.
+- Sections are listed once, in `ADMIN_SECTIONS` in `app/admin/nav-sections.ts`.
+  Both the fixed sidebar and the mobile drawer render from that array, so adding
+  a section is one entry rather than two lists that drift.
