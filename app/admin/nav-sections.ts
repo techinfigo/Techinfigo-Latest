@@ -20,6 +20,7 @@ export type AdminSection = {
 
 export const ADMIN_SECTIONS: readonly AdminSection[] = [
   { href: '/admin', label: 'Pipeline', subtree: ['/admin/leads'] },
+  { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/settings', label: 'Settings' },
 ];
 
