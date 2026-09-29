@@ -93,7 +93,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   if (submitted) {
     return (
       <div className="min-h-screen bg-brandBg flex flex-col font-sans">
-        <div className="flex-grow flex items-center justify-center px-6 py-20">
+        {/* Top padding clears the fixed navbar; bottom gives room before the footer. */}
+        <div className="flex-grow flex items-center justify-center px-6 pt-40 pb-28 lg:pt-48 lg:pb-36">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
