@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
+import { PricingTabs } from './PricingTabs';
 import { 
   Zap, 
   Target, 
@@ -66,14 +67,6 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
       desc: "Show up when Agra customers search for your service on Google and Maps, with an optimised Google profile, reviews and pages built for local search.",
       icon: <TrendingUp className="w-6 h-6" />,
     }
-  ];
-
-  const prices = [
-    { title: "Website Enquiry Upgrade", price: "₹4,999", unit: "one-time", desc: "Keep your current website. We add WhatsApp and call buttons, connect enquiries to your free CRM, and fix speed and mobile issues." },
-    { title: "Website Development", price: "₹9,999", unit: "one-time", desc: "A new mobile-friendly website of up to 5 pages, with WhatsApp and call buttons and basic Google Business Profile setup." },
-    { title: "Social Media Marketing", price: "₹7,999", unit: "per month", desc: "Instagram and Facebook management: 12 posts a month (8 designs + 4 reels) and a monthly report." },
-    { title: "Local SEO & Google Profile", price: "₹7,999", unit: "per month", desc: "Google Business Profile optimisation, weekly posts, review system, local listings and a monthly report." },
-    { title: "Facebook & Instagram Ads", price: "₹14,999", unit: "per month", desc: "Lead ads or click-to-WhatsApp campaigns managed for you, plus 12 posts a month. Ad budget separate." },
   ];
 
   const faqs = [
@@ -311,52 +304,6 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
         </div>
       </section>
 
-      {/* SECTION 3B: STARTING PRICES */}
-      <section className="py-24 px-6 lg:px-12 bg-white">
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="text-center space-y-4">
-            <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Clear Pricing</span>
-            <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase">
-              Starting <br className="md:hidden"/> Prices.
-            </h2>
-            <p className="text-brandDark/40 text-lg font-medium max-w-2xl mx-auto">
-              Every package includes a free CRM, so every call, WhatsApp and form enquiry is tracked.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {prices.map((item, i) => (
-              <div
-                key={i}
-                className="bg-white p-10 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:border-brandYellow/40 transition-all duration-500 group hover:-translate-y-3"
-              >
-                <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight mb-4 leading-tight">
-                  {item.title}
-                </h3>
-                <p className="mb-6">
-                  <span className="text-[11px] font-bold text-brandDark/40 uppercase tracking-widest">From </span>
-                  <span className="text-3xl font-black text-brandDark">{item.price}</span>
-                  <span className="text-[11px] font-bold text-brandDark/40 uppercase tracking-widest"> {item.unit}</span>
-                </p>
-                <p className="text-brandDark/60 text-sm leading-relaxed font-medium">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <button
-              onClick={onBookAudit}
-              aria-label="Get a Free Website Health Check"
-              className="px-8 py-4 bg-[#fcb632] text-brandDark font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(252,182,50,0.3)]"
-            >
-              Get Free Health Check
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 4: WHY CHOOSE US */}
       <section className="py-24 px-6 lg:px-12 bg-[#001d21] text-white overflow-hidden relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brandYellow/5 rounded-full blur-[150px] pointer-events-none"></div>
@@ -446,6 +393,9 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           </div>
         </div>
       </section>
+
+      {/* SECTION 5B: PACKAGES */}
+      <PricingTabs />
 
       {/* SECTION 6: LOCAL TRUST */}
       <section className="py-24 px-6 lg:px-12 bg-brandBg overflow-hidden">
