@@ -3,7 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Linkedin, Youtube, Facebook } from 'lucide-react';
+import { Phone } from 'lucide-react';
+import { telUrl, whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
 import { brandAssetUrl } from '../lib/settings-schema';
 import { useSiteSettings } from './SiteSettingsProvider';
 
@@ -65,22 +67,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest">Partner-Led Execution</span>
             </div>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-4 pt-2">
-              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
-                <Linkedin className="w-4 h-4" />
-              </a>
-
-              <a href="#" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
-                <Youtube className="w-4 h-4" />
-              </a>
-            </div>
+            {/* Social icons removed: they linked to "#". Add them back with real profile URLs. */}
           </div>
 
           {/* Foundation */}
@@ -181,6 +168,30 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                     {contact.email}
                   </a>
                 </div>
+                {/* Phone / WhatsApp */}
+                {contact.phone ? (
+                  <div className="flex gap-3 items-center">
+                    <div className="w-8 h-8 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-4 h-4 text-brandYellow" aria-hidden="true" />
+                    </div>
+                    <a
+                      href={telUrl(contact.phone)}
+                      onClick={() => trackContact('call', 'footer')}
+                      className="text-[14px] font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors"
+                    >
+                      {contact.phone}
+                    </a>
+                    <a
+                      href={whatsappUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackContact('whatsapp', 'footer')}
+                      className="text-[13px] font-semibold text-[#25D366] hover:underline"
+                    >
+                      WhatsApp
+                    </a>
+                  </div>
+                ) : null}
               </div>
 
               {/* Divider */}

@@ -1,6 +1,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Footer } from './Footer';
+import { submitLead } from '../lib/submit-lead';
+import { whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, ArrowRight, ChevronLeft, ShieldCheck, Zap, BarChart3, Target, Globe, Instagram, Building2, Briefcase, MapPin, Users, Wallet, Calendar } from 'lucide-react';
 
@@ -92,6 +95,7 @@ export const LeadCapturePage: React.FC<LeadCapturePageProps> = ({ onBack, onNavi
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   
   // Form State
   const [formData, setFormData] = useState({
@@ -167,27 +171,26 @@ export const LeadCapturePage: React.FC<LeadCapturePageProps> = ({ onBack, onNavi
       delete (submissionData as any).localGoal;
     }
 
-    fetch("https://formsubmit.co/ajax/thetechinfigo@gmail.com", {
-      method: "POST",
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        _subject: `New Lead Capture - ${formData.fullName} - ${formData.businessCategory.toUpperCase()}`,
-        ...submissionData
-      })
-    })
-    .then(() => {
+    // Goes through /api/leads so the lead is stored in the CRM with its
+    // attribution; that route also mirrors it to the inbox. If it fails the
+    // visitor is told, instead of seeing a success screen for a lost lead.
+    const { fullName, phoneNumber, websiteOrInsta, businessCategory, marketingBudget, startTime, ...rest } =
+      submissionData;
+    submitLead({
+      sourceForm: `lead-capture-${businessCategory || 'unknown'}`,
+      name: fullName,
+      phone: phoneNumber,
+      website: websiteOrInsta,
+      extra: { businessCategory, marketingBudget, startTime, ...rest },
+    }).then((result) => {
       setLoading(false);
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    })
-    .catch((error) => {
-      console.error('Form submission error:', error);
-      setLoading(false);
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (result.ok) {
+        setSubmitError(false);
+        setSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        setSubmitError(true);
+      }
     });
   };
 
@@ -258,7 +261,7 @@ export const LeadCapturePage: React.FC<LeadCapturePageProps> = ({ onBack, onNavi
             <div className="space-y-8 pt-4">
               <div className="space-y-4">
                 <button 
-                  onClick={() => window.open('https://calendly.com', '_blank')}
+                  onClick={() => { trackContact('whatsapp', 'lead-capture-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just submitted the audit form and would like to book my audit call.'), '_blank'); }}
                   className="w-full md:w-auto px-12 py-6 bg-[#fcb632] text-brandDark font-black text-lg uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-brandYellow/30"
                 >
                   Book Your Audit Call
@@ -266,7 +269,8 @@ export const LeadCapturePage: React.FC<LeadCapturePageProps> = ({ onBack, onNavi
                 
                 <div className="flex flex-col items-center gap-4">
                   <a 
-                    href="https://wa.me/yournumber" 
+                    href={whatsappUrl()}
+                    onClick={() => trackContact('whatsapp', 'lead-capture')} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-brandDark/60 hover:text-brandDark font-bold text-sm flex items-center gap-2 transition-colors"
@@ -719,6 +723,22 @@ export const LeadCapturePage: React.FC<LeadCapturePageProps> = ({ onBack, onNavi
                       </motion.div>
                     )}
                   </AnimatePresence>
+
+                  {submitError && (
+                    <p role="alert" className="text-sm font-medium text-red-600">
+                      Something went wrong sending your details. Please try again, or{' '}
+                      <a
+                        href={whatsappUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => trackContact('whatsapp', 'lead-capture-error')}
+                        className="underline font-bold"
+                      >
+                        message us on WhatsApp
+                      </a>
+                      .
+                    </p>
+                  )}
 
                   <div className="pt-8 flex flex-col sm:flex-row items-center gap-4">
                     {currentStep > 1 && (

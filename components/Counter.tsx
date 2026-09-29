@@ -22,11 +22,18 @@ export const Counter: React.FC<CounterProps> = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  
-  const [currentValue, setCurrentValue] = useState(0);
+
+  // Starts at the real value, so the server HTML, search engines, slow phones
+  // and anyone who never scrolls here see the number instead of "0.0x".
+  const [currentValue, setCurrentValue] = useState(value);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (isInView) {
+    if (isInView && !hasAnimated.current) {
+      hasAnimated.current = true;
+      // Respect the OS "reduce motion" setting: just show the value.
+      if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
       let startTime: number;
       let frameId: number;
 

@@ -2,6 +2,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
 import Image from 'next/image';
 import { 
   Zap, 
@@ -135,7 +137,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                 Get Free Growth Audit
               </button>
               <button 
-                onClick={() => window.open('https://wa.me/yournumber', '_blank')}
+                onClick={() => { trackContact('whatsapp', 'agra'); window.open(whatsappUrl(), '_blank'); }}
                 aria-label="Talk to Expert on WhatsApp"
                 className="w-full sm:w-auto px-8 py-4 bg-white/5 text-white border border-white/10 font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
               >

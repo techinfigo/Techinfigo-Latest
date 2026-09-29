@@ -1,4 +1,5 @@
 import { captureAttribution } from './attribution';
+import { trackLead } from './track';
 
 /**
  * Client-side submit helper shared by every public form.
@@ -10,7 +11,8 @@ import { captureAttribution } from './attribution';
 export type SubmitLeadInput = {
   sourceForm: string;
   name: string;
-  email: string;
+  /** Optional when a phone number is given; the server needs one or the other. */
+  email?: string;
   phone?: string;
   brandName?: string;
   website?: string;
@@ -67,7 +69,9 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
     });
 
     const data = (await response.json().catch(() => ({}))) as { ok?: boolean; stored?: boolean };
-    return { ok: response.ok && data.ok !== false, stored: Boolean(data.stored) };
+    const ok = response.ok && data.ok !== false;
+    if (ok) trackLead(input.sourceForm);
+    return { ok, stored: Boolean(data.stored) };
   } catch {
     return { ok: false, stored: false };
   }

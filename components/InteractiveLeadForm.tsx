@@ -2,6 +2,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
 import { submitLead } from '../lib/submit-lead';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -160,7 +162,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   };
 
   const isStepValid = () => {
-    if (currentStep === 1) return formData.fullName && formData.email && formData.businessName && formData.businessModel && formData.primaryObjective;
+    if (currentStep === 1) return formData.fullName && formData.phone && formData.businessName && formData.businessModel && formData.primaryObjective;
     if (currentStep === 2) return formData.services.length > 0;
     if (currentStep === 3) {
       const s = formData.services;
@@ -249,7 +251,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
             <div className="space-y-8 pt-4">
               <div className="space-y-4">
                 <button 
-                  onClick={() => window.open('https://calendly.com', '_blank')}
+                  onClick={() => { trackContact('whatsapp', 'interactive-form-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just submitted the audit form and would like to book my audit call.'), '_blank'); }}
                   className="w-full md:w-auto px-12 py-6 bg-[#fcb632] text-brandDark font-black text-lg uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-brandYellow/30"
                 >
                   Book Your Audit Call
@@ -257,7 +259,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                 
                 <div className="flex flex-col items-center gap-4">
                   <a 
-                    href="https://wa.me/yournumber" 
+                    href={whatsappUrl()}
+                    onClick={() => trackContact('whatsapp', 'interactive-form')} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-brandDark/60 hover:text-brandDark font-bold text-sm flex items-center gap-2 transition-colors"
@@ -443,10 +446,9 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div className="space-y-3">
-                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Email Address *</label>
+                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Email Address (Optional)</label>
                             <div className="relative group">
                               <input 
-                                required 
                                 type="email" 
                                 value={formData.email}
                                 onChange={(e) => updateField('email', e.target.value)}
@@ -457,9 +459,10 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                             </div>
                           </div>
                           <div className="space-y-3">
-                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">Phone Number (Optional)</label>
+                            <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em] ml-1">WhatsApp Number *</label>
                             <div className="relative group">
                               <input 
+                                required 
                                 type="tel" 
                                 value={formData.phone}
                                 onChange={(e) => updateField('phone', e.target.value)}

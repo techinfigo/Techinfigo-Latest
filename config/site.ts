@@ -22,8 +22,8 @@ export const site = {
     linkedin: '',
   },
 
-  /** TODO: not supplied yet. While empty, "telephone" is omitted from the LocalBusiness JSON-LD. */
-  phone: '',
+  /** Default public phone; the admin settings value overrides it when set. */
+  phone: '+91 95573 38487',
 
   /** Target customer revenue band, without the /mo or /month suffix. */
   icpBand: '₹20L–₹2Cr',
@@ -41,6 +41,24 @@ export const CONTACT = {
   email: 'contact@techinfigo.com',
   phone: site.phone,
 } as const;
+
+/**
+ * WhatsApp number in wa.me format: country code + number, digits only.
+ * Every WhatsApp button on the site builds its link from this one value.
+ */
+export const WHATSAPP_NUMBER = '919557338487';
+
+export const WHATSAPP_DEFAULT_MESSAGE =
+  'Hi Techinfigo, I would like a free website health check.';
+
+export function whatsappUrl(message: string = WHATSAPP_DEFAULT_MESSAGE): string {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+/** tel: link for any display-formatted phone number. */
+export function telUrl(phone: string): string {
+  return `tel:${phone.replace(/[^\d+]/g, '')}`;
+}
 
 /**
  * The three headline figures in the hero's before/after panel.

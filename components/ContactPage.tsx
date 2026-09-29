@@ -2,6 +2,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
 import { Footer } from './Footer';
 import { submitLead } from '../lib/submit-lead';
 import { motion, AnimatePresence } from 'motion/react';
@@ -189,7 +191,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
 
                   <div className="w-full max-w-md space-y-6">
                     <button 
-                      onClick={() => window.open('https://calendly.com', '_blank')}
+                      onClick={() => { trackContact('whatsapp', 'contact-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just submitted the audit form and would like to book my audit call.'), '_blank'); }}
                       className="w-full py-6 bg-brandYellow text-brandDark font-black text-sm uppercase tracking-[0.4em] rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_20px_40px_rgba(252,182,50,0.3)] group"
                     >
                       <span className="flex items-center justify-center gap-3">
@@ -199,7 +201,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
                     </button>
                     
                     <button 
-                      onClick={() => window.open('https://wa.me/91XXXXXXXXXX', '_blank')}
+                      onClick={() => { trackContact('whatsapp', 'contact'); window.open(whatsappUrl(), '_blank'); }}
                       className="group flex items-center justify-center gap-3 text-white/60 hover:text-white transition-all w-full"
                     >
                       <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all">

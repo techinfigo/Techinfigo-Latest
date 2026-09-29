@@ -6,6 +6,7 @@ import { getSiteSettings } from "../lib/settings";
 import { brandRouteUrl, type SiteSettings } from "../lib/settings-schema";
 import { Analytics } from "../components/Analytics";
 import { SiteSettingsProvider } from "../components/SiteSettingsProvider";
+import { ContactBar } from "../components/ContactBar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -109,7 +110,10 @@ export default async function RootLayout({
         />
         {/* The one place the settings cross into the client bundle — as a
             prop. Nothing under components/ imports lib/settings.ts. */}
-        <SiteSettingsProvider value={settings}>{children}</SiteSettingsProvider>
+        <SiteSettingsProvider value={settings}>
+          {children}
+          <ContactBar />
+        </SiteSettingsProvider>
         <Analytics />
       </body>
     </html>

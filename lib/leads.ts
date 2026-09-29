@@ -47,17 +47,20 @@ export type ParsedLead =
 export function parseLead(input: LeadInput): ParsedLead {
   const name = clean(input.name, FIELD_LIMITS.name);
   const email = clean(input.email, FIELD_LIMITS.email);
+  const phone = clean(input.phone, FIELD_LIMITS.phone);
 
   if (!name) return { ok: false, error: 'name is required' };
-  if (!email) return { ok: false, error: 'email is required' };
-  if (!looksLikeEmail(email)) return { ok: false, error: 'email is not a valid address' };
+  // Local business owners often leave email blank but always give a WhatsApp
+  // number, so either one is enough to follow up.
+  if (!email && !phone) return { ok: false, error: 'email or phone is required' };
+  if (email && !looksLikeEmail(email)) return { ok: false, error: 'email is not a valid address' };
 
   return {
     ok: true,
     lead: {
       name,
-      email,
-      phone: clean(input.phone, FIELD_LIMITS.phone),
+      email: email ?? '',
+      phone,
       brandName: clean(input.brandName, FIELD_LIMITS.brandName),
       website: clean(input.website, FIELD_LIMITS.website),
       monthlyRevenue: clean(input.monthlyRevenue, FIELD_LIMITS.monthlyRevenue),
