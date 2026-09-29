@@ -253,9 +253,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: 'circOut' }}
-                className="bg-white rounded-[3rem] p-8 lg:p-12 shadow-2xl shadow-brandDark/5 border border-brandDark/5 relative overflow-hidden"
+                className="bg-white rounded-[3rem] p-8 lg:p-12 shadow-[0_24px_70px_rgba(0,29,33,0.14),0_4px_14px_rgba(0,29,33,0.06)] border border-brandDark/10 relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-brandYellow/5 blur-[100px] rounded-full -mr-32 -mt-32"></div>
 
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
