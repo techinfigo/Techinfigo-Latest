@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone } from 'lucide-react';
+import { Instagram, Linkedin, Youtube, Facebook, Phone } from 'lucide-react';
 import { telUrl, whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 import { brandAssetUrl } from '../lib/settings-schema';
@@ -67,7 +67,22 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest">Partner-Led Execution</span>
             </div>
 
-            {/* Social icons removed: they linked to "#". Add them back with real profile URLs. */}
+            {/* Social Links */}
+            <div className="flex items-center gap-4 pt-2">
+              <a href="https://www.instagram.com/techinfigo/" target="_blank" rel="noopener noreferrer" aria-label="Techinfigo on Instagram" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="https://www.facebook.com/techinfigo/" target="_blank" rel="noopener noreferrer" aria-label="Techinfigo on Facebook" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="https://in.linkedin.com/company/techinfigo" target="_blank" rel="noopener noreferrer" aria-label="Techinfigo on LinkedIn" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Linkedin className="w-4 h-4" />
+              </a>
+
+              <a href="https://www.youtube.com/@techinfigo" target="_blank" rel="noopener noreferrer" aria-label="Techinfigo on YouTube" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-brandYellow hover:border-brandYellow/50 transition-all duration-300 group">
+                <Youtube className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
           {/* Foundation */}
@@ -174,22 +189,24 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                     <div className="w-8 h-8 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center flex-shrink-0">
                       <Phone className="w-4 h-4 text-brandYellow" aria-hidden="true" />
                     </div>
-                    <a
-                      href={telUrl(contact.phone)}
-                      onClick={() => trackContact('call', 'footer')}
-                      className="text-[14px] font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors"
-                    >
-                      {contact.phone}
-                    </a>
-                    <a
-                      href={whatsappUrl()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => trackContact('whatsapp', 'footer')}
-                      className="text-[13px] font-semibold text-[#25D366] hover:underline"
-                    >
-                      WhatsApp
-                    </a>
+                    <div className="flex flex-col">
+                      <a
+                        href={telUrl(contact.phone)}
+                        onClick={() => trackContact('call', 'footer')}
+                        className="text-[14px] font-normal text-white/90 tracking-tight hover:text-brandYellow transition-colors whitespace-nowrap"
+                      >
+                        {contact.phone}
+                      </a>
+                      <a
+                        href={whatsappUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => trackContact('whatsapp', 'footer')}
+                        className="text-[12px] font-semibold text-[#25D366] hover:underline"
+                      >
+                        Chat on WhatsApp
+                      </a>
+                    </div>
                   </div>
                 ) : null}
               </div>
