@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import PageClient from './PageClient';
 
 export const metadata: Metadata = {
-  title: 'Free D2C Profit Audit | Find Your Margin Leaks',
-  description: 'Book a free D2C profit audit and get a clear map of the margin leaks costing you money right now.',
+  title: 'Free Website & Marketing Health Check',
+  description: 'Get a free check of your website, Google profile and social pages. See the 3 things costing you enquiries, sent to you on WhatsApp within 24 hours.',
   alternates: {
     canonical: '/lead-capture',
   },
   openGraph: {
-    title: 'Free D2C Profit Audit | Find Your Margin Leaks',
-    description: 'Book a free D2C profit audit and get a clear map of the margin leaks costing you money right now.',
+    title: 'Free Website & Marketing Health Check',
+    description: 'Get a free check of your website, Google profile and social pages. See the 3 things costing you enquiries, sent to you on WhatsApp within 24 hours.',
     url: '/lead-capture',
   },
 };
