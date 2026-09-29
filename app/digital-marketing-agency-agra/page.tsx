@@ -5,23 +5,19 @@ import { AgraLandingPageWrapper } from '../../components/AgraLandingPageWrapper'
 import { Footer } from '../../components/Footer';
 import { getSiteSettings } from '../../lib/settings';
 
+const TITLE = 'Digital Marketing & Website Development in Agra | Techinfigo';
+const DESCRIPTION =
+  'Websites, Google profile, social media and ads for Agra businesses, with a free CRM to track every enquiry. Get a free website health check today.';
+
 export const metadata: Metadata = {
-  title: { absolute: 'Digital Marketing Agency in Agra | #1 ROI-Focused Agency - Techinfigo' },
-  description: 'Techinfigo is the leading digital marketing agency in Agra. We help brands in Sanjay Place, Fatehabad Road & beyond scale with Facebook Ads, Google Ads, and SEO. Get a free audit today.',
-  keywords: 'digital marketing agency agra, seo services agra, facebook ads agra, google ads agency agra, web development agra, ecommerce growth agra, marketing agency in agra uttar pradesh',
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
   openGraph: {
-    title: 'Digital Marketing Agency in Agra | Techinfigo',
-    description: 'Stop burning cash on ads. We build performance-focused strategies that drive real leads and profit for brands in Agra.',
+    title: TITLE,
+    description: DESCRIPTION,
     url: 'https://www.techinfigo.com/digital-marketing-agency-agra',
     siteName: 'Techinfigo',
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200',
-        width: 1200,
-        height: 630,
-        alt: 'Techinfigo Agra Digital Marketing',
-      },
-    ],
+    images: ['https://www.techinfigo.com/og-image.jpg'],
     locale: 'en_IN',
     type: 'website',
   },
@@ -37,19 +33,19 @@ export default async function AgraLanding() {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "Techinfigo Digital Marketing Agency Agra",
-    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
+    "image": "https://www.techinfigo.com/og-image.jpg",
     "@id": "https://www.techinfigo.com/digital-marketing-agency-agra",
     "url": "https://www.techinfigo.com/digital-marketing-agency-agra",
     // Omitted entirely while unset — an invalid telephone is worse than none.
     ...(settings.contact.phone ? { "telephone": settings.contact.phone } : {}),
     "priceRange": "$$",
-    "description": "Agra's leading ROI-focused digital marketing agency. Specializing in SEO, Facebook Ads, and Google Ads for local businesses in Sanjay Place, Fatehabad Road, and Civil Lines.",
+    "description": "Founder-led digital marketing and website development agency in Sanjay Place, Agra. Websites, Google Business Profile, SEO, social media and Meta/Google ads, with a free CRM to track every enquiry.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Sanjay Place",
+      "streetAddress": "Office no. 03, Second Floor, Block no. 25, Sanjay Place, Civil Lines",
       "addressLocality": "Agra",
       "postalCode": "282002",
-      "addressRegion": "UP",
+      "addressRegion": "Uttar Pradesh",
       "addressCountry": "IN"
     },
     "areaServed": [
@@ -85,8 +81,10 @@ export default async function AgraLanding() {
       "closes": "19:00"
     },
     "sameAs": [
-      "https://www.facebook.com/techinfigo",
-      "https://www.instagram.com/techinfigo"
+      "https://www.facebook.com/techinfigo/",
+      "https://www.instagram.com/techinfigo/",
+      "https://in.linkedin.com/company/techinfigo",
+      "https://www.youtube.com/@techinfigo"
     ]
   };
 

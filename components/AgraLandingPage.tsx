@@ -4,7 +4,6 @@
 import React, { useState, useEffect } from 'react';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
-import Image from 'next/image';
 import { 
   Zap, 
   Target, 
@@ -44,48 +43,55 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
   const services = [
     {
       title: "Facebook & Instagram Ads",
-      desc: "Stop burning cash on 'boost posts'. We build high-ROAS funnels that turn Agra's social users into paying customers. Best for retail & showrooms in Sanjay Place.",
+      desc: "Stop burning cash on 'boost posts'. Lead ads and click-to-WhatsApp campaigns that bring real enquiries, not just likes. Every lead lands in your free CRM.",
       icon: <Facebook className="w-6 h-6" />,
-      keyword: "facebook ads agency agra"
     },
     {
-      title: "Google Ads (PPC)",
-      desc: "Get found by people actively searching for your services in Agra. High-intent traffic that converts into immediate leads for hotels, schools, and hospitals.",
+      title: "Google Ads",
+      desc: "Reach people at the exact moment they search for your service in Agra. Every call and form enquiry is tracked, so you see what each one costs.",
       icon: <Search className="w-6 h-6" />,
-      keyword: "google ads services agra"
     },
     {
       title: "Website Development",
-      desc: "A slow website is a profit killer. We build lightning-fast, conversion-optimized websites for Agra businesses that look great on mobile.",
+      desc: "Fast, mobile-friendly websites with WhatsApp and call buttons on every page. Already have a website? We upgrade it to bring enquiries instead of rebuilding it.",
       icon: <Globe className="w-6 h-6" />,
-      keyword: "web design company agra"
     },
     {
       title: "Ecommerce (D2C) Growth",
-      desc: "Scaling your Agra-based brand to a national level. We handle everything from CAC optimization to LTV growth for leather & handicraft brands.",
+      desc: "Taking your Agra-based brand to customers across India, from store improvements to Meta sales campaigns for leather, handicraft and food brands.",
       icon: <ShoppingCart className="w-6 h-6" />,
-      keyword: "ecommerce marketing agra"
     },
     {
-      title: "SEO Services",
-      desc: "Dominate the local search results. We help you rank #1 on Google for keywords your Agra customers are using every day.",
+      title: "SEO & Google Business Profile",
+      desc: "Show up when Agra customers search for your service on Google and Maps, with an optimised Google profile, reviews and pages built for local search.",
       icon: <TrendingUp className="w-6 h-6" />,
-      keyword: "best seo agency agra"
     }
+  ];
+
+  const prices = [
+    { title: "Website Enquiry Upgrade", price: "₹4,999", unit: "one-time", desc: "Keep your current website. We add WhatsApp and call buttons, connect enquiries to your free CRM, and fix speed and mobile issues." },
+    { title: "Website Development", price: "₹9,999", unit: "one-time", desc: "A new mobile-friendly website of up to 5 pages, with WhatsApp and call buttons and basic Google Business Profile setup." },
+    { title: "Social Media Marketing", price: "₹7,999", unit: "per month", desc: "Instagram and Facebook management: 12 posts a month (8 designs + 4 reels) and a monthly report." },
+    { title: "Local SEO & Google Profile", price: "₹7,999", unit: "per month", desc: "Google Business Profile optimisation, weekly posts, review system, local listings and a monthly report." },
+    { title: "Facebook & Instagram Ads", price: "₹14,999", unit: "per month", desc: "Lead ads or click-to-WhatsApp campaigns managed for you, plus 12 posts a month. Ad budget separate." },
   ];
 
   const faqs = [
     {
       q: "How much does digital marketing cost in Agra?",
-      a: "Our pricing is performance-linked. We don't have 'packages'. We build custom growth plans based on your revenue goals. Whether you're a small business in Kamla Nagar or a large brand in Sanjay Place, we ensure every rupee generates ROI."
+      a: "Our starting prices: Website Enquiry Upgrade from ₹4,999, Website Development from ₹9,999, Social Media Marketing and Local SEO from ₹7,999 a month, and Facebook & Instagram Ads from ₹14,999 a month (ad budget separate). The exact quote comes after a free website health check."
     },
     {
       q: "How soon can I see results for my Agra business?",
-      a: "For Paid Ads (FB/Google), you can see leads within 48-72 hours. For SEO in Agra, it typically takes 3-6 months to dominate local search results. We focus on 'quick wins' while building long-term assets for your brand."
+      a: "Paid ads usually start bringing enquiries within the first 2–4 weeks, once campaigns are tested. SEO and Google profile work takes 3–6 months. We never promise exact numbers, but every enquiry is tracked in your free CRM, so you can see what is working."
     },
     {
-      q: "Do you work with local retail stores in Agra?",
-      a: "Absolutely. We specialize in driving footfall and online sales for Agra-based retail stores, showrooms, and D2C brands. We understand the local consumer behavior in markets like Shahganj and Raja Ki Mandi."
+      q: "What is the free CRM?",
+      a: "Every client gets a simple dashboard where each call, WhatsApp and form enquiry is recorded in one place, with an alert on your phone. You always know how many enquiries came in and from where. It is included in every package at no extra cost."
+    },
+    {
+      q: "Do you work with local shops and businesses in Agra?",
+      a: "Yes. We work with shops, showrooms, clinics, coaching centres, hotels and restaurants, and with Agra brands that sell online."
     }
   ];
 
@@ -94,14 +100,14 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
       
       {/* Sticky CTA for Mobile/Desktop */}
       <div 
-        className={`fixed bottom-6 left-0 right-0 z-[100] px-6 md:hidden transition-transform duration-500 ${isStickyVisible ? 'translate-y-0' : 'translate-y-32'}`}
+        className={`fixed bottom-20 left-0 right-0 z-[100] px-6 md:hidden transition-transform duration-500 ${isStickyVisible ? 'translate-y-0' : 'translate-y-32'}`}
       >
         <button 
           onClick={onBookAudit}
           className="w-full bg-[#fcb632] text-brandDark py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3"
         >
           <Zap className="w-5 h-5 fill-current" />
-          Get Free Audit
+          Get Free Health Check
         </button>
       </div>
 
@@ -118,23 +124,23 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             </div>
             
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tighter uppercase">
-              #1 Digital Marketing <br/>
-              <span className="text-brandYellow">Agency in Agra</span> <br/>
-              To Scale Your <br/>
-              Business Profitably.
+              Websites & Marketing <br/>
+              <span className="text-brandYellow">for Agra Businesses</span> <br/>
+              With Every <br/>
+              Enquiry Tracked.
             </h1>
             
             <p className="text-base md:text-lg text-white/60 font-medium leading-relaxed max-w-xl">
-              Stop settling for vanity metrics. We build performance-focused strategies that drive real leads, sales, and profit for brands in Sanjay Place, Fatehabad Road, and across Agra.
+              We build websites that bring enquiries and run your Google profile, social media and ads. Every client gets a free CRM, so you see every call, WhatsApp and form enquiry in one place.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
               <button 
                 onClick={onBookAudit}
-                aria-label="Get Free Growth Audit"
+                aria-label="Get Free Website Health Check"
                 className="w-full sm:w-auto px-8 py-4 bg-[#fcb632] text-brandDark font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(252,182,50,0.3)]"
               >
-                Get Free Growth Audit
+                Get Free Health Check
               </button>
               <button 
                 onClick={() => { trackContact('whatsapp', 'agra'); window.open(whatsappUrl(), '_blank'); }}
@@ -148,8 +154,8 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
 
             <div className="flex items-center gap-8 pt-6 border-t border-white/5">
               <div className="space-y-1">
-                <p className="text-xl font-black text-white">100%</p>
-                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">ROI Focused</p>
+                <p className="text-xl font-black text-white">Free</p>
+                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">CRM Included</p>
               </div>
               <div className="space-y-1">
                 <p className="text-xl font-black text-white">24h</p>
@@ -157,7 +163,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               </div>
               <div className="space-y-1">
                 <p className="text-xl font-black text-white">Agra</p>
-                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Local Expertise</p>
+                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Local Office</p>
               </div>
             </div>
           </div>
@@ -166,14 +172,14 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             <div className="relative z-10 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-sm">
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-black text-white uppercase tracking-widest">Live Growth Feed</p>
+                  <p className="text-xs font-black text-white uppercase tracking-widest">What Every Client Gets</p>
                   <div className="w-2 h-2 rounded-full bg-brandYellow animate-pulse" aria-hidden="true"></div>
                 </div>
                 
                 {[
-                  { label: "New Lead Captured", time: "2 mins ago", val: "+₹45k Potential" },
-                  { label: "ROAS Optimized", time: "15 mins ago", val: "4.2x ROAS" },
-                  { label: "SEO Ranking #1", time: "1 hour ago", val: "Agra Local" }
+                  { label: "Enquiry Dashboard", time: "Calls, WhatsApp & forms in one place", val: "Free CRM" },
+                  { label: "Instant Alerts", time: "Know the moment an enquiry arrives", val: "On Your Phone" },
+                  { label: "Monthly Report", time: "Enquiries, cost & what changes next", val: "Every Month" }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
                     <div className="space-y-1">
@@ -229,7 +235,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
 
               <div className="p-8 bg-brandDark text-white rounded-[2.5rem] space-y-4">
                 <p className="text-xl font-bold italic">"We fix the root problem, not just run ads."</p>
-                <p className="text-white/40 text-sm">Most agencies in Agra focus on vanity metrics. We focus on your P&L.</p>
+                <p className="text-white/40 text-sm">We focus on enquiries and sales, not likes and followers.</p>
               </div>
             </div>
 
@@ -240,20 +246,20 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                     <Zap className="w-10 h-10 text-brandDark" aria-hidden="true" />
                   </div>
                   <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">The Growth Engine</h3>
-                  <p className="text-brandDark/40 font-medium">We audit your entire funnel to find where the money is leaking.</p>
+                  <p className="text-brandDark/40 font-medium">We check your website, Google profile and social pages to find where enquiries are being lost.</p>
                   <button 
                     onClick={onBookAudit}
-                    aria-label="See How Our Growth Engine Works"
+                    aria-label="Get a Free Website Health Check"
                     className="text-brandDark font-black text-xs uppercase tracking-widest border-b-2 border-brandYellow pb-1 hover:text-brandYellow transition-colors"
                   >
-                    See How It Works
+                    Get Free Health Check
                   </button>
                 </div>
               </div>
               {/* Floating badges */}
               <div className="absolute -top-6 -right-6 bg-white shadow-2xl p-4 rounded-2xl border border-brandDark/20 animate-bounce-subtle">
-                <p className="text-[10px] font-black uppercase text-brandDark/40">Efficiency</p>
-                <p className="text-lg font-black text-brandDark">+42%</p>
+                <p className="text-[10px] font-black uppercase text-brandDark/40">Health Check</p>
+                <p className="text-lg font-black text-brandDark">Free</p>
               </div>
             </div>
           </div>
@@ -288,17 +294,65 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                 <p className="text-brandDark/60 text-sm leading-relaxed font-medium mb-8">
                   {service.desc}
                 </p>
-                <button 
-                  onClick={onBookAudit}
-                  aria-label={`Get ${service.title} Plan`}
+                <button
+                  onClick={() => {
+                    trackContact('whatsapp', `agra-service-${service.title}`);
+                    window.open(whatsappUrl(`Hi Techinfigo, I would like to know more about ${service.title} for my business.`), '_blank');
+                  }}
+                  aria-label={`Ask about ${service.title} on WhatsApp`}
                   className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brandDark group-hover:text-brandYellow transition-colors"
                 >
-                  Get {service.title.split(' ')[0]} Plan
+                  Ask About This
                   <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </button>
-                <p className="mt-4 text-[9px] font-bold text-brandDark/10 uppercase tracking-widest">{service.keyword}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3B: STARTING PRICES */}
+      <section className="py-24 px-6 lg:px-12 bg-white">
+        <div className="max-w-7xl mx-auto space-y-16">
+          <div className="text-center space-y-4">
+            <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Clear Pricing</span>
+            <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase">
+              Starting <br className="md:hidden"/> Prices.
+            </h2>
+            <p className="text-brandDark/40 text-lg font-medium max-w-2xl mx-auto">
+              Every package includes a free CRM, so every call, WhatsApp and form enquiry is tracked.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {prices.map((item, i) => (
+              <div
+                key={i}
+                className="bg-white p-10 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:border-brandYellow/40 transition-all duration-500 group hover:-translate-y-3"
+              >
+                <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight mb-4 leading-tight">
+                  {item.title}
+                </h3>
+                <p className="mb-6">
+                  <span className="text-[11px] font-bold text-brandDark/40 uppercase tracking-widest">From </span>
+                  <span className="text-3xl font-black text-brandDark">{item.price}</span>
+                  <span className="text-[11px] font-bold text-brandDark/40 uppercase tracking-widest"> {item.unit}</span>
+                </p>
+                <p className="text-brandDark/60 text-sm leading-relaxed font-medium">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={onBookAudit}
+              aria-label="Get a Free Website Health Check"
+              className="px-8 py-4 bg-[#fcb632] text-brandDark font-black text-sm uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(252,182,50,0.3)]"
+            >
+              Get Free Health Check
+            </button>
           </div>
         </div>
       </section>
@@ -322,8 +376,8 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
                 {[
                   { title: "Data-Driven Strategy", desc: "We don't guess. We use real-time data to pivot and scale.", icon: <BarChart3 className="w-5 h-5" /> },
                   { title: "ROI Focused", desc: "Vanity metrics don't pay bills. We focus on your bottom line.", icon: <TrendingUp className="w-5 h-5" /> },
-                  { title: "Custom Growth Plans", desc: "No generic packages. Every Agra business gets a unique roadmap.", icon: <Target className="w-5 h-5" /> },
-                  { title: "Transparent Reporting", desc: "Real-time dashboards so you know exactly where your money goes.", icon: <ShieldCheck className="w-5 h-5" /> }
+                  { title: "Clear Packages", desc: "Fixed starting prices, with a plan built around your business.", icon: <Target className="w-5 h-5" /> },
+                  { title: "Transparent Reporting", desc: "Your free CRM shows every enquiry, so you know exactly what your money brings.", icon: <ShieldCheck className="w-5 h-5" /> }
                 ].map((item, i) => (
                   <div key={i} className="space-y-4">
                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-brandYellow">
@@ -336,15 +390,15 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               </div>
             </div>            <div className="bg-white/5 border border-white/10 rounded-[3rem] p-12 space-y-10">
               <div className="text-center space-y-2">
-                <p className="text-4xl font-black text-brandYellow">₹10Cr+</p>
-                <p className="text-xs font-bold text-white/40 uppercase tracking-widest">System Revenue Benchmark</p>
+                <p className="text-4xl font-black text-brandYellow">Free CRM</p>
+                <p className="text-xs font-bold text-white/40 uppercase tracking-widest">With Every Package</p>
               </div>
               <div className="h-px bg-white/10 w-full"></div>
               <div className="space-y-6 text-center">
                 <div className="space-y-2">
-                  <p className="text-sm font-black uppercase text-white tracking-widest">Founding Partner Program</p>
+                  <p className="text-sm font-black uppercase text-white tracking-widest">Founder-Led</p>
                   <p className="text-base font-medium text-white/60 italic">
-                    "We are currently reserving capacity for our first 3 core partners in the Agra market. Direct access to founding strategists only."
+                    "You work directly with Sachin, the founder. I handle every project personally, so I take on a limited number each month."
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-4">
@@ -368,7 +422,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           <div className="text-center space-y-4">
             <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Your Growth Plan</span>
             <h2 className="text-4xl md:text-6xl font-black text-brandDark tracking-tighter uppercase leading-none">
-              The Path To <br className="md:hidden"/> Profit in Agra.
+              How We <br className="md:hidden"/> Work.
             </h2>
           </div>
 
@@ -377,9 +431,9 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-brandDark/10 -translate-y-1/2 z-0"></div>
             
             {[
-              { step: "01", title: "Free Profit Audit", desc: "We analyze your unit economics and current spends to find exactly where the profit leaks are hiding.", icon: <Search className="w-6 h-6" /> },
-              { step: "02", title: "Custom Blueprint", desc: "No generic templates. We build a specialized growth roadmap for your specific margin profile.", icon: <Target className="w-6 h-6" /> },
-              { step: "03", title: "Scale with Margin", desc: "We execute the infrastructure upgrades and scale your spends only when it makes financial sense.", icon: <Zap className="w-6 h-6" /> }
+              { step: "01", title: "Free Health Check", desc: "We check your website, Google profile and social pages and show you 3 things costing you enquiries.", icon: <Search className="w-6 h-6" /> },
+              { step: "02", title: "Clear Plan & Price", desc: "You get a simple plan with a fixed price. No hidden costs, and ad budget is always separate.", icon: <Target className="w-6 h-6" /> },
+              { step: "03", title: "Build & Track", desc: "We build and run it, and every call, WhatsApp and form enquiry lands in your free CRM.", icon: <Zap className="w-6 h-6" /> }
             ].map((item, i) => (
               <div key={i} className="relative z-10 bg-white p-8 rounded-[2.5rem] border border-brandDark/20 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-brandYellow/30 transition-all duration-300 text-center space-y-6">
                 <div className="w-16 h-16 bg-brandDark text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-xl">
@@ -405,7 +459,7 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
               </h2>
             </div>
             <p className="text-lg text-brandDark/70 font-medium leading-relaxed">
-              Agra is a unique market with deep-rooted traditions and rapidly evolving digital habits. From the bustling commercial hubs of Sanjay Place to the premium residential areas of Dayalbagh and Kamla Nagar, we understand the local consumer behavior better than any outside agency. 
+              We're based in Sanjay Place and work with businesses across Agra, from the commercial hubs to Dayalbagh and Kamla Nagar. Meet us in person, or talk to us on WhatsApp. 
             </p>
             <div className="flex flex-wrap gap-4">
               {["Sanjay Place", "Sikandra", "Kamla Nagar", "Dayalbagh", "Fatehabad Road", "Shahganj", "Raja Ki Mandi"].map((loc, i) => (
@@ -418,13 +472,6 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           
           <div className="relative group">
             <div className="aspect-video bg-brandDark/5 rounded-[3rem] border border-brandDark/5 overflow-hidden flex items-center justify-center relative">
-              <Image 
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
-                alt="Agra Office" 
-                fill
-                className="object-cover opacity-20 group-hover:scale-110 transition-transform duration-700"
-                referrerPolicy="no-referrer"
-              />
               <div className="text-center space-y-4 relative z-10">
                 <MapPin className="w-12 h-12 text-brandYellow mx-auto" aria-hidden="true" />
                 <p className="text-xs font-black uppercase text-brandDark/40 tracking-widest">Operating Focus</p>
@@ -433,8 +480,8 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             </div>
             {/* Floating stats */}
             <div className="absolute -bottom-6 -right-6 bg-brandYellow p-6 rounded-2xl shadow-2xl">
-              <p className="text-[10px] font-black uppercase text-brandDark/60">Current Openings</p>
-              <p className="text-2xl font-black text-brandDark">03</p>
+              <p className="text-[10px] font-black uppercase text-brandDark/60">Based In</p>
+              <p className="text-2xl font-black text-brandDark">Sanjay Place</p>
             </div>
           </div>
         </div>
@@ -449,18 +496,18 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             <span className="text-brandYellow">On Marketing That <br /> Doesn't Work.</span>
           </h2>
           <p className="text-xl text-white/60 font-medium max-w-2xl mx-auto">
-            Get a free profit audit and see exactly what’s holding your business back in the Agra market. No strings attached.
+            Get a free website health check and see exactly what is stopping your enquiries. No charge, no pressure.
           </p>
           <div className="pt-6">
             <button 
               onClick={onBookAudit}
-              aria-label="Get My Free Profit Audit Now"
+              aria-label="Get My Free Website Health Check"
               className="px-12 py-6 bg-[#fcb632] text-brandDark font-black text-xl uppercase tracking-[0.3em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-[0_0_50px_rgba(252,182,50,0.4)]"
             >
-              Get My Free Profit Audit
+              Get My Free Health Check
             </button>
           </div>
-          <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.5em]">Limited slots available for founding partners this month</p>
+          <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.5em]">Or WhatsApp us on +91 95573 38487</p>
         </div>
       </section>
 
