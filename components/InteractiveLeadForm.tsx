@@ -112,75 +112,23 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
               </p>
             </div>
 
-            {/* The 3 Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { title: "I Review", desc: "Your website, Google profile and social pages.", icon: <BarChart3 className="w-6 h-6" /> },
-                { title: "Find the Gaps", desc: "The 3 things costing you enquiries.", icon: <Zap className="w-6 h-6" /> },
-                { title: "Share on WhatsApp", desc: "Clear findings and fixes, with no obligation.", icon: <Target className="w-6 h-6" /> }
-              ].map((card, i) => (
-                <div key={i} className="bg-white p-8 rounded-[2rem] border border-brandDark/5 shadow-xl space-y-4 text-left relative overflow-hidden group hover:border-brandYellow/50 transition-colors">
-                  <div className="w-12 h-12 bg-brandDark/5 rounded-2xl flex items-center justify-center text-brandDark group-hover:bg-brandYellow transition-colors">
-                    {card.icon}
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="font-black uppercase text-sm tracking-tight">{card.title}</h3>
-                    <p className="text-brandDark/40 text-xs leading-relaxed font-medium">{card.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
             {/* Primary Action */}
-            <div className="space-y-8 pt-4">
-              <div className="space-y-4">
-                <button 
-                  onClick={() => { trackContact('whatsapp', 'interactive-form-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just requested a free health check for my business.'), '_blank'); }}
-                  className="w-full md:w-auto px-12 py-6 bg-[#fcb632] text-brandDark font-black text-lg uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-brandYellow/30"
-                >
-                  Chat on WhatsApp Now
-                </button>
-                
-                <div className="flex flex-col items-center gap-4">
-                  <a 
-                    href={whatsappUrl()}
-                    onClick={() => trackContact('whatsapp', 'interactive-form')} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-brandDark/60 hover:text-brandDark font-bold text-sm flex items-center gap-2 transition-colors"
-                  >
-                    Want faster response? <span className="text-[#25D366] underline">Chat on WhatsApp</span>
-                  </a>
-                  
-                  <p className="text-brandYellow text-[11px] font-black uppercase tracking-[0.3em] animate-pulse">
-                    I'll WhatsApp you within 24 hours
-                  </p>
-                </div>
-              </div>
-
-              {/* Value Reminder */}
-              <div className="bg-brandDark/5 rounded-[2.5rem] p-8 space-y-6 border border-brandDark/5">
-                <p className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.4em]">Your health check includes:</p>
-                <div className="flex flex-wrap justify-center gap-8">
-                  {[
-                    "3 issues costing enquiries",
-                    "How to fix each one",
-                    "Honest recommendation"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
-                      <span className="text-xs font-black uppercase tracking-tight text-brandDark">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
+            <div className="space-y-6">
               <button 
-                onClick={onBack}
-                className="text-brandDark/40 hover:text-brandDark font-black text-[10px] uppercase tracking-[0.4em] transition-colors"
+                onClick={() => { trackContact('whatsapp', 'interactive-form-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just requested a free health check for my business.'), '_blank'); }}
+                className="w-full md:w-auto px-12 py-6 bg-[#fcb632] text-brandDark font-black text-lg uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-brandYellow/30"
               >
-                Go Back to Home
+                Chat on WhatsApp Now
               </button>
+
+              <div>
+                <button 
+                  onClick={onBack}
+                  className="text-brandDark/50 hover:text-brandDark font-black text-[11px] uppercase tracking-[0.4em] transition-colors"
+                >
+                  Go Back to Home
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>
