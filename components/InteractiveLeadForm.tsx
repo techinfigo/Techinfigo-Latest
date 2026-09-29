@@ -130,7 +130,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   };
 
   const nextStep = () => {
-    if (currentStep < 4) setCurrentStep(prev => prev + 1);
+    if (currentStep < 3) setCurrentStep(prev => prev + 1);
   };
 
   const prevStep = () => {
@@ -164,45 +164,9 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   const isStepValid = () => {
     if (currentStep === 1) return formData.fullName && formData.phone && formData.businessName && formData.businessModel && formData.primaryObjective;
     if (currentStep === 2) return formData.services.length > 0;
-    if (currentStep === 3) {
-      const s = formData.services;
-      
-      // If none selected somehow (should be caught by step 2 validation)
-      if (s.length === 0) return true;
-
-      // Validate Ecommerce
-      if (s.includes('Ecommerce Growth (D2C)')) {
-        if (!(formData.revenue && formData.runningAds && formData.platform && formData.problems.length > 0)) return false;
-      }
-      
-      // Validate Ads
-      if (s.includes('Facebook / Instagram Ads') || s.includes('Google Ads')) {
-        if (!(formData.adSpend && formData.performance && formData.adIssues.length > 0)) return false;
-      }
-
-      // Validate Website
-      if (s.includes('Website Development') || s.includes('Landing Page')) {
-        if (!(formData.websiteType && formData.designReady && formData.websiteTimeline && formData.websiteBudget)) return false;
-      }
-
-      // Validate App
-      if (s.includes('App Development')) {
-        if (!(formData.appType && formData.appStage && formData.appFeatures.length > 0 && formData.appBudget)) return false;
-      }
-
-      // Validate SEO
-      if (s.includes('SEO')) {
-        if (!(formData.seoTraffic && formData.seoGoal.length > 0)) return false;
-      }
-
-      // Validate Other
-      if (s.includes('Other')) {
-        if (formData.otherHelp === '') return false;
-      }
-
-      return true;
-    }
-    if (currentStep === 4) return formData.finalBudget && formData.finalTimeline;
+    // Step 3: the service questions are optional (owners often don't know
+    // these numbers offhand); only budget and timeline are needed to submit.
+    if (currentStep === 3) return formData.finalBudget && formData.finalTimeline;
     return false;
   };
 
@@ -221,19 +185,19 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                 <Check className="w-10 h-10 text-brandDark" strokeWidth={3} />
               </div>
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brandDark">
-                APPLICATION LOGGED.
+                REQUEST RECEIVED.
               </h2>
               <p className="text-brandDark/60 text-lg font-medium max-w-xl mx-auto">
-                Your data is being processed by our growth engineers. We'll be in touch shortly.
+                Thank you! I'll personally review your business and WhatsApp you within 24 hours.
               </p>
             </div>
 
             {/* The 3 Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { title: "Review Data", desc: "Our team analyzes your unit economics.", icon: <BarChart3 className="w-6 h-6" /> },
-                { title: "Identify Leaks", desc: "We find exactly where you're losing money.", icon: <Zap className="w-6 h-6" /> },
-                { title: "Share Audit", desc: "We deliver your custom scaling roadmap.", icon: <Target className="w-6 h-6" /> }
+                { title: "I Review", desc: "Your website, Google profile and social pages.", icon: <BarChart3 className="w-6 h-6" /> },
+                { title: "Find the Gaps", desc: "The 3 things costing you enquiries.", icon: <Zap className="w-6 h-6" /> },
+                { title: "Share on WhatsApp", desc: "Clear findings and fixes, with no obligation.", icon: <Target className="w-6 h-6" /> }
               ].map((card, i) => (
                 <div key={i} className="bg-white p-8 rounded-[2rem] border border-brandDark/5 shadow-xl space-y-4 text-left relative overflow-hidden group hover:border-brandYellow/50 transition-colors">
                   <div className="w-12 h-12 bg-brandDark/5 rounded-2xl flex items-center justify-center text-brandDark group-hover:bg-brandYellow transition-colors">
@@ -251,10 +215,10 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
             <div className="space-y-8 pt-4">
               <div className="space-y-4">
                 <button 
-                  onClick={() => { trackContact('whatsapp', 'interactive-form-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just submitted the audit form and would like to book my audit call.'), '_blank'); }}
+                  onClick={() => { trackContact('whatsapp', 'interactive-form-book-call'); window.open(whatsappUrl('Hi Techinfigo, I just requested a free health check for my business.'), '_blank'); }}
                   className="w-full md:w-auto px-12 py-6 bg-[#fcb632] text-brandDark font-black text-lg uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-brandYellow/30"
                 >
-                  Book Your Audit Call
+                  Chat on WhatsApp Now
                 </button>
                 
                 <div className="flex flex-col items-center gap-4">
@@ -269,19 +233,19 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                   </a>
                   
                   <p className="text-brandYellow text-[11px] font-black uppercase tracking-[0.3em] animate-pulse">
-                    You’ll receive your audit within 24 hours
+                    I'll WhatsApp you within 24 hours
                   </p>
                 </div>
               </div>
 
               {/* Value Reminder */}
               <div className="bg-brandDark/5 rounded-[2.5rem] p-8 space-y-6 border border-brandDark/5">
-                <p className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.4em]">Your audit will include:</p>
+                <p className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.4em]">Your health check includes:</p>
                 <div className="flex flex-wrap justify-center gap-8">
                   {[
-                    "Profit leak breakdown",
-                    "Funnel analysis",
-                    "Scaling roadmap"
+                    "3 issues costing enquiries",
+                    "How to fix each one",
+                    "Honest recommendation"
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full bg-brandYellow"></div>
@@ -316,15 +280,15 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
               
               <div className="space-y-2 relative z-10">
-                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">The Strategy</p>
-                <h2 className="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase leading-none">Your Growth <br/> Starts Here</h2>
+                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">What You Get</p>
+                <h2 className="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase leading-none">Free Health <br/> Check</h2>
               </div>
 
               <div className="space-y-6 relative z-10">
                 {[
-                  { title: "Custom Blueprint", desc: "No cookie-cutter plans. We build for your specific goals.", icon: <Layout className="w-5 h-5" /> },
-                  { title: "Data-Driven", desc: "Every decision is backed by unit economics and ROI.", icon: <BarChart3 className="w-5 h-5" /> },
-                  { title: "Rapid Execution", desc: "We move fast to test, optimize, and scale winning hooks.", icon: <Zap className="w-5 h-5" /> }
+                  { title: "Honest Review", desc: "I check your website, Google profile and social pages.", icon: <Layout className="w-5 h-5" /> },
+                  { title: "3 Clear Fixes", desc: "The 3 things costing you enquiries, and how to fix each one.", icon: <BarChart3 className="w-5 h-5" /> },
+                  { title: "Founder-Led", desc: "You talk directly with Sachin, the founder. No call centre.", icon: <Zap className="w-5 h-5" /> }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-5 group">
                     <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500">
@@ -344,8 +308,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                     <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold text-white uppercase tracking-widest">Confidential</p>
-                    <p className="text-[11px] font-medium text-white/50">Your data is safe with our internal growth team.</p>
+                    <p className="text-[10px] font-bold text-white uppercase tracking-widest">Your Privacy</p>
+                    <p className="text-[11px] font-medium text-white/50">Your details stay private and are never shared or sold.</p>
                   </div>
                 </div>
               </div>
@@ -362,25 +326,24 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                           <div className="space-y-3">
                             <div className="flex items-center gap-2">
                               <span className="w-8 h-px bg-brandYellow"></span>
-                              <p className="text-brandYellow text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em]">Growth Audit Application</p>
+                              <p className="text-brandYellow text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em]">Free Health Check</p>
                             </div>
                             <h1 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tight uppercase leading-none">
-                              {currentStep === 1 && "Start Your Profile"}
-                              {currentStep === 2 && "Growth Tools"}
-                              {currentStep === 3 && "Unit Economics"}
-                              {currentStep === 4 && "Final Roadmap"}
+                              {currentStep === 1 && "About You"}
+                              {currentStep === 2 && "What You Need"}
+                              {currentStep === 3 && "A Few Details"}
                             </h1>
                           </div>
                           <div className="text-right">
                             <div className="bg-brandDark/5 px-4 py-2 rounded-full inline-flex items-center gap-3">
-                              <p className="text-brandDark/40 text-[10px] font-black uppercase tracking-widest leading-none">Step {currentStep} of 4</p>
+                              <p className="text-brandDark/40 text-[10px] font-black uppercase tracking-widest leading-none">Step {currentStep} of 3</p>
                               <div className="w-1.5 h-1.5 rounded-full bg-brandYellow animate-pulse"></div>
                             </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="bg-brandYellow/10 px-3 py-1.5 rounded-lg">
-                            <p className="text-brandDark font-black text-[10px] uppercase tracking-wider">Takes 2 minutes. Could save you lakhs.</p>
+                            <p className="text-brandDark font-black text-[10px] uppercase tracking-wider">Takes about 1 minute. Skip anything you are unsure of.</p>
                           </div>
                           <div className="h-px flex-1 bg-brandDark/5"></div>
                         </div>
@@ -388,7 +351,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
 
                 {/* Progress Bar */}
                 <div className="h-2 w-full bg-brandDark/5 rounded-full overflow-hidden flex gap-1.5">
-                  {[1, 2, 3, 4].map((step) => (
+                  {[1, 2, 3].map((step) => (
                     <div 
                       key={step}
                       className={`h-full flex-1 transition-all duration-700 ease-out rounded-full ${
@@ -423,7 +386,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                                 type="text" 
                                 value={formData.businessName}
                                 onChange={(e) => updateField('businessName', e.target.value)}
-                                placeholder="e.g. Acme Corp" 
+                                placeholder="e.g. Sharma Sweets" 
                                 className="w-full bg-[#fcfcfc] border-2 border-[#f0f0f0] px-7 py-6 pl-16 text-sm font-black focus:ring-4 focus:ring-brandYellow/10 focus:border-brandYellow outline-none rounded-[2rem] transition-all group-hover:border-brandDark/10 placeholder:text-brandDark/20" 
                               />
                               <Building2 className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-brandDark/30 group-focus-within:text-brandYellow transition-all group-focus-within:scale-110" />
@@ -970,7 +933,6 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                           <div className="space-y-4">
                             <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">What do you need help with?</label>
                             <textarea 
-                              required 
                               rows={4}
                               value={formData.otherHelp}
                               onChange={(e) => updateField('otherHelp', e.target.value)}
@@ -979,19 +941,8 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                             />
                           </div>
                         )}
-                      </motion.div>
-                    )}
+                        <div className="h-px bg-brandDark/5" />
 
-                    {/* STEP 4: QUALIFICATION */}
-                    {currentStep === 4 && (
-                      <motion.div
-                        key="step4"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.4, ease: "circOut" }}
-                        className="space-y-10"
-                      >
                         <div className="space-y-4">
                           <label className="text-[10px] font-black text-brandDark/40 uppercase tracking-[0.2em]">Monthly Budget</label>
                           <div className="flex flex-wrap gap-3">
@@ -1032,14 +983,15 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                           <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/10 blur-3xl rounded-full -mr-16 -mt-16"></div>
                           <div className="flex items-center gap-3">
                             <ShieldCheck className="w-6 h-6 text-brandYellow" />
-                            <p className="text-xs font-black uppercase tracking-[0.2em]">Final Verification</p>
+                            <p className="text-xs font-black uppercase tracking-[0.2em]">What Happens Next</p>
                           </div>
                           <p className="text-white/40 text-xs font-medium leading-relaxed">
-                            By submitting, you agree to our terms. Our team will review your application and prepare a custom strategy plan for our first call.
+                            I'll personally review your business and WhatsApp you within 24 hours with what I find. No obligation to buy anything.
                           </p>
                         </div>
                       </motion.div>
                     )}
+
                   </AnimatePresence>
 
                     {/* NAVIGATION */}
@@ -1055,7 +1007,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                         </button>
                       )}
                       
-                      {currentStep < 4 ? (
+                      {currentStep < 3 ? (
                         <button 
                           type="button"
                           onClick={nextStep}
@@ -1077,11 +1029,11 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                               </svg>
-                              ANALYZING...
+                              SENDING...
                             </span>
                           ) : (
                             <>
-                              Submit Application
+                              Get My Free Health Check
                               <Zap className="w-6 h-6 group-hover:scale-125 transition-transform" fill="currentColor" />
                             </>
                           )}
@@ -1090,7 +1042,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
                     </div>
 
                   <div className="text-center">
-                    <p className="text-[9px] font-black text-brandDark/20 uppercase tracking-[0.3em]">No credit card required. 100% Free Strategy Session.</p>
+                    <p className="text-[9px] font-black text-brandDark/20 uppercase tracking-[0.3em]">No payment needed. Completely free.</p>
                   </div>
                 </form>
               </div>
