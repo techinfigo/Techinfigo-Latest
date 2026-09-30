@@ -60,7 +60,7 @@ password (`lib/auth-node.ts`, Node-only).
 
 The login page offers "Sign in with Google" once `GOOGLE_CLIENT_ID` and
 `GOOGLE_CLIENT_SECRET` are set. Only the emails in `ADMIN_ALLOWED_EMAILS`
-(default: teamtechinfigo@gmail.com, thetechinfigo@gmail.com) get in. The
+(default: thetechinfigo@gmail.com) get in. The
 password form stays available behind "Use password instead" while
 `ADMIN_PASSWORD_HASH` is set; remove that variable to make Google the only way in.
 `ADMIN_SESSION_SECRET` is still required, as it signs the session cookie.

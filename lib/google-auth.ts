@@ -25,7 +25,7 @@ const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const ISSUERS = new Set(['accounts.google.com', 'https://accounts.google.com']);
 
 /** Used when ADMIN_ALLOWED_EMAILS is not set. */
-const DEFAULT_ALLOWED = ['teamtechinfigo@gmail.com', 'thetechinfigo@gmail.com'];
+const DEFAULT_ALLOWED = ['thetechinfigo@gmail.com'];
 
 export function isGoogleLoginConfigured(): boolean {
   return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
