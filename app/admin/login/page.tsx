@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import LoginForm from './LoginForm';
+import { isGoogleLoginConfigured } from '../../../lib/google-auth';
+import { isAdminPasswordConfigured } from '../../../lib/auth-node';
 
 export const metadata: Metadata = {
   title: 'Sign in',
@@ -11,9 +13,9 @@ export const dynamic = 'force-dynamic';
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; error?: string }>;
 }) {
-  const { next } = await searchParams;
+  const { next, error } = await searchParams;
 
   // Only same-origin relative paths are accepted, so a crafted ?next= cannot
   // turn the login page into an open redirect.
@@ -27,7 +29,12 @@ export default async function LoginPage({
           <h1 className="text-3xl font-black uppercase tracking-tighter">Admin</h1>
           <p className="text-white/40 text-sm font-medium">Lead pipeline. Authorised access only.</p>
         </div>
-        <LoginForm next={safeNext} />
+        <LoginForm
+          next={safeNext}
+          googleEnabled={isGoogleLoginConfigured()}
+          passwordEnabled={isAdminPasswordConfigured()}
+          error={error ?? null}
+        />
       </div>
     </main>
   );

@@ -56,6 +56,19 @@ Auth is deliberately **not** Firebase Auth: `jose` signs the session JWT
 (`lib/auth.ts`, Edge-safe for middleware) and `node:crypto` scrypt verifies the
 password (`lib/auth-node.ts`, Node-only).
 
+## 2b. Sign in with Google
+
+The login page offers "Sign in with Google" once `GOOGLE_CLIENT_ID` and
+`GOOGLE_CLIENT_SECRET` are set. Only the emails in `ADMIN_ALLOWED_EMAILS`
+(default: teamtechinfigo@gmail.com, thetechinfigo@gmail.com) get in. The
+password form stays available behind "Use password instead" while
+`ADMIN_PASSWORD_HASH` is set; remove that variable to make Google the only way in.
+`ADMIN_SESSION_SECRET` is still required, as it signs the session cookie.
+
+Google Cloud setup: create an OAuth client of type "Web application" with the
+authorised redirect URI `https://www.techinfigo.com/api/admin/google/callback`.
+Code: `lib/google-auth.ts`, `app/api/admin/google/`.
+
 ## 3. Composite indexes
 
 Firestore needs a declared composite index for each equality-filter + `orderBy`
