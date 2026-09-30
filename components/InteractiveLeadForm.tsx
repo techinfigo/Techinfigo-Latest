@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { whatsappUrl } from '../config/site';
+import { whatsappUrl, telUrl } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 import { trackContact } from '../lib/track';
 import { submitLead } from '../lib/submit-lead';
 import { motion } from 'motion/react';
@@ -17,10 +18,9 @@ import {
   Wrench,
   Instagram,
   ShoppingCart,
-  Target,
-  BarChart3,
   Building2,
   ShieldCheck,
+  MessageCircle,
 } from 'lucide-react';
 import { Footer } from './Footer';
 
@@ -50,6 +50,7 @@ const labelClass = 'text-[11px] font-bold text-brandDark/60 uppercase tracking-[
  * (budget, numbers, timeline) is asked later on WhatsApp.
  */
 export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack, onNavigate, onBookAudit }) => {
+  const { contact } = useSiteSettings();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState(false);
@@ -141,45 +142,70 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   return (
     <div className="min-h-screen bg-brandBg font-sans">
       <div className="pb-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 relative z-20">
-          {/* Left Sidebar: Context */}
-          <aside className="lg:col-span-4 space-y-8 animate-slide-up">
-            <div className="bg-[#001d21] rounded-[2.5rem] p-8 lg:p-10 space-y-10 shadow-2xl border border-white/5 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start relative z-20">
+          {/* Left Sidebar: stays in view on desktop while the form scrolls */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-32 self-start animate-slide-up">
+            <div className="bg-[#001d21] rounded-[2.5rem] p-8 lg:p-10 space-y-8 shadow-2xl border border-white/5 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
-              
+
               <div className="space-y-2 relative z-10">
-                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">What You Get</p>
-                <h2 className="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase leading-none">Free Health <br/> Check</h2>
+                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">What Happens Next</p>
+                <h2 className="text-3xl font-black text-white tracking-tight uppercase leading-none">Your Free <br/> Health Check</h2>
               </div>
 
-              <div className="space-y-6 relative z-10">
+              {/* Timeline */}
+              <ol className="relative z-10 space-y-6">
                 {[
-                  { title: "Honest Review", desc: "I check your website, Google profile and social pages.", icon: <Layout className="w-5 h-5" /> },
-                  { title: "3 Clear Fixes", desc: "The 3 things costing you enquiries, and how to fix each one.", icon: <BarChart3 className="w-5 h-5" /> },
-                  { title: "Founder-Led", desc: "You talk directly with Sachin, the founder. No call centre.", icon: <Zap className="w-5 h-5" /> }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5 group">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500">
-                      {item.icon}
+                  { when: 'Now', title: 'Fill the form', desc: 'Takes about 20 seconds.' },
+                  { when: 'Within 24 hours', title: 'I review your business', desc: 'Your website, Google profile and social pages.' },
+                  { when: 'On WhatsApp', title: 'You get 3 clear fixes', desc: 'What is costing you enquiries, and how to fix it. No obligation.' },
+                ].map((step, i, all) => (
+                  <li key={step.title} className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <span className="w-8 h-8 shrink-0 rounded-full bg-[#fcb632] text-brandDark text-sm font-black flex items-center justify-center">{i + 1}</span>
+                      {i < all.length - 1 && <span className="w-px flex-1 bg-white/15 mt-2"></span>}
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="text-white font-black uppercase text-sm tracking-tight">{item.title}</h3>
-                      <p className="text-white/40 text-xs leading-relaxed font-medium">{item.desc}</p>
+                    <div className="space-y-1 pb-1">
+                      <p className="text-[10px] font-bold text-brandYellow uppercase tracking-widest">{step.when}</p>
+                      <h3 className="text-white font-black uppercase text-sm tracking-tight">{step.title}</h3>
+                      <p className="text-white/60 text-xs leading-relaxed font-medium">{step.desc}</p>
                     </div>
-                  </div>
+                  </li>
                 ))}
+              </ol>
+
+              {/* Talk directly */}
+              <div className="relative z-10 pt-6 border-t border-white/10 space-y-4">
+                <div>
+                  <p className="text-white font-black text-sm uppercase tracking-tight">Prefer to talk?</p>
+                  <p className="text-white/60 text-xs font-medium">You speak directly with Sachin, the founder.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href={whatsappUrl('Hi Techinfigo, I would like a free health check for my business.')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackContact('whatsapp', 'health-check-sidebar')}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[#25D366] text-white text-xs font-black uppercase tracking-wider hover:opacity-90 transition-opacity"
+                  >
+                    <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                  <a
+                    href={telUrl(contact.phone || '+91 95573 38487')}
+                    onClick={() => trackContact('call', 'health-check-sidebar')}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-black uppercase tracking-wider hover:bg-white/20 transition-colors"
+                  >
+                    <Phone className="w-4 h-4" aria-hidden="true" />
+                    Call
+                  </a>
+                </div>
               </div>
 
-              <div className="pt-8 border-t border-white/5 relative z-10">
-                <div className="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10">
-                  <div className="w-10 h-10 rounded-full bg-brandYellow/20 flex items-center justify-center text-brandYellow">
-                    <ShieldCheck className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold text-white uppercase tracking-widest">Your Privacy</p>
-                    <p className="text-[11px] font-medium text-white/50">Your details stay private and are never shared or sold.</p>
-                  </div>
-                </div>
+              {/* Privacy */}
+              <div className="relative z-10 flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                <ShieldCheck className="w-5 h-5 shrink-0 text-brandYellow" aria-hidden="true" />
+                <p className="text-[11px] font-medium text-white/60">Your details stay private and are never shared or sold.</p>
               </div>
             </div>
           </aside>
