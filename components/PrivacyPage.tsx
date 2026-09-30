@@ -148,12 +148,117 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onNavigate }) => {
                 <section id="overview" className="space-y-8 scroll-mt-24">
                   <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">1. Overview</h2>
                   <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
-                    <p>
-                      Techinfigo ("we," "our," "us") operates as a digital marketing, branding, and AI-driven agency. This policy explains how we collect and safeguard your information.
-                    </p>
+                    <p>Techinfigo (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is a founder-led digital marketing and website development agency based in Agra, India, run by Sachin Bauddh. This policy explains what personal data we collect through www.techinfigo.com and while providing our services, why we collect it, and the choices you have.</p>
+                    <p>We follow the Digital Personal Data Protection Act, 2023 and the Information Technology Act, 2000 of India. By using our website or sending us an enquiry, you agree to this policy.</p>
                   </div>
                 </section>
-                {/* Additional sections omitted for brevity in XML, would include full policy content */}
+                <section id="collect" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">2. Information We Collect</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p><strong className="text-brandDark">Information you give us.</strong> When you fill in a form, send an enquiry or message us, we collect:</p>
+                    <ul className="space-y-3">
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Your name, WhatsApp or phone number and, if you choose to give it, your email address</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Your business name, website or Instagram link, and the services you are interested in</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Anything else you write in a message, and, for job applications, the details you share with us</span></li>
+                    </ul>
+                    <p><strong className="text-brandDark">Information collected automatically.</strong> When you visit the website we record the pages you view, your browser and device type, an approximate location based on your IP address, the website that sent you to us, and campaign tags in the link you clicked (for example, which advertisement you came from).</p>
+                    <p><strong className="text-brandDark">Information from our clients.</strong> When we work for a business, we may receive access to its ad accounts, Google Business Profile, website and the enquiries its own customers send. We handle that data only to deliver the agreed service, on the client&apos;s instructions.</p>
+                  </div>
+                </section>
+                <section id="use" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">3. How We Use Information</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We use your information to:</p>
+                    <ul className="space-y-3">
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Reply to your enquiry and prepare your free website health check</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Contact you by WhatsApp, phone or email about your enquiry or our services</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Deliver, manage and report on the services you buy from us</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Understand how visitors use the website and measure our own advertising, so we can improve both</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Keep records we are required to keep by law, and protect against fraud or misuse</span></li>
+                    </ul>
+                    <p><strong className="text-brandDark">We never sell your personal data</strong>, and we do not share it with anyone for their own marketing.</p>
+                  </div>
+                </section>
+                <section id="protection" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">4. Security</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We protect your data with reasonable security practices: the website runs over encrypted HTTPS, enquiries are stored in a secured database with access limited to people who need it, and admin areas are password-protected.</p>
+                    <p>No method of storing or sending data online is completely secure, so we cannot guarantee absolute security. If a breach affects your personal data, we will inform you and the authorities as the law requires.</p>
+                  </div>
+                </section>
+                <section id="rights" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">5. Your Rights</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>Under Indian data protection law, you have the right to:</p>
+                    <ul className="space-y-3">
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Ask what personal data we hold about you and how we use it</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Ask us to correct or complete inaccurate data</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Ask us to delete your data, where we are not required by law to keep it</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Withdraw your consent at any time; this does not affect anything done before you withdrew it</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Nominate another person to exercise these rights on your behalf</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Raise a complaint with our Grievance Officer (see Contact), and then with the Data Protection Board of India if you are not satisfied</span></li>
+                    </ul>
+                    <p>To use any of these rights, email or WhatsApp us. We will reply within 30 days.</p>
+                    <p>If you are the customer of one of our clients, please contact that business first; we will help them respond to you.</p>
+                  </div>
+                </section>
+                <section id="cookies" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">6. Cookies & Tracking</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We use a small number of tools that place cookies or similar technology in your browser:</p>
+                    <ul className="space-y-3">
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">Google Analytics</strong> to count visits and see which pages are useful</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">Meta Pixel</strong> to measure and improve our Facebook and Instagram advertising</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Temporary browser storage that remembers which link or advertisement brought you to the site, so your enquiry is credited correctly. It is cleared when you close the browser tab.</span></li>
+                    </ul>
+                    <p>You can block or delete cookies in your browser settings, and opt out of Google Analytics with the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="text-brandDark font-bold border-b border-brandYellow hover:text-brandYellow transition-colors">Google Analytics opt-out add-on</a>. The website still works if you do.</p>
+                  </div>
+                </section>
+                <section id="retention" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">7. How Long We Keep Data</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We keep enquiry details for up to 24 months after our last conversation, unless you become a client or ask us to delete them sooner.</p>
+                    <p>Client records, invoices and contracts are kept for as long as Indian tax and accounting laws require. Data we handle on a client&apos;s behalf is returned or deleted when our work for that client ends, as agreed with them.</p>
+                  </div>
+                </section>
+                <section id="thirdparty" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">8. Service Providers</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We use trusted service providers to run the website and our business. They process data only for us and not for their own purposes:</p>
+                    <ul className="space-y-3">
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">Vercel</strong> hosts the website</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">Google Cloud (Firebase)</strong> stores enquiries in our CRM</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">FormSubmit</strong> sends us an email alert for each new enquiry</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">Google Analytics</strong> and <strong className="text-brandDark">Meta</strong> measure visits and advertising</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span><strong className="text-brandDark">WhatsApp</strong> carries the conversations you start with us</span></li>
+                    </ul>
+                    <p>Some of these providers store data on servers outside India. Where this happens, we rely on their security and data protection commitments.</p>
+                  </div>
+                </section>
+                <section id="legal" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">9. Legal & Children</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We may disclose information if the law, a court or a government authority requires it, or to protect our rights and the safety of others.</p>
+                    <p>Our website and services are meant for businesses and adults. We do not knowingly collect data from anyone under 18. If you believe a child has sent us their details, contact us and we will delete them.</p>
+                  </div>
+                </section>
+                <section id="updates" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">10. Changes to This Policy</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>We may update this policy when our services or the law change. The latest version will always be on this page, with the date it was last updated. This policy was last updated on 30 September 2026.</p>
+                  </div>
+                </section>
+                <section id="contact" className="space-y-8 scroll-mt-24">
+                  <h2 className="text-3xl lg:text-4xl font-extrabold text-brandDark tracking-tighter">11. Contact & Grievance Officer</h2>
+                  <div className="space-y-6 text-brandDark/70 text-lg leading-relaxed max-w-3xl pl-1">
+                    <p>For any question, request or complaint about your personal data, contact our Grievance Officer, <strong className="text-brandDark">Sachin Bauddh</strong> (Founder):</p>
+                    <ul className="space-y-3">
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Techinfigo, Office no. 03, Second Floor, Block no. 25, Sanjay Place, Civil Lines, Agra, Uttar Pradesh 282002, India</span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Email: <a href="mailto:contact@techinfigo.com" target="_blank" rel="noopener noreferrer" className="text-brandDark font-bold border-b border-brandYellow hover:text-brandYellow transition-colors">contact@techinfigo.com</a></span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Phone and WhatsApp: <a href="https://wa.me/919557338487" target="_blank" rel="noopener noreferrer" className="text-brandDark font-bold border-b border-brandYellow hover:text-brandYellow transition-colors">+91 95573 38487</a></span></li>
+                    </ul>
+                  </div>
+                </section>
               </div>
             </div>
           </main>
