@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { HoneypotField } from './HoneypotField';
 import { submitLead } from '../lib/submit-lead';
 
 interface Option {
@@ -240,6 +241,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-8">
+                <HoneypotField />
                 
                 {/* Identity Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">

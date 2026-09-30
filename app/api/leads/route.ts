@@ -3,6 +3,13 @@ import { cookies } from 'next/headers';
 import { createLead, isDbConfigured, queryLeads } from '../../../lib/firestore';
 import { mirrorToInbox, parseLead } from '../../../lib/leads';
 import { SESSION_COOKIE, readSession } from '../../../lib/auth';
+import { clientKey, rateLimit } from '../../../lib/rate-limit';
+import { screen } from '../../../lib/spam';
+import { isCrmConfigured, sendToCrm } from '../../../lib/crm';
+
+/** At most this many enquiries per connection per hour. */
+const MAX_PER_HOUR = 5;
+const HOUR_MS = 60 * 60 * 1000;
 
 // scrypt and firebase-admin both need Node; and this route must never be cached.
 export const runtime = 'nodejs';
@@ -22,31 +29,70 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: 'invalid JSON body' }, { status: 400 });
   }
 
-  // Honeypot. Bots fill every field they find; humans never see this one.
-  // Returning a plain success keeps the bot from learning it was caught.
-  if (typeof body._gotcha === 'string' && body._gotcha.trim() !== '') {
-    return NextResponse.json({ ok: true, stored: false });
+  const ip = clientKey(request);
+  const limit = rateLimit(`lead:${ip}`, MAX_PER_HOUR, HOUR_MS);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { ok: false, error: 'too many enquiries, please WhatsApp us instead' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfterSeconds) } },
+    );
   }
 
   const parsed = parseLead(body);
   if (!parsed.ok) {
     return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
   }
+  const lead = parsed.lead;
 
-  const mirrored = await mirrorToInbox(parsed.lead);
+  const check = await screen(body, ip, {
+    name: lead.name,
+    phone: lead.phone,
+    businessName: lead.brandName,
+    message: lead.message,
+  });
 
-  let stored = false;
-  if (isDbConfigured()) {
+  // A certain bot: store nothing, but answer "ok" so it learns nothing.
+  if (check.verdict === 'reject') {
+    return NextResponse.json({ ok: true, stored: false });
+  }
+
+  const isRealEnquiry = check.verdict === 'ok';
+  const needs = Array.isArray(body.needs)
+    ? body.needs.filter((n): n is string => typeof n === 'string').slice(0, 10)
+    : [];
+
+  // 1. The CRM inbox (job applications are not sales enquiries).
+  let crm = false;
+  if (isCrmConfigured() && lead.sourceForm !== 'careers') {
     try {
-      await createLead(parsed.lead);
-      stored = true;
+      await sendToCrm(lead, {
+        status: isRealEnquiry ? 'new' : 'spam',
+        spamReasons: check.reasons,
+        needs,
+      });
+      crm = true;
     } catch (error) {
-      // Swallowed on purpose: the lead is already in the inbox.
-      console.error('[leads] firestore write failed:', error);
+      console.error('[leads] CRM write failed:', error);
     }
   }
 
-  return NextResponse.json({ ok: true, stored, mirrored });
+  // 2. Email alert and the website's own lead store: real enquiries only.
+  let mirrored = false;
+  let stored = false;
+  if (isRealEnquiry) {
+    mirrored = await mirrorToInbox(lead);
+    if (isDbConfigured()) {
+      try {
+        await createLead(lead);
+        stored = true;
+      } catch (error) {
+        // Swallowed on purpose: the lead is already in the inbox.
+        console.error('[leads] firestore write failed:', error);
+      }
+    }
+  }
+
+  return NextResponse.json({ ok: true, stored: stored || crm, mirrored });
 }
 
 /** GET — admin only. Filters: ?status=&source=&days= */

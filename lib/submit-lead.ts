@@ -1,5 +1,15 @@
 import { captureAttribution } from './attribution';
 import { trackLead } from './track';
+import { getTurnstileToken } from './turnstile-client';
+
+/** Name of the hidden trap field rendered by <HoneypotField /> in each form. */
+export const HONEYPOT_NAME = 'company_url';
+
+function honeypotValue(): string {
+  if (typeof document === 'undefined') return '';
+  const field = document.querySelector<HTMLInputElement>(`input[name="${HONEYPOT_NAME}"]`);
+  return field?.value ?? '';
+}
 
 /**
  * Client-side submit helper shared by every public form.
@@ -54,6 +64,9 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
   const extraText = extra ? formatExtra(extra) : '';
   const combinedMessage = [message?.trim(), extraText].filter(Boolean).join('\n\n');
 
+  const turnstile = await getTurnstileToken();
+  const needs = extra && Array.isArray(extra.needs) ? extra.needs : undefined;
+
   try {
     const response = await fetch('/api/leads', {
       method: 'POST',
@@ -62,9 +75,12 @@ export async function submitLead(input: SubmitLeadInput): Promise<SubmitLeadResu
         ...rest,
         message: combinedMessage || undefined,
         ...captureAttribution(),
-        // Honeypot: always empty for a real visitor, so the server can drop
-        // bot traffic that fills every field it can find.
-        _gotcha: '',
+        needs,
+        // Spam checks (lib/spam.ts): the hidden trap field, how long the page
+        // was open, and the invisible Cloudflare token.
+        _gotcha: honeypotValue(),
+        _elapsedMs: Math.round(performance.now()),
+        _turnstile: turnstile,
       }),
     });
 

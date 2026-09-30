@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { HoneypotField } from './HoneypotField';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 import { Footer } from './Footer';
@@ -368,6 +369,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
 
               <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-4xl border border-brandDark/5 relative">
                 <form onSubmit={handleSubmit} className="space-y-8">
+                  <HoneypotField />
                   <AnimatePresence mode="wait">
                     {currentStep === 1 && (
                       <motion.div

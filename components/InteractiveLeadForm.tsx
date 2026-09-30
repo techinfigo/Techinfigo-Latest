@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { HoneypotField } from './HoneypotField';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 import { submitLead } from '../lib/submit-lead';
@@ -206,6 +207,7 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
               >
 
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                  <HoneypotField />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-3">
                       <label htmlFor="hc-name" className={labelClass}>Your Name *</label>
