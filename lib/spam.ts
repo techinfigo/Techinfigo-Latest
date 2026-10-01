@@ -104,11 +104,29 @@ export async function screen(
   }
 
   // 4. Content checks: stored, but marked spam.
+  reasons.push(...contentReasons(fields));
+
+  return reasons.length ? { verdict: 'spam', reasons } : { verdict: 'ok', reasons: [] };
+}
+
+export type ContentFields = {
+  name: string;
+  phone: string | null;
+  businessName: string | null;
+  message: string | null;
+};
+
+/**
+ * The content checks alone. Leads from ad platforms (Meta, Google) use only
+ * these: the platform already screened for bots, and those leads never pass
+ * through a page on this website, so timing and trap checks do not apply.
+ */
+export function contentReasons(fields: ContentFields): string[] {
+  const reasons: string[] = [];
   if (fields.phone !== null && !normaliseIndianMobile(fields.phone)) reasons.push('invalid-phone');
   const text = [fields.name, fields.businessName ?? '', fields.message ?? ''].join(' ');
   if (LINK.test(fields.name) || LINK.test(fields.businessName ?? '')) reasons.push('link-in-name');
   if (looksLikeGibberish(fields.name)) reasons.push('gibberish-name');
   if (/(crypto|bitcoin|casino|loan approval|seo backlinks|viagra)/i.test(text)) reasons.push('spam-words');
-
-  return reasons.length ? { verdict: 'spam', reasons } : { verdict: 'ok', reasons: [] };
+  return reasons;
 }
