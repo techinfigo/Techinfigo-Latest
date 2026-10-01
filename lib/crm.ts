@@ -54,7 +54,7 @@ function clean<T extends Record<string, unknown>>(obj: T): Record<string, unknow
 
 export async function sendToCrm(
   lead: NewLead,
-  extra: { status: EnquiryStatus; spamReasons: string[]; needs: string[] },
+  extra: { status: EnquiryStatus; spamReasons: string[]; needs: string[]; sourceName?: string | null },
 ): Promise<string> {
   const ref = await crmDb()
     .collection(ENQUIRIES)
@@ -68,6 +68,7 @@ export async function sendToCrm(
         message: lead.message,
         needs: extra.needs,
         sourceForm: lead.sourceForm,
+        sourceName: extra.sourceName ?? null,
         landingPage: lead.landingPage,
         submittedFrom: lead.submittedFrom,
         utmSource: lead.utmSource,
@@ -82,4 +83,51 @@ export async function sendToCrm(
       }),
     );
   return ref.id;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Integrations (managed from the CRM's "Integrations & Webhooks" page)      */
+/* ------------------------------------------------------------------------ */
+
+export const INTEGRATIONS = 'integrations';
+export const INTEGRATION_STATS = 'integrationStats';
+
+export type Connection = {
+  id: string;
+  kind: 'webhook' | 'google-ads';
+  name: string;
+  enabled: boolean;
+};
+
+/** Finds the connection that owns this secret token (URL token or Google Ads key). */
+export async function findConnection(token: string, kind: Connection['kind']): Promise<Connection | null> {
+  if (!isCrmConfigured() || !/^[a-f0-9]{24,64}$/.test(token)) return null;
+  const snap = await crmDb()
+    .collection(INTEGRATIONS)
+    .where('token', '==', token)
+    .limit(1)
+    .get();
+  const doc = snap.docs[0];
+  if (!doc) return null;
+  const d = doc.data();
+  if (d.kind !== kind) return null;
+  return { id: doc.id, kind, name: typeof d.name === 'string' && d.name ? d.name : 'Connection', enabled: d.enabled !== false };
+}
+
+/**
+ * Counts a received lead for the Integrations page ("last lead 5 min ago").
+ * Key: 'website', 'google-ads', 'meta', or a connection id. Never throws:
+ * a failed counter must not lose the lead itself.
+ */
+export async function recordReceived(key: string, isTest = false): Promise<void> {
+  if (!isCrmConfigured()) return;
+  try {
+    // Test leads only prove the connection works; they do not count as leads.
+    const update = isTest
+      ? { lastTestAt: FieldValue.serverTimestamp() }
+      : { receivedCount: FieldValue.increment(1), lastReceivedAt: FieldValue.serverTimestamp() };
+    await crmDb().collection(INTEGRATION_STATS).doc(key).set(update, { merge: true });
+  } catch (error) {
+    console.error('[crm] stats update failed:', error);
+  }
 }

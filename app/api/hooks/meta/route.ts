@@ -107,6 +107,7 @@ export async function POST(request: Request) {
 
       await intakeExternalLead({
         source: 'meta-lead-ads',
+        statsKey: 'meta',
         name,
         phone: get('phone_number'),
         email: get('email'),

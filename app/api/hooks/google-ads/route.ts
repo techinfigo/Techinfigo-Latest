@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { timingSafeEqual } from 'node:crypto';
 import { intakeExternalLead } from '../../../../lib/lead-intake';
+import { findConnection } from '../../../../lib/crm';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -10,9 +11,9 @@ export const dynamic = 'force-dynamic';
  *
  * In Google Ads (Asset -> Lead form -> Lead delivery -> Webhook) set:
  *   URL: https://www.techinfigo.com/api/hooks/google-ads
- *   Key: the value of GOOGLE_ADS_WEBHOOK_KEY
+ *   Key: the key shown on the CRM's Integrations page (or GOOGLE_ADS_WEBHOOK_KEY)
  * Google posts each lead as JSON with that key in `google_key`; anything
- * without the right key is refused.
+ * without a right key, or with a paused key, is refused.
  */
 
 type Column = { column_id?: string; column_name?: string; string_value?: string };
@@ -23,7 +24,7 @@ type GooglePayload = {
   user_column_data?: Column[];
 };
 
-function keyMatches(given: unknown): boolean {
+function envKeyMatches(given: unknown): boolean {
   const expected = process.env.GOOGLE_ADS_WEBHOOK_KEY ?? '';
   if (!expected || typeof given !== 'string') return false;
   const a = Buffer.from(given);
@@ -33,7 +34,15 @@ function keyMatches(given: unknown): boolean {
 
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as GooglePayload | null;
-  if (!body || !keyMatches(body.google_key)) {
+  if (!body || typeof body.google_key !== 'string') {
+    return NextResponse.json({ ok: false }, { status: 401 });
+  }
+  let allowed = envKeyMatches(body.google_key);
+  if (!allowed) {
+    const connection = await findConnection(body.google_key, 'google-ads').catch(() => null);
+    allowed = Boolean(connection?.enabled);
+  }
+  if (!allowed) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
@@ -53,6 +62,7 @@ export async function POST(request: Request) {
   try {
     await intakeExternalLead({
       source: 'google-ads-lead-form',
+      statsKey: 'google-ads',
       name,
       phone: get('PHONE_NUMBER'),
       email: get('EMAIL', 'WORK_EMAIL'),

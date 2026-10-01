@@ -5,7 +5,7 @@ import { mirrorToInbox, parseLead } from '../../../lib/leads';
 import { SESSION_COOKIE, readSession } from '../../../lib/auth';
 import { clientKey, rateLimit } from '../../../lib/rate-limit';
 import { screen } from '../../../lib/spam';
-import { isCrmConfigured, sendToCrm } from '../../../lib/crm';
+import { isCrmConfigured, recordReceived, sendToCrm } from '../../../lib/crm';
 
 /** At most this many enquiries per connection per hour. */
 const MAX_PER_HOUR = 5;
@@ -71,6 +71,7 @@ export async function POST(request: Request) {
         needs,
       });
       crm = true;
+      if (isRealEnquiry) await recordReceived('website');
     } catch (error) {
       console.error('[leads] CRM write failed:', error);
     }
