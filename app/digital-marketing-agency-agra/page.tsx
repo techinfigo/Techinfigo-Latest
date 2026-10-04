@@ -32,7 +32,9 @@ export default async function AgraLanding() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "Techinfigo Digital Marketing Agency Agra",
+    // Same name, address, pin and hours as the Google Business Profile, so
+    // Google can match this page to the listing.
+    "name": "Techinfigo - Digital Marketing Agency",
     "image": "https://www.techinfigo.com/og-image.jpg",
     "@id": "https://www.techinfigo.com/digital-marketing-agency-agra",
     "url": "https://www.techinfigo.com/digital-marketing-agency-agra",
@@ -42,7 +44,7 @@ export default async function AgraLanding() {
     "description": "Founder-led digital marketing and website development agency in Sanjay Place, Agra. Websites, Google Business Profile, SEO, social media and Meta/Google ads, with a free CRM to track every enquiry.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Office no. 03, Second Floor, Block no. 25, Sanjay Place, Civil Lines",
+      "streetAddress": "Office no. 03, Second Floor, Block no. 25, Cloth Market, Sanjay Place, Civil Lines",
       "addressLocality": "Agra",
       "postalCode": "282002",
       "addressRegion": "Uttar Pradesh",
@@ -64,8 +66,8 @@ export default async function AgraLanding() {
     ],
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 27.1767,
-      "longitude": 78.0081
+      "latitude": 27.1994194,
+      "longitude": 78.0081121
     },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
@@ -77,9 +79,10 @@ export default async function AgraLanding() {
         "Friday",
         "Saturday"
       ],
-      "opens": "09:00",
-      "closes": "19:00"
+      "opens": "10:30",
+      "closes": "18:30"
     },
+    "hasMap": "https://www.google.com/maps/search/?api=1&query=TECHINFIGO&query_place_id=ChIJd-bZWwl3dDkRj4H5YdWtwPM",
     "sameAs": [
       "https://www.facebook.com/techinfigo/",
       "https://www.instagram.com/techinfigo/",

@@ -36,7 +36,7 @@ function organizationJsonLd(settings: SiteSettings) {
     ...(settings.contact.phone ? { "telephone": settings.contact.phone } : {}),
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Office no. 03, Second Floor, Block no. 25, Sanjay Place, Civil Lines",
+      "streetAddress": "Office no. 03, Second Floor, Block no. 25, Cloth Market, Sanjay Place, Civil Lines",
       "addressLocality": "Agra",
       "addressRegion": "Uttar Pradesh",
       "postalCode": "282002",

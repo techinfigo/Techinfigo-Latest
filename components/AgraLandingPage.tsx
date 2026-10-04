@@ -24,6 +24,12 @@ import {
   Users
 } from 'lucide-react';
 
+/** Google Maps place of the Techinfigo Business Profile (Sanjay Place). */
+const GBP_PLACE_ID = 'ChIJd-bZWwl3dDkRj4H5YdWtwPM';
+const OFFICE_ADDRESS = 'Office no. 03, Second Floor, Block no. 25, Cloth Market, Sanjay Place, Civil Lines, Agra, Uttar Pradesh 282002';
+const MAP_EMBED = `https://maps.google.com/maps?q=${encodeURIComponent('TECHINFIGO - Digital Marketing Agency, Sanjay Place, Agra')}&z=16&output=embed`;
+const DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent('TECHINFIGO - Digital Marketing Agency')}&destination_place_id=${GBP_PLACE_ID}`;
+
 interface AgraLandingPageProps {
   onNavigate: (page: string) => void;
   onBookAudit: () => void;
@@ -411,6 +417,23 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
             <p className="text-lg text-brandDark/70 font-medium leading-relaxed">
               We're based in Sanjay Place and work with businesses across Agra, from the commercial hubs to Dayalbagh and Kamla Nagar. Meet us in person, or talk to us on WhatsApp. 
             </p>
+            <div className="flex items-start gap-3">
+              <MapPin className="w-5 h-5 text-brandYellow shrink-0 mt-0.5" aria-hidden="true" />
+              <div className="space-y-2">
+                <address className="not-italic text-sm font-semibold text-brandDark leading-relaxed">
+                  Techinfigo - Digital Marketing Agency<br />
+                  {OFFICE_ADDRESS}
+                </address>
+                <a
+                  href={DIRECTIONS}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-brandDark underline decoration-brandYellow decoration-2 underline-offset-4 hover:text-brandDark/70"
+                >
+                  Get directions <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-4">
               {["Sanjay Place", "Sikandra", "Kamla Nagar", "Dayalbagh", "Fatehabad Road", "Shahganj", "Raja Ki Mandi"].map((loc, i) => (
                 <span key={i} className="px-4 py-2 bg-white rounded-full text-[10px] font-bold uppercase tracking-widest border border-brandDark/5 text-brandDark/40">
@@ -421,12 +444,15 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           </div>
           
           <div className="relative group">
-            <div className="aspect-video bg-brandDark/5 rounded-[3rem] border border-brandDark/5 overflow-hidden flex items-center justify-center relative">
-              <div className="text-center space-y-4 relative z-10">
-                <MapPin className="w-12 h-12 text-brandYellow mx-auto" aria-hidden="true" />
-                <p className="text-xs font-black uppercase text-brandDark/40 tracking-widest">Operating Focus</p>
-                <p className="text-sm font-bold text-brandDark">Agra Market Specialization</p>
-              </div>
+            <div className="aspect-video bg-brandDark/5 rounded-[3rem] border border-brandDark/5 overflow-hidden relative">
+              <iframe
+                src={MAP_EMBED}
+                title="Techinfigo office on Google Maps, Sanjay Place, Agra"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 w-full h-full border-0"
+                allowFullScreen
+              />
             </div>
             {/* Floating stats */}
             <div className="absolute -bottom-6 -right-6 bg-brandYellow p-6 rounded-2xl shadow-2xl">
