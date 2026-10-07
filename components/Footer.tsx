@@ -51,7 +51,9 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                      optimiser refuses by default. The bundled PNG still goes
                      through it. */
                   unoptimized={Boolean(brand.logo)}
-                  className="object-contain brightness-0 invert"
+                  /* An uploaded logo shows in its own colours; the old bundled
+                     file is a dark mark, so only that one is flipped to white. */
+                  className={`object-contain object-left ${brand.logo ? '' : 'brightness-0 invert'}`}
                   referrerPolicy="no-referrer"
                 />
               </div>

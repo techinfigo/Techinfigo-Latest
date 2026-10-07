@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useSiteSettings } from './SiteSettingsProvider';
+import { brandAssetUrl } from '../lib/settings-schema';
 
 interface NavbarProps {
   onNavigate?: (page: string, serviceId?: string) => void;
@@ -15,6 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isOverLightSection, setIsOverLightSection] = useState(false);
   const pathname = usePathname();
+  const { brand } = useSiteSettings();
 
   const activePage = propActivePage || (pathname === '/' ? 'home' : pathname.substring(1));
 
@@ -104,6 +107,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
             className="flex items-center gap-2 cursor-pointer z-[110] shrink-0 group" 
             onClick={() => setMobileMenuOpen(false)}
           >
+            {brand.logo ? (
+              /* The uploaded logo is a light-on-dark mark (white and yellow), so
+                 on the light bar it sits on a small dark badge to stay legible. */
+              <span
+                className={`flex items-center rounded-xl transition-all duration-300 ${
+                  useDarkText ? 'bg-brandDark px-3 py-1.5 shadow-lg' : 'px-0 py-0'
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={brandAssetUrl('logo', brand.logo)}
+                  alt="Techinfigo"
+                  className="h-9 lg:h-11 w-auto max-w-[190px] lg:max-w-[240px] object-contain"
+                />
+              </span>
+            ) : (
             <div className="relative flex items-center gap-2">
               <div className={`w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-xl transition-all duration-300 shadow-lg ${
                 useDarkText 
@@ -118,6 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
                 Techinfigo
               </span>
             </div>
+            )}
             {/* Logo Image Hidden for now as it's missing from assets */}
             <div className="hidden relative h-8 lg:h-10 w-32 lg:w-40">
               <Image 

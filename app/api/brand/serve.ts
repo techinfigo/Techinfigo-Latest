@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import sharp from 'sharp';
 import { getBrandAsset } from '../../../lib/settings';
 import type { BrandAssetKind } from '../../../lib/settings-schema';
 
@@ -62,7 +63,33 @@ export async function serveBrandAsset(request: Request, kind: BrandAssetKind) {
     return new NextResponse(null, { status: 304, headers });
   }
 
-  const body = Buffer.from(asset.data, 'base64');
+  let body: Buffer = Buffer.from(asset.data, 'base64');
+  if (kind === 'logo' && asset.mime !== 'image/svg+xml') {
+    const trimmed = await trimLogo(body);
+    if (trimmed) {
+      body = trimmed;
+      headers.set('Content-Type', 'image/png');
+    }
+  }
   headers.set('Content-Length', String(body.length));
-  return new NextResponse(body, { status: 200, headers });
+  return new NextResponse(new Uint8Array(body), { status: 200, headers });
+}
+
+/**
+ * Logos are often exported with a wide empty border, which makes them render
+ * small in the header and footer. Cut the transparent (or flat-colour) border
+ * away and cap the width; the result is cached with the same content hash, so
+ * this runs once per upload, not per visitor. Any failure serves the original.
+ */
+async function trimLogo(input: Buffer): Promise<Buffer | null> {
+  try {
+    return await sharp(input)
+      .trim({ threshold: 10 })
+      .resize({ width: 1200, withoutEnlargement: true })
+      .png({ compressionLevel: 9 })
+      .toBuffer();
+  } catch (error) {
+    console.error('[brand] logo trim failed; serving the original:', error);
+    return null;
+  }
 }
