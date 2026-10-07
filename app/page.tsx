@@ -1,83 +1,60 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { Navbar } from '../components/Navbar';
-import { Hero } from '../components/Hero';
-import { FounderSection } from '../components/FounderSection';
-import { EmotionalSection } from '../components/EmotionalSection';
-import { DiagnosticSection } from '../components/DiagnosticSection';
-import { QualificationProtocol } from '../components/QualificationProtocol';
-import { GrowthLifecycle } from '../components/GrowthLifecycle';
-import { CaseStudySection } from '../components/CaseStudySection';
-import { TestimonialsSection } from '../components/TestimonialsSection';
-import { RevenueAccelerator } from '../components/RevenueAccelerator';
+import { HomePage } from '../components/HomePage';
+import { GoogleReviewsSection } from '../components/GoogleReviewsSection';
 import { Footer } from '../components/Footer';
-// CAPACITY is imported for the batch label only — it is derived from today's
-// date rather than editable, which is what stopped it going stale. The
-// scarcity toggle and slot count come from the settings document.
-import { CAPACITY } from '../config/site';
 import { getSiteSettings } from '../lib/settings';
 import { getPageContent } from '../lib/content';
+import { getGoogleReviews } from '../lib/google-reviews';
+
+const TITLE = 'Techinfigo | Digital Marketing Agency in Agra';
+const DESCRIPTION =
+  'Websites, Google Business Profile, social media and ads for Agra businesses and online brands, with a free CRM to track every enquiry. Get a free health check.';
 
 export const metadata: Metadata = {
-  title: { absolute: "Techinfigo | Profit-First D2C Growth Partner" },
-  description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
   openGraph: {
-    title: "Techinfigo | Profit-First D2C Growth Partner",
-    description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
-    url: "https://www.techinfigo.com",
-    siteName: "Techinfigo",
-    images: ["https://www.techinfigo.com/og-image.jpg"],
-    locale: "en_IN",
-    type: "website",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: 'https://www.techinfigo.com',
+    siteName: 'Techinfigo',
+    images: ['https://www.techinfigo.com/og-image.jpg'],
+    locale: 'en_IN',
+    type: 'website',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Techinfigo | Profit-First D2C Growth Partner",
-    description: "Techinfigo helps D2C founders identify profit leaks and build compounding growth systems. No vanity metrics, just bottom-line results.",
-    images: ["https://www.techinfigo.com/og-image.jpg"],
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ['https://www.techinfigo.com/og-image.jpg'],
   },
 };
 
 export default async function Home() {
-  // Read on the server. getSiteSettings() is a cached, tagged read rather than
-  // a per-request one, so this page stays statically prerendered — it
-  // regenerates when the admin panel saves, not on every visit.
-  const { capacity } = await getSiteSettings();
-  // Same cached, tagged contract as the settings read above: this is not a
-  // per-request read, so the page stays prerendered and regenerates only when
-  // the copy is saved in the admin panel.
-  const home = await getPageContent('home');
+  // Cached, tagged reads: the page stays prerendered and regenerates when the
+  // admin panel saves, not on every visit. Reviews refresh daily.
+  const [settings, home, howItWorks, services, reviews] = await Promise.all([
+    getSiteSettings(),
+    getPageContent('home'),
+    getPageContent('howItWorks'),
+    getPageContent('services'),
+    getGoogleReviews(),
+  ]);
 
   return (
     <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="home" />
-      <Hero {...({} as any)} content={home.hero} />
-      
-      {/* Founding Partner Offer Strip */}
-      <div className="bg-brandYellow py-4 overflow-hidden relative border-y border-brandDark/5">
-        <div className="flex whitespace-nowrap animate-marquee">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="flex items-center gap-8 px-4">
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{home.marquee.onboarding}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{capacity.showScarcity ? `Limited to ${capacity.slotsOpen} brands for ${CAPACITY.currentBatch}` : home.marquee.capacityOff}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
-              <span className="text-[10px] font-black text-brandDark uppercase tracking-[0.4em]">{home.marquee.offer}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-brandDark"></span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <FounderSection />
-      <EmotionalSection />
-      <DiagnosticSection painPoints={home.painPoints} />
-      <QualificationProtocol {...({} as any)} criteria={home.criteria} />
-      
-      <GrowthLifecycle profitLeaks={home.profitLeaks} protocolSteps={home.protocolSteps} />
-      <CaseStudySection />
-      <TestimonialsSection intro={home.insightsIntro} insights={home.insights} />
-      <RevenueAccelerator />
+      <HomePage
+        home={home}
+        steps={howItWorks.steps}
+        pillars={services.pillars}
+        rating={reviews?.rating ?? null}
+        reviewCount={reviews?.count ?? null}
+        videos={settings.videos ?? []}
+        reviews={<GoogleReviewsSection />}
+      />
       <Footer />
     </main>
   );

@@ -30,7 +30,7 @@ const LEGAL_LINKS = [
 ];
 
 export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
-  const { icpBand, contact, brand } = useSiteSettings();
+  const { contact, brand } = useSiteSettings();
   const logo = brandAssetUrl('logo', brand.logo);
 
   return (
@@ -64,11 +64,11 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               </div>
             </Link>
             <p className="text-white/80 text-sm lg:text-base leading-relaxed font-normal tracking-tight max-w-sm">
-              We build <span className="text-white font-medium">compounding growth systems</span> for D2C brands doing {icpBand}/mo who value profit over vanity.
+              Websites, Google, social media and ads for <span className="text-white font-medium">businesses in Agra</span> and online brands across India. Every enquiry tracked in a free CRM.
             </p>
             <div className="inline-flex items-center gap-3 px-3 py-1.5 border border-white/10 rounded-full">
               <span className="w-1 h-1 rounded-full bg-brandYellow"></span>
-              <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest">Partner-Led Execution</span>
+              <span className="text-[8px] font-bold text-white/40 uppercase tracking-widest">Founder-led · Agra</span>
             </div>
 
             {/* Social Links */}
@@ -141,11 +141,8 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
             <div className="bg-brandSurface/5 border border-white/10 rounded-[2rem] p-6 lg:p-7 space-y-5 shadow-3xl h-full transition-colors hover:border-white/20">
               {/* Card Header */}
               <div className="flex justify-between items-center">
-                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40 font-mono">HQ TERMINAL</span>
-                <span className="flex items-center gap-2 text-[8px] font-black text-brandYellow uppercase tracking-widest">
-                  <span className="w-1 h-1 rounded-full bg-brandYellow animate-pulse"></span>
-                  LIVE DESK
-                </span>
+                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40">Visit us</span>
+                <span className="text-[9px] font-bold text-brandYellow">Mon–Sat, 10:30 AM – 6:30 PM</span>
               </div>
 
               {/* Main Info */}
@@ -160,10 +157,17 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                   </div>
                   <div className="space-y-0.5">
                     <p className="text-[12px] font-normal text-white/90 leading-snug tracking-tight">
-                      Office no. 03, Second Floor, Block no.25,<br />
+                      Office no. 03, Second Floor, Block no. 25, Cloth Market,<br />
                       Sanjay Place, Civil Lines, Agra, UP 282002
                     </p>
-                    <span className="text-[7px] font-bold text-brandYellow uppercase tracking-widest block">AGRA REGIONAL OFFICE</span>
+                    <a
+                      href="https://www.google.com/maps/dir/?api=1&destination=TECHINFIGO%20-%20Digital%20Marketing%20Agency&destination_place_id=ChIJd-bZWwl3dDkRj4H5YdWtwPM"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-brandYellow hover:underline"
+                    >
+                      Get directions
+                    </a>
                   </div>
                 </div>
 
@@ -212,21 +216,13 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
               {/* Divider */}
               <div className="h-[1px] w-full bg-white/10"></div>
 
-              {/* Partnership Status Section */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-[8px] font-bold text-white/20 uppercase tracking-[0.4em]">PARTNERSHIP STATUS</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div className="border border-white/10 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 bg-white/5 hover:bg-white/[0.08] transition-colors group">
-                    <span className="text-[7px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">D2C PROFIT<br />STRATEGISTS</span>
-                  </div>
-                  <div className="border border-white/10 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 bg-white/5 hover:bg-white/[0.08] transition-colors group">
-                    <span className="text-[7px] font-bold text-white/30 text-center uppercase tracking-widest leading-tight">FOUNDING PARTNER<br />PROGRAM</span>
-                  </div>
-                </div>
-              </div>
+              {/* Free health check */}
+              <Link
+                href="/lead-capture"
+                className="block text-center py-3 rounded-xl bg-brandYellow text-brandDark text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white transition-colors"
+              >
+                Get a Free Health Check
+              </Link>
             </div>
           </div>
         </div>
@@ -236,7 +232,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 lg:gap-6 text-[9px] font-bold uppercase tracking-[0.3em] text-white/20 font-mono">
             <span>&copy; 2026 Techinfigo</span>
             <span className="hidden md:block">/</span>
-            <span className="text-white/40 font-normal">Profit-Driven Agency</span>
+            <span className="text-white/40 font-normal">Digital Marketing Agency, Agra</span>
             <span className="hidden md:block">/</span>
             <span className="flex items-center gap-2">
               <svg 

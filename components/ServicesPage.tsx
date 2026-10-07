@@ -32,38 +32,19 @@ export function startingPrice(slug: string): { price: string; unit: string } | n
   return priced ? { price: priced.p.price, unit: priced.p.unit } : null;
 }
 
-interface ServicesPageProps {
-  pillars?: SiteContent['services']['pillars'];
-  onNavigate: (page: string, serviceId?: string) => void;
-}
-
-export const ServicesPage: React.FC<ServicesPageProps> = ({ pillars = DEFAULT_CONTENT.services.pillars, onNavigate }) => {
+/** The six service cards (picture, title, line, real "from" price). Used on /services and the home page. */
+export function ServiceCards({
+  pillars = DEFAULT_CONTENT.services.pillars,
+}: {
+  pillars?: ReadonlyArray<SiteContent['services']['pillars'][number]>;
+}) {
   // Admin copy wins for title/line; anything missing falls back to the service data.
   const cards = SERVICES.map((s) => {
     const edited = pillars.find((p) => p.slug === s.slug);
     return { ...s, title: edited?.title || s.title, short: edited?.desc || s.short };
   });
-
   return (
-    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* Header */}
-      <section className="bg-brandDark pt-28 pb-16 lg:pt-36 lg:pb-24 px-6 lg:px-12 relative overflow-hidden">
-        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6">
-          <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">Our Services</span>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-4xl">
-            Everything you need <br />
-            <span className="text-brandYellow italic">for more enquiries.</span>
-          </h1>
-          <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-2xl">
-            Pick one service or combine them. Every package comes with a <span className="text-white">free CRM</span> to track your enquiries.
-          </p>
-        </div>
-      </section>
-
-      {/* Service cards */}
-      <section className="py-20 lg:py-28 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {cards.map((s) => {
             const from = startingPrice(s.slug);
             return (
@@ -97,6 +78,38 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ pillars = DEFAULT_CO
               </Link>
             );
           })}
+        </div>
+  );
+}
+
+interface ServicesPageProps {
+  pillars?: SiteContent['services']['pillars'];
+  onNavigate: (page: string, serviceId?: string) => void;
+}
+
+export const ServicesPage: React.FC<ServicesPageProps> = ({ pillars = DEFAULT_CONTENT.services.pillars, onNavigate }) => {
+
+  return (
+    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+      {/* Header */}
+      <section className="bg-brandDark pt-28 pb-16 lg:pt-36 lg:pb-24 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6">
+          <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">Our Services</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-4xl">
+            Everything you need <br />
+            <span className="text-brandYellow italic">for more enquiries.</span>
+          </h1>
+          <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-2xl">
+            Pick one service or combine them. Every package comes with a <span className="text-white">free CRM</span> to track your enquiries.
+          </p>
+        </div>
+      </section>
+
+      {/* Service cards */}
+      <section className="py-20 lg:py-28 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <ServiceCards pillars={pillars} />
         </div>
       </section>
 

@@ -30,9 +30,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
       // We can do this by checking the scroll position
       // For more reliability, we check the active page and scroll
       if (activePage === 'home') {
-        // Hero (800) + Strip (50) + Founder (700) + Emotional (800)
-        // Light starts around 2300px
-        setIsOverLightSection(scrollY > 2300);
+        // Dark hero (~700px), then light sections.
+        setIsOverLightSection(scrollY > 650);
       } else if (activePage === 'profit-breakdown') {
         setIsOverLightSection(scrollY > 700 && scrollY < 1800);
       } else if (activePage === 'qualification') {

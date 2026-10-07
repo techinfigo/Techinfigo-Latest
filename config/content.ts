@@ -22,55 +22,30 @@
 export const DEFAULT_CONTENT = {
   home: {
     hero: {
-      eyebrow: 'Profit-First Growth for D2C Brands',
-      // Split at the styled tail rather than stored with markup: the <br>s in
-      // the component are responsive layout, not content, and an editor should
-      // never have to type a tag to get the yellow half right.
-      headline: 'Scaling Revenue is Easy. Scaling',
-      headlineAccent: 'Profit is Hard.',
+      eyebrow: 'Digital Marketing Agency in Agra',
+      // Split at the styled tail rather than stored with markup.
+      headline: 'More enquiries for your business.',
+      headlineAccent: 'Every one tracked.',
       subhead:
-        'We find the hidden profit leaks in your funnel and build the system to scale your bottom line.',
-      ctaLabel: 'Get My Free Profit Audit',
-      ctaNote: 'No Junior Account Managers. Only Strategists.',
+        'Websites, Google profile, social media and ads for Agra businesses and online brands, with a free CRM so no enquiry is ever missed.',
+      ctaLabel: 'Get My Free Health Check',
+      ctaNote: 'Free. No payment needed. We reply within 24 hours.',
     },
 
-    /**
-     * The scrolling strip under the hero. `capacityOff` is what shows when the
-     * scarcity toggle in Settings is off — the slot-count variant is assembled
-     * from the settings document and stays there.
-     */
+    /** The scrolling yellow strip under the hero: three short lines. */
     marquee: {
-      onboarding: 'Now onboarding our first founding D2C partners',
-      capacityOff: 'Senior strategists only — no junior account managers',
-      offer: 'Founding-partner offer active',
+      onboarding: 'Free health check for your business',
+      capacityOff: 'Free CRM with every package',
+      offer: 'Founder-led, Sanjay Place, Agra',
     },
 
+    /** "Sound familiar?" cards. Icons: phone-off, map-pin, thumbs-down, message-x, help-circle. */
     painPoints: [
-      {
-        icon: 'trending-down',
-        title: 'ROAS looks good, but margins are shrinking',
-        desc: 'Platform data is inflating your ego while hidden costs kill your actual take-home pay.',
-      },
-      {
-        icon: 'zap',
-        title: 'Scaling increases revenue but kills profitability',
-        desc: 'Whenever you push budgets, the unit economics crumble instantly, leaving you with less.',
-      },
-      {
-        icon: 'shield-alert',
-        title: 'Creatives burn out faster than you can replace them',
-        desc: 'Ad fatigue hits within days because you lack a structured, high-velocity testing lab.',
-      },
-      {
-        icon: 'bar-chart',
-        title: 'You don’t know which product/ad is actually making money',
-        desc: "Attribution mess means you're guessing where to put your next rupee of capital.",
-      },
-      {
-        icon: 'alert-circle',
-        title: 'Hidden costs (discounts, shipping, COD, returns) eating profit',
-        desc: "The silent killers that don't show up on your Meta dashboard but drain your bank account.",
-      },
+      { icon: 'phone-off', title: 'Your website brings no calls', desc: 'People visit, look around and leave without contacting you.' },
+      { icon: 'map-pin', title: 'Competitors show up on Google Maps, you don’t', desc: 'Customers nearby search for what you sell and find someone else.' },
+      { icon: 'thumbs-down', title: 'Ads get likes, not customers', desc: 'Money goes out every month with nothing to show for it.' },
+      { icon: 'message-x', title: 'Enquiries get lost on WhatsApp', desc: 'No one follows up on time, and the customer goes elsewhere.' },
+      { icon: 'help-circle', title: 'You don’t know what’s working', desc: 'No idea which post, ad or listing actually brought a customer.' },
     ],
 
     profitLeaks: [
