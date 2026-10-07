@@ -298,11 +298,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
               </div>
 
               {/* Timeline */}
-              <ol className="relative z-10 space-y-6">
+              <ol className="relative z-10 space-y-5">
                 {[
-                  { when: 'Now', title: 'Send your application', desc: 'Four short steps, about 2 minutes.' },
-                  { when: 'Within 24 hours', title: 'We review your funnel', desc: 'Your ads, landing pages and repeat sales, to find where money leaks.' },
-                  { when: 'On a 30-min call', title: 'You get your roadmap', desc: 'The profit leaks we found and a step-by-step plan to fix them. No obligation.' },
+                  { when: 'Now', title: 'Send your application' },
+                  { when: 'Within 24 hours', title: 'We review your funnel' },
+                  { when: '30-min call', title: 'Get your roadmap' },
                 ].map((step, i, all) => (
                   <li key={step.title} className="flex gap-4">
                     <div className="flex flex-col items-center">
@@ -312,7 +312,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
                     <div className="space-y-1 pb-1">
                       <p className="text-[10px] font-bold text-brandYellow uppercase tracking-widest">{step.when}</p>
                       <h3 className="text-white font-black uppercase text-sm tracking-tight">{step.title}</h3>
-                      <p className="text-white/60 text-xs leading-relaxed font-medium">{step.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -320,10 +319,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
 
               {/* Talk directly */}
               <div className="relative z-10 pt-6 border-t border-white/10 space-y-4">
-                <div>
-                  <p className="text-white font-black text-sm uppercase tracking-tight">Prefer to talk?</p>
-                  <p className="text-white/60 text-xs font-medium">You speak directly with Sachin, the founder.</p>
-                </div>
+                <p className="text-white font-black text-sm uppercase tracking-tight">Prefer to talk?</p>
                 <div className="grid grid-cols-2 gap-3">
                   <a
                     href={whatsappUrl('Hi Techinfigo, I would like a growth audit for my brand.')}
@@ -359,18 +355,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
                 >
                   <MapPin className="w-4 h-4 text-brandYellow shrink-0 mt-0.5" aria-hidden="true" />
                   <span>
-                    <span className="block">Sanjay Place, Agra</span>
-                    <span className="block text-white/50">Mon–Sat, 10:30 AM – 6:30 PM</span>
-                    <span className="block text-brandYellow/80 underline underline-offset-2">Get directions</span>
+                    Sanjay Place, Agra · <span className="text-brandYellow/80 underline underline-offset-2">Directions</span>
                   </span>
                 </a>
               </div>
 
               {/* Privacy */}
-              <div className="relative z-10 flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
-                <ShieldCheck className="w-5 h-5 shrink-0 text-brandYellow" aria-hidden="true" />
-                <p className="text-[11px] font-medium text-white/60">Your numbers stay private, used only for your audit, never shared.</p>
-              </div>
+              <p className="relative z-10 flex items-center gap-2 text-[11px] font-medium text-white/50">
+                <ShieldCheck className="w-4 h-4 shrink-0 text-brandYellow" aria-hidden="true" />
+                100% private. Never shared.
+              </p>
             </div>
           </aside>
 
