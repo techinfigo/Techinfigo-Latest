@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { HoneypotField } from './HoneypotField';
 import { submitLead } from '../lib/submit-lead';
+import { CareerRoles, CAREER_ROLES } from './CareerRoles';
 
 interface Option {
   label: string;
@@ -131,15 +132,6 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
     });
   };
 
-  // No roles are listed until there is a real opening; the form stays open.
-  const skills = [
-    { title: 'Social media & design', value: 'social', note: 'Posts, carousels and brand designs' },
-    { title: 'Reels & video editing', value: 'video', note: 'Short videos for Instagram and ads' },
-    { title: 'Ads (Meta & Google)', value: 'ads', note: 'Running and improving lead campaigns' },
-    { title: 'Websites', value: 'web', note: 'Building and fixing business websites' },
-    { title: 'SEO & Google profiles', value: 'seo', note: 'Local SEO and Google Business Profile' },
-    { title: 'Sales & client support', value: 'sales', note: 'Talking to clients and following up' },
-  ];
 
   if (submitted) {
     return (
@@ -181,44 +173,29 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      <section className="py-24 lg:py-32 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-          
-          {/* Left Column: skills we look for (no fake openings) */}
-          <div className="lg:col-span-5 space-y-10 lg:sticky lg:top-32">
-            <div className="space-y-4">
-              <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">
-                Skills we <br /> look for.
-              </h2>
-              <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
-                Good at one of these? Tap it and send us a short application.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
-              {skills.map((skill) => (
-                <button
-                  key={skill.value}
-                  type="button"
-                  onClick={() => {
-                    updateField('specialization', skill.value);
-                    scrollToForm();
-                  }}
-                  className={`text-left border p-5 rounded-2xl transition-all duration-300 ${
-                    formData.specialization === skill.value
-                      ? 'bg-white border-brandYellow shadow-md'
-                      : 'bg-white/60 border-brandDark/5 hover:bg-white hover:border-brandYellow/50'
-                  }`}
-                >
-                  <p className="text-lg font-black text-brandDark">{skill.title}</p>
-                  <p className="text-sm text-brandDark/55">{skill.note}</p>
-                </button>
-              ))}
-            </div>
+      {/* Roles we hire for (job cards; details open on click) */}
+      <section className="pt-20 lg:pt-28 pb-12 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto space-y-10">
+          <div className="space-y-3 max-w-2xl">
+            <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">Roles we hire for</h2>
+            <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
+              No fixed openings right now. Tap a role to see the details, then apply anytime.
+            </p>
           </div>
+          <CareerRoles
+            selected={formData.specialization}
+            onApply={(value) => {
+              updateField('specialization', value);
+              scrollToForm();
+            }}
+          />
+        </div>
+      </section>
 
+      <section className="pb-24 lg:pb-32 px-6 lg:px-12">
+        <div className="max-w-3xl mx-auto">
           {/* Right Column: Application Form */}
-          <div ref={formRef} className="lg:col-span-7 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <div ref={formRef} className="scroll-mt-28">
             <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-4xl border border-brandDark/5 space-y-12 relative">
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 rounded-bl-[2.5rem] pointer-events-none"></div>
               
@@ -278,7 +255,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                   <CustomSelect 
                     label="WHAT ARE YOU GOOD AT? *"
-                    options={skills.map((sk) => ({ label: sk.title, value: sk.value }))}
+                    options={CAREER_ROLES.map((r) => ({ label: r.title, value: r.value }))}
                     value={formData.specialization}
                     onChange={(val) => updateField('specialization', val)}
                   />
