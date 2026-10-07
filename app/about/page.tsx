@@ -1,19 +1,26 @@
 import type { Metadata } from 'next';
 import PageClient from './PageClient';
+import { getGoogleReviews } from '../../lib/google-reviews';
+import { GoogleReviewsSection } from '../../components/GoogleReviewsSection';
+
+const TITLE = 'About Techinfigo | Digital Marketing Agency in Agra';
+const DESCRIPTION =
+  'Founded by Sachin Bauddh in Sanjay Place, Agra. 10 years in digital marketing, helping local businesses and online brands get more enquiries, with a free CRM for every client.';
 
 export const metadata: Metadata = {
-  title: 'About Us | Profit-First D2C Growth Agency',
-  description: 'Meet the profit-first growth team that treats your bottom line, not your ad spend, as the only scoreboard that matters.',
-  alternates: {
-    canonical: '/about',
-  },
-  openGraph: {
-    title: 'About Us | Profit-First D2C Growth Agency',
-    description: 'Meet the profit-first growth team that treats your bottom line, not your ad spend, as the only scoreboard that matters.',
-    url: '/about',
-  },
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
+  alternates: { canonical: '/about' },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: '/about' },
 };
 
-export default function Page() {
-  return <PageClient />;
+export default async function Page() {
+  const reviews = await getGoogleReviews();
+  return (
+    <PageClient
+      rating={reviews?.rating ?? null}
+      reviewCount={reviews?.count ?? null}
+      reviews={<GoogleReviewsSection />}
+    />
+  );
 }
