@@ -95,9 +95,6 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                 <Link href="/about" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">About Us</Link>
               </li>
               <li>
-                <Link href="/how-it-works" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Our Approach</Link>
-              </li>
-              <li>
                 <Link href="/qualification" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Who We Fit</Link>
               </li>
               <li>
@@ -114,10 +111,7 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
                 <Link href="/" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Home</Link>
               </li>
               <li>
-                <Link href="/profit-breakdown" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Profit Breakdown</Link>
-              </li>
-              <li>
-                <Link href="/system" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">The System</Link>
+                <Link href="/how-it-works" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">How We Work</Link>
               </li>
               <li>
                 <Link href="/digital-marketing-agency-agra" className="text-[13px] font-normal text-white/80 hover:text-brandYellow transition-colors tracking-tight text-left border-l border-brandYellow/30 pl-4 block">Agra Agency</Link>

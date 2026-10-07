@@ -3,14 +3,14 @@ import PageClient from './PageClient';
 import { getPageContent } from '../../lib/content';
 
 export const metadata: Metadata = {
-  title: 'Our Process | From Profit Audit to Scaled Margin',
-  description: 'See our step-by-step process, from the opening profit audit through to a scaled, margin-positive growth system.',
+  title: 'How We Work | Simple Steps, Every Enquiry Tracked',
+  description: 'How Techinfigo works with Agra businesses and online brands: free health check, fix the basics, bring enquiries, and track every lead in a free CRM.',
   alternates: {
     canonical: '/how-it-works',
   },
   openGraph: {
-    title: 'Our Process | From Profit Audit to Scaled Margin',
-    description: 'See our step-by-step process, from the opening profit audit through to a scaled, margin-positive growth system.',
+    title: 'How We Work | Simple Steps, Every Enquiry Tracked',
+    description: 'How Techinfigo works with Agra businesses and online brands: free health check, fix the basics, bring enquiries, and track every lead in a free CRM.',
     url: '/how-it-works',
   },
 };

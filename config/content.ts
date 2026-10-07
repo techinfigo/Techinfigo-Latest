@@ -183,28 +183,23 @@ export const DEFAULT_CONTENT = {
     steps: [
       {
         num: '01',
-        title: 'Funnel Audit',
-        desc: 'Neutralizing leakages in unit economics before a single rupee is spent.',
+        title: 'Free Health Check',
+        desc: 'We look at your website, Google profile, social pages and ads, and tell you the 3 things costing you enquiries.',
       },
       {
         num: '02',
-        title: 'Variable Testing',
-        desc: 'Weekly creative sprints to isolate high-conviction hooks and angles.',
+        title: 'Fix the Basics',
+        desc: 'A fast website that gets calls, a complete Google profile, and tracking on every form and button.',
       },
       {
         num: '03',
-        title: 'Stabilization',
-        desc: 'Eliminating waste and establishing a predictable baseline CAC.',
+        title: 'Bring Enquiries',
+        desc: 'Facebook, Instagram and Google ads, social media and SEO, chosen for your business and budget.',
       },
       {
         num: '04',
-        title: 'Controlled Scale',
-        desc: 'Injecting capital into proven creative/offer clusters with MER guardrails.',
-      },
-      {
-        num: '05',
-        title: 'LTV Optimization',
-        desc: 'Compounding the back-end through high-retention automation loops.',
+        title: 'Track & Improve',
+        desc: 'Every enquiry lands in your free CRM. Each month we see what worked and put more into it.',
       },
     ],
   },

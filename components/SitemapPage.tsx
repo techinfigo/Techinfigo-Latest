@@ -35,7 +35,7 @@ const treeData: TreeNodeData = {
       ]
     },
     { label: 'About', page: 'about', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
-    { label: 'System', page: 'system', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'How We Work', page: 'how-it-works', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     { label: 'Careers', page: 'careers', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     { label: 'Contact', page: 'contact', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     {

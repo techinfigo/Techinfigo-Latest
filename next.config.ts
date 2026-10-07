@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
         destination: '/digital-marketing-agency-agra',
         permanent: true,
       },
+      // Merged into one plain-language "How We Work" page.
+      { source: '/system', destination: '/how-it-works', permanent: true },
+      { source: '/profit-breakdown', destination: '/how-it-works', permanent: true },
     ];
   },
 };

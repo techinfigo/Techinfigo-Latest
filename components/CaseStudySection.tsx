@@ -133,7 +133,7 @@ export const CaseStudySection: React.FC<CaseStudySectionProps> = ({ onBookAudit,
             
             {onNavigate && (
               <button 
-                onClick={() => onNavigate('profit-breakdown')}
+                onClick={() => onNavigate('case-studies')}
                 className="text-brandDark/40 hover:text-brandDark text-xs font-black uppercase tracking-[0.4em] transition-colors flex items-center gap-2"
               >
                 Full Breakdown <ArrowRight className="w-4 h-4" />

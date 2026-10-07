@@ -1,158 +1,133 @@
 'use client';
 
 import React from 'react';
+import { MessageCircle } from 'lucide-react';
 import { DEFAULT_CONTENT } from '../config/content';
+import { whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
 import type { SiteContent } from '../lib/content-schema';
 
+/**
+ * "How We Work": the one process page. It replaces /system and
+ * /profit-breakdown (both now redirect here), in plain language for local
+ * businesses and D2C brands alike. No invented numbers: every promise here is
+ * one the agency already makes elsewhere (free CRM, founder-led, 24h reply,
+ * no guaranteed figures).
+ */
+
 interface HowItWorksPageProps {
-  /** Editable copy. Defaults to what shipped, so the section never renders empty. */
+  /** Editable copy (admin → Content → How it works). Defaults to what shipped. */
   steps?: SiteContent['howItWorks']['steps'];
-  onNavigate: (page: 'home' | 'contact' | 'about' | 'services' | 'how-it-works') => void;
+  onNavigate: (page: string) => void;
 }
 
 export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
   onNavigate,
   steps = DEFAULT_CONTENT.howItWorks.steps,
 }) => {
-  const lifecycleSteps = steps;
-  
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* 1. Impact Header Section */}
+      {/* 1. Header */}
       <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto">
           <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
             <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
-              OPERATIONAL BLUEPRINT
+              How We Work
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
-              Trust the Process, <br />
-              <span className="text-brandYellow italic">Not the Screenshot.</span>
+              Simple Steps. <br />
+              <span className="text-brandYellow italic">Every Enquiry Tracked.</span>
             </h1>
             <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
-              Most agencies lead with cherry-picked case studies from the 2021 golden era. We lead with the <span className="text-white">repeatable systems</span> we use to drive growth today.
+              Whether you run a shop in Agra or sell online, we follow the same four steps, and you can{' '}
+              <span className="text-white">see what every rupee brings back</span>.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 2. The Screenshot Paradox (The Redesign) */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-white relative">
+      {/* 2. The problem / what we do differently */}
+      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-white relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-32 items-center">
-            
-            {/* Left side: The Critique */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
             <div className="lg:col-span-5 space-y-12">
               <div className="space-y-4">
-                <span className="text-[11px] font-black text-brandYellow uppercase tracking-[0.5em] block">THE PARADOX</span>
-                <h2 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter leading-none">
-                  Vanity vs. <br />
-                  <span className="text-brandDark/20">Velocity.</span>
+                <span className="text-[11px] font-black text-brandYellow uppercase tracking-[0.5em] block">The Problem</span>
+                <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none">
+                  Spending on marketing, <br />
+                  <span className="text-brandDark/25">but no idea what works?</span>
                 </h2>
               </div>
-              
-              <div className="space-y-10">
-                <p className="text-xl lg:text-2xl text-brandDark/60 font-medium leading-relaxed">
-                  A 10x ROAS screenshot is a <span className="text-brandDark font-bold italic underline decoration-brandYellow decoration-4 underline-offset-4">fluke</span> if it can't be replicated. We trade "miracle months" for predictable quarter-over-quarter yield.
-                </p>
-                
-                <div className="space-y-8 pt-6">
-                  <div className="flex gap-6 items-start">
+
+              <div className="space-y-8">
+                {[
+                  { title: 'A website that brings no calls', desc: 'It looks fine, but nobody enquires from it.' },
+                  { title: 'Ads that get likes, not customers', desc: 'Money goes out every month with nothing to show for it.' },
+                  { title: 'Enquiries lost on WhatsApp', desc: 'Leads come in, but no one follows up on time.' },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-6 items-start">
                     <div className="w-10 h-10 rounded-full border border-brandDark/10 flex items-center justify-center shrink-0">
-                      <span className="text-brandDark/20 font-black text-xs">✕</span>
+                      <span className="text-brandDark/30 font-black text-xs">✕</span>
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-xl font-bold text-brandDark">Tactical Fragility</h4>
-                      <p className="text-brandDark/40 text-sm">Relying on platform "hacks" that break when algorithms update.</p>
+                      <h3 className="text-xl font-bold text-brandDark">{item.title}</h3>
+                      <p className="text-brandDark/50 text-sm">{item.desc}</p>
                     </div>
                   </div>
-                  <div className="flex gap-6 items-start">
-                    <div className="w-10 h-10 rounded-full border border-brandDark/10 flex items-center justify-center shrink-0">
-                      <span className="text-brandDark/20 font-black text-xs">✕</span>
-                    </div>
-                    <div className="space-y-1">
-                      <h4 className="text-xl font-bold text-brandDark">Siloed Execution</h4>
-                      <p className="text-brandDark/40 text-sm">Media buyers who don't understand P&L or retention LTV.</p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Right side: The Solution (Visual Architecture) */}
             <div className="lg:col-span-7">
-              <div className="bg-brandDark rounded-[4rem] p-10 lg:p-20 shadow-4xl relative overflow-hidden group">
-                {/* Abstract Line Art */}
-                <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
-                   <svg width="100%" height="100%" viewBox="0 0 400 400">
-                     <path d="M0 400 L400 0" stroke="white" strokeWidth="0.5" fill="none" />
-                     <path d="M0 300 L300 0" stroke="white" strokeWidth="0.5" fill="none" />
-                     <path d="M0 200 L200 0" stroke="white" strokeWidth="0.5" fill="none" />
-                   </svg>
-                </div>
-
-                <div className="relative z-10 space-y-16">
+              <div className="bg-brandDark rounded-[4rem] p-10 lg:p-20 shadow-4xl relative overflow-hidden">
+                <div className="relative z-10 space-y-14">
                   <div className="space-y-4">
-                    <span className="text-[10px] font-bold text-brandYellow uppercase tracking-[0.5em] block">THE CORE ENGINE</span>
-                    <h3 className="text-4xl lg:text-5xl font-black text-white tracking-tighter">Architecture of Certainty.</h3>
+                    <span className="text-[10px] font-bold text-brandYellow uppercase tracking-[0.5em] block">The Fix</span>
+                    <h3 className="text-4xl lg:text-5xl font-black text-white tracking-tighter">What we do differently.</h3>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-12">
-                     {[
-                       { title: "Variable Isolation", desc: "Isolating one growth lever (hook, price, landing page) at a time to prove what actually moves the needle." },
-                       { title: "MER Guardrails", desc: "Strict spend protocols triggered by blended efficiency ratios, protecting your contribution margin." },
-                       { title: "Creative Velocity", desc: "A structured lab producing high-intent assets to outpace algorithmic fatigue." }
-                     ].map((item, i) => (
-                       <div key={i} className="flex gap-8 group/item">
-                          <div className="text-2xl font-black text-brandYellow/20 group-hover/item:text-brandYellow transition-colors duration-500 font-mono">
-                            {i+1}.
-                          </div>
-                          <div className="space-y-2">
-                            <h4 className="text-xl font-bold text-white uppercase tracking-tight">{item.title}</h4>
-                            <p className="text-white/40 text-base leading-relaxed">{item.desc}</p>
-                          </div>
-                       </div>
-                     ))}
+                  <div className="grid grid-cols-1 gap-10">
+                    {[
+                      { title: 'Fix the basics first', desc: 'No point spending on ads until your website, Google profile and WhatsApp are ready to turn visitors into enquiries.' },
+                      { title: 'One goal: enquiries and sales', desc: 'We judge our work by the calls, messages and orders you get, not by likes or views.' },
+                      { title: 'Every lead tracked', desc: 'Each enquiry lands in your free CRM, so nothing is missed and you see exactly where it came from.' },
+                    ].map((item, i) => (
+                      <div key={item.title} className="flex gap-8">
+                        <div className="text-2xl font-black text-brandYellow font-mono">{i + 1}.</div>
+                        <div className="space-y-2">
+                          <h4 className="text-xl font-bold text-white uppercase tracking-tight">{item.title}</h4>
+                          <p className="text-white/55 text-base leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* 3. The Growth Lifecycle - Horizontal Steps */}
+      {/* 3. The steps (editable in admin → Content → How it works) */}
       <section className="py-24 lg:py-40 px-6 lg:px-12 bg-[#fcfcfc] border-y border-brandDark/5">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-20 lg:mb-32">
-            <div className="space-y-4">
-              <span className="text-[11px] font-black text-brandYellow uppercase tracking-[0.5em] block">THE PHASES</span>
-              <h2 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter">Growth Lifecycle.</h2>
-            </div>
-            <p className="text-brandDark/40 text-lg lg:text-xl font-medium max-w-sm italic">
-              "Predictability is engineered, not stumbled upon."
-            </p>
+          <div className="space-y-4 mb-16 lg:mb-24">
+            <span className="text-[11px] font-black text-brandYellow uppercase tracking-[0.5em] block">The Steps</span>
+            <h2 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter">How it works.</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-px bg-brandDark/5 border border-brandDark/5 overflow-hidden rounded-[3rem]">
-            {lifecycleSteps.map((step, i) => (
-              <div 
-                key={i} 
-                className="bg-white p-12 lg:p-14 space-y-12 hover:bg-[#fffcf5] transition-colors duration-500 group"
-              >
-                <span className="text-5xl lg:text-6xl font-black text-brandDark/5 group-hover:text-brandYellow/20 transition-colors font-mono block">
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 ${steps.length >= 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-px bg-brandDark/5 border border-brandDark/5 overflow-hidden rounded-[3rem]`}
+          >
+            {steps.map((step, i) => (
+              <div key={i} className="bg-white p-10 lg:p-12 space-y-10 hover:bg-[#fffcf5] transition-colors duration-500 group">
+                <span className="text-5xl lg:text-6xl font-black text-brandDark/10 group-hover:text-brandYellow/40 transition-colors font-mono block">
                   {step.num}
                 </span>
-
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-black text-brandDark tracking-tight uppercase">
-                    {step.title}
-                  </h3>
-                  <p className="text-brandDark/40 text-sm font-medium leading-relaxed">
-                    {step.desc}
-                  </p>
+                  <h3 className="text-2xl font-black text-brandDark tracking-tight uppercase">{step.title}</h3>
+                  <p className="text-brandDark/55 text-sm font-medium leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -160,108 +135,99 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
         </div>
       </section>
 
-      {/* 4. Measurement Protocol */}
-      <section className="py-24 lg:py-48 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
+      {/* 4. What you get every month + note for online brands */}
+      <section className="py-24 lg:py-40 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-          
           <div className="lg:col-span-6 space-y-12">
             <div className="space-y-6">
-              <span className="text-brandYellow font-mono text-[11px] font-black tracking-[0.4em] uppercase">SYSTEM OUTPUTS</span>
-              <h2 className="text-5xl lg:text-8xl font-black text-white tracking-tighter leading-none">
-                How we <br /> track profit.
+              <span className="text-brandYellow font-mono text-[11px] font-black tracking-[0.4em] uppercase">Every Month</span>
+              <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tighter leading-none">
+                What you <br /> get from us.
               </h2>
-              <p className="text-white/40 text-xl lg:text-2xl font-medium leading-relaxed">
-                We ignore platform attribution and focus on the <span className="text-white">Source of Truth</span>: Your bank balance and unit economics.
-              </p>
             </div>
 
             <div className="space-y-8">
-               {[
-                 { title: "MER (Efficiency Ratio)", sub: "Total Revenue / Total Ad Spend" },
-                 { title: "Contribution Margin", sub: "Net profit after COGS & variable marketing" },
-                 { title: "New-to-Brand Ratio", sub: "Percentage of revenue from cold prospects" }
-               ].map((m, i) => (
-                 <div key={i} className="flex items-center gap-6 group">
-                   <div className="w-1.5 h-1.5 rounded-full bg-brandYellow group-hover:scale-[3] transition-transform duration-500"></div>
-                   <div className="space-y-0.5">
-                     <h4 className="text-2xl font-black text-white uppercase tracking-tight">{m.title}</h4>
-                     <p className="text-white/20 text-sm font-bold tracking-widest uppercase">{m.sub}</p>
-                   </div>
-                 </div>
-               ))}
+              {[
+                { title: 'A simple report', sub: 'Enquiries, sales and spend, in plain words' },
+                { title: 'Updates on WhatsApp', sub: 'No long meetings, no jargon' },
+                { title: 'Talk to the founder', sub: 'You work directly with Sachin' },
+                { title: 'Your free CRM', sub: 'Every lead in one place' },
+              ].map((m) => (
+                <div key={m.title} className="flex items-center gap-6">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brandYellow shrink-0"></div>
+                  <div className="space-y-0.5">
+                    <h3 className="text-2xl font-black text-white uppercase tracking-tight">{m.title}</h3>
+                    <p className="text-white/40 text-sm font-bold tracking-widest uppercase">{m.sub}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="lg:col-span-6">
-             <div className="bg-brandSurface rounded-[4rem] p-10 lg:p-16 border border-white/5 space-y-12 relative shadow-glow">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Decision Protocol</span>
-                  <div className="px-3 py-1 bg-[#4ade80]/10 rounded-lg">
-                    <span className="text-[9px] font-black text-[#4ade80] uppercase tracking-widest">Live Desk</span>
-                  </div>
-                </div>
-
-                <div className="space-y-10">
-                  <div className="space-y-4">
-                    <p className="text-3xl font-black text-white tracking-tighter leading-none uppercase">Condition: Scale</p>
-                    <p className="text-white/40 text-base">If Blended MER &gt; 20% of Target for 72h, initiate 20% budget expansion across primary clusters.</p>
-                  </div>
-                  <div className="h-px bg-white/5"></div>
-                  <div className="space-y-4">
-                    <p className="text-3xl font-black text-white tracking-tighter leading-none uppercase text-brandYellow">Condition: Pivot</p>
-                    <p className="text-white/40 text-base">If Creative Hook Rate &lt; 15%, bypass scaling and re-initiate Stage 02 (Variable Testing).</p>
-                  </div>
-                </div>
-             </div>
+            <div className="bg-brandSurface rounded-[4rem] p-10 lg:p-16 border border-white/5 space-y-8 relative shadow-glow">
+              <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Sell Online? (D2C)</span>
+              <p className="text-3xl font-black text-white tracking-tighter leading-tight uppercase">
+                We track profit, not just sales.
+              </p>
+              <p className="text-white/55 text-base leading-relaxed">
+                For online brands we also watch what each order really costs you, how many customers buy again, and what is left after ad spend. Then we fix the leaks before spending more.
+              </p>
+            </div>
           </div>
-
         </div>
       </section>
 
-      {/* 5. Communication Integrity */}
+      {/* 5. Promises we already make */}
       <section className="py-24 lg:py-40 px-6 lg:px-12 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 lg:mb-24 space-y-4">
-            <span className="text-[11px] font-black text-brandYellow uppercase tracking-[0.5em] block">PARTNERSHIP TERMS</span>
-            <h2 className="text-4xl lg:text-7xl font-black text-brandDark tracking-tighter leading-tight">
-              Radical Transparency.
-            </h2>
+            <span className="text-[11px] font-black text-brandYellow uppercase tracking-[0.5em] block">Our Promise</span>
+            <h2 className="text-4xl lg:text-7xl font-black text-brandDark tracking-tighter leading-tight">Honest by default.</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {[
-              { title: "The Weekly Pulse", desc: "Monday morning Loom deep-dives. We explain the 'why' behind the numbers, not just the 'what'." },
-              { title: "Asynchronous Flow", desc: "We prioritize deep work. Slack for wins, Loom for dives, and zero useless 1-hour status calls." },
-              { title: "Owner Approval", desc: "We manage the day-to-day chaos. You own the creative direction and the high-level budget moves." },
-              { title: "Real-Time Profit", desc: "A custom Google Looker Studio dashboard connected to your P&L. 24/7 access to reality." }
-            ].map((pillar, i) => (
-              <div key={i} className="border-l-4 border-brandYellow pl-8 py-4 space-y-4 hover:border-brandDark transition-all duration-500">
-                <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">
-                  {pillar.title}
-                </h3>
-                <p className="text-brandDark/50 text-lg leading-relaxed">
-                  {pillar.desc}
-                </p>
+              { title: 'No fake promises', desc: 'We never promise exact numbers. We show you real results every month.' },
+              { title: 'Founder-led', desc: 'You speak to Sachin, the founder. No call centre, no junior handoffs.' },
+              { title: 'Reply within 24 hours', desc: 'Questions on WhatsApp get a reply the same or next working day.' },
+              { title: 'Free CRM included', desc: 'Every client gets a CRM to track enquiries and follow-ups, at no extra cost.' },
+            ].map((pillar) => (
+              <div key={pillar.title} className="border-l-4 border-brandYellow pl-8 py-4 space-y-4">
+                <h3 className="text-2xl font-black text-brandDark uppercase tracking-tight">{pillar.title}</h3>
+                <p className="text-brandDark/60 text-lg leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-      
-      {/* 6. Final Call */}
+
+      {/* 6. Call to action */}
       <section className="py-24 lg:py-40 bg-brandDark text-center relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-brandYellow/[0.03] blur-[150px] pointer-events-none"></div>
-        <div className="max-w-4xl mx-auto px-6 relative z-10 space-y-12">
-          <h2 className="text-4xl lg:text-8xl font-black text-white tracking-tighter leading-none">
+        <div className="max-w-4xl mx-auto px-6 relative z-10 space-y-10">
+          <h2 className="text-4xl lg:text-7xl font-black text-white tracking-tighter leading-none">
             Ready to <br />
-            <span className="text-brandYellow">Operationalize?</span>
+            <span className="text-brandYellow">get started?</span>
           </h2>
-          <button 
-            onClick={() => onNavigate('contact')}
-            className="px-14 py-8 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.4em] rounded-xl hover:bg-white transition-all shadow-glow"
-          >
-            Request System Audit
-          </button>
+          <p className="text-white/60 text-lg">Start with a free health check. No payment, no pressure.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={() => onNavigate('lead-capture')}
+              className="px-12 py-6 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.3em] rounded-xl hover:bg-white transition-all shadow-glow"
+            >
+              Get My Free Health Check
+            </button>
+            <a
+              href={whatsappUrl('Hi Techinfigo, I would like to know how you can help my business.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackContact('whatsapp', 'how-we-work')}
+              className="inline-flex items-center gap-2 px-8 py-6 rounded-xl border border-white/15 text-white font-black text-xs uppercase tracking-[0.3em] hover:bg-white/10 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
+            </a>
+          </div>
         </div>
       </section>
     </div>

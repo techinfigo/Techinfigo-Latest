@@ -207,7 +207,7 @@ export const PAGE_SPECS: Record<PageId, PageSpec> = {
       {
         path: 'steps',
         label: 'Process steps',
-        where: 'The numbered lifecycle steps on /how-it-works.',
+        where: 'The numbered steps on the How We Work page (/how-it-works).',
         fields: [
           { key: 'num', label: 'Number', kind: 'text', max: 4 },
           { key: 'title', label: 'Step name', kind: 'text', max: CONTENT_LIMITS.short },

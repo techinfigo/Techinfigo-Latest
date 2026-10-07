@@ -56,9 +56,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
 
   const navLinks = [
     { name: 'Home', id: '/', pageId: 'home' },
-    { name: 'System', id: '/system', pageId: 'system' },
+    { name: 'How We Work', id: '/how-it-works', pageId: 'how-it-works' },
     { name: 'Case Studies', id: '/case-studies', pageId: 'case-studies' },
-    { name: 'Profit Breakdown', id: '/profit-breakdown', pageId: 'profit-breakdown' },
     { name: 'Qualification', id: '/qualification', pageId: 'qualification' },
     { name: 'Contact', id: '/contact', pageId: 'contact' },
   ];
