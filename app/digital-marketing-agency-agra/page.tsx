@@ -4,6 +4,7 @@ import { Navbar } from '../../components/Navbar';
 import { AgraLandingPageWrapper } from '../../components/AgraLandingPageWrapper';
 import { Footer } from '../../components/Footer';
 import { getSiteSettings } from '../../lib/settings';
+import { GoogleReviewsSection } from '../../components/GoogleReviewsSection';
 
 const TITLE = 'Digital Marketing & Website Development in Agra | Techinfigo';
 const DESCRIPTION =
@@ -98,7 +99,7 @@ export default async function AgraLanding() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar activePage="digital-marketing-agency-agra" />
-      <AgraLandingPageWrapper />
+      <AgraLandingPageWrapper proofSection={<GoogleReviewsSection />} />
       <Footer />
     </main>
   );

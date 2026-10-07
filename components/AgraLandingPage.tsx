@@ -33,9 +33,11 @@ const DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${encodeU
 interface AgraLandingPageProps {
   onNavigate: (page: string) => void;
   onBookAudit: () => void;
+  /** Rendered on the server: live Google reviews and client videos. */
+  proofSection?: React.ReactNode;
 }
 
-export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, onBookAudit }) => {
+export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, onBookAudit, proofSection }) => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [isStickyVisible, setIsStickyVisible] = useState(false);
 
@@ -462,6 +464,9 @@ export const AgraLandingPage: React.FC<AgraLandingPageProps> = ({ onNavigate, on
           </div>
         </div>
       </section>
+
+      {/* SECTION 6B: GOOGLE REVIEWS & CLIENT VIDEOS */}
+      {proofSection}
 
       {/* SECTION 7: STRONG CTA */}
       <section className="py-24 px-6 lg:px-12 bg-[#001d21] relative overflow-hidden">

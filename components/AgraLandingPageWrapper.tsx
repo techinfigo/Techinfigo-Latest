@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { AgraLandingPage } from './AgraLandingPage';
 
-export const AgraLandingPageWrapper: React.FC = () => {
+export const AgraLandingPageWrapper: React.FC<{ proofSection?: React.ReactNode }> = ({ proofSection }) => {
   const router = useRouter();
 
   const handleBookAudit = () => {
@@ -16,6 +16,7 @@ export const AgraLandingPageWrapper: React.FC = () => {
       <AgraLandingPage 
         onNavigate={(page) => router.push(`/${page}`)} 
         onBookAudit={handleBookAudit}
+        proofSection={proofSection}
       />
     </div>
   );
