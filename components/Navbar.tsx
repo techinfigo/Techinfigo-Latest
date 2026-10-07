@@ -54,8 +54,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activePage]);
 
+  // A service's own page keeps "Services" lit in the menu.
+  const isLinkActive = (pageId: string) =>
+    activePage === pageId || (pageId === 'services' && activePage === 'service-detail');
+
   const navLinks = [
     { name: 'Home', id: '/', pageId: 'home' },
+    { name: 'Services', id: '/services', pageId: 'services' },
     { name: 'How We Work', id: '/how-it-works', pageId: 'how-it-works' },
     { name: 'Case Studies', id: '/case-studies', pageId: 'case-studies' },
     { name: 'Qualification', id: '/qualification', pageId: 'qualification' },
@@ -158,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
                 key={link.id}
                 href={link.id}
                 className={`text-[11px] font-black uppercase tracking-[0.15em] transition-all relative py-2 px-1 whitespace-nowrap ${
-                  activePage === link.pageId 
+                  isLinkActive(link.pageId) 
                     ? 'text-brandYellow' 
                     : isLightNav 
                       ? 'text-brandDark/80 hover:text-brandDark'
@@ -166,7 +171,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
                 }`}
               >
                 {link.name}
-                {activePage === link.pageId && (
+                {isLinkActive(link.pageId) && (
                   <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-brandYellow"></span>
                 )}
               </Link>
@@ -208,7 +213,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
               key={link.id}
               href={link.id}
               onClick={() => setMobileMenuOpen(false)}
-              className={`text-2xl font-black tracking-tighter uppercase ${activePage === link.pageId ? 'text-brandYellow' : 'text-brandDark'}`}
+              className={`text-2xl font-black tracking-tighter uppercase ${isLinkActive(link.pageId) ? 'text-brandYellow' : 'text-brandDark'}`}
             >
               {link.name}
             </Link>
