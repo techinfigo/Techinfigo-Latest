@@ -65,3 +65,23 @@
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+/* Google reviews: endless sliding row. The track holds the reviews twice, so
+   moving it by half its width loops seamlessly. Pauses while hovered or
+   focused; people who ask for reduced motion get a swipeable row instead. */
+.reviews-marquee {
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+}
+.reviews-marquee-viewport:hover .reviews-marquee,
+.reviews-marquee-viewport:focus-within .reviews-marquee {
+  animation-play-state: paused;
+}
+.reviews-marquee-viewport {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reviews-marquee { animation: none; }
+  .reviews-marquee-viewport { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .reviews-marquee [aria-hidden='true'] { display: none; }
+}
