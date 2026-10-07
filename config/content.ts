@@ -145,37 +145,14 @@ export const DEFAULT_CONTENT = {
   },
 
   services: {
+    // Titles and lines for the /services cards. Slugs are routes (lib/services.ts).
     pillars: [
-      {
-        slug: 'performance-ads',
-        title: 'D2C Performance Ads (Meta + Google)',
-        desc: 'Scale profitably with offer-led creative and full-funnel strategy.',
-      },
-      {
-        slug: 'cro',
-        title: 'Conversion Rate Optimization (CRO)',
-        desc: 'Convert more traffic into revenue with data-driven A/B testing.',
-      },
-      {
-        slug: 'seo',
-        title: 'eCommerce & D2C SEO',
-        desc: 'Drive high-intent organic traffic by ranking for valuable keywords.',
-      },
-      {
-        slug: 'retention',
-        title: 'Email & SMS Retention Flows',
-        desc: 'Boost LTV with automated flows that drive repeat purchases.',
-      },
-      {
-        slug: 'automation',
-        title: 'Marketing Automation',
-        desc: 'Automate tasks and personalize journeys to scale efficiently.',
-      },
-      {
-        slug: 'creative',
-        title: 'Performance Creative Strategy',
-        desc: 'Make creatives that stop thumbs and keep learning fresh.',
-      },
+      { slug: 'website', title: 'Websites That Bring Enquiries', desc: 'A fast, mobile-friendly website with WhatsApp and call buttons, connected to your free CRM.' },
+      { slug: 'google-business-profile', title: 'Google Business Profile & Maps', desc: 'Show up on Google Maps and Search when people in Agra look for what you sell.' },
+      { slug: 'social-media', title: 'Social Media Management', desc: 'Regular posts and reels on Instagram and Facebook, so your business looks active and trusted.' },
+      { slug: 'ads', title: 'Facebook, Instagram & Google Ads', desc: 'Ads that bring enquiries on WhatsApp and calls, with every lead tracked in your CRM.' },
+      { slug: 'seo', title: 'SEO: Rank Higher on Google', desc: 'More people find your website on Google, month after month, without paying for every click.' },
+      { slug: 'd2c', title: 'Growth for Online Brands (D2C)', desc: 'For brands selling online: Meta ads, better product pages and repeat sales, tracked against profit.' },
     ],
   },
 

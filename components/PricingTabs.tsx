@@ -6,7 +6,7 @@ import { Check, Globe, Megaphone, Search, ShoppingBag, Layers, ArrowRight, Spark
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 
-type Plan = {
+export type Plan = {
   name: string;
   price: string;
   unit: string;
@@ -15,7 +15,7 @@ type Plan = {
   popular?: boolean;
 };
 
-type Tab = {
+export type Tab = {
   id: string;
   label: string;
   icon: React.ReactNode;
@@ -28,7 +28,7 @@ type Tab = {
  * Package prices shown on the site. Keep these in step with the Google
  * Business Profile and the packages doc so a customer never sees two prices.
  */
-const TABS: Tab[] = [
+export const TABS: Tab[] = [
   {
     id: 'website',
     label: 'Website',

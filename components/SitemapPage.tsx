@@ -25,13 +25,12 @@ const treeData: TreeNodeData = {
       page: 'services',
       color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80',
       children: [
-        { label: 'Ads', page: 'service-detail', serviceId: 'performance-ads' },
-        { label: 'CRO', page: 'service-detail', serviceId: 'cro' },
+        { label: 'Websites', page: 'service-detail', serviceId: 'website' },
+        { label: 'Google Business Profile', page: 'service-detail', serviceId: 'google-business-profile' },
+        { label: 'Social Media', page: 'service-detail', serviceId: 'social-media' },
+        { label: 'Ads', page: 'service-detail', serviceId: 'ads' },
         { label: 'SEO', page: 'service-detail', serviceId: 'seo' },
-        { label: 'Retention', page: 'service-detail', serviceId: 'retention' },
-        { label: 'Automation', page: 'service-detail', serviceId: 'automation' },
-        { label: 'Creative', page: 'service-detail', serviceId: 'creative' },
-        { label: 'Influencer', page: 'service-detail', serviceId: 'influencer' },
+        { label: 'D2C Brands', page: 'service-detail', serviceId: 'd2c' },
       ]
     },
     { label: 'About', page: 'about', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },

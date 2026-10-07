@@ -79,7 +79,7 @@ export function HeroEnquiryStack({ rating, count }: { rating: number | null; cou
 }
 
 /** Step 1: the health check report with three fixes. */
-function HealthCheckVisual() {
+export function HealthCheckVisual() {
   const rows = [
     { ok: false, text: 'Website has no WhatsApp button' },
     { ok: false, text: 'Google profile missing photos' },
@@ -115,7 +115,7 @@ function HealthCheckVisual() {
 }
 
 /** Step 2: a phone with a website that gets calls, next to a complete Google profile. */
-function BasicsVisual() {
+export function BasicsVisual() {
   return (
     <div className="flex items-end gap-3 sm:gap-6">
       <div className="w-[128px] sm:w-[170px] rounded-[2rem] bg-brandDark p-2.5 shadow-[0_30px_60px_-25px_rgba(0,29,33,0.6)] shrink-0">
@@ -162,7 +162,7 @@ function BasicsVisual() {
 }
 
 /** Step 3: an ad that brings a message, not just likes. */
-function EnquiriesVisual() {
+export function EnquiriesVisual() {
   return (
     <div className="relative w-full max-w-sm">
       <div className={`${card} overflow-hidden`}>
@@ -196,7 +196,7 @@ function EnquiriesVisual() {
 }
 
 /** Step 4: every lead tracked, with where it came from. */
-function TrackVisual() {
+export function TrackVisual() {
   const leads = [
     { name: 'Ritu S.', from: 'Google search', status: 'New', tone: 'bg-brandYellow/25 text-brandDark' },
     { name: 'Amit K.', from: 'Instagram ad', status: 'Follow up', tone: 'bg-sky-100 text-sky-800' },
@@ -245,5 +245,149 @@ const STEP_VISUALS = [HealthCheckVisual, BasicsVisual, EnquiriesVisual, TrackVis
 /** The picture for step `index`, or nothing if a step was added in admin beyond the four. */
 export function StepVisual({ index }: { index: number }) {
   const Visual = STEP_VISUALS[index];
+  return Visual ? <Visual /> : null;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Service pages                                                             */
+/* ------------------------------------------------------------------------ */
+
+/** Google Business Profile as it appears on Maps. */
+export function GbpVisual() {
+  return (
+    <div className={`${card} w-full max-w-sm overflow-hidden`}>
+      <div className="h-24 bg-brandDark relative">
+        <div className="absolute inset-0 opacity-30 bg-[linear-gradient(90deg,rgba(255,255,255,.15)_1px,transparent_1px),linear-gradient(rgba(255,255,255,.15)_1px,transparent_1px)] bg-[size:22px_22px]" />
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shadow-glow">
+          <MapPin className="w-5 h-5" />
+        </span>
+      </div>
+      <div className="p-5 space-y-3">
+        <div>
+          <p className="text-sm font-black text-brandDark">Your Business, Agra</p>
+          <div className="flex items-center gap-1 mt-1">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <Star key={i} className="w-3.5 h-3.5 fill-brandYellow text-brandYellow" />
+            ))}
+            <span className="text-[11px] text-brandDark/50 ml-1">Reviews</span>
+          </div>
+          <p className="text-[11px] text-emerald-700 font-bold mt-1">Open now</p>
+        </div>
+        <div className="grid grid-cols-4 gap-1.5">
+          {['Call', 'Directions', 'Website', 'Share'].map((a) => (
+            <span key={a} className="py-1.5 rounded-lg bg-brandBg text-[9px] font-bold text-brandDark text-center">{a}</span>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-1.5">
+          <div className="aspect-[4/3] rounded-md bg-brandDark/15" />
+          <div className="aspect-[4/3] rounded-md bg-brandYellow/40" />
+          <div className="aspect-[4/3] rounded-md bg-brandDark/10" />
+        </div>
+        <p className="text-[10px] text-brandDark/60 bg-brandBg rounded-lg px-3 py-2">New post: “Festive timings this week”</p>
+      </div>
+    </div>
+  );
+}
+
+/** An Instagram grid that looks active. */
+export function SocialVisual() {
+  const tiles = ['bg-brandDark', 'bg-brandYellow', 'bg-brandDark/15', 'bg-brandYellow/40', 'bg-brandDark', 'bg-brandDark/25'];
+  return (
+    <div className={`${card} p-5 w-full max-w-sm space-y-4`}>
+      <div className="flex items-center gap-3">
+        <span className="w-12 h-12 rounded-full p-[2px] bg-gradient-to-tr from-brandYellow to-[#e1306c]">
+          <span className="w-full h-full rounded-full bg-brandDark text-brandYellow text-xs font-black flex items-center justify-center">YB</span>
+        </span>
+        <div className="flex-1">
+          <p className="text-sm font-black text-brandDark">yourbusiness</p>
+          <p className="text-[10px] text-brandDark/50">Posted 2 days ago</p>
+        </div>
+        <span className="px-3 py-1.5 rounded-lg bg-brandDark text-white text-[10px] font-bold">Message</span>
+      </div>
+      <div className="grid grid-cols-3 gap-1">
+        {tiles.map((t, i) => (
+          <div key={i} className={`aspect-square rounded ${t} relative`}>
+            {i === 1 || i === 4 ? (
+              <span className="absolute top-1 right-1 w-3 h-3 rounded-sm border-2 border-white/80" />
+            ) : null}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-3 text-[11px] text-brandDark/60">
+        <Heart className="w-4 h-4" /> <MessageCircle className="w-4 h-4" /> <Send className="w-4 h-4" />
+        <span className="ml-auto font-bold text-brandDark">12 posts this month</span>
+      </div>
+    </div>
+  );
+}
+
+/** A Google results page with your site near the top. */
+export function SearchVisual() {
+  return (
+    <div className={`${card} p-5 w-full max-w-sm space-y-4`}>
+      <div className="flex items-center gap-2 rounded-full border border-brandDark/10 px-4 py-2.5">
+        <Globe className="w-4 h-4 text-brandDark/40" />
+        <span className="text-xs text-brandDark/70">best service near me in Agra</span>
+      </div>
+      <div className="space-y-3">
+        <div className="rounded-xl bg-brandYellow/15 border border-brandYellow/40 p-3">
+          <p className="text-[10px] text-brandDark/50">yourbusiness.com</p>
+          <p className="text-sm font-bold text-[#1a0dab]">Your Business: trusted in Agra</p>
+          <p className="text-[10px] text-brandDark/60">Call or WhatsApp today. Open Mon–Sat.</p>
+        </div>
+        {[0, 1].map((i) => (
+          <div key={i} className="px-3 space-y-1.5">
+            <div className="h-1.5 w-1/3 rounded bg-brandDark/10" />
+            <div className="h-2.5 w-3/4 rounded bg-[#1a0dab]/20" />
+            <div className="h-1.5 w-2/3 rounded bg-brandDark/10" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Online store: an order coming in and a repeat customer. */
+export function D2CVisual() {
+  return (
+    <div className="relative w-full max-w-sm">
+      <div className={`${card} p-5 space-y-4`}>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-black text-brandDark">Your store</p>
+          <span className="text-[10px] font-bold text-brandDark/40">Today</span>
+        </div>
+        {[
+          { name: 'New order', tag: 'From Instagram ad', tone: 'bg-brandYellow/25 text-brandDark' },
+          { name: 'New order', tag: 'Repeat customer', tone: 'bg-emerald-100 text-emerald-800' },
+          { name: 'Cart reminder sent', tag: 'On WhatsApp', tone: 'bg-sky-100 text-sky-800' },
+        ].map((r, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <span className="w-8 h-8 rounded-lg bg-brandDark text-brandYellow flex items-center justify-center shrink-0">
+              <Bell className="w-4 h-4" />
+            </span>
+            <p className="flex-1 text-xs font-bold text-brandDark">{r.name}</p>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${r.tone}`}>{r.tag}</span>
+          </div>
+        ))}
+      </div>
+      <div className="absolute -bottom-5 -right-2 sm:-right-6 rounded-xl bg-brandYellow text-brandDark px-3 py-2 shadow-glow text-[11px] font-black">
+        Profit tracked, not just sales
+      </div>
+    </div>
+  );
+}
+
+const SERVICE_VISUALS: Record<string, () => React.ReactElement> = {
+  website: BasicsVisual,
+  'google-business-profile': GbpVisual,
+  'social-media': SocialVisual,
+  ads: EnquiriesVisual,
+  seo: SearchVisual,
+  d2c: D2CVisual,
+};
+
+/** The picture for a service page, by slug. */
+export function ServiceVisual({ slug }: { slug: string }) {
+  const Visual = SERVICE_VISUALS[slug];
   return Visual ? <Visual /> : null;
 }

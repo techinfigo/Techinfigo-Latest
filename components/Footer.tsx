@@ -15,10 +15,12 @@ interface FooterProps {
 }
 
 const CAPABILITIES = [
-  { name: 'Performance Ads', id: 'performance-ads' },
-  { name: 'CRO & Funnels', id: 'cro' },
-  { name: 'eCommerce SEO', id: 'seo' },
-  { name: 'Retention Flows', id: 'retention' }
+  { name: 'Websites', id: 'website' },
+  { name: 'Google Business Profile', id: 'google-business-profile' },
+  { name: 'Social Media', id: 'social-media' },
+  { name: 'Ads', id: 'ads' },
+  { name: 'SEO', id: 'seo' },
+  { name: 'D2C Brands', id: 'd2c' }
 ];
 
 const LEGAL_LINKS = [

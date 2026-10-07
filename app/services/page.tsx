@@ -3,14 +3,14 @@ import PageClient from './PageClient';
 import { getPageContent } from '../../lib/content';
 
 export const metadata: Metadata = {
-  title: 'D2C Growth Services | Performance Ads, CRO, SEO & Retention',
-  description: 'Performance ads, CRO, SEO and retention, built as one profit-first growth system instead of four disconnected services.',
+  title: 'Services | Websites, Google Profile, Social Media, Ads & SEO',
+  description: 'Websites, Google Business Profile, social media, Facebook/Instagram/Google ads, SEO and D2C growth for Agra businesses. Free CRM with every package.',
   alternates: {
     canonical: '/services',
   },
   openGraph: {
-    title: 'D2C Growth Services | Performance Ads, CRO, SEO & Retention',
-    description: 'Performance ads, CRO, SEO and retention, built as one profit-first growth system instead of four disconnected services.',
+    title: 'Services | Websites, Google Profile, Social Media, Ads & SEO',
+    description: 'Websites, Google Business Profile, social media, Facebook/Instagram/Google ads, SEO and D2C growth for Agra businesses. Free CRM with every package.',
     url: '/services',
   },
 };

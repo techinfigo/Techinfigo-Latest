@@ -68,6 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
     'profit-breakdown', 
     'system', 
     'services', 
+    'service-detail',
     'case-studies', 
     'about', 
     'how-it-works', 
