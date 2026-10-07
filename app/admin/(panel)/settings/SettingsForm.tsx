@@ -247,7 +247,7 @@ export function SettingsForm({
 
       <Group
         title="Client videos"
-        note="The video section on the Agra page, right after the Google reviews. Paste YouTube links (normal videos or Shorts). The section is hidden while this list is empty."
+        note="The video section on the Agra page, right after the Google reviews. Paste YouTube links (normal videos or Shorts). Each card shows only the video's YouTube thumbnail, so set the thumbnail on YouTube. The section is hidden while this list is empty."
       >
         <VideoListEditor value={form.videos} onChange={(videos) => setField('videos', videos)} />
       </Group>
@@ -500,7 +500,7 @@ function VideoListEditor({
               <TextInput
                 value={video.title}
                 maxLength={SETTINGS_LIMITS.videoTitle}
-                placeholder="Title, e.g. “Sharma Sweets: 3x more enquiries”"
+                placeholder="Short description (not shown on the card, helps Google and screen readers)"
                 onChange={(title) => update(i, { title })}
               />
               {invalid ? (

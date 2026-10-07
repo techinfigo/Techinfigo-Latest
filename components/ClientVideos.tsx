@@ -36,17 +36,11 @@ function VideoCard({ v, onOpen }: { v: Item; onOpen: () => void }) {
         }}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      <span className="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-brandDark/10 to-transparent" />
       <span className="absolute inset-0 flex items-center justify-center">
         <span className="w-16 h-16 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shadow-[0_0_40px_rgba(252,182,50,0.5)] transition-transform duration-300 group-hover:scale-110">
           <Play className="w-6 h-6 ml-1 fill-brandDark" aria-hidden="true" />
         </span>
       </span>
-      {v.title ? (
-        <span className="absolute left-0 right-0 bottom-0 p-5 text-sm font-bold text-white leading-snug line-clamp-3">
-          {v.title}
-        </span>
-      ) : null}
     </button>
   );
 }
@@ -98,7 +92,6 @@ function VideoModal({ v, onClose }: { v: Item; onClose: () => void }) {
             className="absolute inset-0 w-full h-full border-0"
           />
         </div>
-        {v.title ? <p className="mt-4 text-center text-white font-bold">{v.title}</p> : null}
       </div>
     </div>,
     document.body,
