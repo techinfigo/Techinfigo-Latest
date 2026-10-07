@@ -249,7 +249,7 @@ export function SettingsForm({
         title="Client videos"
         note="The video section on the Agra page, right after the Google reviews. Paste YouTube links (normal videos or Shorts). Each card shows only the video's YouTube thumbnail, so set the thumbnail on YouTube. The section is hidden while this list is empty."
       >
-        <VideoListEditor value={form.videos} onChange={(videos) => setField('videos', videos)} />
+        <VideoListEditor value={form.videos ?? []} onChange={(videos) => setField('videos', videos)} />
       </Group>
 
       <div className="flex flex-wrap items-center gap-4 pt-2">

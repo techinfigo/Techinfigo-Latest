@@ -98,8 +98,9 @@ function VideoModal({ v, onClose }: { v: Item; onClose: () => void }) {
   );
 }
 
-export function ClientVideos({ videos }: { videos: ClientVideo[] }) {
-  const items: Item[] = videos
+export function ClientVideos({ videos }: { videos?: ClientVideo[] }) {
+  // Settings cached before videos existed have no list at all.
+  const items: Item[] = (videos ?? [])
     .map((v) => {
       const id = youtubeId(v.url);
       return id ? { id, title: v.title, vertical: isShortsUrl(v.url) } : null;

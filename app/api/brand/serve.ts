@@ -64,10 +64,10 @@ export async function serveBrandAsset(request: Request, kind: BrandAssetKind) {
   }
 
   let body: Buffer = Buffer.from(asset.data, 'base64');
-  if (kind === 'logo' && asset.mime !== 'image/svg+xml') {
-    const trimmed = await trimLogo(body);
-    if (trimmed) {
-      body = trimmed;
+  if (asset.mime !== 'image/svg+xml') {
+    const processed = kind === 'logo' ? await trimLogo(body) : await squareFavicon(body);
+    if (processed) {
+      body = processed;
       headers.set('Content-Type', 'image/png');
     }
   }
@@ -90,6 +90,24 @@ async function trimLogo(input: Buffer): Promise<Buffer | null> {
       .toBuffer();
   } catch (error) {
     console.error('[brand] logo trim failed; serving the original:', error);
+    return null;
+  }
+}
+
+/**
+ * Browser tabs and Google show the favicon as a small square. Trim the empty
+ * border, then centre the image on a transparent 512×512 square so a
+ * non-square upload is never squashed. Any failure serves the original.
+ */
+async function squareFavicon(input: Buffer): Promise<Buffer | null> {
+  try {
+    const trimmed = await sharp(input).trim({ threshold: 10 }).toBuffer();
+    return await sharp(trimmed)
+      .resize(512, 512, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .png({ compressionLevel: 9 })
+      .toBuffer();
+  } catch (error) {
+    console.error('[brand] favicon processing failed; serving the original:', error);
     return null;
   }
 }

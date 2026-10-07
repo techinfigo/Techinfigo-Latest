@@ -35,7 +35,7 @@ export const SITE_SETTINGS_TAG = 'site-settings';
  * this, so a bump orphans the old entries rather than letting a stale value of
  * the previous shape be served against the new code.
  */
-const CACHE_KEY = 'site-settings-v1';
+const CACHE_KEY = 'site-settings-v2';
 
 type SettingsDocument = Record<string, unknown> & {
   brand?: { logo?: StoredBrandAsset | null; favicon?: StoredBrandAsset | null };
