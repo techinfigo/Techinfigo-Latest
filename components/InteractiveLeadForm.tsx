@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { HoneypotField } from './HoneypotField';
-import { whatsappUrl } from '../config/site';
+import { site, telUrl, whatsappUrl } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 import { trackContact } from '../lib/track';
 import { submitLead } from '../lib/submit-lead';
 import { motion } from 'motion/react';
@@ -18,10 +19,9 @@ import {
   Wrench,
   Instagram,
   ShoppingCart,
-  Target,
-  BarChart3,
   Building2,
   ShieldCheck,
+  MessageCircle,
 } from 'lucide-react';
 import { Footer } from './Footer';
 
@@ -51,6 +51,7 @@ const labelClass = 'text-[11px] font-bold text-brandDark/60 uppercase tracking-[
  * (budget, numbers, timeline) is asked later on WhatsApp.
  */
 export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack, onNavigate, onBookAudit }) => {
+  const { contact } = useSiteSettings();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState(false);
@@ -142,51 +143,67 @@ export const InteractiveLeadForm: React.FC<InteractiveLeadFormProps> = ({ onBack
   return (
     <div className="min-h-screen bg-brandBg font-sans">
       <div className="pb-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 relative z-20">
-          {/* Left Sidebar: Context */}
-          <aside className="lg:col-span-4 space-y-8 animate-slide-up">
-            <div className="bg-[#001d21] rounded-[2.5rem] p-8 lg:p-10 space-y-10 shadow-2xl border border-white/5 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start relative z-20">
+          {/* Left Sidebar: what happens next + talk directly. Stays in view on
+              desktop; on phones it comes after the form. */}
+          <aside className="order-2 lg:order-1 lg:col-span-4 lg:sticky lg:top-32 self-start animate-slide-up">
+            <div className="bg-[#001d21] rounded-[2.5rem] p-8 lg:p-10 space-y-8 shadow-2xl border border-white/5 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
-              
+
               <div className="space-y-2 relative z-10">
-                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">What You Get</p>
-                <h2 className="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase leading-none">Free Health <br/> Check</h2>
+                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">What Happens Next</p>
+                <h2 className="text-3xl font-black text-white tracking-tight uppercase leading-none">Free Health <br/> Check</h2>
               </div>
 
-              <div className="space-y-6 relative z-10">
+              <ol className="relative z-10 space-y-5">
                 {[
-                  { title: "Honest Review", desc: "I check your website, Google profile and social pages.", icon: <Layout className="w-5 h-5" /> },
-                  { title: "3 Clear Fixes", desc: "The 3 things costing you enquiries, and how to fix each one.", icon: <BarChart3 className="w-5 h-5" /> },
-                  { title: "Founder-Led", desc: "You talk directly with Sachin, the founder. No call centre.", icon: <Zap className="w-5 h-5" /> }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5 group">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500">
-                      {item.icon}
-                    </div>
+                  { when: 'Now', title: 'Fill the form' },
+                  { when: 'Within 24 hours', title: 'We review your business' },
+                  { when: 'On WhatsApp', title: 'Get 3 clear fixes' },
+                ].map((step, i) => (
+                  <li key={step.title} className="flex gap-4">
+                    <span className="w-8 h-8 shrink-0 rounded-full bg-[#fcb632] text-brandDark text-sm font-black flex items-center justify-center">{i + 1}</span>
                     <div className="space-y-1">
-                      <h3 className="text-white font-black uppercase text-sm tracking-tight">{item.title}</h3>
-                      <p className="text-white/40 text-xs leading-relaxed font-medium">{item.desc}</p>
+                      <p className="text-[10px] font-bold text-brandYellow uppercase tracking-widest">{step.when}</p>
+                      <h3 className="text-white font-black uppercase text-sm tracking-tight">{step.title}</h3>
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
 
-              <div className="pt-8 border-t border-white/5 relative z-10">
-                <div className="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10">
-                  <div className="w-10 h-10 rounded-full bg-brandYellow/20 flex items-center justify-center text-brandYellow">
-                    <ShieldCheck className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold text-white uppercase tracking-widest">Your Privacy</p>
-                    <p className="text-[11px] font-medium text-white/50">Your details stay private and are never shared or sold.</p>
-                  </div>
+              <div className="relative z-10 pt-6 border-t border-white/10 space-y-4">
+                <p className="text-white font-black text-sm uppercase tracking-tight">Prefer to talk?</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href={whatsappUrl('Hi Techinfigo, I would like a free health check for my business.')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackContact('whatsapp', 'health-check-sidebar')}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[#25D366] text-white text-xs font-black uppercase tracking-wider hover:opacity-90 transition-opacity"
+                  >
+                    <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                  <a
+                    href={telUrl(contact.phone || site.phone)}
+                    onClick={() => trackContact('call', 'health-check-sidebar')}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-black uppercase tracking-wider hover:bg-white/20 transition-colors"
+                  >
+                    <Phone className="w-4 h-4" aria-hidden="true" />
+                    Call
+                  </a>
                 </div>
               </div>
+
+              <p className="relative z-10 flex items-center gap-2 text-[11px] font-medium text-white/50">
+                <ShieldCheck className="w-4 h-4 shrink-0 text-brandYellow" aria-hidden="true" />
+                100% private. Never shared.
+              </p>
             </div>
           </aside>
 
           {/* Right Main: One-Screen Form */}
-          <main className="lg:col-span-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <main className="order-1 lg:order-2 lg:col-span-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             <div className="space-y-8">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
