@@ -131,10 +131,14 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
     });
   };
 
-  const roles = [
-    { title: "Growth Strategist", focus: "P&L Engineering", location: "Remote", type: "Full-time", exp: "2-5 Years" },
-    { title: "Performance Designer", focus: "Conversion Assets", location: "Remote", type: "Full-time", exp: "1-3 Years" },
-    { title: "Data & Ops Engineer", focus: "Infrastructure", location: "Remote", type: "Contract", exp: "3+ Years" }
+  // No roles are listed until there is a real opening; the form stays open.
+  const skills = [
+    { title: 'Social media & design', value: 'social', note: 'Posts, carousels and brand designs' },
+    { title: 'Reels & video editing', value: 'video', note: 'Short videos for Instagram and ads' },
+    { title: 'Ads (Meta & Google)', value: 'ads', note: 'Running and improving lead campaigns' },
+    { title: 'Websites', value: 'web', note: 'Building and fixing business websites' },
+    { title: 'SEO & Google profiles', value: 'seo', note: 'Local SEO and Google Business Profile' },
+    { title: 'Sales & client support', value: 'sales', note: 'Talking to clients and following up' },
   ];
 
   if (submitted) {
@@ -144,9 +148,9 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
           <div className="w-20 h-20 bg-brandYellow rounded-full flex items-center justify-center mx-auto shadow-2xl">
             <svg className="w-10 h-10 text-brandDark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
           </div>
-          <h1 className="text-4xl lg:text-6xl font-extrabold text-brandDark tracking-tighter">Profile Logged.</h1>
+          <h1 className="text-4xl lg:text-6xl font-extrabold text-brandDark tracking-tighter">Application sent.</h1>
           <p className="text-brandDark/60 text-lg lg:text-xl max-w-lg mx-auto leading-relaxed">
-            Our talent engine is reviewing your credentials. If there is a sync, you will receive a WhatsApp notification within 48 hours.
+            Thank you. We read every application, and if there is a fit we will message you on WhatsApp.
           </p>
           <button onClick={() => onNavigate('home')} className="inline-block mt-8 text-brandDark font-bold uppercase tracking-widest text-xs border-b-2 border-brandYellow pb-1 transition-all hover:text-brandYellow">
             Go Back to Home
@@ -164,14 +168,14 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
         <div className="max-w-7xl mx-auto">
           <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
             <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
-              TALENT MANDATE
+              Careers
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tighter max-w-5xl">
-              Engineered <br />
-              Together.
+              Work with us <br />
+              <span className="text-brandYellow italic">in Agra.</span>
             </h1>
             <p className="text-base lg:text-xl text-white/60 font-medium leading-relaxed max-w-3xl">
-              We don't hire 'employees.' We hire engineers who treat growth <br className="hidden lg:block" /> as a high-precision discipline.
+              We’re a small, founder-led team in Sanjay Place. There are no openings listed right now, but we always want to hear from good people.
             </p>
           </div>
         </div>
@@ -180,51 +184,35 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
       <section className="py-24 lg:py-32 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
           
-          {/* Left Column: Open Positions */}
-          <div className="lg:col-span-5 space-y-12 sticky top-32">
+          {/* Left Column: skills we look for (no fake openings) */}
+          <div className="lg:col-span-5 space-y-10 lg:sticky lg:top-32">
             <div className="space-y-4">
-              <span className="text-[10px] font-bold text-brandYellow uppercase tracking-[0.4em] block">
-                OPEN POSITIONS
-              </span>
               <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">
-                Current <br /> Openings.
+                Skills we <br /> look for.
               </h2>
               <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
-                Current openings in our growth unit. Select a role to apply.
+                Good at one of these? Tap it and send us a short application.
               </p>
             </div>
 
-            <div className="space-y-6">
-              {roles.map((role, i) => (
-                <div 
-                  key={i} 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+              {skills.map((skill) => (
+                <button
+                  key={skill.value}
+                  type="button"
                   onClick={() => {
-                    updateField('specialization', role.focus.toLowerCase().includes('strategy') ? 'strategy' : role.focus.toLowerCase().includes('creative') ? 'creative' : 'data');
+                    updateField('specialization', skill.value);
                     scrollToForm();
                   }}
-                  className={`group border p-8 rounded-[2rem] space-y-4 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer relative overflow-hidden ${
-                    i === 1 ? 'bg-white border-brandYellow shadow-md' : 'bg-[#f5f5f5] border-transparent hover:bg-white hover:border-brandYellow/50'
+                  className={`text-left border p-5 rounded-2xl transition-all duration-300 ${
+                    formData.specialization === skill.value
+                      ? 'bg-white border-brandYellow shadow-md'
+                      : 'bg-white/60 border-brandDark/5 hover:bg-white hover:border-brandYellow/50'
                   }`}
                 >
-                  <div className={`absolute top-8 right-8 transition-opacity duration-300 ${i === 1 ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                    <svg className="w-6 h-6 text-brandYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                  </div>
-                  
-                  <h3 className={`text-3xl font-black tracking-tight transition-colors ${i === 1 ? 'text-brandYellow' : 'text-brandDark group-hover:text-brandYellow'}`}>
-                    {role.title}
-                  </h3>
-                  <p className="text-brandDark/40 font-bold text-xs tracking-[0.2em] uppercase">{role.focus}</p>
-                  
-                  <div className="flex flex-wrap gap-3 pt-4">
-                    {[role.location, role.type, role.exp].map((tag, idx) => (
-                      <span key={idx} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                        i === 1 ? 'bg-brandYellow/10 text-brandYellow' : 'bg-brandDark/5 text-brandDark/60 group-hover:bg-brandYellow/10 group-hover:text-brandYellow transition-colors'
-                      }`}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                  <p className="text-lg font-black text-brandDark">{skill.title}</p>
+                  <p className="text-sm text-brandDark/55">{skill.note}</p>
+                </button>
               ))}
             </div>
           </div>
@@ -235,9 +223,8 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 rounded-bl-[2.5rem] pointer-events-none"></div>
               
               <div className="space-y-3">
-                <span className="text-[10px] font-bold text-brandDark/30 uppercase tracking-[0.3em]">INTAKE PROTOCOL</span>
-                <h2 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight">Application Terminal</h2>
-                <p className="text-brandDark/50 text-base">Neutral vetting process for high-yield talent.</p>
+                <h2 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight">Send your application</h2>
+                <p className="text-brandDark/50 text-base">Takes about 2 minutes.</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-8">
@@ -246,7 +233,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                 {/* Identity Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">FULL NAME *</label>
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">YOUR NAME *</label>
                     <input 
                       required type="text" 
                       value={formData.fullName}
@@ -256,7 +243,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">WORK EMAIL *</label>
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">EMAIL *</label>
                     <input 
                       required type="email" 
                       value={formData.email}
@@ -276,9 +263,9 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">LINKEDIN PROFILE *</label>
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">LINKEDIN (OPTIONAL)</label>
                     <input 
-                      required type="url" 
+                      type="url" 
                       value={formData.linkedin}
                       onChange={(e) => updateField('linkedin', e.target.value)}
                       placeholder="linkedin.com/in/username" 
@@ -290,24 +277,17 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                 {/* Professional Scope */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                   <CustomSelect 
-                    label="PRIMARY SPECIALIZATION *"
-                    options={[
-                      { label: "Growth Strategy & P&L", value: "strategy" },
-                      { label: "Media Buying (Meta/Google)", value: "media" },
-                      { label: "CRO & Landing Pages", value: "cro" },
-                      { label: "Performance Creative", value: "creative" },
-                      { label: "Retention & Email Ops", value: "retention" },
-                      { label: "Data & Infrastructure", value: "data" }
-                    ]}
+                    label="WHAT ARE YOU GOOD AT? *"
+                    options={skills.map((sk) => ({ label: sk.title, value: sk.value }))}
                     value={formData.specialization}
                     onChange={(val) => updateField('specialization', val)}
                   />
                   <CustomSelect 
-                    label="EXPERIENCE (D2C FOCUS) *"
+                    label="EXPERIENCE *"
                     options={[
-                      { label: "0-2 Years (Associate)", value: "0-2" },
-                      { label: "2-5 Years (Strategist)", value: "2-5" },
-                      { label: "5+ Years (Expert)", value: "5+" }
+                      { label: "Fresher or under 1 year", value: "0-1" },
+                      { label: "1–3 years", value: "1-3" },
+                      { label: "3+ years", value: "3+" }
                     ]}
                     value={formData.experience}
                     onChange={(val) => updateField('experience', val)}
@@ -316,35 +296,35 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">PORTFOLIO / CASE STUDIES LINK</label>
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">LINK TO YOUR WORK</label>
                     <input 
                       type="url" 
                       value={formData.portfolio}
                       onChange={(e) => updateField('portfolio', e.target.value)}
-                      placeholder="Link to your best work" 
+                      placeholder="Instagram, Drive, Behance or website" 
                       className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">EXPECTED MONTHLY CTC (INR)</label>
+                    <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">EXPECTED MONTHLY SALARY (₹)</label>
                     <input 
                       type="text" 
                       value={formData.expectedCtc}
                       onChange={(e) => updateField('expectedCtc', e.target.value)}
-                      placeholder="e.g. 1,00,000" 
+                      placeholder="e.g. 20,000" 
                       className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all" 
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">THE PITCH (TELL US ABOUT A GROWTH WIN) *</label>
+                  <label className="text-[10px] font-bold text-brandDark/60 uppercase tracking-widest">TELL US ABOUT YOURSELF *</label>
                   <textarea 
                     required
                     rows={4}
                     value={formData.pitch}
                     onChange={(e) => updateField('pitch', e.target.value)}
-                    placeholder="Tell us about a specific variable you moved that led to a significant revenue lift."
+                    placeholder="What you are good at, and something you have made or achieved."
                     className="w-full bg-[#fcfcfc] border border-[#f0f0f0] px-5 py-4 text-sm font-medium focus:ring-1 focus:ring-brandYellow outline-none rounded-xl transition-all resize-none"
                   />
                 </div>
@@ -358,11 +338,11 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                     {loading ? (
                       <span className="flex items-center gap-3">
                         <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        SYNCING PROFILE...
+                        SENDING…
                       </span>
                     ) : (
                       <>
-                        Submit Application
+                        Send Application
                         <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                       </>
                     )}

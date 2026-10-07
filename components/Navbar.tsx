@@ -36,8 +36,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
       } else if (activePage === 'profit-breakdown') {
         setIsOverLightSection(scrollY > 700 && scrollY < 1800);
       } else if (activePage === 'qualification') {
-        // This page is mostly light background
-        setIsOverLightSection(scrollY > 100);
+        // Dark header (~450px), then light cards.
+        setIsOverLightSection(scrollY > 450);
       } else if (activePage === 'system') {
         setIsOverLightSection(scrollY > 3500 && scrollY < 5000);
       } else if (activePage === 'digital-marketing-agency-agra') {
@@ -63,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
     { name: 'Services', id: '/services', pageId: 'services' },
     { name: 'How We Work', id: '/how-it-works', pageId: 'how-it-works' },
     { name: 'Case Studies', id: '/case-studies', pageId: 'case-studies' },
-    { name: 'Qualification', id: '/qualification', pageId: 'qualification' },
+    { name: 'Who We Fit', id: '/qualification', pageId: 'qualification' },
     { name: 'Contact', id: '/contact', pageId: 'contact' },
   ];
 

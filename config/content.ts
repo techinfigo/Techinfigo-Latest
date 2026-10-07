@@ -183,40 +183,16 @@ export const DEFAULT_CONTENT = {
 
   qualification: {
     greenLights: [
-      {
-        title: 'Profitable Foundation',
-        desc: "You are currently doing ₹50L–₹5Cr monthly and have a product that people actually want. We don't fix broken business models; we scale winners.",
-      },
-      {
-        title: 'Growth Mindset',
-        desc: "You aren't looking for a 'miracle month'. You understand that building a dominant D2C brand requires consistency, testing velocity, and a systems-first approach.",
-      },
-      {
-        title: 'Strong Unit Economics',
-        desc: 'You know your COGS and contribution margins. You understand that scale is only healthy if the economics support high-intensity acquisition.',
-      },
-      {
-        title: 'Operational Scalability',
-        desc: 'Your backend — supply chain, fulfillment, and customer support — is ready to handle 2x–5x volume without collapsing under the pressure of growth.',
-      },
+      { title: 'You want customers, not just likes', desc: 'You care about calls, WhatsApp messages and orders more than followers.' },
+      { title: 'You reply to enquiries quickly', desc: 'Leads go cold fast. We send them to you instantly, and a quick reply wins the customer.' },
+      { title: 'You can give it a few months', desc: 'Ads can bring enquiries within weeks; Google rankings and SEO take months. Steady effort wins.' },
+      { title: 'You are open to trying things', desc: 'We test offers, posts and ads, keep what works and drop what does not.' },
     ],
     redFlags: [
-      {
-        title: 'Short-Term Thinking',
-        desc: "If you need a 'miracle month' just to keep the lights on, we aren't the right fit. We build high-performance systems, not gambling strategies.",
-      },
-      {
-        title: 'Razor-Thin Margins',
-        desc: "If your product margins don't allow for scalable acquisition costs, no amount of 'optimization' can fix a broken business model.",
-      },
-      {
-        title: 'Data Silos',
-        desc: "We require full transparency into your numbers. If you aren't ready to share your true contribution margins, we can't optimize for profit.",
-      },
-      {
-        title: 'Fixed Mindsets',
-        desc: "Our system thrives on testing new funnels, offers, and creatives. If you are married to 'your way' of doing things, we'll reach a ceiling early.",
-      },
+      { title: 'You want guaranteed numbers', desc: 'Nobody honest can promise exact leads or rankings. We show you real results every month instead.' },
+      { title: 'Enquiries will go unanswered', desc: 'If no one picks up calls or replies on WhatsApp, no marketing can help.' },
+      { title: 'You want ads with no ad budget', desc: 'Ads need a budget paid to Meta or Google. We will suggest the lowest sensible amount for you.' },
+      { title: 'You want a one-month magic fix', desc: 'Most packages have a 3-month minimum, because good results build up over time.' },
     ],
   },
 

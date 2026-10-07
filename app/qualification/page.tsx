@@ -3,14 +3,14 @@ import PageClient from './PageClient';
 import { getPageContent } from '../../lib/content';
 
 export const metadata: Metadata = {
-  title: 'Who We Work With | Partner Criteria',
-  description: 'The partner criteria we use to decide which D2C brands we take on, and why we turn most of them down.',
+  title: 'Who We Fit | Is Techinfigo Right for Your Business?',
+  description: 'An honest list of when we are a good fit for local Agra businesses and online brands, and when we are not.',
   alternates: {
     canonical: '/qualification',
   },
   openGraph: {
-    title: 'Who We Work With | Partner Criteria',
-    description: 'The partner criteria we use to decide which D2C brands we take on, and why we turn most of them down.',
+    title: 'Who We Fit | Is Techinfigo Right for Your Business?',
+    description: 'An honest list of when we are a good fit for local Agra businesses and online brands, and when we are not.',
     url: '/qualification',
   },
 };

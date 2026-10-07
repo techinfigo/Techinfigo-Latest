@@ -1,25 +1,19 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'motion/react';
-import { CAPACITY, CLAIMS } from '../config/site';
-import { useSiteSettings } from './SiteSettingsProvider';
+import { Check, X, MessageCircle } from 'lucide-react';
 import { DEFAULT_CONTENT } from '../config/content';
 import type { SiteContent } from '../lib/content-schema';
-import { 
-  TrendingUp, 
-  BarChart3, 
-  Zap, 
-  ShieldCheck, 
-  AlertCircle, 
-  TrendingDown, 
-  Search, 
-  ArrowRight,
-  CheckCircle2
-} from 'lucide-react';
+import { whatsappUrl } from '../config/site';
+import { trackContact } from '../lib/track';
+
+/**
+ * Who We Fit: an honest good-fit / not-a-fit list for local businesses and
+ * online brands. Both lists are editable in admin → Content → Qualification.
+ * No revenue gates, no "spots left" counters.
+ */
 
 interface QualificationPageProps {
-  /** Editable copy. Defaults to what shipped, so the lists never render empty. */
   greenLights?: SiteContent['qualification']['greenLights'];
   redFlags?: SiteContent['qualification']['redFlags'];
   onNavigate: (page: string) => void;
@@ -30,282 +24,83 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({
   greenLights = DEFAULT_CONTENT.qualification.greenLights,
   redFlags = DEFAULT_CONTENT.qualification.redFlags,
 }) => {
-  const { capacity } = useSiteSettings();
-  
-  
   return (
-    <div className="min-h-screen bg-brandDark font-sans selection:bg-brandYellow selection:text-brandDark">
-      {/* 1. HERO SECTION (EDITORIAL & BOLD - MATCHING PROFIT BREAKDOWN) */}
-      <section className="relative min-h-[70vh] pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-12 overflow-hidden flex items-center bg-brandDark">
-        {/* Subtle Background Pattern */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-brandYellow/10 rounded-full blur-[120px] pointer-events-none"></div>
-        
-        <div className="max-w-6xl mx-auto text-center relative z-10 w-full space-y-12 animate-slide-up">
-          <div className="space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex items-center justify-center gap-4"
-            >
-              <div className="w-8 lg:w-12 h-[1px] bg-brandYellow"></div>
-              <span className="text-[9px] lg:text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">QUALIFICATION PROTOCOL</span>
-              <div className="w-8 lg:w-12 h-[1px] bg-brandYellow"></div>
-            </motion.div>
-
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.85] uppercase text-white"
-            >
-              We Don't Work <br />
-              With <span className="text-brandYellow italic">Everyone.</span>
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-white/60 text-base sm:text-lg lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed"
-            >
-              Our growth infrastructure is high-performance and high-intensity. To maintain our accuracy, we only partner with brands that meet our operational and strategic criteria.
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="pt-8"
-            >
-              <button 
-                onClick={() => onNavigate('contact')}
-                className="group relative px-10 py-6 lg:px-14 lg:py-7 bg-brandYellow text-brandDark font-black text-[10px] lg:text-xs uppercase tracking-[0.4em] rounded-2xl hover:bg-white transition-all duration-500 shadow-2xl overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  Get My Free Profit Audit <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                </span>
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-              </button>
-            </motion.div>
-          </div>
+    <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
+      {/* Header */}
+      <section className="bg-brandDark pt-28 pb-16 lg:pt-36 lg:pb-24 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-5 relative">
+          <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">Who We Fit</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.05] tracking-tighter max-w-4xl">
+            Are we a good fit? <br />
+            <span className="text-brandYellow italic">Here’s an honest list.</span>
+          </h1>
+          <p className="text-base lg:text-xl text-white/65 font-medium leading-relaxed max-w-2xl">
+            Whether you run a local business in Agra or sell online across India, we work best with people who want steady enquiries and are ready to follow up on them.
+          </p>
         </div>
       </section>
 
-      {/* 2. GREEN LIGHTS (IDEAL PARTNER) - REDUCED HEIGHT */}
-      <section className="py-12 lg:py-24 px-6 lg:px-12 bg-brandDark relative overflow-hidden">
-        {/* ... (rest of background same) */}
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brandYellow/5 rounded-full blur-[160px] pointer-events-none"></div>
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="mb-10 lg:mb-16 space-y-4 text-center">
-            <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-[1px] bg-brandYellow"></div>
-              <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">Protocol: GREEN_LIGHT</span>
-              <div className="w-12 h-[1px] bg-brandYellow"></div>
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter uppercase leading-none">
-              The Ideal <br />
-              <span className="text-brandYellow italic">Partner.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-            {greenLights.map((light, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group relative bg-white/[0.02] border border-white/10 rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden hover:border-brandYellow/30 transition-all duration-500 shadow-2xl backdrop-blur-xl"
-              >
-                {/* ... (inner content same but padding reduced) */}
-                <div className="p-8 lg:p-12 space-y-8 relative z-10">
-                  <div className="flex items-end justify-between">
-                    <div className="w-16 h-16 rounded-[1.5rem] bg-brandYellow/10 flex items-center justify-center group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500 shadow-[0_0_40px_rgba(255,184,0,0.1)] group-hover:shadow-[0_0_60px_rgba(255,184,0,0.3)]">
-                      <div className="text-brandYellow group-hover:text-brandDark transition-colors">
-                        {light.icon}
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] font-mono">NODE_0{i + 1}</span>
+      {/* Good fit / not a fit */}
+      <section className="py-20 lg:py-28 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+          <div className="rounded-[2.5rem] bg-white border border-brandDark/5 p-8 lg:p-12 space-y-8 shadow-[0_10px_40px_-20px_rgba(0,29,33,0.2)]">
+            <h2 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tighter">We’re a good fit if…</h2>
+            <ul className="space-y-7">
+              {greenLights.map((g) => (
+                <li key={g.title} className="flex gap-4">
+                  <span className="mt-0.5 w-8 h-8 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shrink-0">
+                    <Check className="w-4 h-4" aria-hidden="true" />
+                  </span>
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-black text-brandDark">{g.title}</h3>
+                    <p className="text-brandDark/60 leading-relaxed">{g.desc}</p>
                   </div>
-
-                  <div className="space-y-3">
-                    <h3 className="text-2xl lg:text-4xl font-black text-white tracking-tighter uppercase group-hover:text-brandYellow transition-colors duration-500">
-                      {light.title}
-                    </h3>
-                    <p className="text-white/50 text-sm lg:text-lg font-medium leading-relaxed group-hover:text-white/80 transition-colors duration-500 max-w-xl">
-                      {light.desc}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. RED FLAGS (NON-FIT) - REDUCED HEIGHT */}
-      <section className="py-12 lg:py-24 px-6 lg:px-12 bg-brandDark border-y border-white/5 relative overflow-hidden">
-        {/* ... (background same) */}
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="mb-10 lg:mb-16 space-y-4 text-center">
-            <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-[1px] bg-white/20"></div>
-              <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Protocol: RED_FLAG</span>
-              <div className="w-12 h-[1px] bg-white/20"></div>
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter uppercase leading-none">
-              Not A <br />
-              <span className="text-white/40 italic">Good Fit.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {redFlags.map((flag, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group p-8 lg:p-12 bg-white/[0.01] border border-white/5 rounded-[2rem] lg:rounded-[2.5rem] hover:border-white/10 transition-all duration-500 relative overflow-hidden grayscale hover:grayscale-0"
-              >
-                <div className="relative z-10 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="flex justify-between items-start mb-10">
-                    <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-brandDark transition-all duration-500">
-                      <div className="text-white/40 group-hover:text-brandDark transition-colors">
-                        {flag.icon}
-                      </div>
-                    </div>
-                  </div>
-                  <h3 className="text-xl lg:text-3xl font-black text-white tracking-tighter mb-4 uppercase group-hover:text-white transition-colors">{flag.title}</h3>
-                  <p className="text-white/40 text-sm lg:text-lg font-medium leading-relaxed group-hover:text-white/60 transition-colors">{flag.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. CULTURE OF NO - REDUCED HEIGHT */}
-      <section className="py-12 lg:py-24 px-6 lg:px-12 bg-brandDark text-white relative overflow-hidden">
-        {/* ... (content same but reduced py) */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-        
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
-          <div className="space-y-8 animate-slide-up">
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-[1px] bg-brandYellow"></div>
-                <span className="text-[10px] font-black text-brandYellow uppercase tracking-[0.4em]">The Philosophy</span>
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-[0.85] uppercase">
-                We Aren't A <br />
-                <span className="text-brandYellow italic">"Yes Agency."</span>
-              </h2>
-              <p className="text-white/50 text-lg lg:text-xl font-medium leading-relaxed max-w-xl">
-                Most agencies say yes to any brand with a budget. <span className="text-white font-bold">{CLAIMS.selectivity}</span> That is how we keep an obsessive focus on the partners we already have.
-              </p>
-            </div>
-
-            <div className="space-y-0 border-y border-white/10 divide-y divide-white/10">
-              {[
-                { title: "Direct Access", desc: "Senior strategists only. No junior Account Managers.", stat: "0% Juniors" },
-                { title: "Capped Partnerships", desc: "Max 2 new brands per quarter to protect quality.", stat: "Lmtd Slot" },
-                { title: "Profit First", desc: "Obsession over contribution margin and net profit.", stat: "Net Focus" }
-              ].map((item, i) => (
-                <div key={i} className="py-6 flex justify-between items-center group cursor-default">
-                  <div className="flex gap-6 items-center">
-                    <div className="w-8 h-8 rounded-lg bg-brandYellow/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-300">
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
-                    <div className="space-y-0.5">
-                      <h3 className="text-lg lg:text-xl font-black text-white tracking-tight group-hover:text-brandYellow transition-colors">{item.title}</h3>
-                      <p className="text-white/40 text-xs lg:text-sm font-medium">{item.desc}</p>
-                    </div>
-                  </div>
-                  <div className="hidden sm:block text-[8px] font-black text-white/20 uppercase tracking-widest border border-white/5 px-2 py-0.5 rounded-md group-hover:border-brandYellow/20 group-hover:text-brandYellow/40 transition-colors">
-                    {item.stat}
-                  </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
-          <div className="relative">
-            <div className="aspect-square bg-white/[0.02] rounded-[2.5rem] border border-white/10 flex items-center justify-center p-10 lg:p-16 relative group overflow-hidden backdrop-blur-sm">
-              {/* Spinning Ring */}
-              <div className="absolute inset-8 border border-brandYellow/10 rounded-full animate-[spin_20s_linear_infinite] group-hover:border-brandYellow/30 transition-colors"></div>
-              
-              <div className="relative z-10 text-center space-y-6">
-                <motion.div 
-                  className="w-24 h-24 lg:w-36 lg:h-36 rounded-full bg-brandYellow flex items-center justify-center mx-auto shadow-glow transition-transform duration-700 group-hover:scale-110 relative"
-                  whileHover={{ rotate: 10 }}
-                >
-                  <ShieldCheck className="w-12 h-12 lg:w-20 lg:h-20 text-brandDark" />
-                </motion.div>
-                <div className="space-y-1">
-                  <p className="text-[9px] font-black text-brandYellow uppercase tracking-[0.5em]">Guarded_Quality</p>
-                  <p className="text-2xl lg:text-4xl font-black text-white tracking-tighter uppercase whitespace-nowrap">Full P&amp;L Transparency</p>
-                  <p className="text-2xl lg:text-4xl font-black text-brandYellow tracking-tighter uppercase whitespace-nowrap">Or No Engagement</p>
-                </div>
-              </div>
-            </div>
+          <div className="rounded-[2.5rem] bg-brandDark p-8 lg:p-12 space-y-8">
+            <h2 className="text-3xl lg:text-4xl font-black text-white tracking-tighter">We’re not the right fit if…</h2>
+            <ul className="space-y-7">
+              {redFlags.map((r) => (
+                <li key={r.title} className="flex gap-4">
+                  <span className="mt-0.5 w-8 h-8 rounded-full bg-white/10 text-white/80 flex items-center justify-center shrink-0">
+                    <X className="w-4 h-4" aria-hidden="true" />
+                  </span>
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-black text-white">{r.title}</h3>
+                    <p className="text-white/60 leading-relaxed">{r.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* 5. FINAL CTA - REDUCED HEIGHT */}
-      <section className="py-16 lg:py-32 bg-brandDark text-center relative overflow-hidden border-t border-white/5">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-brandYellow/10 to-transparent"></div>
-        
-        <div className="max-w-5xl mx-auto px-6 relative z-10 space-y-10">
-          <div className="space-y-4 animate-slide-up">
-            <div className="flex items-center justify-center gap-4 mb-2">
-              <span className="text-brandYellow animate-pulse">●</span>
-              <span className="text-[9px] font-black text-brandYellow uppercase tracking-[0.4em]">Operational Status: OPEN</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-8xl font-black text-white tracking-tighter leading-[0.85] uppercase">
-              Ready To <br />
-              <span className="text-brandYellow italic">Partner?</span>
-            </h2>
-            <p className="text-white/40 text-base lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-              If you meet the criteria and are ready to build a profit-first growth engine, let's talk.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center gap-10">
-            <button 
-              onClick={() => onNavigate('contact')}
-              className="group relative px-10 py-6 lg:px-14 lg:py-7 bg-brandYellow text-brandDark font-black text-[10px] lg:text-xs uppercase tracking-[0.5em] rounded-2xl shadow-glow overflow-hidden transition-transform active:scale-95"
+      {/* CTA */}
+      <section className="py-24 lg:py-32 bg-white text-center px-6 border-t border-brandDark/5">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl lg:text-6xl font-black text-brandDark tracking-tighter leading-none">Sounds like you?</h2>
+          <p className="text-brandDark/60 text-lg">Start with a free health check. We’ll be honest if we’re not the right people for the job.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={() => onNavigate('lead-capture')}
+              className="px-10 py-5 bg-brandYellow text-brandDark font-black text-xs uppercase tracking-[0.3em] rounded-xl hover:bg-brandDark hover:text-white transition-all shadow-glow"
             >
-              <span className="relative z-10 flex items-center gap-3">
-                Get My Free Profit Audit
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+              Get My Free Health Check
             </button>
-            
-            {capacity.showScarcity && (
-              <div className="flex items-center gap-6">
-                <div className="flex flex-col items-center">
-                  <span className="text-lg lg:text-2xl font-black text-white">{String(capacity.slotsOpen).padStart(2, '0')}</span>
-                  <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Slots Left</span>
-                </div>
-                <div className="w-[1px] h-10 bg-white/10"></div>
-                <div className="flex flex-col items-center">
-                  <span className="text-lg lg:text-2xl font-black text-white">{CAPACITY.currentBatch}</span>
-                  <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-1">Founding Batch</span>
-                </div>
-              </div>
-            )}
+            <a
+              href={whatsappUrl('Hi Techinfigo, I would like to check if you can help my business.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackContact('whatsapp', 'who-we-fit')}
+              className="inline-flex items-center gap-2 px-8 py-5 rounded-xl border border-brandDark/15 text-brandDark font-black text-xs uppercase tracking-[0.3em] hover:bg-brandBg transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
+            </a>
           </div>
         </div>
       </section>

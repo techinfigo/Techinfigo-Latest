@@ -16,7 +16,7 @@ export default function PageClient({
 }) {
   const router = useRouter();
   return (
-    <main className="min-h-screen bg-brandDark text-white selection:bg-brandYellow selection:text-brandDark scroll-smooth">
+    <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="qualification" />
       <QualificationPage greenLights={greenLights} redFlags={redFlags} onNavigate={(page) => router.push(`/${page}`)} />
       <Footer />

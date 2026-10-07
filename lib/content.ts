@@ -45,7 +45,7 @@ export const CASE_STUDIES_TAG = 'content:case-studies';
  * this, so a bump orphans the old entries rather than serving a stale value of
  * the previous shape against new code.
  */
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 
 function pageRef(page: PageId) {
   return getDb().collection(COLLECTION).doc(page);
