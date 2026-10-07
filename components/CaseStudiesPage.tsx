@@ -3,7 +3,8 @@
 import { DEFAULT_CASE_STUDY_LIST, publishedCaseStudies, type CaseStudy } from '../lib/content-schema';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, TrendingUp, Target, Zap, BarChart3, Quote, X, CheckCircle2, Filter, ChevronRight } from 'lucide-react';
+import { PROOF_DISCLAIMER } from '../config/site';
+import { ArrowRight, TrendingUp, Target, Zap, BarChart3, X, CheckCircle2, Filter, ChevronRight } from 'lucide-react';
 
 
 
@@ -62,8 +63,9 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
               <span className="text-brandYellow">Not Fluff.</span>
             </h1>
             <p className="text-lg lg:text-xl text-white/60 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
-              We focus on the unit-economic targets required for high-growth D2C brands. These are the specific performance benchmarks our system aims to achieve for our founding partners.
+              Example scenarios for D2C brands: where profit usually leaks, what we would change, and the targets we work towards.
             </p>
+            <p className="text-xs text-white/40 max-w-2xl mx-auto mb-10 -mt-6">{PROOF_DISCLAIMER}</p>
             <button 
               onClick={() => onNavigate('contact')}
               className="px-8 py-4 bg-brandYellow text-brandDark font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(252,182,50,0.3)] flex items-center gap-2 mx-auto"
@@ -149,7 +151,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
 
                       {/* After */}
                       <div className="space-y-4">
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-brandYellow">After AIS</span>
+                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-brandYellow">Target</span>
                         <div className="space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-[10px] text-white/60">Spend</span>
@@ -193,7 +195,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <p className="text-sm font-bold text-white/30 uppercase tracking-[0.3em] text-center lg:text-left">
-              Worked with D2C brands across:
+              Scenarios for D2C categories like:
             </p>
             <div className="flex flex-wrap justify-center gap-8 lg:gap-16">
               {CATEGORIES.filter(c => c !== 'All').map(cat => (
@@ -211,7 +213,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
         <div className="absolute inset-0 bg-brandYellow/[0.02] pointer-events-none"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl lg:text-6xl font-black tracking-tighter mb-8">
-            Want Similar Results<br />
+            Want a Plan Like This<br />
             <span className="text-brandYellow">for Your Brand?</span>
           </h2>
           <p className="text-lg text-white/60 mb-12 max-w-xl mx-auto">
@@ -224,9 +226,6 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
             >
               Get Free Profit Audit
             </button>
-            <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">
-              Limited to 2 brands per month
-            </p>
           </div>
         </div>
       </section>
@@ -326,7 +325,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
                         <div className="w-8 h-8 rounded-lg bg-brandYellow/10 flex items-center justify-center border-brandYellow/20 border">
                           <Zap className="w-4 h-4 text-brandYellow" />
                         </div>
-                        <h3 className="text-2xl font-bold tracking-tight">What We Did</h3>
+                        <h3 className="text-2xl font-bold tracking-tight">What We Would Do</h3>
                       </div>
                       <div className="space-y-4">
                         {selectedCaseStudy.details.solution.map((item, i) => (
@@ -345,14 +344,14 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
                   <div className="lg:col-span-5 space-y-10">
                     {/* Results Card */}
                     <div className="bg-brandYellow p-8 lg:p-10 rounded-[2.5rem] text-brandDark space-y-8 shadow-2xl">
-                      <h3 className="text-2xl font-black uppercase tracking-tighter">The Results</h3>
+                      <h3 className="text-2xl font-black uppercase tracking-tighter">Target Outcome</h3>
                       <div className="space-y-6">
                         <div className="flex justify-between items-end border-b border-brandDark/10 pb-4">
                           <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Profit (Before)</span>
                           <span className="text-xl font-mono font-black">{selectedCaseStudy.details.results.profitBefore}</span>
                         </div>
                         <div className="flex justify-between items-end border-b border-brandDark/10 pb-4">
-                          <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Profit (After)</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Profit (Target)</span>
                           <span className="text-3xl font-mono font-black">{selectedCaseStudy.details.results.profitAfter}</span>
                         </div>
                         <div className="flex justify-between items-end border-b border-brandDark/10 pb-4">
@@ -366,29 +365,7 @@ export const CaseStudiesPage: React.FC<CaseStudiesPageProps> = ({
                       </div>
                     </div>
 
-                    {/* Quote Card */}
-                    <div className="p-8 lg:p-10 border border-white/10 rounded-[2.5rem] bg-white/5 space-y-6 relative overflow-hidden">
-                      <Quote className="absolute -top-4 -left-4 w-24 h-24 text-white/[0.03]" />
-                      <p className="text-xl font-medium italic leading-relaxed relative z-10">
-                        "{selectedCaseStudy.details.quote}"
-                      </p>
-                      <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                        <div className="w-10 h-10 rounded-full bg-brandYellow/20 flex items-center justify-center">
-                          <span className="text-brandYellow font-bold text-xs">F</span>
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold">Founder</p>
-                          <p className="text-[10px] text-white/40 uppercase tracking-widest">{selectedCaseStudy.brand}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Visual Proof Placeholder */}
-                    <div className="aspect-video bg-white/5 border border-white/10 rounded-[2.5rem] flex flex-col items-center justify-center p-8 text-center group">
-                      <BarChart3 className="w-12 h-12 text-white/10 mb-4 group-hover:text-brandYellow transition-colors" />
-                      <p className="text-xs font-bold text-white/20 uppercase tracking-widest">Dashboard Proof Attached</p>
-                      <p className="text-[10px] text-white/10 mt-2">Proprietary data obscured for privacy</p>
-                    </div>
+                    <p className="text-xs text-white/40 leading-relaxed">{PROOF_DISCLAIMER}</p>
 
                     <button 
                       onClick={() => onNavigate('contact')}

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { Target, ShieldCheck, Users, ArrowRight, Zap, CheckCircle2, MessageSquare, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useSiteSettings } from './SiteSettingsProvider';
@@ -54,14 +53,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               viewport={{ once: true }}
               className="lg:col-span-5 relative"
             >
-              <div className="aspect-[4/5] rounded-[3rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 shadow-3xl border border-brandDark/10">
-                <Image 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" 
-                  alt="Sachin Bauddh" 
-                  fill
-                  className="object-cover"
-                  referrerPolicy="no-referrer"
-                />
+              {/* Founder card. Replace with Sachin's real photo when available
+                  (a stock photo was here before — never use one for a real person). */}
+              <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-3xl border border-brandDark/10 bg-brandDark flex flex-col items-center justify-center gap-6 p-10 text-center">
+                <span className="w-32 h-32 rounded-full bg-brandYellow text-brandDark text-5xl font-black flex items-center justify-center tracking-tighter">SB</span>
+                <div className="space-y-2">
+                  <p className="text-white text-2xl font-black uppercase tracking-tighter">Sachin Bauddh</p>
+                  <p className="text-brandYellow text-[10px] font-black uppercase tracking-[0.3em]">Founder · Agra</p>
+                </div>
               </div>
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-brandYellow rounded-full -z-10 blur-2xl opacity-20"></div>
             </motion.div>
@@ -257,7 +256,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               the <span className="text-brandYellow italic">typical</span> behind?
             </h2>
             <p className="text-brandDark/40 text-lg lg:text-2xl font-medium max-w-2xl mx-auto leading-relaxed">
-              If you value truth over vanity and profit over volume, we should talk. We're currently reviewing founding partner applications.
+              If you value truth over vanity and profit over volume, we should talk.
             </p>
           </motion.div>
 
