@@ -86,3 +86,27 @@
   .reviews-marquee-viewport { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
   .reviews-marquee [aria-hidden='true'] { display: none; }
 }
+
+/* Careers: job cards slide upward in an endless loop (track holds the list
+   twice). Pauses on hover/focus; reduced motion gets a scrollable list. */
+@keyframes marquee-y {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.jobs-marquee {
+  animation: marquee-y var(--marquee-duration, 40s) linear infinite;
+}
+.jobs-marquee-viewport:hover .jobs-marquee,
+.jobs-marquee-viewport:focus-within .jobs-marquee,
+.jobs-marquee-viewport.is-paused .jobs-marquee {
+  animation-play-state: paused;
+}
+.jobs-marquee-viewport {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .jobs-marquee { animation: none; }
+  .jobs-marquee-viewport { overflow-y: auto; -webkit-mask-image: none; mask-image: none; }
+  .jobs-marquee [aria-hidden='true'] { display: none; }
+}

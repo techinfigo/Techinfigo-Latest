@@ -172,39 +172,57 @@ function RoleModal({ role, onClose, onApply }: { role: CareerRole; onClose: () =
   );
 }
 
-/** Grid of job cards; `onApply(value)` picks the role in the form and scrolls to it. */
+function RoleCard({ role, selected, onOpen }: { role: CareerRole; selected: boolean; onOpen: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className={`group w-full text-left flex flex-col rounded-[2rem] bg-white p-6 border transition-all duration-300 hover:shadow-[0_20px_40px_-20px_rgba(0,29,33,0.3)] focus-visible:outline-2 focus-visible:outline-brandYellow ${
+        selected ? 'border-brandYellow shadow-md' : 'border-brandDark/5'
+      }`}
+    >
+      <div className="flex items-start gap-4">
+        <span className="w-12 h-12 rounded-2xl bg-brandDark text-brandYellow flex items-center justify-center shrink-0">{role.icon}</span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="text-lg font-black text-brandDark tracking-tight leading-tight">{role.title}</h3>
+            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[9px] font-black uppercase tracking-wider shrink-0">Apply anytime</span>
+          </div>
+          <p className="mt-1.5 text-sm text-brandDark/60 leading-relaxed">{role.summary}</p>
+        </div>
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {role.tags.map((t) => (
+          <span key={t} className="px-2.5 py-1 rounded-lg bg-brandBg text-brandDark/60 text-[11px] font-bold">{t}</span>
+        ))}
+        <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-brandDark group-hover:text-brandYellow transition-colors">
+          Details <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+        </span>
+      </div>
+    </button>
+  );
+}
+
+/**
+ * Job cards in an endless vertical slider; `onApply(value)` picks the role in
+ * the form. The row pauses while hovered or while a role is open.
+ */
 export function CareerRoles({ selected, onApply }: { selected: string; onApply: (value: string) => void }) {
   const [open, setOpen] = useState<CareerRole | null>(null);
   const close = useCallback(() => setOpen(null), []);
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {CAREER_ROLES.map((role) => (
-          <button
-            key={role.value}
-            type="button"
-            onClick={() => setOpen(role)}
-            className={`group text-left flex flex-col rounded-[2rem] bg-white p-7 border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-20px_rgba(0,29,33,0.3)] focus-visible:outline-2 focus-visible:outline-brandYellow ${
-              selected === role.value ? 'border-brandYellow shadow-md' : 'border-brandDark/5'
-            }`}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <span className="w-12 h-12 rounded-2xl bg-brandDark text-brandYellow flex items-center justify-center shrink-0">{role.icon}</span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider">Apply anytime</span>
-            </div>
-            <h3 className="mt-5 text-xl font-black text-brandDark tracking-tight">{role.title}</h3>
-            <p className="mt-2 text-sm text-brandDark/60 leading-relaxed flex-1">{role.summary}</p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {role.tags.map((t) => (
-                <span key={t} className="px-2.5 py-1 rounded-lg bg-brandBg text-brandDark/60 text-[11px] font-bold">{t}</span>
+      <div className={`jobs-marquee-viewport relative h-[520px] lg:h-[760px] overflow-hidden ${open ? 'is-paused' : ''}`}>
+        <div className="jobs-marquee" style={{ ['--marquee-duration' as string]: `${CAREER_ROLES.length * 7}s` } as React.CSSProperties}>
+          {[0, 1].map((copy) => (
+            <div key={copy} className="space-y-4 pb-4" aria-hidden={copy === 1 || undefined} inert={copy === 1 || undefined}>
+              {CAREER_ROLES.map((role) => (
+                <RoleCard key={`${copy}-${role.value}`} role={role} selected={selected === role.value} onOpen={() => setOpen(role)} />
               ))}
             </div>
-            <span className="mt-6 pt-5 border-t border-brandDark/5 flex items-center justify-between text-xs font-black uppercase tracking-widest text-brandDark group-hover:text-brandYellow transition-colors">
-              View details <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </span>
-          </button>
-        ))}
+          ))}
+        </div>
       </div>
       {open && (
         <RoleModal

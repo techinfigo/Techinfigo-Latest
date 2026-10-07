@@ -173,28 +173,26 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Roles we hire for (job cards; details open on click) */}
-      <section className="pt-20 lg:pt-28 pb-12 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto space-y-10">
-          <div className="space-y-3 max-w-2xl">
-            <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">Roles we hire for</h2>
-            <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
-              No fixed openings right now. Tap a role to see the details, then apply anytime.
-            </p>
+      {/* Roles (vertical slider) beside the application form */}
+      <section className="py-20 lg:py-28 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div className="lg:col-span-5 space-y-8">
+            <div className="space-y-3">
+              <h2 className="text-4xl lg:text-5xl font-black text-brandDark tracking-tighter leading-none">Roles we hire for</h2>
+              <p className="text-brandDark/60 text-lg font-medium leading-relaxed">
+                No fixed openings right now. Tap a role to see the details, then apply anytime.
+              </p>
+            </div>
+            <CareerRoles
+              selected={formData.specialization}
+              onApply={(value) => {
+                updateField('specialization', value);
+                scrollToForm();
+              }}
+            />
           </div>
-          <CareerRoles
-            selected={formData.specialization}
-            onApply={(value) => {
-              updateField('specialization', value);
-              scrollToForm();
-            }}
-          />
-        </div>
-      </section>
 
-      <section className="pb-24 lg:pb-32 px-6 lg:px-12">
-        <div className="max-w-3xl mx-auto">
-          {/* Right Column: Application Form */}
+          <div className="lg:col-span-7">
           <div ref={formRef} className="scroll-mt-28">
             <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 shadow-4xl border border-brandDark/5 space-y-12 relative">
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 rounded-bl-[2.5rem] pointer-events-none"></div>
@@ -327,6 +325,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
                 </div>
               </form>
             </div>
+          </div>
           </div>
         </div>
       </section>
