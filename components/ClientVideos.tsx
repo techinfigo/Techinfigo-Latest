@@ -9,37 +9,43 @@ import { isShortsUrl, youtubeId, type ClientVideo } from '../lib/settings-schema
  * "Hear it from our clients": YouTube videos chosen in the admin panel
  * (Settings → Client videos). Only thumbnails load with the page; YouTube's
  * player loads when someone clicks, inside a pop-up, so the page stays fast.
- * Up to three videos sit side by side; four or more slide in an endless row
- * like the Google reviews.
+ * Cards are reel-shaped (9:16). Up to four sit side by side; five or more
+ * slide in an endless row like the Google reviews.
  */
 
 type Item = { id: string; title: string; vertical: boolean };
 
-function VideoCard({ v, onOpen, sliding }: { v: Item; onOpen: () => void; sliding: boolean }) {
+function VideoCard({ v, onOpen }: { v: Item; onOpen: () => void }) {
+  // Shorts have a full-height thumbnail; normal videos are cropped to the centre.
+  const thumb = `https://i.ytimg.com/vi/${v.id}/${v.vertical ? 'oardefault' : 'hqdefault'}.jpg`;
   return (
     <button
       type="button"
       onClick={onOpen}
       aria-label={`Play video${v.title ? `: ${v.title}` : ''}`}
-      className={`group text-left shrink-0 ${sliding ? 'w-[300px] sm:w-[380px]' : 'w-full'} focus-visible:outline-2 focus-visible:outline-brandYellow rounded-[2rem]`}
+      className="group relative block shrink-0 snap-start w-[230px] sm:w-[260px] aspect-[9/16] rounded-[2rem] overflow-hidden bg-brandDark text-left shadow-[0_10px_30px_rgba(0,0,0,0.12)] focus-visible:outline-2 focus-visible:outline-brandYellow"
     >
-      <span className="relative block aspect-video rounded-[2rem] overflow-hidden bg-brandDark shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
-          alt=""
-          loading="lazy"
-          className={`absolute inset-0 w-full h-full ${v.vertical ? 'object-contain' : 'object-cover'} transition-transform duration-500 group-hover:scale-105`}
-        />
-        <span className="absolute inset-0 bg-brandDark/20 group-hover:bg-brandDark/10 transition-colors" />
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="w-16 h-16 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shadow-[0_0_40px_rgba(252,182,50,0.5)] transition-transform duration-300 group-hover:scale-110">
-            <Play className="w-6 h-6 ml-1 fill-brandDark" aria-hidden="true" />
-          </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={thumb}
+        alt=""
+        loading="lazy"
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (!img.src.includes('hqdefault')) img.src = `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`;
+        }}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <span className="absolute inset-0 bg-gradient-to-t from-brandDark/90 via-brandDark/10 to-transparent" />
+      <span className="absolute inset-0 flex items-center justify-center">
+        <span className="w-16 h-16 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shadow-[0_0_40px_rgba(252,182,50,0.5)] transition-transform duration-300 group-hover:scale-110">
+          <Play className="w-6 h-6 ml-1 fill-brandDark" aria-hidden="true" />
         </span>
       </span>
       {v.title ? (
-        <span className="block mt-4 px-2 text-sm font-bold text-brandDark leading-snug line-clamp-2">{v.title}</span>
+        <span className="absolute left-0 right-0 bottom-0 p-5 text-sm font-bold text-white leading-snug line-clamp-3">
+          {v.title}
+        </span>
       ) : null}
     </button>
   );
@@ -111,8 +117,8 @@ export function ClientVideos({ videos }: { videos: ClientVideo[] }) {
   const close = useCallback(() => setOpen(null), []);
 
   if (items.length === 0) return null;
-  const sliding = items.length >= 4;
-  const repeats = Math.max(1, Math.ceil(6 / items.length));
+  const sliding = items.length >= 5;
+  const repeats = Math.max(1, Math.ceil(8 / items.length));
   const set = Array.from({ length: repeats }, () => items).flat();
 
   return (
@@ -130,21 +136,21 @@ export function ClientVideos({ videos }: { videos: ClientVideo[] }) {
           <div className={`reviews-marquee-viewport overflow-hidden -mx-6 lg:-mx-12 py-3 ${open ? 'is-paused' : ''}`}>
             <div
               className="reviews-marquee flex w-max"
-              style={{ ['--marquee-duration' as string]: `${set.length * 8}s` } as React.CSSProperties}
+              style={{ ['--marquee-duration' as string]: `${set.length * 6}s` } as React.CSSProperties}
             >
               {[0, 1].map((copy) => (
                 <div key={copy} className="flex gap-6 pr-6" aria-hidden={copy === 1 || undefined} inert={copy === 1 || undefined}>
                   {set.map((v, i) => (
-                    <VideoCard key={`${copy}-${i}`} v={v} sliding onOpen={() => setOpen(v)} />
+                    <VideoCard key={`${copy}-${i}`} v={v} onOpen={() => setOpen(v)} />
                   ))}
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <div className={`grid grid-cols-1 gap-8 ${items.length === 2 ? 'md:grid-cols-2' : items.length >= 3 ? 'md:grid-cols-2 lg:grid-cols-3' : 'max-w-3xl'}`}>
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-px-6 -mx-6 px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0">
             {items.map((v) => (
-              <VideoCard key={v.id} v={v} sliding={false} onOpen={() => setOpen(v)} />
+              <VideoCard key={v.id} v={v} onOpen={() => setOpen(v)} />
             ))}
           </div>
         )}
