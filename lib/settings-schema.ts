@@ -43,6 +43,40 @@ export type BrandAssetMeta = {
   uploadedAt: string;
 };
 
+/** A client video on the Agra page (Settings → Client videos). */
+export type ClientVideo = { title: string; url: string };
+
+/** Most videos the Settings page accepts; more would make the section heavy. */
+export const MAX_CLIENT_VIDEOS = 12;
+
+/**
+ * The YouTube video id from any normal YouTube link (watch?v=, youtu.be/,
+ * /shorts/, /embed/, /live/), or null when it is not a YouTube video link.
+ */
+export function youtubeId(url: string): string | null {
+  try {
+    const u = new URL(url.trim());
+    const host = u.hostname.replace(/^(www\.|m\.)/, '');
+    let id: string | null = null;
+    if (host === 'youtu.be') id = u.pathname.slice(1).split('/')[0];
+    else if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+      if (u.pathname === '/watch') id = u.searchParams.get('v');
+      else {
+        const m = u.pathname.match(/^\/(shorts|embed|live|v)\/([^/?#]+)/);
+        id = m ? m[2] : null;
+      }
+    }
+    return id && /^[A-Za-z0-9_-]{6,20}$/.test(id) ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+/** YouTube Shorts are vertical; everything else is 16:9. */
+export function isShortsUrl(url: string): boolean {
+  return /youtube\.com\/shorts\//.test(url);
+}
+
 export type SiteSettings = {
   founder: { name: string; role: string; linkedin: string };
   contact: { email: string; phone: string };
@@ -51,6 +85,7 @@ export type SiteSettings = {
   proofMode: ProofMode;
   targets: { blendedMer: number; netProfit: number; contributionLift: number };
   brand: { logo: BrandAssetMeta | null; favicon: BrandAssetMeta | null };
+  videos: ClientVideo[];
 };
 
 /**
@@ -74,6 +109,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     contributionLift: TARGETS.contributionLift,
   },
   brand: { logo: null, favicon: null },
+  videos: [],
 };
 
 // --- field-level normalisation ---------------------------------------------
@@ -94,6 +130,8 @@ export const SETTINGS_LIMITS = {
   slotsOpen: 99,
   /** Targets are multiples ("4.8x") and a percentage; nothing real exceeds this. */
   target: 1000,
+  videoTitle: 100,
+  videoUrl: 300,
 } as const;
 
 function text(value: unknown, max: number, fallback = ''): string {
@@ -162,6 +200,24 @@ function brandMeta(value: unknown): BrandAssetMeta | null {
   return { mime, size, hash, uploadedAt };
 }
 
+/** Keeps only real YouTube video links, in the order given, without duplicates. */
+function clientVideos(value: unknown): ClientVideo[] {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set<string>();
+  const out: ClientVideo[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== 'object') continue;
+    const v = item as Record<string, unknown>;
+    const url = httpUrl(v.url, SETTINGS_LIMITS.videoUrl);
+    const id = url ? youtubeId(url) : null;
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    out.push({ title: text(v.title, SETTINGS_LIMITS.videoTitle), url });
+    if (out.length >= MAX_CLIENT_VIDEOS) break;
+  }
+  return out;
+}
+
 /**
  * Anything → a complete, safe SiteSettings.
  *
@@ -222,6 +278,7 @@ export function normalizeSettings(input: unknown): SiteSettings {
       ),
     },
     brand: { logo: brandMeta(brand.logo), favicon: brandMeta(brand.favicon) },
+    videos: clientVideos(d.videos),
   };
 }
 

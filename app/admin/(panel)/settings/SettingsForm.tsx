@@ -2,7 +2,13 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { PROOF_MODES, SETTINGS_LIMITS, type SiteSettings } from '../../../../lib/settings-schema';
+import {
+  MAX_CLIENT_VIDEOS,
+  PROOF_MODES,
+  SETTINGS_LIMITS,
+  youtubeId,
+  type SiteSettings,
+} from '../../../../lib/settings-schema';
 
 /**
  * The editable half of the settings page.
@@ -239,6 +245,13 @@ export function SettingsForm({
         </Field>
       </Group>
 
+      <Group
+        title="Client videos"
+        note="The video section on the Agra page, right after the Google reviews. Paste YouTube links (normal videos or Shorts). The section is hidden while this list is empty."
+      >
+        <VideoListEditor value={form.videos} onChange={(videos) => setField('videos', videos)} />
+      </Group>
+
       <div className="flex flex-wrap items-center gap-4 pt-2">
         <button
           type="submit"
@@ -432,6 +445,122 @@ function Toggle({
       <span className="text-sm font-medium text-white/70 group-hover:text-white transition-colors">
         {checked ? onLabel : offLabel}
       </span>
+    </button>
+  );
+}
+
+/**
+ * Add, edit, reorder and remove YouTube links. A link that is not a YouTube
+ * video is flagged here and dropped by the server on save.
+ */
+function VideoListEditor({
+  value,
+  onChange,
+}: {
+  value: SiteSettings['videos'];
+  onChange: (value: SiteSettings['videos']) => void;
+}) {
+  const update = (i: number, patch: Partial<SiteSettings['videos'][number]>) =>
+    onChange(value.map((v, j) => (j === i ? { ...v, ...patch } : v)));
+  const move = (i: number, by: -1 | 1) => {
+    const j = i + by;
+    if (j < 0 || j >= value.length) return;
+    const next = [...value];
+    [next[i], next[j]] = [next[j], next[i]];
+    onChange(next);
+  };
+
+  return (
+    <div className="space-y-4">
+      {value.length === 0 ? (
+        <p className="text-white/55 text-sm">No videos yet. Add your first one below.</p>
+      ) : null}
+
+      {value.map((video, i) => {
+        const id = video.url ? youtubeId(video.url) : null;
+        const invalid = video.url.trim() !== '' && !id;
+        return (
+          <div key={i} className="flex gap-4 items-start border border-white/10 rounded-xl p-4">
+            <div className="w-28 shrink-0 aspect-video rounded-lg overflow-hidden bg-white/8 flex items-center justify-center">
+              {id ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={`https://i.ytimg.com/vi/${id}/mqdefault.jpg`} alt="" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-white/40 text-[10px] font-black uppercase tracking-widest">No video</span>
+              )}
+            </div>
+            <div className="flex-1 min-w-0 space-y-2">
+              <TextInput
+                value={video.url}
+                type="url"
+                maxLength={SETTINGS_LIMITS.videoUrl}
+                placeholder="https://www.youtube.com/watch?v=…  or  https://youtube.com/shorts/…"
+                onChange={(url) => update(i, { url })}
+              />
+              <TextInput
+                value={video.title}
+                maxLength={SETTINGS_LIMITS.videoTitle}
+                placeholder="Title, e.g. “Sharma Sweets: 3x more enquiries”"
+                onChange={(title) => update(i, { title })}
+              />
+              {invalid ? (
+                <p className="text-red-400 text-xs font-medium">
+                  This is not a YouTube video link. It will be removed when you save.
+                </p>
+              ) : null}
+            </div>
+            <div className="flex flex-col gap-1">
+              <IconButton label="Move up" disabled={i === 0} onClick={() => move(i, -1)}>
+                ↑
+              </IconButton>
+              <IconButton label="Move down" disabled={i === value.length - 1} onClick={() => move(i, 1)}>
+                ↓
+              </IconButton>
+              <IconButton label="Remove" onClick={() => onChange(value.filter((_, j) => j !== i))}>
+                ✕
+              </IconButton>
+            </div>
+          </div>
+        );
+      })}
+
+      {value.length < MAX_CLIENT_VIDEOS ? (
+        <button
+          type="button"
+          onClick={() => onChange([...value, { title: '', url: '' }])}
+          className="px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] bg-white/8 text-white/80 hover:bg-white/15 transition-colors"
+        >
+          + Add video
+        </button>
+      ) : (
+        <p className="text-white/55 text-xs">Maximum {MAX_CLIENT_VIDEOS} videos.</p>
+      )}
+      <p className="text-white/55 text-xs">Remember to press “Save changes” below.</p>
+    </div>
+  );
+}
+
+function IconButton({
+  label,
+  onClick,
+  disabled,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="w-8 h-8 rounded-lg bg-white/8 text-white/70 text-sm hover:bg-white/15 disabled:opacity-30 transition-colors"
+    >
+      {children}
     </button>
   );
 }
