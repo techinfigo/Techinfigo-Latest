@@ -3,12 +3,13 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { HoneypotField } from './HoneypotField';
-import { whatsappUrl } from '../config/site';
+import { site, telUrl, whatsappUrl } from '../config/site';
+import { useSiteSettings } from './SiteSettingsProvider';
 import { trackContact } from '../lib/track';
 import { Footer } from './Footer';
 import { submitLead } from '../lib/submit-lead';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, ArrowRight, ChevronLeft, ShieldCheck, Zap, BarChart3, Target } from 'lucide-react';
+import { Check, ArrowRight, ChevronLeft, ShieldCheck, Zap, BarChart3, Target, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
 
 interface Option {
   label: string;
@@ -95,6 +96,7 @@ interface ContactPageProps {
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, onBookAudit }) => {
+  const { contact } = useSiteSettings();
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -282,62 +284,98 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
   return (
     <div className="min-h-screen bg-brandBg font-sans">
       <div className="pb-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 relative z-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-32 lg:pt-36 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start relative z-20">
           
-          {/* Left Sidebar: Value Proposition */}
-          <aside className="lg:col-span-4 space-y-8 animate-slide-up">
-            <div className="bg-[#001d21] rounded-[2.5rem] p-8 lg:p-10 space-y-10 shadow-2xl border border-white/5 relative overflow-hidden">
+          {/* Left Sidebar: what happens next + talk directly. Stays in view on
+              desktop while the form scrolls. */}
+          <aside className="order-2 lg:order-1 lg:col-span-4 lg:sticky lg:top-32 self-start animate-slide-up">
+            <div className="bg-[#001d21] rounded-[2.5rem] p-8 lg:p-10 space-y-8 shadow-2xl border border-white/5 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-brandYellow/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
-              
+
               <div className="space-y-2 relative z-10">
-                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">The Outcome</p>
-                <h2 className="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase leading-none">What You'll Get</h2>
+                <p className="text-brandYellow text-[10px] font-bold uppercase tracking-[0.3em]">What Happens Next</p>
+                <h2 className="text-3xl font-black text-white tracking-tight uppercase leading-none">Your Growth <br/> Audit</h2>
               </div>
 
-              <div className="space-y-6 relative z-10">
+              {/* Timeline */}
+              <ol className="relative z-10 space-y-6">
                 {[
-                  { title: "Profit Leak Breakdown", desc: "Identify exactly where your money is leaking in your current funnel.", icon: <Target className="w-5 h-5" /> },
-                  { title: "Full Funnel Analysis", desc: "A deep dive into your ads, landing pages, and backend retention.", icon: <BarChart3 className="w-5 h-5" /> },
-                  { title: "Scaling Roadmap", desc: "A clear, step-by-step plan to increase spend without breaking margins.", icon: <Zap className="w-5 h-5" /> }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5 group">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brandYellow group-hover:text-brandDark transition-all duration-500">
-                      {item.icon}
+                  { when: 'Now', title: 'Send your application', desc: 'Four short steps, about 2 minutes.' },
+                  { when: 'Within 24 hours', title: 'We review your funnel', desc: 'Your ads, landing pages and repeat sales, to find where money leaks.' },
+                  { when: 'On a 30-min call', title: 'You get your roadmap', desc: 'The profit leaks we found and a step-by-step plan to fix them. No obligation.' },
+                ].map((step, i, all) => (
+                  <li key={step.title} className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <span className="w-8 h-8 shrink-0 rounded-full bg-[#fcb632] text-brandDark text-sm font-black flex items-center justify-center">{i + 1}</span>
+                      {i < all.length - 1 && <span className="w-px flex-1 bg-white/15 mt-2"></span>}
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="text-white font-black uppercase text-sm tracking-tight">{item.title}</h3>
-                      <p className="text-white/40 text-xs leading-relaxed font-medium">{item.desc}</p>
+                    <div className="space-y-1 pb-1">
+                      <p className="text-[10px] font-bold text-brandYellow uppercase tracking-widest">{step.when}</p>
+                      <h3 className="text-white font-black uppercase text-sm tracking-tight">{step.title}</h3>
+                      <p className="text-white/60 text-xs leading-relaxed font-medium">{step.desc}</p>
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
 
-              <div className="pt-8 border-t border-white/5 relative z-10">
-                <div className="flex items-center gap-4 p-5 bg-white/5 rounded-2xl border border-white/10">
-                  <div className="w-10 h-10 rounded-full bg-brandYellow/20 flex items-center justify-center text-brandYellow">
-                    <ShieldCheck className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold text-white uppercase tracking-widest">Confidentiality</p>
-                    <p className="text-[11px] font-medium text-white/50">Your data is strictly used for audit purposes only.</p>
-                  </div>
+              {/* Talk directly */}
+              <div className="relative z-10 pt-6 border-t border-white/10 space-y-4">
+                <div>
+                  <p className="text-white font-black text-sm uppercase tracking-tight">Prefer to talk?</p>
+                  <p className="text-white/60 text-xs font-medium">You speak directly with Sachin, the founder.</p>
                 </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href={whatsappUrl('Hi Techinfigo, I would like a growth audit for my brand.')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackContact('whatsapp', 'contact-sidebar')}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[#25D366] text-white text-xs font-black uppercase tracking-wider hover:opacity-90 transition-opacity"
+                  >
+                    <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                  <a
+                    href={telUrl(contact.phone || site.phone)}
+                    onClick={() => trackContact('call', 'contact-sidebar')}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 border border-white/15 text-white text-xs font-black uppercase tracking-wider hover:bg-white/20 transition-colors"
+                  >
+                    <Phone className="w-4 h-4" aria-hidden="true" />
+                    Call
+                  </a>
+                </div>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="flex items-center gap-2 text-white/70 hover:text-white text-xs font-medium transition-colors"
+                >
+                  <Mail className="w-4 h-4 text-brandYellow" aria-hidden="true" />
+                  {contact.email}
+                </a>
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=TECHINFIGO%20-%20Digital%20Marketing%20Agency&destination_place_id=ChIJd-bZWwl3dDkRj4H5YdWtwPM"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2 text-white/70 hover:text-white text-xs font-medium leading-relaxed transition-colors"
+                >
+                  <MapPin className="w-4 h-4 text-brandYellow shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>
+                    <span className="block">Sanjay Place, Agra</span>
+                    <span className="block text-white/50">Mon–Sat, 10:30 AM – 6:30 PM</span>
+                    <span className="block text-brandYellow/80 underline underline-offset-2">Get directions</span>
+                  </span>
+                </a>
               </div>
-            </div>
 
-            <div className="bg-white rounded-[2rem] p-8 shadow-3xl border border-brandDark/5 flex items-center justify-between">
-              <div className="space-y-1">
-                <p className="text-[9px] font-bold text-brandDark/40 uppercase tracking-widest">AVERAGE RESPONSE</p>
-                <p className="text-2xl font-black text-brandDark tracking-tighter uppercase">Under 24h</p>
-              </div>
-              <div className="w-12 h-12 rounded-full bg-brandYellow/10 flex items-center justify-center text-brandYellow">
-                <Zap className="w-6 h-6" fill="currentColor" />
+              {/* Privacy */}
+              <div className="relative z-10 flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                <ShieldCheck className="w-5 h-5 shrink-0 text-brandYellow" aria-hidden="true" />
+                <p className="text-[11px] font-medium text-white/60">Your numbers stay private, used only for your audit, never shared.</p>
               </div>
             </div>
           </aside>
 
           {/* Right Main: Multi-Step Form */}
-          <main className="lg:col-span-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <main className="order-1 lg:order-2 lg:col-span-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             <div className="space-y-8">
               {/* Value Line & Progress */}
               <div className="space-y-6">
