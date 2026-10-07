@@ -45,10 +45,18 @@ export const CASE_STUDIES_TAG = 'content:case-studies';
  * this, so a bump orphans the old entries rather than serving a stale value of
  * the previous shape against new code.
  */
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
+
+/**
+ * Firestore document per page. The home page moved to a fresh document when
+ * it was rewritten for local businesses, so the old D2C copy saved under
+ * `home` no longer overrides the new defaults. The old document is left in
+ * place, untouched; admin reads and saves the new one.
+ */
+const DOC_IDS: Partial<Record<PageId, string>> = { home: 'home-2026-10' };
 
 function pageRef(page: PageId) {
-  return getDb().collection(COLLECTION).doc(page);
+  return getDb().collection(COLLECTION).doc(DOC_IDS[page] ?? page);
 }
 
 /**
