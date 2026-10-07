@@ -73,7 +73,8 @@
   animation: marquee var(--marquee-duration, 60s) linear infinite;
 }
 .reviews-marquee-viewport:hover .reviews-marquee,
-.reviews-marquee-viewport:focus-within .reviews-marquee {
+.reviews-marquee-viewport:focus-within .reviews-marquee,
+.reviews-marquee-viewport.is-paused .reviews-marquee {
   animation-play-state: paused;
 }
 .reviews-marquee-viewport {

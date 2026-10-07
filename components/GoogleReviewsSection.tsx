@@ -1,110 +1,14 @@
 import React from 'react';
-import { Star, ArrowUpRight } from 'lucide-react';
-import { getGoogleReviews, GOOGLE_REVIEWS_URL, GOOGLE_WRITE_REVIEW_URL, type GoogleReview } from '../lib/google-reviews';
+import { ArrowUpRight } from 'lucide-react';
+import { getGoogleReviews, GOOGLE_REVIEWS_URL, GOOGLE_WRITE_REVIEW_URL } from '../lib/google-reviews';
+import { GoogleWordmark, Stars } from './ReviewBits';
+import { ReviewsMarquee } from './ReviewsMarquee';
 
 /**
  * Real Google reviews of the Techinfigo Business Profile (server component).
  * Data comes live from Google (lib/google-reviews.ts), refreshed daily. Each
  * review links back to the reviewer on Google, as Google requires.
  */
-
-const GoogleWordmark = () => (
-  <span className="font-bold tracking-tight" aria-label="Google">
-    <span className="text-[#4285F4]">G</span>
-    <span className="text-[#EA4335]">o</span>
-    <span className="text-[#FBBC05]">o</span>
-    <span className="text-[#4285F4]">g</span>
-    <span className="text-[#34A853]">l</span>
-    <span className="text-[#EA4335]">e</span>
-  </span>
-);
-
-const Stars = ({ value, size = 'w-4 h-4' }: { value: number; size?: string }) => (
-  <span className="inline-flex gap-0.5" aria-label={`${value} out of 5 stars`}>
-    {[1, 2, 3, 4, 5].map((i) => (
-      <Star
-        key={i}
-        className={`${size} ${i <= Math.round(value) ? 'fill-brandYellow text-brandYellow' : 'fill-brandDark/10 text-brandDark/10'}`}
-        aria-hidden="true"
-      />
-    ))}
-  </span>
-);
-
-function ReviewCard({ r }: { r: GoogleReview }) {
-  return (
-    <figure className="flex flex-col w-[300px] sm:w-[360px] shrink-0 bg-brandBg rounded-[2rem] p-7 border border-brandDark/5 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
-      <div className="flex items-center justify-between gap-3">
-        <Stars value={r.rating} />
-        <span className="text-[11px] font-semibold text-brandDark/40">{r.when}</span>
-      </div>
-      <blockquote className="mt-4 flex-1 text-sm text-brandDark/75 font-medium leading-relaxed line-clamp-[7]">
-        “{r.text}”
-      </blockquote>
-      <figcaption className="mt-6 flex items-center gap-3">
-        {r.photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={r.photo}
-            alt=""
-            width={36}
-            height={36}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            className="w-9 h-9 rounded-full object-cover bg-brandDark/10"
-          />
-        ) : (
-          <span className="w-9 h-9 rounded-full bg-brandDark text-white text-sm font-bold flex items-center justify-center">
-            {r.author.charAt(0).toUpperCase()}
-          </span>
-        )}
-        <span className="min-w-0">
-          {r.authorUrl ? (
-            <a
-              href={r.authorUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-sm font-bold text-brandDark truncate hover:underline"
-            >
-              {r.author}
-            </a>
-          ) : (
-            <span className="block text-sm font-bold text-brandDark truncate">{r.author}</span>
-          )}
-          <span className="block text-[11px] text-brandDark/50">
-            Review on <GoogleWordmark />
-          </span>
-        </span>
-      </figcaption>
-    </figure>
-  );
-}
-
-/**
- * Endless sliding row. One "set" is the reviews repeated until it is wider
- * than any screen; the track holds the set twice and slides by one set.
- */
-function ReviewsMarquee({ reviews }: { reviews: GoogleReview[] }) {
-  const repeats = Math.max(1, Math.ceil(8 / reviews.length));
-  const set = Array.from({ length: repeats }, () => reviews).flat();
-  const duration = `${set.length * 7}s`;
-  return (
-    <div className="reviews-marquee-viewport overflow-hidden -mx-6 lg:-mx-12 py-2">
-      <div
-        className="reviews-marquee flex w-max"
-        style={{ ['--marquee-duration' as string]: duration } as React.CSSProperties}
-      >
-        {[0, 1].map((copy) => (
-          <div key={copy} className="flex gap-6 pr-6 items-stretch" aria-hidden={copy === 1 || undefined} inert={copy === 1 || undefined}>
-            {set.map((r, i) => (
-              <ReviewCard key={`${copy}-${i}`} r={r} />
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 const linkButton =
   'inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all duration-300';
