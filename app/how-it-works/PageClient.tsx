@@ -7,13 +7,21 @@ import { Footer } from '../../components/Footer';
 import { useRouter } from 'next/navigation';
 import type { SiteContent } from '../../lib/content-schema';
 
-export default function PageClient({ steps }: { steps: SiteContent['howItWorks']['steps'] }) {
+export default function PageClient({
+  steps,
+  rating,
+  reviewCount,
+}: {
+  steps: SiteContent['howItWorks']['steps'];
+  rating: number | null;
+  reviewCount: number | null;
+}) {
   const router = useRouter();
   return (
     <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="how-it-works" />
       <div className="animate-slide-up">
-        <HowItWorksPage steps={steps} onNavigate={(page) => router.push(`/${page}`)} />
+        <HowItWorksPage steps={steps} rating={rating} reviewCount={reviewCount} onNavigate={(page) => router.push(`/${page}`)} />
         <Footer />
       </div>
     </main>

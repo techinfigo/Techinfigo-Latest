@@ -6,6 +6,7 @@ import { DEFAULT_CONTENT } from '../config/content';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 import type { SiteContent } from '../lib/content-schema';
+import { HeroEnquiryStack, StepVisual } from './HowWeWorkVisuals';
 
 /**
  * "How We Work": the one process page. It replaces /system and
@@ -19,19 +20,24 @@ interface HowItWorksPageProps {
   /** Editable copy (admin → Content → How it works). Defaults to what shipped. */
   steps?: SiteContent['howItWorks']['steps'];
   onNavigate: (page: string) => void;
+  /** Live Google rating for the hero card; null hides the numbers. */
+  rating?: number | null;
+  reviewCount?: number | null;
 }
 
 export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
   onNavigate,
   steps = DEFAULT_CONTENT.howItWorks.steps,
+  rating = null,
+  reviewCount = null,
 }) => {
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. Header */}
-      <section className="bg-brandDark pt-24 pb-10 lg:pt-32 lg:pb-16 px-6 lg:px-12 relative overflow-hidden">
+      <section className="bg-brandDark pt-28 pb-16 lg:pt-36 lg:pb-24 px-6 lg:px-12 relative overflow-hidden">
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto">
-          <div className="border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="lg:col-span-7 border-l-[4px] border-brandYellow pl-8 lg:pl-12 space-y-4 lg:space-y-6 animate-slide-up">
             <span className="text-[10px] lg:text-[11px] font-bold text-white/40 uppercase tracking-[0.5em] block">
               How We Work
             </span>
@@ -43,6 +49,9 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
               Whether you run a shop in Agra or sell online, we follow the same four steps, and you can{' '}
               <span className="text-white">see what every rupee brings back</span>.
             </p>
+          </div>
+          <div className="lg:col-span-5 pb-4">
+            <HeroEnquiryStack rating={rating} count={reviewCount} />
           </div>
         </div>
       </section>
@@ -117,17 +126,22 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
             <h2 className="text-5xl lg:text-7xl font-black text-brandDark tracking-tighter">How it works.</h2>
           </div>
 
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 ${steps.length >= 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-px bg-brandDark/5 border border-brandDark/5 overflow-hidden rounded-[3rem]`}
-          >
+          <div className="space-y-20 lg:space-y-28">
             {steps.map((step, i) => (
-              <div key={i} className="bg-white p-10 lg:p-12 space-y-10 hover:bg-[#fffcf5] transition-colors duration-500 group">
-                <span className="text-5xl lg:text-6xl font-black text-brandDark/10 group-hover:text-brandYellow/40 transition-colors font-mono block">
-                  {step.num}
-                </span>
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-black text-brandDark tracking-tight uppercase">{step.title}</h3>
-                  <p className="text-brandDark/55 text-sm font-medium leading-relaxed">{step.desc}</p>
+              <div key={i} className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+                <div className={`space-y-5 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <span className="inline-flex w-14 h-14 rounded-2xl bg-brandYellow text-brandDark text-xl font-black items-center justify-center">
+                    {step.num}
+                  </span>
+                  <h3 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tighter">{step.title}</h3>
+                  <p className="text-brandDark/60 text-lg leading-relaxed max-w-md">{step.desc}</p>
+                </div>
+                <div
+                  className={`rounded-[3rem] bg-brandBg border border-brandDark/5 min-h-[300px] p-5 sm:p-12 flex items-center justify-center ${
+                    i % 2 === 1 ? 'lg:order-1' : ''
+                  }`}
+                >
+                  <StepVisual index={i} />
                 </div>
               </div>
             ))}
