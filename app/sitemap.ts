@@ -1,30 +1,39 @@
 import { MetadataRoute } from 'next';
 import { SITE } from '../config/site';
+import { SERVICES } from '../lib/services';
+
+/**
+ * Every public page Google should index.
+ *
+ * `updated` is the date that page's content last changed. Bump a date only
+ * when the page itself changes: a date that moves on every deploy teaches
+ * Google to ignore it.
+ *
+ * Left out on purpose: /privacy, /terms and /sitemap (they are noindex, so
+ * listing them would send mixed signals), /admin, and old addresses that now
+ * redirect (/system, /profit-breakdown, old service slugs).
+ */
+const SERVICES_UPDATED = '2026-10-07';
+
+const ROUTES: { path: string; updated: string; priority: number }[] = [
+  { path: '', updated: '2026-10-07', priority: 1 },
+  { path: '/digital-marketing-agency-agra', updated: '2026-10-07', priority: 0.9 },
+  { path: '/lead-capture', updated: '2026-10-07', priority: 0.9 },
+  { path: '/services', updated: SERVICES_UPDATED, priority: 0.9 },
+  ...SERVICES.map((s) => ({ path: `/services/${s.slug}`, updated: SERVICES_UPDATED, priority: 0.8 })),
+  { path: '/contact', updated: '2026-10-07', priority: 0.8 },
+  { path: '/how-it-works', updated: '2026-10-07', priority: 0.7 },
+  { path: '/about', updated: '2026-10-07', priority: 0.7 },
+  { path: '/case-studies', updated: '2026-10-07', priority: 0.6 },
+  { path: '/qualification', updated: '2026-10-07', priority: 0.6 },
+  { path: '/careers', updated: '2026-10-07', priority: 0.4 },
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SITE.url;
-  
-  const routes = [
-    '',
-    '/about',
-    '/services',
-    '/services/website',
-    '/services/google-business-profile',
-    '/services/social-media',
-    '/services/ads',
-    '/services/seo',
-    '/services/d2c',
-    '/how-it-works',
-    '/case-studies',
-    '/qualification',
-    '/contact',
-    '/digital-marketing-agency-agra',
-  ];
-
-  return routes.map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+  return ROUTES.map(({ path, updated, priority }) => ({
+    url: `${SITE.url}${path}`,
+    lastModified: updated,
     changeFrequency: 'monthly' as const,
-    priority: route === '' ? 1 : 0.8,
+    priority,
   }));
 }

@@ -33,8 +33,12 @@ const treeData: TreeNodeData = {
         { label: 'D2C Brands', page: 'service-detail', serviceId: 'd2c' },
       ]
     },
-    { label: 'About', page: 'about', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'Free Health Check', page: 'lead-capture', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'Agency in Agra', page: 'digital-marketing-agency-agra', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     { label: 'How We Work', page: 'how-it-works', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'Case Studies', page: 'case-studies', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'Who We Fit', page: 'qualification', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
+    { label: 'About', page: 'about', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     { label: 'Careers', page: 'careers', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     { label: 'Contact', page: 'contact', color: 'bg-brandYellow text-brandDark hover:bg-brandYellow/80' },
     {

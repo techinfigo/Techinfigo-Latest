@@ -12,7 +12,7 @@ export default function PageClient() {
     <main className="min-h-screen bg-brandBg text-brandDark selection:bg-brandYellow selection:text-brandDark scroll-smooth">
       <Navbar activePage="sitemap" />
       <div className="animate-slide-up">
-        <SitemapPage onNavigate={(page, id) => router.push(id ? `/services/${id}` : `/${page}`)} />
+        <SitemapPage onNavigate={(page, id) => router.push(id ? `/services/${id}` : page === 'home' ? '/' : `/${page}`)} />
         <Footer />
       </div>
     </main>
