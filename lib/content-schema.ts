@@ -21,7 +21,7 @@ import { DEFAULT_CASE_STUDIES, DEFAULT_CONTENT } from '../config/content';
  * invite a second one nobody renders. Case studies are the opposite — they are
  * added over time and need an order — so they get a real collection.
  */
-export const PAGE_IDS = ['home', 'services', 'howItWorks', 'qualification', 'agra'] as const;
+export const PAGE_IDS = ['home', 'services', 'howItWorks', 'qualification', 'agra', 'websiteOffer'] as const;
 export type PageId = (typeof PAGE_IDS)[number];
 
 /** Human labels for the admin panel's section list. */
@@ -31,6 +31,7 @@ export const PAGE_LABELS: Record<PageId, string> = {
   howItWorks: 'How it works',
   qualification: 'Qualification',
   agra: 'Agra landing page',
+  websiteOffer: 'Website offer page (ads)',
 };
 
 /**
@@ -135,6 +136,29 @@ function list<T extends Record<string, unknown>>(
   return value
     .slice(0, CONTENT_LIMITS.maxItems)
     .map((item, i) => normaliseItem(item, defaults[i] ?? template));
+}
+
+/**
+ * A list an editor builds from nothing (testimonials, portfolio). Unlike
+ * list(), empty stays empty — there is no default copy to fall back to, and
+ * inventing some would be dishonest. Rows missing their required field are
+ * dropped, so a half-filled row never renders.
+ */
+function ownList<T extends Record<string, string>>(
+  value: unknown,
+  keys: { [K in keyof T]: number },
+  required: keyof T,
+): T[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .slice(0, CONTENT_LIMITS.maxItems)
+    .map((item) => {
+      const i = obj(item);
+      const row = {} as Record<string, string>;
+      for (const key of Object.keys(keys)) row[key] = text(i[key], keys[key as keyof T], '');
+      return row as T;
+    })
+    .filter((row) => row[required] !== '');
 }
 
 function obj(value: unknown): Record<string, unknown> {
@@ -263,12 +287,30 @@ function normaliseAgra(input: unknown): SiteContent['agra'] {
   };
 }
 
+function normaliseWebsiteOffer(input: unknown): SiteContent['websiteOffer'] {
+  const v = obj(input);
+  const httpsOnly = (url: string) => (/^https?:\/\//i.test(url) ? url : url ? `https://${url}` : '');
+  return {
+    testimonials: ownList<{ name: string; business: string; quote: string; link: string }>(
+      v.testimonials,
+      { name: CONTENT_LIMITS.short, business: CONTENT_LIMITS.short, quote: CONTENT_LIMITS.paragraph, link: CONTENT_LIMITS.line },
+      'quote',
+    ).map((t) => ({ ...t, link: httpsOnly(t.link) })),
+    portfolio: ownList<{ name: string; type: string; url: string }>(
+      v.portfolio,
+      { name: CONTENT_LIMITS.short, type: CONTENT_LIMITS.short, url: CONTENT_LIMITS.line },
+      'url',
+    ).map((p) => ({ ...p, url: httpsOnly(p.url) })),
+  };
+}
+
 const NORMALISERS: { [K in PageId]: (input: unknown) => SiteContent[K] } = {
   home: normaliseHome,
   services: normaliseServices,
   howItWorks: normaliseHowItWorks,
   qualification: normaliseQualification,
   agra: normaliseAgra,
+  websiteOffer: normaliseWebsiteOffer,
 };
 
 /**

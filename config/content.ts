@@ -187,7 +187,18 @@ export const DEFAULT_CONTENT = {
       },
     ],
   },
+
+  // /website-design-agra — the landing page for website ads. Both lists start
+  // EMPTY on purpose: testimonials and portfolio must be real, so nothing is
+  // shown until they are added in admin → Content → Website offer page.
+  websiteOffer: {
+    testimonials: [] as WebsiteTestimonial[],
+    portfolio: [] as WebsitePortfolioItem[],
+  },
 } as const;
+
+export type WebsiteTestimonial = { name: string; business: string; quote: string; link: string };
+export type WebsitePortfolioItem = { name: string; type: string; url: string };
 
 /**
  * Case studies ship as defaults too, but unlike the page copy they are a

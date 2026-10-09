@@ -19,6 +19,7 @@ const ROUTES: { path: string; updated: string; priority: number }[] = [
   { path: '', updated: '2026-10-07', priority: 1 },
   { path: '/digital-marketing-agency-agra', updated: '2026-10-07', priority: 0.9 },
   { path: '/lead-capture', updated: '2026-10-07', priority: 0.9 },
+  { path: '/website-design-agra', updated: '2026-10-09', priority: 0.9 },
   { path: '/services', updated: SERVICES_UPDATED, priority: 0.9 },
   ...SERVICES.map((s) => ({ path: `/services/${s.slug}`, updated: SERVICES_UPDATED, priority: 0.8 })),
   { path: '/contact', updated: '2026-10-07', priority: 0.8 },

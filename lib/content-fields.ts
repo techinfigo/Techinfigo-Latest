@@ -34,6 +34,8 @@ export type ListSpec = {
   fields: { key: string; label: string; kind: FieldKind; max: number }[];
   /** Properties carried through untouched — routing and icon keys. */
   readOnlyKeys?: { key: string; label: string; note: string }[];
+  /** Editor can add and remove rows (lists that start empty). */
+  addable?: { itemLabel: string };
 };
 
 export type PageSpec = {
@@ -254,6 +256,38 @@ export const PAGE_SPECS: Record<PageId, PageSpec> = {
         fields: [
           { key: 'q', label: 'Question', kind: 'text', max: CONTENT_LIMITS.line },
           { key: 'a', label: 'Answer', kind: 'textarea', max: CONTENT_LIMITS.paragraph },
+        ],
+      },
+    ],
+  },
+
+  websiteOffer: {
+    route: '/website-design-agra',
+    fields: [],
+    lists: [
+      {
+        path: 'testimonials',
+        label: 'Client testimonials',
+        where:
+          'The "What our clients say" cards on the website offer page. Only real clients. A row without the review text is not shown. Client videos come from Settings → Client videos.',
+        addable: { itemLabel: 'testimonial' },
+        fields: [
+          { key: 'name', label: 'Client name', kind: 'text', max: CONTENT_LIMITS.short },
+          { key: 'business', label: 'Business (and area), e.g. "Sharma Sweets, Kamla Nagar"', kind: 'text', max: CONTENT_LIMITS.short },
+          { key: 'quote', label: 'What they said', kind: 'textarea', max: CONTENT_LIMITS.paragraph },
+          { key: 'link', label: 'Their website (optional)', kind: 'text', max: CONTENT_LIMITS.line },
+        ],
+      },
+      {
+        path: 'portfolio',
+        label: 'Websites we built',
+        where:
+          'The "Websites we built" cards. A live preview of each site is shown automatically from the link. A row without a link is not shown.',
+        addable: { itemLabel: 'website' },
+        fields: [
+          { key: 'name', label: 'Business name', kind: 'text', max: CONTENT_LIMITS.short },
+          { key: 'type', label: 'Type of business, e.g. "Dental clinic"', kind: 'text', max: CONTENT_LIMITS.short },
+          { key: 'url', label: 'Website link', kind: 'text', max: CONTENT_LIMITS.line },
         ],
       },
     ],

@@ -39,6 +39,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
         setIsOverLightSection(scrollY > 450);
       } else if (activePage === 'system') {
         setIsOverLightSection(scrollY > 3500 && scrollY < 5000);
+      } else if (activePage === 'website-design-agra') {
+        // Tall dark hero with the form (the form stacks below the text on phones).
+        setIsOverLightSection(scrollY > (window.innerWidth < 1024 ? 1250 : 700));
       } else if (activePage === 'digital-marketing-agency-agra') {
         // Agra Hero is ~600px. Light starts after.
         setIsOverLightSection(scrollY > 600);
@@ -77,6 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
     'about', 
     'how-it-works', 
     'digital-marketing-agency-agra',
+    'website-design-agra',
     'careers',
     'privacy',
     'terms',

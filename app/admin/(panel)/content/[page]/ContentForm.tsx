@@ -102,6 +102,14 @@ export function ContentForm({
           rows={(getPath(content, list.path) as unknown as Record<string, string>[]) ?? []}
           disabled={saving}
           onChange={(index, key, value) => updateListItem(list.path, index, key, value)}
+          onAdd={() => {
+            const rows = (getPath(content, list.path) as unknown as Record<string, string>[]) ?? [];
+            update(list.path, [...rows, Object.fromEntries(list.fields.map((f) => [f.key, '']))]);
+          }}
+          onRemove={(index) => {
+            const rows = (getPath(content, list.path) as unknown as Record<string, string>[]) ?? [];
+            update(list.path, rows.filter((_, i) => i !== index));
+          }}
         />
       ))}
 
@@ -187,11 +195,15 @@ function ListEditor({
   rows,
   disabled,
   onChange,
+  onAdd,
+  onRemove,
 }: {
   list: ListSpec;
   rows: Record<string, string>[];
   disabled: boolean;
   onChange: (index: number, key: string, value: string) => void;
+  onAdd: () => void;
+  onRemove: (index: number) => void;
 }) {
   return (
     <section className="border border-white/15 rounded-2xl p-6 space-y-5">
@@ -204,9 +216,21 @@ function ListEditor({
 
       {rows.map((row, index) => (
         <div key={index} className="border border-white/15 rounded-xl p-4 space-y-4">
-          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
-            Item {index + 1} of {rows.length}
-          </p>
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/55">
+              Item {index + 1} of {rows.length}
+            </p>
+            {list.addable ? (
+              <button
+                type="button"
+                onClick={() => onRemove(index)}
+                disabled={disabled}
+                className="text-[9px] font-black uppercase tracking-[0.2em] text-red-300 hover:text-red-200 disabled:opacity-40"
+              >
+                Remove
+              </button>
+            ) : null}
+          </div>
           {list.fields.map((f) => {
             const id = `${list.path}-${index}-${f.key}`;
             return (
@@ -248,6 +272,25 @@ function ListEditor({
           ))}
         </div>
       ))}
+
+      {list.addable ? (
+        <>
+          {rows.length === 0 ? (
+            <p className="text-white/55 text-sm">Nothing added yet — this section is hidden on the site until you add one.</p>
+          ) : null}
+          {rows.length < 12 ? (
+            <button
+              type="button"
+              onClick={onAdd}
+              disabled={disabled}
+              className="px-4 py-2.5 border border-white/20 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-white hover:border-brandYellow hover:text-brandYellow disabled:opacity-40 transition-colors"
+            >
+              + Add {list.addable.itemLabel}
+            </button>
+          ) : null}
+          <p className="text-white/40 text-xs">Remember to press Save changes after adding or removing.</p>
+        </>
+      ) : null}
     </section>
   );
 }
