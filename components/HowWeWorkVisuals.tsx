@@ -12,6 +12,7 @@ import {
   Globe,
   Megaphone,
 } from 'lucide-react';
+import { PlayInView } from './PlayInView';
 
 /**
  * Small illustrations for the How We Work page, drawn in code rather than
@@ -117,7 +118,15 @@ export function HealthCheckVisual() {
 /** Step 2: a phone with a website that gets calls, next to a complete Google profile. */
 export function BasicsVisual() {
   return (
-    <div className="flex items-end gap-3 sm:gap-6">
+    <PlayInView>
+    <div className="relative flex items-end gap-3 sm:gap-6">
+      {/* A new enquiry arriving (animated). */}
+      <div className={`${card} sv-pop absolute -top-7 left-3 sm:left-8 z-10 px-3 py-2 flex items-center gap-2`}>
+        <span className="w-6 h-6 rounded-full bg-[#25D366] text-white flex items-center justify-center">
+          <Bell className="w-3.5 h-3.5" />
+        </span>
+        <span className="text-[10px] font-black text-brandDark whitespace-nowrap">New enquiry!</span>
+      </div>
       <div className="w-[128px] sm:w-[170px] rounded-[2rem] bg-brandDark p-2.5 shadow-[0_30px_60px_-25px_rgba(0,29,33,0.6)] shrink-0">
         <div className="rounded-[1.5rem] bg-white overflow-hidden">
           <div className="h-24 bg-gradient-to-br from-brandYellow/70 to-brandYellow/20 flex items-end p-3">
@@ -131,7 +140,7 @@ export function BasicsVisual() {
               <span className="py-1.5 rounded-md bg-brandDark text-white text-[9px] font-bold flex items-center justify-center gap-1">
                 <Phone className="w-3 h-3 hidden sm:block" /> Call
               </span>
-              <span className="py-1.5 rounded-md bg-[#25D366] text-white text-[9px] font-bold flex items-center justify-center gap-1">
+              <span className="sv-pulse py-1.5 rounded-md bg-[#25D366] text-white text-[9px] font-bold flex items-center justify-center gap-1">
                 <MessageCircle className="w-3 h-3 hidden sm:block" /> Chat
               </span>
             </div>
@@ -158,12 +167,14 @@ export function BasicsVisual() {
         </p>
       </div>
     </div>
+    </PlayInView>
   );
 }
 
 /** Step 3: an ad that brings a message, not just likes. */
 export function EnquiriesVisual() {
   return (
+    <PlayInView>
     <div className="relative w-full max-w-sm">
       <div className={`${card} overflow-hidden`}>
         <div className="flex items-center gap-2 p-3">
@@ -182,16 +193,17 @@ export function EnquiriesVisual() {
         </div>
         <div className="flex items-center justify-between p-3">
           <div className="flex gap-3 text-brandDark/40">
-            <Heart className="w-4 h-4" />
+            <Heart className="sv-heart w-4 h-4" />
             <Send className="w-4 h-4" />
           </div>
-          <span className="px-3 py-1.5 rounded-lg bg-brandYellow text-brandDark text-[10px] font-black">Send message</span>
+          <span className="sv-glow px-3 py-1.5 rounded-lg bg-brandYellow text-brandDark text-[10px] font-black">Send message</span>
         </div>
       </div>
-      <div className="absolute -bottom-5 -right-2 sm:-right-6 rounded-xl bg-[#25D366] text-white px-3 py-2 shadow-lg flex items-center gap-2 text-[11px] font-bold">
+      <div className="sv-pop absolute -bottom-5 -right-2 sm:-right-6 rounded-xl bg-[#25D366] text-white px-3 py-2 shadow-lg flex items-center gap-2 text-[11px] font-bold">
         <Bell className="w-3.5 h-3.5" /> 4 new messages today
       </div>
     </div>
+    </PlayInView>
   );
 }
 
@@ -255,10 +267,11 @@ export function StepVisual({ index }: { index: number }) {
 /** Google Business Profile as it appears on Maps. */
 export function GbpVisual() {
   return (
+    <PlayInView>
     <div className={`${card} w-full max-w-sm overflow-hidden`}>
       <div className="h-24 bg-brandDark relative">
         <div className="absolute inset-0 opacity-30 bg-[linear-gradient(90deg,rgba(255,255,255,.15)_1px,transparent_1px),linear-gradient(rgba(255,255,255,.15)_1px,transparent_1px)] bg-[size:22px_22px]" />
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shadow-glow">
+        <span className="sv-bob absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-brandYellow text-brandDark flex items-center justify-center shadow-glow">
           <MapPin className="w-5 h-5" />
         </span>
       </div>
@@ -267,7 +280,7 @@ export function GbpVisual() {
           <p className="text-sm font-black text-brandDark">Your Business, Agra</p>
           <div className="flex items-center gap-1 mt-1">
             {[0, 1, 2, 3, 4].map((i) => (
-              <Star key={i} className="w-3.5 h-3.5 fill-brandYellow text-brandYellow" />
+              <Star key={i} className="sv-star w-3.5 h-3.5 fill-brandYellow text-brandYellow" style={{ animationDelay: `${i * 0.18}s` }} />
             ))}
             <span className="text-[11px] text-brandDark/50 ml-1">Reviews</span>
           </div>
@@ -275,7 +288,7 @@ export function GbpVisual() {
         </div>
         <div className="grid grid-cols-4 gap-1.5">
           {['Call', 'Directions', 'Website', 'Share'].map((a) => (
-            <span key={a} className="py-1.5 rounded-lg bg-brandBg text-[9px] font-bold text-brandDark text-center">{a}</span>
+            <span key={a} className={`py-1.5 rounded-lg bg-brandBg text-[9px] font-bold text-brandDark text-center ${a === 'Directions' ? 'sv-tap' : ''}`}>{a}</span>
           ))}
         </div>
         <div className="grid grid-cols-3 gap-1.5">
@@ -286,6 +299,7 @@ export function GbpVisual() {
         <p className="text-[10px] text-brandDark/60 bg-brandBg rounded-lg px-3 py-2">New post: “Festive timings this week”</p>
       </div>
     </div>
+    </PlayInView>
   );
 }
 
@@ -293,6 +307,7 @@ export function GbpVisual() {
 export function SocialVisual() {
   const tiles = ['bg-brandDark', 'bg-brandYellow', 'bg-brandDark/15', 'bg-brandYellow/40', 'bg-brandDark', 'bg-brandDark/25'];
   return (
+    <PlayInView>
     <div className={`${card} p-5 w-full max-w-sm space-y-4`}>
       <div className="flex items-center gap-3">
         <span className="w-12 h-12 rounded-full p-[2px] bg-gradient-to-tr from-brandYellow to-[#e1306c]">
@@ -306,50 +321,58 @@ export function SocialVisual() {
       </div>
       <div className="grid grid-cols-3 gap-1">
         {tiles.map((t, i) => (
-          <div key={i} className={`aspect-square rounded ${t} relative`}>
+          <div key={i} className={`aspect-square rounded ${t} relative ${i === 0 ? 'sv-newpost' : ''}`}>
             {i === 1 || i === 4 ? (
               <span className="absolute top-1 right-1 w-3 h-3 rounded-sm border-2 border-white/80" />
             ) : null}
           </div>
         ))}
       </div>
-      <div className="flex items-center gap-3 text-[11px] text-brandDark/60">
-        <Heart className="w-4 h-4" /> <MessageCircle className="w-4 h-4" /> <Send className="w-4 h-4" />
+      <div className="relative flex items-center gap-3 text-[11px] text-brandDark/60">
+        <Heart className="sv-heart w-4 h-4" /> <MessageCircle className="w-4 h-4" /> <Send className="w-4 h-4" />
+        <span className="sv-rise absolute left-0 -top-5 px-1.5 py-0.5 rounded-md bg-[#e1306c] text-white text-[9px] font-black">+24</span>
         <span className="ml-auto font-bold text-brandDark">12 posts this month</span>
       </div>
     </div>
+    </PlayInView>
   );
 }
 
-/** A Google results page with your site near the top. */
+/** A Google results page: your site climbs from 3rd to 1st. */
 export function SearchVisual() {
+  const other = (cls: string) => (
+    <div className={`${cls} absolute inset-x-0 top-0 h-[50px] px-3 py-2 space-y-1.5`}>
+      <div className="h-1.5 w-1/3 rounded bg-brandDark/10" />
+      <div className="h-2.5 w-3/4 rounded bg-[#1a0dab]/20" />
+      <div className="h-1.5 w-2/3 rounded bg-brandDark/10" />
+    </div>
+  );
   return (
+    <PlayInView>
     <div className={`${card} p-5 w-full max-w-sm space-y-4`}>
       <div className="flex items-center gap-2 rounded-full border border-brandDark/10 px-4 py-2.5">
         <Globe className="w-4 h-4 text-brandDark/40" />
         <span className="text-xs text-brandDark/70">best service near me in Agra</span>
       </div>
-      <div className="space-y-3">
-        <div className="rounded-xl bg-brandYellow/15 border border-brandYellow/40 p-3">
+      {/* Three rows 58px apart; the animation swaps their places. */}
+      <div className="relative h-[166px]">
+        {other('sv-r1 [transform:translateY(58px)]')}
+        {other('sv-r2 [transform:translateY(116px)]')}
+        <div className="sv-you absolute inset-x-0 top-0 h-[50px] rounded-xl bg-brandYellow/15 border border-brandYellow/40 px-3 py-1.5">
+          <span className="sv-rank absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-brandDark text-brandYellow text-[10px] font-black">#1</span>
           <p className="text-[10px] text-brandDark/50">yourbusiness.com</p>
-          <p className="text-sm font-bold text-[#1a0dab]">Your Business: trusted in Agra</p>
-          <p className="text-[10px] text-brandDark/60">Call or WhatsApp today. Open Mon–Sat.</p>
+          <p className="text-sm font-bold text-[#1a0dab] leading-tight truncate">Your Business: trusted in Agra</p>
         </div>
-        {[0, 1].map((i) => (
-          <div key={i} className="px-3 space-y-1.5">
-            <div className="h-1.5 w-1/3 rounded bg-brandDark/10" />
-            <div className="h-2.5 w-3/4 rounded bg-[#1a0dab]/20" />
-            <div className="h-1.5 w-2/3 rounded bg-brandDark/10" />
-          </div>
-        ))}
       </div>
     </div>
+    </PlayInView>
   );
 }
 
 /** Online store: an order coming in and a repeat customer. */
 export function D2CVisual() {
   return (
+    <PlayInView>
     <div className="relative w-full max-w-sm">
       <div className={`${card} p-5 space-y-4`}>
         <div className="flex items-center justify-between">
@@ -361,7 +384,7 @@ export function D2CVisual() {
           { name: 'New order', tag: 'Repeat customer', tone: 'bg-emerald-100 text-emerald-800' },
           { name: 'Cart reminder sent', tag: 'On WhatsApp', tone: 'bg-sky-100 text-sky-800' },
         ].map((r, i) => (
-          <div key={i} className="flex items-center gap-3">
+          <div key={i} className="sv-drop flex items-center gap-3" style={{ animationDelay: `${i * 0.6}s` }}>
             <span className="w-8 h-8 rounded-lg bg-brandDark text-brandYellow flex items-center justify-center shrink-0">
               <Bell className="w-4 h-4" />
             </span>
@@ -370,10 +393,11 @@ export function D2CVisual() {
           </div>
         ))}
       </div>
-      <div className="absolute -bottom-5 -right-2 sm:-right-6 rounded-xl bg-brandYellow text-brandDark px-3 py-2 shadow-glow text-[11px] font-black">
+      <div className="sv-glow absolute -bottom-5 -right-2 sm:-right-6 rounded-xl bg-brandYellow text-brandDark px-3 py-2 shadow-glow text-[11px] font-black">
         Profit tracked, not just sales
       </div>
     </div>
+    </PlayInView>
   );
 }
 
