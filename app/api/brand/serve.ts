@@ -48,15 +48,21 @@ export async function serveBrandAsset(request: Request, kind: BrandAssetKind) {
   const headers = new Headers({
     'Content-Type': asset.mime,
     ETag: etag,
+    // s-maxage + CDN-Cache-Control let Vercel's CDN keep the hashed image, so
+    // only the first request after an upload reaches this function (database
+    // read + resize). Without them every new visitor waited for both, and the
+    // logo appeared late.
     'Cache-Control': versioned
-      ? `public, max-age=${YEAR_SECONDS}, immutable`
-      : 'public, max-age=60, must-revalidate',
+      ? `public, max-age=${YEAR_SECONDS}, s-maxage=${YEAR_SECONDS}, immutable`
+      : 'public, max-age=60, s-maxage=60, must-revalidate',
     // An uploaded SVG is markup and could carry a <script>. Only a signed-in
     // admin can upload one, but serving it from our own origin would put that
     // script on our origin, so the sandbox and nosniff close that off.
     'X-Content-Type-Options': 'nosniff',
     'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; sandbox",
   });
+
+  if (versioned) headers.set('CDN-Cache-Control', `public, max-age=${YEAR_SECONDS}, immutable`);
 
   // Revalidation hit: the browser already holds these exact bytes.
   if (request.headers.get('if-none-match') === etag) {
@@ -78,14 +84,14 @@ export async function serveBrandAsset(request: Request, kind: BrandAssetKind) {
 /**
  * Logos are often exported with a wide empty border, which makes them render
  * small in the header and footer. Cut the transparent (or flat-colour) border
- * away and cap the width; the result is cached with the same content hash, so
+ * away and cap the width (640px: sharp at the header's 44px height on any screen); the result is cached with the same content hash, so
  * this runs once per upload, not per visitor. Any failure serves the original.
  */
 async function trimLogo(input: Buffer): Promise<Buffer | null> {
   try {
     return await sharp(input)
       .trim({ threshold: 10 })
-      .resize({ width: 1200, withoutEnlargement: true })
+      .resize({ width: 640, withoutEnlargement: true })
       .png({ compressionLevel: 9 })
       .toBuffer();
   } catch (error) {

@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { SITE } from "../config/site";
 import { getSiteSettings } from "../lib/settings";
-import { brandRouteUrl, type SiteSettings } from "../lib/settings-schema";
+import { brandAssetUrl, brandRouteUrl, type SiteSettings } from "../lib/settings-schema";
 import { Analytics } from "../components/Analytics";
 import { SiteSettingsProvider } from "../components/SiteSettingsProvider";
 import { ContactBar } from "../components/ContactBar";
@@ -65,6 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // bundled file until something is uploaded, and the ?v= content hash means a
   // replacement is a different URL that no cache can answer with the old icon.
   const favicon = brandRouteUrl('favicon', settings.brand.favicon);
+  const logo = brandAssetUrl('logo', settings.brand.logo);
 
   return {
     metadataBase: new URL(SITE.url),
@@ -95,6 +96,7 @@ export default async function RootLayout({
 }>) {
   const settings = await getSiteSettings();
   const favicon = brandRouteUrl('favicon', settings.brand.favicon);
+  const logo = brandAssetUrl('logo', settings.brand.logo);
 
   return (
     <html lang="en" className={poppins.variable}>
@@ -102,6 +104,8 @@ export default async function RootLayout({
         <link rel="icon" href={favicon} />
         <link rel="shortcut icon" href={favicon} />
         <link rel="apple-touch-icon" href={favicon} />
+        {/* The header logo is the first thing people see: fetch it straight away. */}
+        <link rel="preload" as="image" href={logo} fetchPriority="high" />
       </head>
       <body>
         <script

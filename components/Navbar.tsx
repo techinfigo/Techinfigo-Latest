@@ -127,6 +127,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activePage: propActi
                 <img
                   src={brandAssetUrl('logo', brand.logo)}
                   alt="Techinfigo"
+                  fetchPriority="high"
+                  loading="eager"
                   className="h-9 lg:h-11 w-auto max-w-[190px] lg:max-w-[240px] object-contain"
                 />
               </span>
