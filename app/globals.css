@@ -668,3 +668,48 @@
   .hw1-spin, .hw2-x, .hw3-c, .hw4-st { opacity: 0; } .hw3-c-4, .hw4-st-0-2, .hw4-st-1-1, .hw4-st-2-2 { opacity: 1; }
   .hw1-ring { stroke-dashoffset: 62; } .hw2-ring { stroke-dashoffset: 8; stroke: #10b981; } .hw2-n-0, .hw2-n-1 { opacity: 0; }
 }
+
+/* ---------------------------------------------------------------------------
+ * Home hero dashboard (components/HeroDashboard.tsx), one 10s loop: chart
+ * draws, enquiries count up, sources fill, +38% shows, a new enquiry pops in.
+ * ------------------------------------------------------------------------- */
+.hd-card, .hd-n, .hd-up, .hd-chart, .hd-dot, .hd-src, .hd-lbl, .hd-rating, .hd-toast { animation-duration: 10s; animation-iteration-count: infinite; animation-timing-function: ease-in-out; animation-fill-mode: both; animation-play-state: paused; }
+[data-play='true'] :is(.hd-card, .hd-n, .hd-up, .hd-chart, .hd-dot, .hd-src, .hd-lbl, .hd-rating, .hd-toast) { animation-play-state: running; }
+.hd-card { animation-name: hd-card; animation-iteration-count: 1; animation-duration: 0.8s; }
+@keyframes hd-card { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.hd-chart { animation-name: hd-chart; }
+@keyframes hd-chart { 0%, 4% { clip-path: inset(-10% 100% -10% 0); } 36%, 94% { clip-path: inset(-10% 0 -10% 0); } 98%, 100% { clip-path: inset(-10% 100% -10% 0); } }
+.hd-dot { animation-name: hd-dot; }
+@keyframes hd-dot { 0%, 34% { opacity: 0; transform: scale(0); } 37% { opacity: 1; transform: scale(1.5); } 39%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0); } }
+.hd-n-0 { animation-name: hd-n-0; }
+@keyframes hd-n-0 { 0%, 15% { opacity: 1; } 16%, 97% { opacity: 0; } 98%, 100% { opacity: 1; } }
+.hd-n-1 { animation-name: hd-n-1; }
+@keyframes hd-n-1 { 0%, 15% { opacity: 0; } 16%, 29% { opacity: 1; } 30%, 100% { opacity: 0; } }
+.hd-n-2 { animation-name: hd-n-2; }
+@keyframes hd-n-2 { 0%, 29% { opacity: 0; transform: scale(0.85); } 32% { opacity: 1; transform: scale(1.08); } 34%, 96% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; } }
+.hd-up { animation-name: hd-up; }
+@keyframes hd-up { 0%, 38% { opacity: 0; transform: translateY(6px); } 42% { opacity: 1; transform: translateY(-2px) scale(1.06); } 44%, 94% { opacity: 1; transform: translateY(0) scale(1); } 98%, 100% { opacity: 0; } }
+.hd-src-0 { animation-name: hd-src-0; transform-origin: left; }
+@keyframes hd-src-0 { 0%, 40% { transform: scaleX(0); } 45%, 94% { transform: scaleX(1); } 98%, 100% { transform: scaleX(0); } }
+.hd-lbl-0 { animation-name: hd-lbl-0; }
+@keyframes hd-lbl-0 { 0%, 42% { opacity: 0; } 46%, 94% { opacity: 1; } 98%, 100% { opacity: 0; } }
+.hd-src-1 { animation-name: hd-src-1; transform-origin: left; }
+@keyframes hd-src-1 { 0%, 44% { transform: scaleX(0); } 49%, 94% { transform: scaleX(1); } 98%, 100% { transform: scaleX(0); } }
+.hd-lbl-1 { animation-name: hd-lbl-1; }
+@keyframes hd-lbl-1 { 0%, 46% { opacity: 0; } 50%, 94% { opacity: 1; } 98%, 100% { opacity: 0; } }
+.hd-src-2 { animation-name: hd-src-2; transform-origin: left; }
+@keyframes hd-src-2 { 0%, 48% { transform: scaleX(0); } 53%, 94% { transform: scaleX(1); } 98%, 100% { transform: scaleX(0); } }
+.hd-lbl-2 { animation-name: hd-lbl-2; }
+@keyframes hd-lbl-2 { 0%, 50% { opacity: 0; } 54%, 94% { opacity: 1; } 98%, 100% { opacity: 0; } }
+.hd-src-3 { animation-name: hd-src-3; transform-origin: left; }
+@keyframes hd-src-3 { 0%, 52% { transform: scaleX(0); } 57%, 94% { transform: scaleX(1); } 98%, 100% { transform: scaleX(0); } }
+.hd-lbl-3 { animation-name: hd-lbl-3; }
+@keyframes hd-lbl-3 { 0%, 54% { opacity: 0; } 58%, 94% { opacity: 1; } 98%, 100% { opacity: 0; } }
+.hd-rating { animation-name: hd-rating; }
+@keyframes hd-rating { 0%, 2% { opacity: 0; transform: scale(0.7) rotate(-6deg); } 7% { opacity: 1; transform: scale(1.08) rotate(2deg); } 10%, 100% { opacity: 1; transform: scale(1) rotate(0); } }
+.hd-toast { animation-name: hd-toast; }
+@keyframes hd-toast { 0%, 60% { opacity: 0; transform: translateY(14px) scale(0.95); } 64% { opacity: 1; transform: translateY(-3px) scale(1.03); } 66%, 92% { opacity: 1; transform: translateY(0) scale(1); } 97%, 100% { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) {
+  .hd-card, .hd-n, .hd-up, .hd-chart, .hd-dot, .hd-src, .hd-lbl, .hd-rating, .hd-toast { animation: none !important; }
+  .hd-n-0, .hd-n-1 { opacity: 0; } .hd-chart { clip-path: none; }
+}

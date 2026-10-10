@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, MessageCircle, PhoneOff, MapPin, ThumbsDown, MessageSquareX, HelpCircle, type LucideIcon } from 'lucide-react';
 import type { SiteContent } from '../lib/content-schema';
 import type { ClientVideo } from '../lib/settings-schema';
-import { HeroEnquiryStack } from './HowWeWorkVisuals';
+import { HeroDashboard } from './HeroDashboard';
 import { ServiceCards } from './ServicesPage';
 import { WhoWeWorkWith } from './WhoWeWorkWith';
 import { ClientVideos } from './ClientVideos';
@@ -80,7 +80,7 @@ export function HomePage({ home, steps, pillars, rating, reviewCount, videos, re
             {hero.ctaNote ? <p className="text-white/45 text-sm font-medium">{hero.ctaNote}</p> : null}
           </div>
           <div className="lg:col-span-5">
-            <HeroEnquiryStack rating={rating} count={reviewCount} />
+            <HeroDashboard rating={rating} count={reviewCount} />
           </div>
         </div>
       </section>
