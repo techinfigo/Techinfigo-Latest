@@ -6,7 +6,8 @@ import { DEFAULT_CONTENT } from '../config/content';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 import type { SiteContent } from '../lib/content-schema';
-import { HeroEnquiryStack, StepVisual } from './HowWeWorkVisuals';
+import { HeroEnquiryStack } from './HowWeWorkVisuals';
+import { StepScene } from './HowWeWorkScenes';
 
 /**
  * "How We Work": the one process page. It replaces /system and
@@ -141,7 +142,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
                     i % 2 === 1 ? 'lg:order-1' : ''
                   }`}
                 >
-                  <StepVisual index={i} />
+                  <StepScene index={i} />
                 </div>
               </div>
             ))}
