@@ -267,3 +267,46 @@
   .seo-you { transform: translateY(0); } .seo-c1 { transform: translateY(30px); } .seo-c2 { transform: translateY(60px); } .seo-c3 { transform: translateY(90px); }
   .seo-line { clip-path: none; }
 }
+
+/* ---------------------------------------------------------------------------
+ * Website scene (components/WebsiteScene.tsx), one 9s loop: a visitor taps
+ * Chat, then Call, then Get a quote; each lands in the CRM as a new enquiry.
+ * ------------------------------------------------------------------------- */
+.web-finger, .web-btn, .web-lead, .web-total {
+  animation-duration: 9s; animation-iteration-count: infinite; animation-timing-function: ease-in-out;
+  animation-fill-mode: both; animation-play-state: paused;
+}
+[data-play='true'] :is(.web-finger, .web-btn, .web-lead, .web-total) { animation-play-state: running; }
+.web-finger { animation-name: web-finger; }
+@keyframes web-finger {
+  0%, 6% { opacity: 0; transform: translate(74px, 187px) scale(1); }
+  14%, 17% { opacity: 1; transform: translate(63px, 141px) scale(1); }
+  19% { opacity: 1; transform: translate(63px, 141px) scale(0.8); }
+  21%, 28% { opacity: 1; transform: translate(63px, 141px) scale(1); }
+  36%, 40% { opacity: 1; transform: translate(21px, 141px) scale(1); }
+  42% { opacity: 1; transform: translate(21px, 141px) scale(0.8); }
+  44%, 50% { opacity: 1; transform: translate(21px, 141px) scale(1); }
+  58%, 62% { opacity: 1; transform: translate(42px, 115px) scale(1); }
+  64% { opacity: 1; transform: translate(42px, 115px) scale(0.8); }
+  66%, 70% { opacity: 1; transform: translate(42px, 115px) scale(1); }
+  78%, 100% { opacity: 0; transform: translate(74px, 187px) scale(1); }
+}
+.web-btn-wa { animation-name: web-tap-wa; }
+@keyframes web-tap-wa { 0%, 18%, 24%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252,182,50,0); } 19% { transform: scale(0.88); } 21% { transform: scale(1); box-shadow: 0 0 0 6px rgba(252,182,50,0.55); } }
+.web-btn-call { animation-name: web-tap-call; }
+@keyframes web-tap-call { 0%, 41%, 47%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252,182,50,0); } 42% { transform: scale(0.88); } 44% { transform: scale(1); box-shadow: 0 0 0 6px rgba(252,182,50,0.55); } }
+.web-btn-quote { animation-name: web-tap-quote; }
+@keyframes web-tap-quote { 0%, 63%, 69%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252,182,50,0); } 64% { transform: scale(0.88); } 66% { transform: scale(1); box-shadow: 0 0 0 6px rgba(252,182,50,0.55); } }
+.web-lead-0 { animation-name: web-lead-0; }
+@keyframes web-lead-0 { 0%, 22% { opacity: 0; transform: translateX(14px) scale(0.95); } 25% { opacity: 1; transform: translateX(-2px) scale(1.03); background-color: rgba(252,182,50,0.35); } 28%, 92% { opacity: 1; transform: translateX(0) scale(1); background-color: var(--color-brandBg, #faf6ed); } 97%, 100% { opacity: 0; transform: translateX(0); } }
+.web-lead-1 { animation-name: web-lead-1; }
+@keyframes web-lead-1 { 0%, 45% { opacity: 0; transform: translateX(14px) scale(0.95); } 48% { opacity: 1; transform: translateX(-2px) scale(1.03); background-color: rgba(252,182,50,0.35); } 51%, 92% { opacity: 1; transform: translateX(0) scale(1); background-color: var(--color-brandBg, #faf6ed); } 97%, 100% { opacity: 0; transform: translateX(0); } }
+.web-lead-2 { animation-name: web-lead-2; }
+@keyframes web-lead-2 { 0%, 67% { opacity: 0; transform: translateX(14px) scale(0.95); } 70% { opacity: 1; transform: translateX(-2px) scale(1.03); background-color: rgba(252,182,50,0.35); } 73%, 92% { opacity: 1; transform: translateX(0) scale(1); background-color: var(--color-brandBg, #faf6ed); } 97%, 100% { opacity: 0; transform: translateX(0); } }
+.web-total { animation-name: web-total; }
+@keyframes web-total { 0%, 72% { opacity: 0; transform: translateY(6px); } 76%, 92% { opacity: 1; transform: translateY(0); } 97%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .web-finger, .web-btn, .web-lead, .web-total { animation: none !important; }
+  .web-finger { opacity: 0; }
+  .web-lead, .web-total { opacity: 1; }
+}
