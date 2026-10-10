@@ -491,3 +491,44 @@
   .ad-finger, .ad-count, .ad-count-0 { opacity: 0; } .ad-count-4 { opacity: 1; }
   .ad-person { background-color: #94a3b8; } .ad-person-5, .ad-person-1, .ad-person-3, .ad-person-2 { background-color: #25D366; }
 }
+
+/* ---------------------------------------------------------------------------
+ * D2C scene (components/D2CScene.tsx), one 12s loop: ad → product → order
+ * → WhatsApp reminder → repeat order; orders land in the store, profit shown.
+ * ------------------------------------------------------------------------- */
+.dc-screen, .dc-tap, .dc-pop, .dc-reply, .dc-reorder, .dc-finger, .dc-row, .dc-profit {
+  animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: ease-in-out;
+  animation-fill-mode: both; animation-play-state: paused;
+}
+[data-play='true'] :is(.dc-screen, .dc-tap, .dc-pop, .dc-reply, .dc-reorder, .dc-finger, .dc-row, .dc-profit) { animation-play-state: running; }
+.dc-screen-0 { animation-name: dc-screen-0; }
+@keyframes dc-screen-0 { 0%, 20% { opacity: 1; visibility: visible; } 22%, 96% { opacity: 0; visibility: hidden; } 98%, 100% { opacity: 1; visibility: visible; } }
+.dc-screen-1 { animation-name: dc-screen-1; }
+@keyframes dc-screen-1 { 0%, 20% { opacity: 0; visibility: hidden; } 22%, 40% { opacity: 1; visibility: visible; } 42%, 100% { opacity: 0; visibility: hidden; } }
+.dc-screen-2 { animation-name: dc-screen-2; }
+@keyframes dc-screen-2 { 0%, 40% { opacity: 0; visibility: hidden; } 42%, 58% { opacity: 1; visibility: visible; } 60%, 100% { opacity: 0; visibility: hidden; } }
+.dc-screen-3 { animation-name: dc-screen-3; }
+@keyframes dc-screen-3 { 0%, 58% { opacity: 0; visibility: hidden; } 60%, 96% { opacity: 1; visibility: visible; } 98%, 100% { opacity: 0; visibility: hidden; } }
+.dc-tap-0 { animation-name: dc-tap-0; }
+@keyframes dc-tap-0 { 0%, 15%, 20%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252,182,50,0); } 16% { transform: scale(0.88); } 18% { transform: scale(1); box-shadow: 0 0 0 6px rgba(252,182,50,0.6); } }
+.dc-tap-1 { animation-name: dc-tap-1; }
+@keyframes dc-tap-1 { 0%, 34%, 39%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252,182,50,0); } 35% { transform: scale(0.88); } 37% { transform: scale(1); box-shadow: 0 0 0 6px rgba(252,182,50,0.6); } }
+.dc-finger { animation-name: dc-finger; top: 150px; }
+@keyframes dc-finger { 0%, 8% { opacity: 0; transform: translate(10px, 20px); } 13%, 15% { opacity: 1; transform: translate(0, 10px); } 16% { opacity: 1; transform: translate(0, 10px) scale(0.8); } 18% { opacity: 1; transform: translate(0, 10px); } 21%, 28% { opacity: 0; transform: translate(10px, 20px); } 32%, 34% { opacity: 1; transform: translate(0, 4px); } 35% { opacity: 1; transform: translate(0, 4px) scale(0.8); } 37% { opacity: 1; transform: translate(0, 4px); } 40%, 100% { opacity: 0; transform: translate(10px, 20px); } }
+.dc-pop { animation-name: dc-pop; }
+@keyframes dc-pop { 0%, 41% { transform: scale(0); } 44% { transform: scale(1.25); } 46%, 100% { transform: scale(1); } }
+.dc-reply { animation-name: dc-reply; }
+@keyframes dc-reply { 0%, 67% { opacity: 0; transform: translateY(6px); } 70%, 100% { opacity: 1; transform: translateY(0); } }
+.dc-reorder { animation-name: dc-reorder; }
+@keyframes dc-reorder { 0%, 73% { opacity: 0; transform: scale(0.8); } 76% { opacity: 1; transform: scale(1.08); } 78%, 100% { opacity: 1; transform: scale(1); } }
+.dc-row-0 { animation-name: dc-row-0; }
+@keyframes dc-row-0 { 0%, 45% { opacity: 0; transform: translateX(14px); } 48% { opacity: 1; transform: translateX(-2px); background-color: rgba(252,182,50,0.35); } 51%, 94% { opacity: 1; transform: translateX(0); background-color: var(--color-brandBg, #faf6ed); } 98%, 100% { opacity: 0; } }
+.dc-row-1 { animation-name: dc-row-1; }
+@keyframes dc-row-1 { 0%, 76% { opacity: 0; transform: translateX(14px); } 79% { opacity: 1; transform: translateX(-2px); background-color: rgba(252,182,50,0.35); } 82%, 94% { opacity: 1; transform: translateX(0); background-color: var(--color-brandBg, #faf6ed); } 98%, 100% { opacity: 0; } }
+.dc-profit { animation-name: dc-profit; }
+@keyframes dc-profit { 0%, 82% { opacity: 0; transform: translateY(8px); } 85% { opacity: 1; transform: translateY(-2px) scale(1.03); } 87%, 94% { opacity: 1; transform: translateY(0) scale(1); } 98%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .dc-screen, .dc-tap, .dc-pop, .dc-reply, .dc-reorder, .dc-finger, .dc-row, .dc-profit { animation: none !important; }
+  .dc-screen { opacity: 0; visibility: hidden; } .dc-screen-3 { opacity: 1; visibility: visible; }
+  .dc-finger { opacity: 0; }
+}

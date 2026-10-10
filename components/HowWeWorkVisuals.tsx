@@ -18,6 +18,7 @@ import { WebsiteScene } from './WebsiteScene';
 import { GbpScene } from './GbpScene';
 import { SocialScene } from './SocialScene';
 import { AdsScene } from './AdsScene';
+import { D2CScene } from './D2CScene';
 
 /**
  * Small illustrations for the How We Work page, drawn in code rather than
@@ -451,13 +452,22 @@ function AdsPageVisual() {
   );
 }
 
+/** D2C scene sized for a service page header. */
+function D2CPageVisual() {
+  return (
+    <div className="w-full max-w-md h-[250px]">
+      <D2CScene />
+    </div>
+  );
+}
+
 const SERVICE_VISUALS: Record<string, () => React.ReactElement> = {
   website: WebsiteVisual,
   'google-business-profile': GbpPageVisual,
   'social-media': SocialPageVisual,
   ads: AdsPageVisual,
   seo: SeoVisual,
-  d2c: D2CVisual,
+  d2c: D2CPageVisual,
 };
 
 /**
@@ -470,6 +480,7 @@ const CARD_SCENES: Record<string, () => React.ReactElement> = {
   'social-media': SocialScene,
   ads: AdsScene,
   seo: SeoScene,
+  d2c: D2CScene,
 };
 
 /** The full-width card scene for a service, or null if it has none yet. */
