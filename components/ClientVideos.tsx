@@ -15,13 +15,14 @@ import { isShortsUrl, youtubeId, type ClientVideo } from '../lib/settings-schema
 
 type Item = { id: string; title: string; vertical: boolean };
 
-function VideoCard({ v, onOpen }: { v: Item; onOpen: () => void }) {
+function VideoCard({ v, onOpen, hidden }: { v: Item; onOpen: () => void; hidden?: boolean }) {
   // Shorts have a full-height thumbnail; normal videos are cropped to the centre.
   const thumb = `https://i.ytimg.com/vi/${v.id}/${v.vertical ? 'oardefault' : 'hqdefault'}.jpg`;
   return (
     <button
       type="button"
       onClick={onOpen}
+      tabIndex={hidden ? -1 : undefined}
       aria-label={`Play video${v.title ? `: ${v.title}` : ''}`}
       className="group relative block shrink-0 snap-start w-[230px] sm:w-[260px] aspect-[9/16] rounded-[2rem] overflow-hidden bg-brandDark text-left shadow-[0_10px_30px_rgba(0,0,0,0.12)] focus-visible:outline-2 focus-visible:outline-brandYellow"
     >
@@ -133,9 +134,10 @@ export function ClientVideos({ videos }: { videos?: ClientVideo[] }) {
               style={{ ['--marquee-duration' as string]: `${set.length * 6}s` } as React.CSSProperties}
             >
               {[0, 1].map((copy) => (
-                <div key={copy} className="flex gap-6 pr-6" aria-hidden={copy === 1 || undefined} inert={copy === 1 || undefined}>
+                <div key={copy} className="flex gap-6 pr-6" aria-hidden={copy === 1 || undefined}>
+                  {/* Second copy: for the seamless loop only. Still clickable. */}
                   {set.map((v, i) => (
-                    <VideoCard key={`${copy}-${i}`} v={v} onOpen={() => setOpen(v)} />
+                    <VideoCard key={`${copy}-${i}`} v={v} hidden={copy === 1} onOpen={() => setOpen(v)} />
                   ))}
                 </div>
               ))}

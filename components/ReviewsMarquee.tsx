@@ -30,11 +30,12 @@ function Avatar({ r, size }: { r: GoogleReview; size: 'sm' | 'lg' }) {
   );
 }
 
-function ReviewCard({ r, onOpen }: { r: GoogleReview; onOpen: () => void }) {
+function ReviewCard({ r, onOpen, hidden }: { r: GoogleReview; onOpen: () => void; hidden?: boolean }) {
   return (
     <button
       type="button"
       onClick={onOpen}
+      tabIndex={hidden ? -1 : undefined}
       aria-label={`Read ${r.author}'s full review`}
       className="group text-left flex flex-col w-[300px] sm:w-[360px] shrink-0 bg-brandBg rounded-[2rem] p-7 border border-brandDark/5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer transition-all duration-300 hover:shadow-[0_12px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-brandYellow"
     >
@@ -131,28 +132,141 @@ function ReviewModal({ r, onClose }: { r: GoogleReview; onClose: () => void }) {
 
 /**
  * One "set" is the reviews repeated until it is wider than any screen; the
- * track holds the set twice and slides by one set, so it loops seamlessly.
+ * track holds the set twice and is moved in JS, so it loops seamlessly AND
+ * can be grabbed: drag (or swipe) left/right to go back or forward, let go and
+ * it glides, then keeps sliding on its own. Hovering pauses it on desktop.
+ * A drag never counts as a click, so it does not open the pop-up.
  */
 export function ReviewsMarquee({ reviews }: { reviews: GoogleReview[] }) {
   const [open, setOpen] = useState<GoogleReview | null>(null);
+  const [dragging, setDragging] = useState(false);
   const close = useCallback(() => setOpen(null), []);
   const repeats = Math.max(1, Math.ceil(8 / reviews.length));
   const set = Array.from({ length: repeats }, () => reviews).flat();
-  const duration = `${set.length * 7}s`;
+  /** Seconds for one full set to pass by on its own. */
+  const loopSeconds = set.length * 7;
+
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const setRef = useRef<HTMLDivElement>(null);
+  const state = useRef({
+    offset: 0,
+    hovering: false,
+    drag: null as null | { id: number; x: number; offset: number; lastX: number; lastT: number; moved: boolean },
+    velocity: 0, // px per ms, from a released drag
+    suppressClick: false,
+  });
+  const openRef = useRef(open);
+  openRef.current = open;
+
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 64);
+      last = now;
+      const st = state.current;
+      const width = setRef.current?.offsetWidth ?? 0;
+      if (width > 0 && !st.drag) {
+        if (Math.abs(st.velocity) > 0.02) {
+          // Glide after a flick, slowing down.
+          st.offset += st.velocity * dt;
+          st.velocity *= Math.pow(0.94, dt / 16);
+        } else if (!reduce && !st.hovering && !openRef.current) {
+          st.offset += (width / (loopSeconds * 1000)) * dt;
+        }
+      }
+      if (width > 0) {
+        st.offset = ((st.offset % width) + width) % width;
+        if (trackRef.current) trackRef.current.style.transform = `translate3d(${-st.offset}px,0,0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [loopSeconds]);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const st = state.current;
+    st.velocity = 0;
+    st.drag = { id: e.pointerId, x: e.clientX, offset: st.offset, lastX: e.clientX, lastT: performance.now(), moved: false };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = state.current.drag;
+    if (!d || d.id !== e.pointerId) return;
+    const dx = e.clientX - d.x;
+    if (!d.moved && Math.abs(dx) > 6) {
+      d.moved = true;
+      setDragging(true);
+      viewportRef.current?.setPointerCapture(e.pointerId);
+    }
+    if (!d.moved) return;
+    const now = performance.now();
+    const v = -(e.clientX - d.lastX) / Math.max(now - d.lastT, 1);
+    state.current.velocity = v;
+    d.lastX = e.clientX;
+    d.lastT = now;
+    state.current.offset = d.offset - dx;
+  };
+  const endDrag = (e: React.PointerEvent) => {
+    const st = state.current;
+    const d = st.drag;
+    if (!d || d.id !== e.pointerId) return;
+    if (d.moved) {
+      // Swallow only the click that this drag itself produces.
+      st.suppressClick = true;
+      window.setTimeout(() => { st.suppressClick = false; }, 60);
+      // Keep a little of the flick speed for the glide.
+      st.velocity = Math.max(-3, Math.min(3, st.velocity));
+      if (performance.now() - d.lastT > 80) st.velocity = 0;
+    } else {
+      st.velocity = 0;
+    }
+    st.drag = null;
+    setDragging(false);
+    if (viewportRef.current?.hasPointerCapture(e.pointerId)) viewportRef.current.releasePointerCapture(e.pointerId);
+  };
 
   return (
     <>
-      <div className={`reviews-marquee-viewport overflow-hidden -mx-6 lg:-mx-12 py-3 ${open ? 'is-paused' : ''}`}>
-        <div className="reviews-marquee flex w-max" style={{ ['--marquee-duration' as string]: duration } as React.CSSProperties}>
+      <div
+        ref={viewportRef}
+        className={`reviews-drag-viewport overflow-hidden -mx-6 lg:-mx-12 py-3 select-none touch-pan-y ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onPointerEnter={(e) => { if (e.pointerType === 'mouse') state.current.hovering = true; }}
+        onPointerLeave={(e) => { if (e.pointerType === 'mouse') state.current.hovering = false; }}
+        onClickCapture={(e) => {
+          if (state.current.suppressClick) {
+            state.current.suppressClick = false;
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        onDragStart={(e) => e.preventDefault()}
+      >
+        <div ref={trackRef} className="flex w-max will-change-transform">
           {[0, 1].map((copy) => (
-            <div key={copy} className="flex gap-6 pr-6 items-stretch" aria-hidden={copy === 1 || undefined} inert={copy === 1 || undefined}>
+            <div
+              key={copy}
+              ref={copy === 0 ? setRef : undefined}
+              className="flex gap-6 pr-6 items-stretch"
+              aria-hidden={copy === 1 || undefined}
+            >
+              {/* The second copy is only there for the seamless loop: hidden
+                  from screen readers and the Tab key, but still clickable. */}
               {set.map((r, i) => (
-                <ReviewCard key={`${copy}-${i}`} r={r} onOpen={() => setOpen(r)} />
+                <ReviewCard key={`${copy}-${i}`} r={r} hidden={copy === 1} onOpen={() => setOpen(r)} />
               ))}
             </div>
           ))}
         </div>
       </div>
+      <p className="mt-2 text-center text-[11px] font-semibold text-brandDark/40">Drag to see more reviews</p>
       {open && <ReviewModal r={open} onClose={close} />}
     </>
   );

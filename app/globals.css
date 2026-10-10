@@ -77,7 +77,8 @@
 .reviews-marquee-viewport.is-paused .reviews-marquee {
   animation-play-state: paused;
 }
-.reviews-marquee-viewport {
+.reviews-marquee-viewport,
+.reviews-drag-viewport {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
