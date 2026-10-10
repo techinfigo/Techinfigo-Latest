@@ -430,3 +430,64 @@
   .sx-stage { opacity: 0; visibility: hidden; } .sx-stage-3 { opacity: 1; visibility: visible; }
   .sx-progress { width: 100%; } .sx-step { background-color: rgba(252,182,50,0.25); color: #001d21; }
 }
+
+/* ---------------------------------------------------------------------------
+ * Ads scene (components/AdsScene.tsx), one 11s loop: target Agra, people see
+ * the ad, taps on "Send message" become WhatsApp leads, cost per lead shown.
+ * ------------------------------------------------------------------------- */
+.ad-budget, .ad-circle, .ad-person, .ad-reach, .ad-cta, .ad-finger, .ad-count, .ad-count-0, .ad-face, .ad-cpl {
+  animation-duration: 11s; animation-iteration-count: infinite; animation-timing-function: ease-in-out;
+  animation-fill-mode: both; animation-play-state: paused;
+}
+[data-play='true'] :is(.ad-budget, .ad-circle, .ad-person, .ad-reach, .ad-cta, .ad-finger, .ad-count, .ad-count-0, .ad-face, .ad-cpl) { animation-play-state: running; }
+.ad-budget { animation-name: ad-budget; }
+@keyframes ad-budget { 0%, 2% { opacity: 0; transform: scale(0.6); } 5% { opacity: 1; transform: scale(1.15); } 7%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.6); } }
+.ad-circle { animation-name: ad-circle; }
+@keyframes ad-circle { 0%, 4% { opacity: 0; transform: scale(0.1); } 12% { opacity: 1; transform: scale(1.05); } 14%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.1); } }
+.ad-reach { animation-name: ad-reach; }
+@keyframes ad-reach { 0%, 27% { opacity: 0; transform: translateY(6px); } 30%, 94% { opacity: 1; transform: translateY(0); } 98%, 100% { opacity: 0; } }
+.ad-person-0 { animation-name: ad-person-0; }
+@keyframes ad-person-0 { 0%, 14% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 16%, 94% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-1 { animation-name: ad-person-1; }
+@keyframes ad-person-1 { 0%, 16% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 18%, 53% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 55% { transform: scale(1.8); background-color: #25D366; } 57%, 94% { opacity: 1; transform: scale(1.2); background-color: #25D366; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-2 { animation-name: ad-person-2; }
+@keyframes ad-person-2 { 0%, 18% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 20%, 73% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 75% { transform: scale(1.8); background-color: #25D366; } 77%, 94% { opacity: 1; transform: scale(1.2); background-color: #25D366; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-3 { animation-name: ad-person-3; }
+@keyframes ad-person-3 { 0%, 20% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 22%, 63% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 65% { transform: scale(1.8); background-color: #25D366; } 67%, 94% { opacity: 1; transform: scale(1.2); background-color: #25D366; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-4 { animation-name: ad-person-4; }
+@keyframes ad-person-4 { 0%, 22% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 24%, 94% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-5 { animation-name: ad-person-5; }
+@keyframes ad-person-5 { 0%, 24% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 26%, 43% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 45% { transform: scale(1.8); background-color: #25D366; } 47%, 94% { opacity: 1; transform: scale(1.2); background-color: #25D366; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-6 { animation-name: ad-person-6; }
+@keyframes ad-person-6 { 0%, 26% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 28%, 94% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-person-7 { animation-name: ad-person-7; }
+@keyframes ad-person-7 { 0%, 28% { opacity: 0; transform: scale(0); background-color: #94a3b8; } 30%, 94% { opacity: 1; transform: scale(1); background-color: #94a3b8; } 98%, 100% { opacity: 0; transform: scale(0); background-color: #94a3b8; } }
+.ad-cta { animation-name: ad-cta; }
+@keyframes ad-cta { 0% { transform: scale(1); } 41% { transform: scale(1); } 42% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37,211,102,0.6); } 44% { transform: scale(1); box-shadow: 0 0 0 7px rgba(37,211,102,0); } 51% { transform: scale(1); } 52% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37,211,102,0.6); } 54% { transform: scale(1); box-shadow: 0 0 0 7px rgba(37,211,102,0); } 61% { transform: scale(1); } 62% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37,211,102,0.6); } 64% { transform: scale(1); box-shadow: 0 0 0 7px rgba(37,211,102,0); } 71% { transform: scale(1); } 72% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(37,211,102,0.6); } 74% { transform: scale(1); box-shadow: 0 0 0 7px rgba(37,211,102,0); } 100% { transform: scale(1); } }
+.ad-finger { animation-name: ad-finger; }
+@keyframes ad-finger { 0%, 34% { opacity: 0; transform: translate(10px, 18px) scale(1); } 40% { opacity: 1; transform: translate(-2px, -2px) scale(1); } 42% { opacity: 1; transform: translate(-2px, -2px) scale(0.8); } 44% { opacity: 1; transform: translate(-2px, -2px) scale(1); } 52% { opacity: 1; transform: translate(-2px, -2px) scale(0.8); } 54% { opacity: 1; transform: translate(-2px, -2px) scale(1); } 62% { opacity: 1; transform: translate(-2px, -2px) scale(0.8); } 64% { opacity: 1; transform: translate(-2px, -2px) scale(1); } 72% { opacity: 1; transform: translate(-2px, -2px) scale(0.8); } 74% { opacity: 1; transform: translate(-2px, -2px) scale(1); } 78%, 100% { opacity: 0; transform: translate(10px, 18px) scale(1); } }
+.ad-count-0 { animation-name: ad-count-0; }
+@keyframes ad-count-0 { 0%, 43% { opacity: 1; } 44%, 96% { opacity: 0; } 98%, 100% { opacity: 1; } }
+.ad-count-1 { animation-name: ad-count-1; }
+@keyframes ad-count-1 { 0%, 43.5% { opacity: 0; transform: scale(0.6); } 45% { opacity: 1; transform: scale(1.2); } 46.5%, 54% { opacity: 1; transform: scale(1); } 54.5%, 100% { opacity: 0; transform: scale(1); } }
+.ad-face-0 { animation-name: ad-face-0; }
+@keyframes ad-face-0 { 0%, 44% { opacity: 0; transform: scale(0); } 46% { opacity: 1; transform: scale(1.3); } 47%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0); } }
+.ad-count-2 { animation-name: ad-count-2; }
+@keyframes ad-count-2 { 0%, 53.5% { opacity: 0; transform: scale(0.6); } 55% { opacity: 1; transform: scale(1.2); } 56.5%, 64% { opacity: 1; transform: scale(1); } 64.5%, 100% { opacity: 0; transform: scale(1); } }
+.ad-face-1 { animation-name: ad-face-1; }
+@keyframes ad-face-1 { 0%, 54% { opacity: 0; transform: scale(0); } 56% { opacity: 1; transform: scale(1.3); } 57%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0); } }
+.ad-count-3 { animation-name: ad-count-3; }
+@keyframes ad-count-3 { 0%, 63.5% { opacity: 0; transform: scale(0.6); } 65% { opacity: 1; transform: scale(1.2); } 66.5%, 74% { opacity: 1; transform: scale(1); } 74.5%, 100% { opacity: 0; transform: scale(1); } }
+.ad-face-2 { animation-name: ad-face-2; }
+@keyframes ad-face-2 { 0%, 64% { opacity: 0; transform: scale(0); } 66% { opacity: 1; transform: scale(1.3); } 67%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0); } }
+.ad-count-4 { animation-name: ad-count-4; }
+@keyframes ad-count-4 { 0%, 73.5% { opacity: 0; transform: scale(0.6); } 75% { opacity: 1; transform: scale(1.2); } 76.5%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(1); } }
+.ad-face-3 { animation-name: ad-face-3; }
+@keyframes ad-face-3 { 0%, 74% { opacity: 0; transform: scale(0); } 76% { opacity: 1; transform: scale(1.3); } 77%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0); } }
+.ad-cpl { animation-name: ad-cpl; }
+@keyframes ad-cpl { 0%, 79% { opacity: 0; transform: translateY(6px); } 82% { opacity: 1; transform: translateY(-2px) scale(1.04); } 84%, 94% { opacity: 1; transform: translateY(0) scale(1); } 98%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .ad-budget, .ad-circle, .ad-person, .ad-reach, .ad-cta, .ad-finger, .ad-count, .ad-count-0, .ad-face, .ad-cpl { animation: none !important; }
+  .ad-finger, .ad-count, .ad-count-0 { opacity: 0; } .ad-count-4 { opacity: 1; }
+  .ad-person { background-color: #94a3b8; } .ad-person-5, .ad-person-1, .ad-person-3, .ad-person-2 { background-color: #25D366; }
+}
