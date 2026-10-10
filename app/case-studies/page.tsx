@@ -8,7 +8,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/case-studies',
   },
+  // Kept out of Google until it holds real Agra client work: these are D2C
+  // industry benchmarks, which send Google the wrong signal about what we do.
+  robots: { index: false, follow: true },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'D2C Growth Benchmarks & Unit-Economic Targets',
     description: 'Example D2C growth scenarios: where profit leaks and the targets we work towards. Industry benchmarks, not client results.',
     url: '/case-studies',

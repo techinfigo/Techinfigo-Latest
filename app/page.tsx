@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: 'https://www.techinfigo.com',
     siteName: 'Techinfigo',
-    images: ['https://www.techinfigo.com/og-image.jpg'],
+    images: ['https://www.techinfigo.com/og-image.jpg?v=2'],
     locale: 'en_IN',
     type: 'website',
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: TITLE,
     description: DESCRIPTION,
-    images: ['https://www.techinfigo.com/og-image.jpg'],
+    images: ['https://www.techinfigo.com/og-image.jpg?v=2'],
   },
 };
 

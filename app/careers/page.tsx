@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     canonical: '/careers',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'Careers | Work With Techinfigo in Agra',
     description: 'Join a small, founder-led digital marketing team in Sanjay Place, Agra: social media, reels, ads, websites, SEO and sales.',
     url: '/careers',

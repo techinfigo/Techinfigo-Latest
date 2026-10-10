@@ -50,15 +50,23 @@ export function HomePage({ home, steps, pillars, rating, reviewCount, videos, re
         <div className="absolute top-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-brandYellow/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-16 items-center relative">
           <div className="lg:col-span-7 space-y-7">
+            {/* SEO: the "Digital Marketing Agency in Agra" line is the page's
+                main heading (h1) for Google; the big headline below looks the
+                same as before. If the line is ever emptied in admin, the big
+                headline becomes the h1 again. */}
             {hero.eyebrow ? (
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[11px] font-bold text-white/70 uppercase tracking-[0.2em]">
+              <h1 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[11px] font-bold text-white/70 uppercase tracking-[0.2em]">
                 <MapPin className="w-3.5 h-3.5 text-brandYellow" aria-hidden="true" /> {hero.eyebrow}
-              </span>
+              </h1>
             ) : null}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.02] tracking-tighter">
-              {hero.headline} <br className="hidden sm:block" />
-              <span className="text-brandYellow italic">{hero.headlineAccent}</span>
-            </h1>
+            {React.createElement(
+              hero.eyebrow ? 'p' : 'h1',
+              { className: 'text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.02] tracking-tighter' },
+              <>
+                {hero.headline} <br className="hidden sm:block" />
+                <span className="text-brandYellow italic">{hero.headlineAccent}</span>
+              </>,
+            )}
             <p className="text-lg lg:text-xl text-white/65 font-medium leading-relaxed max-w-2xl">{hero.subhead}</p>
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <button

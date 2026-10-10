@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: '/about' },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: '/about' },
+  openGraph: {
+    images: ['/og-image.jpg?v=2'], title: TITLE, description: DESCRIPTION, url: '/about' },
 };
 
 export default async function Page() {

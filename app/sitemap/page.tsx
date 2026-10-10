@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     canonical: '/sitemap',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'Sitemap',
     description: 'A complete index of every page on the Techinfigo website, organised by section.',
     url: '/sitemap',

@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     canonical: '/qualification',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'Who We Fit | Is Techinfigo Right for Your Business?',
     description: 'An honest list of when we are a good fit for local Agra businesses and online brands, and when we are not.',
     url: '/qualification',

@@ -634,7 +634,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
 };
 
 const steps = [
-  { id: 1, title: "Tell us about your brand" },
+  { id: 1, title: "Tell us about your business" },
   { id: 2, title: "Your current performance" },
   { id: 3, title: "What's your biggest challenge?" },
   { id: 4, title: "Where should we send your audit?" }

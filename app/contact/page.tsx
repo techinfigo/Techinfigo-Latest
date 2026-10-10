@@ -2,14 +2,15 @@ import type { Metadata } from 'next';
 import PageClient from './PageClient';
 
 export const metadata: Metadata = {
-  title: 'Contact | Talk to a D2C Profit Strategist',
-  description: 'Talk to a D2C profit strategist about where your margin is leaking and what it would take to fix it.',
+  title: 'Contact Us | Digital Marketing Agency in Agra',
+  description: 'Call, WhatsApp or visit Techinfigo in Sanjay Place, Agra. Tell us about your business and get a free health check of your website, Google profile and ads.',
   alternates: {
     canonical: '/contact',
   },
   openGraph: {
-    title: 'Contact | Talk to a D2C Profit Strategist',
-    description: 'Talk to a D2C profit strategist about where your margin is leaking and what it would take to fix it.',
+    images: ['/og-image.jpg?v=2'],
+    title: 'Contact Techinfigo | Digital Marketing Agency in Agra',
+    description: 'Call, WhatsApp or visit Techinfigo in Sanjay Place, Agra. Tell us about your business and get a free health check of your website, Google profile and ads.',
     url: '/contact',
   },
 };

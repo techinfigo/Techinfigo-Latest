@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     canonical: '/privacy',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'Privacy Policy',
     description: 'How Techinfigo collects, uses, stores and protects the personal data you share with us.',
     url: '/privacy',

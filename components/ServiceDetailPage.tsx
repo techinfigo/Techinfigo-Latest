@@ -153,6 +153,13 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId,
               ))}
             </div>
             {service.pricingNote && <p className="text-center text-white/50 text-sm">{service.pricingNote}</p>}
+            {service.slug === 'website' && (
+              <p className="text-center text-sm">
+                <Link href="/website-design-agra" className="font-black text-brandYellow underline decoration-2 underline-offset-4 hover:text-white">
+                  Business website in Agra for ₹9,999, with a free homepage design first →
+                </Link>
+              </p>
+            )}
             <p className="text-center text-white/70 text-sm font-semibold">Every package includes a free CRM to track your enquiries.</p>
           </div>
         </section>

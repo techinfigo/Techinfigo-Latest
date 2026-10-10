@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     canonical: '/how-it-works',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'How We Work | Simple Steps, Every Enquiry Tracked',
     description: 'How Techinfigo works with Agra businesses and online brands: free health check, fix the basics, bring enquiries, and track every lead in a free CRM.',
     url: '/how-it-works',

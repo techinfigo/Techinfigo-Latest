@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     canonical: '/terms',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'Terms of Service',
     description: 'The terms and conditions that govern your use of the Techinfigo website and our services.',
     url: '/terms',

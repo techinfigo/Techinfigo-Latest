@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     canonical: '/services',
   },
   openGraph: {
+    images: ['/og-image.jpg?v=2'],
     title: 'Services | Websites, Google Profile, Social Media, Ads & SEO',
     description: 'Websites, Google Business Profile, social media, Facebook/Instagram/Google ads, SEO and D2C growth for Agra businesses. Free CRM with every package.',
     url: '/services',

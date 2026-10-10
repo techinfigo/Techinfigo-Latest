@@ -88,7 +88,7 @@ export const SITE = {
   url: 'https://www.techinfigo.com',
   locale: 'en_IN',
   themeColor: '#001d21',
-  ogImage: '/og-image.jpg',
+  ogImage: '/og-image.jpg?v=2',
 } as const;
 
 /** Calendar quarter (1-4) and year for a given date. */

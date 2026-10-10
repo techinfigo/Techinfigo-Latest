@@ -52,9 +52,11 @@ export const SERVICES: Service[] = [
       'Meta Pixel and Google Analytics tracking',
     ],
     pricing: { tab: 'website' },
-    metaTitle: 'Website Design in Agra | Websites That Bring Enquiries',
+    // "Website design in Agra" is targeted by /website-design-agra; this page
+    // targets packages and pricing so the two do not compete in Google.
+    metaTitle: 'Website Development Packages & Pricing | Techinfigo',
     metaDescription:
-      'Mobile-friendly websites with WhatsApp and call buttons and a free CRM for every enquiry. From ₹4,999 to upgrade your current site.',
+      'Website packages from ₹4,999 to ₹49,999: new sites, redesigns and ads landing pages with WhatsApp and call buttons and a free CRM for every enquiry.',
     whatsapp: 'Hi Techinfigo, I would like to know about a website for my business.',
   },
   {

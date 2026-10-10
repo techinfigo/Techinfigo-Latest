@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: 'https://www.techinfigo.com/digital-marketing-agency-agra',
     siteName: 'Techinfigo',
-    images: ['https://www.techinfigo.com/og-image.jpg'],
+    images: ['https://www.techinfigo.com/og-image.jpg?v=2'],
     locale: 'en_IN',
     type: 'website',
   },
@@ -37,7 +37,7 @@ export default async function AgraLanding() {
     // Same name, address, pin and hours as the Google Business Profile, so
     // Google can match this page to the listing.
     "name": "Techinfigo - Digital Marketing Agency",
-    "image": "https://www.techinfigo.com/og-image.jpg",
+    "image": "https://www.techinfigo.com/og-image.jpg?v=2",
     "@id": "https://www.techinfigo.com/digital-marketing-agency-agra",
     "url": "https://www.techinfigo.com/digital-marketing-agency-agra",
     // Omitted entirely while unset — an invalid telephone is worse than none.

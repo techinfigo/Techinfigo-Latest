@@ -14,9 +14,9 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-function describe(settings: SiteSettings): string {
-  return `We build compounding growth systems for D2C brands doing ${settings.icpBand}/mo who value profit over vanity.`;
-}
+/** What Techinfigo is, for Google and link previews. */
+const DESCRIPTION =
+  'Founder-led digital marketing agency in Sanjay Place, Agra: websites, Google Business Profile, SEO, social media and Facebook/Google ads, with a free CRM to track every enquiry.';
 
 /**
  * LocalBusiness-family schema for the Agra local pack. `telephone` is omitted
@@ -31,8 +31,9 @@ function organizationJsonLd(settings: SiteSettings) {
     "url": SITE.url,
     "email": settings.contact.email,
     "image": `${SITE.url}${SITE.ogImage}`,
-    "description": describe(settings),
-    "priceRange": "$$",
+    "logo": `${SITE.url}${brandAssetUrl("logo", settings.brand.logo)}`,
+    "description": DESCRIPTION,
+    "priceRange": "₹₹",
     ...(settings.contact.phone ? { "telephone": settings.contact.phone } : {}),
     "address": {
       "@type": "PostalAddress",
@@ -42,10 +43,27 @@ function organizationJsonLd(settings: SiteSettings) {
       "postalCode": "282002",
       "addressCountry": "IN",
     },
-    "areaServed": {
-      "@type": "Country",
-      "name": "India",
+    "geo": { "@type": "GeoCoordinates", "latitude": 27.1994194, "longitude": 78.0081121 },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "10:30",
+      "closes": "18:30",
     },
+    "hasMap": "https://www.google.com/maps/search/?api=1&query=TECHINFIGO&query_place_id=ChIJd-bZWwl3dDkRj4H5YdWtwPM",
+    "areaServed": [
+      { "@type": "City", "name": "Agra" },
+      { "@type": "City", "name": "Mathura" },
+      { "@type": "City", "name": "Firozabad" },
+      { "@type": "Country", "name": "India" },
+    ],
+    "founder": { "@type": "Person", "name": "Sachin Bauddh" },
+    "sameAs": [
+      "https://www.facebook.com/techinfigo/",
+      "https://www.instagram.com/techinfigo/",
+      "https://in.linkedin.com/company/techinfigo",
+      "https://www.youtube.com/@techinfigo",
+    ],
   };
 }
 
@@ -70,13 +88,19 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(SITE.url),
     title: {
-      default: 'Techinfigo | Profit-First D2C Growth Agency',
+      default: 'Techinfigo | Digital Marketing Agency in Agra',
       template: '%s | Techinfigo',
     },
     alternates: {
       canonical: '/',
     },
-    description: describe(settings),
+    description: DESCRIPTION,
+    openGraph: {
+      images: [SITE.ogImage],
+      siteName: SITE.name,
+      locale: SITE.locale,
+      type: 'website',
+    },
     icons: {
       icon: [{ url: favicon }],
       shortcut: favicon,

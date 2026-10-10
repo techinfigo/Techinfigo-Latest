@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: '/website-design-agra' },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: '/website-design-agra' },
+  openGraph: {
+    images: ['/og-image.jpg?v=2'], title: TITLE, description: DESCRIPTION, url: '/website-design-agra' },
 };
 
 const faqSchema = {
