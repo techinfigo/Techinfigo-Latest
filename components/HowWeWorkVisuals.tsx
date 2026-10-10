@@ -16,6 +16,7 @@ import { PlayInView } from './PlayInView';
 import { SeoScene } from './SeoScene';
 import { WebsiteScene } from './WebsiteScene';
 import { GbpScene } from './GbpScene';
+import { SocialScene } from './SocialScene';
 
 /**
  * Small illustrations for the How We Work page, drawn in code rather than
@@ -431,10 +432,19 @@ function GbpPageVisual() {
   );
 }
 
+/** Social media scene sized for a service page header. */
+function SocialPageVisual() {
+  return (
+    <div className="w-full max-w-md h-[250px]">
+      <SocialScene />
+    </div>
+  );
+}
+
 const SERVICE_VISUALS: Record<string, () => React.ReactElement> = {
   website: WebsiteVisual,
   'google-business-profile': GbpPageVisual,
-  'social-media': SocialVisual,
+  'social-media': SocialPageVisual,
   ads: EnquiriesVisual,
   seo: SeoVisual,
   d2c: D2CVisual,
@@ -447,6 +457,7 @@ const SERVICE_VISUALS: Record<string, () => React.ReactElement> = {
 const CARD_SCENES: Record<string, () => React.ReactElement> = {
   website: WebsiteScene,
   'google-business-profile': GbpScene,
+  'social-media': SocialScene,
   seo: SeoScene,
 };
 
