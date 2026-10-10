@@ -13,6 +13,7 @@ import {
   Megaphone,
 } from 'lucide-react';
 import { PlayInView } from './PlayInView';
+import { SeoScene } from './SeoScene';
 
 /**
  * Small illustrations for the How We Work page, drawn in code rather than
@@ -401,14 +402,41 @@ export function D2CVisual() {
   );
 }
 
+/** SEO scene sized for a service page header. */
+function SeoVisual() {
+  return (
+    <div className="w-full max-w-md h-[250px]">
+      <SeoScene />
+    </div>
+  );
+}
+
 const SERVICE_VISUALS: Record<string, () => React.ReactElement> = {
   website: BasicsVisual,
   'google-business-profile': GbpVisual,
   'social-media': SocialVisual,
   ads: EnquiriesVisual,
-  seo: SearchVisual,
+  seo: SeoVisual,
   d2c: D2CVisual,
 };
+
+/**
+ * Services whose scene is drawn for the full width of a service card (no
+ * scaling down). The others are single drawings shown at 72% in the card.
+ */
+const CARD_SCENES: Record<string, () => React.ReactElement> = {
+  seo: SeoScene,
+};
+
+/** The full-width card scene for a service, or null if it has none yet. */
+export function ServiceCardScene({ slug }: { slug: string }) {
+  const Scene = CARD_SCENES[slug];
+  return Scene ? <Scene /> : null;
+}
+
+export function hasCardScene(slug: string): boolean {
+  return slug in CARD_SCENES;
+}
 
 /** The picture for a service page, by slug. */
 export function ServiceVisual({ slug }: { slug: string }) {

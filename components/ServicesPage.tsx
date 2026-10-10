@@ -7,7 +7,7 @@ import { DEFAULT_CONTENT } from '../config/content';
 import type { SiteContent } from '../lib/content-schema';
 import { SERVICES, getService } from '../lib/services';
 import { TABS, PricingTabs } from './PricingTabs';
-import { ServiceVisual, TrackVisual } from './HowWeWorkVisuals';
+import { ServiceCardScene, ServiceVisual, TrackVisual, hasCardScene } from './HowWeWorkVisuals';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 
@@ -54,9 +54,15 @@ export function ServiceCards({
                 className="group flex flex-col rounded-[2.5rem] bg-white border border-brandDark/5 shadow-[0_10px_40px_-20px_rgba(0,29,33,0.25)] overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,29,33,0.35)] transition-all duration-300 focus-visible:outline-2 focus-visible:outline-brandYellow"
               >
                 <div className="h-60 bg-brandBg flex items-center justify-center overflow-hidden" aria-hidden="true">
-                  <div className="scale-[0.72] origin-center pointer-events-none">
-                    <ServiceVisual slug={s.slug} />
-                  </div>
+                  {hasCardScene(s.slug) ? (
+                    <div className="w-full h-full pointer-events-none">
+                      <ServiceCardScene slug={s.slug} />
+                    </div>
+                  ) : (
+                    <div className="scale-[0.72] origin-center pointer-events-none">
+                      <ServiceVisual slug={s.slug} />
+                    </div>
+                  )}
                 </div>
                 <div className="flex-1 flex flex-col p-7 lg:p-8 space-y-3">
                   <h2 className="text-2xl font-black text-brandDark tracking-tight leading-tight">{s.title}</h2>

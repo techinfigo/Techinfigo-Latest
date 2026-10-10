@@ -229,3 +229,41 @@
   .sv-r2 { transform: translateY(116px); }
   .sv-rank, .sv-pop, .sv-drop { opacity: 1; }
 }
+
+/* ---------------------------------------------------------------------------
+ * SEO scene (components/SeoScene.tsx), one 9s loop:
+ * work ticks 1-2 -> #3, ticks 3-4 -> #2, tick 5 -> #1, then visitors rise.
+ * ------------------------------------------------------------------------- */
+.seo-tick, .seo-you, .seo-c1, .seo-c2, .seo-c3, .seo-badge, .seo-line {
+  animation-duration: 9s; animation-iteration-count: infinite; animation-timing-function: ease-in-out;
+  animation-fill-mode: both; animation-play-state: paused;
+}
+[data-play='true'] :is(.seo-tick, .seo-you, .seo-c1, .seo-c2, .seo-c3, .seo-badge, .seo-line) { animation-play-state: running; }
+.seo-tick-0 { animation-name: seo-tick-0; }
+@keyframes seo-tick-0 { 0%, 6% { opacity: 0; transform: scale(0.3); } 9% { opacity: 1; transform: scale(1.25); } 11%, 92% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; transform: scale(0.3); } }
+.seo-tick-1 { animation-name: seo-tick-1; }
+@keyframes seo-tick-1 { 0%, 14% { opacity: 0; transform: scale(0.3); } 17% { opacity: 1; transform: scale(1.25); } 19%, 92% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; transform: scale(0.3); } }
+.seo-tick-2 { animation-name: seo-tick-2; }
+@keyframes seo-tick-2 { 0%, 30% { opacity: 0; transform: scale(0.3); } 33% { opacity: 1; transform: scale(1.25); } 35%, 92% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; transform: scale(0.3); } }
+.seo-tick-3 { animation-name: seo-tick-3; }
+@keyframes seo-tick-3 { 0%, 38% { opacity: 0; transform: scale(0.3); } 41% { opacity: 1; transform: scale(1.25); } 43%, 92% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; transform: scale(0.3); } }
+.seo-tick-4 { animation-name: seo-tick-4; }
+@keyframes seo-tick-4 { 0%, 52% { opacity: 0; transform: scale(0.3); } 55% { opacity: 1; transform: scale(1.25); } 57%, 92% { opacity: 1; transform: scale(1); } 97%, 100% { opacity: 0; transform: scale(0.3); } }
+.seo-you { animation-name: seo-you; }
+@keyframes seo-you { 0%, 20% { transform: translateY(90px); } 25%, 42% { transform: translateY(60px); } 47%, 58% { transform: translateY(30px); } 63%, 92% { transform: translateY(0); } 97%, 100% { transform: translateY(90px); } }
+.seo-c3 { animation-name: seo-c3; }
+@keyframes seo-c3 { 0%, 20% { transform: translateY(60px); } 25%, 92% { transform: translateY(90px); } 97%, 100% { transform: translateY(60px); } }
+.seo-c2 { animation-name: seo-c2; }
+@keyframes seo-c2 { 0%, 42% { transform: translateY(30px); } 47%, 92% { transform: translateY(60px); } 97%, 100% { transform: translateY(30px); } }
+.seo-c1 { animation-name: seo-c1; }
+@keyframes seo-c1 { 0%, 58% { transform: translateY(0); } 63%, 92% { transform: translateY(30px); } 97%, 100% { transform: translateY(0); } }
+.seo-badge { animation-name: seo-badge; }
+@keyframes seo-badge { 0%, 63% { opacity: 0; transform: scale(0.4) rotate(-8deg); } 67% { opacity: 1; transform: scale(1.15) rotate(3deg); } 70%, 92% { opacity: 1; transform: scale(1) rotate(0); } 97%, 100% { opacity: 0; transform: scale(0.4); } }
+.seo-line { animation-name: seo-line; }
+@keyframes seo-line { 0%, 64% { clip-path: inset(-20% 100% -20% 0); } 84%, 92% { clip-path: inset(-20% 0 -20% 0); } 97%, 100% { clip-path: inset(-20% 100% -20% 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .seo-tick, .seo-you, .seo-c1, .seo-c2, .seo-c3, .seo-badge, .seo-line { animation: none !important; }
+  .seo-tick, .seo-badge { opacity: 1; }
+  .seo-you { transform: translateY(0); } .seo-c1 { transform: translateY(30px); } .seo-c2 { transform: translateY(60px); } .seo-c3 { transform: translateY(90px); }
+  .seo-line { clip-path: none; }
+}
