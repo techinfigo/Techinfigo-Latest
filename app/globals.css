@@ -365,49 +365,68 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Social media scene (components/SocialScene.tsx), one 10s loop: posts fill
- * the grid, likes and followers rise, a DM arrives, is answered and saved.
+ * Social media scene (components/SocialScene.tsx), one 12s loop:
+ * Shoot (0-24%) → Edit (25-49%) → Post (50-69%) → Results (70-96%).
  * ------------------------------------------------------------------------- */
-.soc-f, .soc-tile, .soc-heart, .soc-like, .soc-ping, .soc-msg, .soc-typing, .soc-crm {
-  animation-duration: 10s; animation-iteration-count: infinite; animation-timing-function: ease-in-out;
+.sx-step, .sx-progress, .sx-stage, .sx-rec, .sx-subject, .sx-caption, .sx-playhead, .sx-sched, .sx-posted, .sx-stat, .sx-bar, .sx-dms {
+  animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: ease-in-out;
   animation-fill-mode: both; animation-play-state: paused;
 }
-[data-play='true'] :is(.soc-f, .soc-tile, .soc-heart, .soc-like, .soc-ping, .soc-msg, .soc-typing, .soc-crm) { animation-play-state: running; }
-.soc-tile-0 { animation-name: soc-tile-0; }
-@keyframes soc-tile-0 { 0%, 4% { opacity: 0; transform: scale(0.4); } 6% { opacity: 1; transform: scale(1.12); } 7%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.4); } }
-.soc-tile-1 { animation-name: soc-tile-1; }
-@keyframes soc-tile-1 { 0%, 8% { opacity: 0; transform: scale(0.4); } 10% { opacity: 1; transform: scale(1.12); } 11%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.4); } }
-.soc-tile-2 { animation-name: soc-tile-2; }
-@keyframes soc-tile-2 { 0%, 12% { opacity: 0; transform: scale(0.4); } 14% { opacity: 1; transform: scale(1.12); } 15%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.4); } }
-.soc-tile-3 { animation-name: soc-tile-3; }
-@keyframes soc-tile-3 { 0%, 16% { opacity: 0; transform: scale(0.4); } 18% { opacity: 1; transform: scale(1.12); } 19%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.4); } }
-.soc-tile-4 { animation-name: soc-tile-4; }
-@keyframes soc-tile-4 { 0%, 20% { opacity: 0; transform: scale(0.4); } 22% { opacity: 1; transform: scale(1.12); } 23%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.4); } }
-.soc-tile-5 { animation-name: soc-tile-5; }
-@keyframes soc-tile-5 { 0%, 24% { opacity: 0; transform: scale(0.4); } 26% { opacity: 1; transform: scale(1.12); } 27%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(0.4); } }
-.soc-f-0 { animation-name: soc-f-0; }
-@keyframes soc-f-0 { 0%, 32% { opacity: 1; } 34%, 96% { opacity: 0; } 98%, 100% { opacity: 1; } }
-.soc-f-1 { animation-name: soc-f-1; }
-@keyframes soc-f-1 { 0%, 32% { opacity: 0; } 34%, 41% { opacity: 1; } 43%, 100% { opacity: 0; } }
-.soc-f-2 { animation-name: soc-f-2; }
-@keyframes soc-f-2 { 0%, 41% { opacity: 0; transform: translateY(3px); } 43%, 94% { opacity: 1; transform: translateY(0); } 97%, 100% { opacity: 0; } }
-.soc-heart { animation-name: soc-heart; }
-@keyframes soc-heart { 0%, 29% { transform: scale(1); color: inherit; fill: none; } 31% { transform: scale(1.4); color: #e1306c; fill: #e1306c; } 33%, 94% { transform: scale(1); color: #e1306c; fill: #e1306c; } 98%, 100% { transform: scale(1); color: inherit; fill: none; } }
-.soc-like-0 { animation-name: soc-like-0; }
-@keyframes soc-like-0 { 0%, 30% { opacity: 0; transform: translateY(6px) scale(0.7); } 32% { opacity: 1; transform: translateY(0) scale(1); } 40% { opacity: 1; transform: translateY(-22px); } 44%, 100% { opacity: 0; transform: translateY(-30px); } }
-.soc-like-1 { animation-name: soc-like-1; }
-@keyframes soc-like-1 { 0%, 37% { opacity: 0; transform: translateY(6px) scale(0.7); } 39% { opacity: 1; transform: translateY(0) scale(1); } 47% { opacity: 1; transform: translateY(-22px); } 51%, 100% { opacity: 0; transform: translateY(-30px); } }
-.soc-ping { animation-name: soc-ping; }
-@keyframes soc-ping { 0%, 48% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.6); } 52%, 94% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; } }
-.soc-msg-in { animation-name: soc-msg-in; }
-@keyframes soc-msg-in { 0%, 51% { opacity: 0; transform: translateX(-10px); } 55%, 94% { opacity: 1; transform: translateX(0); } 98%, 100% { opacity: 0; } }
-.soc-typing { animation-name: soc-typing; }
-@keyframes soc-typing { 0%, 58% { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; } 60%, 65% { opacity: 1; max-height: 20px; padding-top: 4px; padding-bottom: 4px; } 66%, 100% { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; } }
-.soc-msg-out { animation-name: soc-msg-out; }
-@keyframes soc-msg-out { 0%, 65% { opacity: 0; transform: translateX(10px); } 69%, 94% { opacity: 1; transform: translateX(0); } 98%, 100% { opacity: 0; } }
-.soc-crm { animation-name: soc-crm; }
-@keyframes soc-crm { 0%, 74% { opacity: 0; transform: translateY(6px); } 78% { opacity: 1; transform: translateY(-2px) scale(1.04); } 80%, 94% { opacity: 1; transform: translateY(0) scale(1); } 98%, 100% { opacity: 0; } }
+[data-play='true'] :is(.sx-step, .sx-progress, .sx-stage, .sx-rec, .sx-subject, .sx-caption, .sx-playhead, .sx-sched, .sx-posted, .sx-stat, .sx-bar, .sx-dms) { animation-play-state: running; }
+.sx-progress { animation-name: sx-progress; animation-timing-function: linear; }
+@keyframes sx-progress { 0% { width: 0; } 96% { width: 100%; } 100% { width: 100%; } }
+.sx-step-0 { animation-name: sx-step-0; }
+@keyframes sx-step-0 { 0%, 24% { background-color: #001d21; color: #fcb632; transform: scale(1.04); } 25%, 98% { background-color: rgba(252,182,50,0.25); color: #001d21; transform: scale(1); } 100% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } }
+.sx-stage-0 { animation-name: sx-stage-0; }
+@keyframes sx-stage-0 { 0% { opacity: 0; transform: translateY(8px); visibility: visible; } 2%, 24% { opacity: 1; transform: translateY(0); visibility: visible; } 26%, 100% { opacity: 0; transform: translateY(-6px); visibility: hidden; } }
+.sx-step-1 { animation-name: sx-step-1; }
+@keyframes sx-step-1 { 0%, 24% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } 25%, 49% { background-color: #001d21; color: #fcb632; transform: scale(1.04); } 50%, 98% { background-color: rgba(252,182,50,0.25); color: #001d21; transform: scale(1); } 100% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } }
+.sx-stage-1 { animation-name: sx-stage-1; }
+@keyframes sx-stage-1 { 0%, 24% { opacity: 0; transform: translateY(8px); visibility: hidden; } 26%, 49% { opacity: 1; transform: translateY(0); visibility: visible; } 51%, 100% { opacity: 0; transform: translateY(-6px); visibility: hidden; } }
+.sx-step-2 { animation-name: sx-step-2; }
+@keyframes sx-step-2 { 0%, 49% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } 50%, 69% { background-color: #001d21; color: #fcb632; transform: scale(1.04); } 70%, 98% { background-color: rgba(252,182,50,0.25); color: #001d21; transform: scale(1); } 100% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } }
+.sx-stage-2 { animation-name: sx-stage-2; }
+@keyframes sx-stage-2 { 0%, 49% { opacity: 0; transform: translateY(8px); visibility: hidden; } 51%, 69% { opacity: 1; transform: translateY(0); visibility: visible; } 71%, 100% { opacity: 0; transform: translateY(-6px); visibility: hidden; } }
+.sx-step-3 { animation-name: sx-step-3; }
+@keyframes sx-step-3 { 0%, 69% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } 70%, 96% { background-color: #001d21; color: #fcb632; transform: scale(1.04); } 97%, 98% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } 100% { background-color: rgba(0,29,33,0.06); color: rgba(0,29,33,0.45); transform: scale(1); } }
+.sx-stage-3 { animation-name: sx-stage-3; }
+@keyframes sx-stage-3 { 0%, 69% { opacity: 0; transform: translateY(8px); visibility: hidden; } 71%, 96% { opacity: 1; transform: translateY(0); visibility: visible; } 97%, 100% { opacity: 0; transform: translateY(-6px); visibility: hidden; } }
+.sx-rec { animation-name: sx-rec; }
+@keyframes sx-rec { 0%, 4%, 8%, 12%, 16%, 20%, 24%, 100% { opacity: 1; } 2%, 6%, 10%, 14%, 18%, 22% { opacity: 0.15; } }
+.sx-subject { animation-name: sx-subject; }
+@keyframes sx-subject { 0% { transform: scale(0.9) translateX(-6px); } 24%, 100% { transform: scale(1.12) translateX(6px); } }
+.sx-playhead { animation-name: sx-playhead; animation-timing-function: linear; }
+@keyframes sx-playhead { 0%, 26% { left: 0; } 48%, 100% { left: 100%; } }
+.sx-caption { animation-name: sx-caption; }
+@keyframes sx-caption { 0%, 33% { opacity: 0; transform: translateY(4px); } 36%, 100% { opacity: 1; transform: translateY(0); } }
+.sx-sched { animation-name: sx-sched; }
+@keyframes sx-sched { 0%, 59% { opacity: 1; } 61%, 100% { opacity: 0; } }
+.sx-posted { animation-name: sx-posted; }
+@keyframes sx-posted { 0%, 59% { opacity: 0; transform: scale(0.9); } 62% { opacity: 1; transform: scale(1.06); } 64%, 100% { opacity: 1; transform: scale(1); } }
+.sx-stat-0 { animation-name: sx-stat-0; }
+@keyframes sx-stat-0 { 0%, 70% { opacity: 0; transform: translateX(-8px); } 72%, 100% { opacity: 1; transform: translateX(0); } }
+.sx-stat-1 { animation-name: sx-stat-1; }
+@keyframes sx-stat-1 { 0%, 72% { opacity: 0; transform: translateX(-8px); } 74%, 100% { opacity: 1; transform: translateX(0); } }
+.sx-stat-2 { animation-name: sx-stat-2; }
+@keyframes sx-stat-2 { 0%, 74% { opacity: 0; transform: translateX(-8px); } 76%, 100% { opacity: 1; transform: translateX(0); } }
+.sx-bar-0 { animation-name: sx-bar-0; transform-origin: bottom; }
+@keyframes sx-bar-0 { 0%, 70.0% { transform: scaleY(0); } 74.0%, 100% { transform: scaleY(1); } }
+.sx-bar-1 { animation-name: sx-bar-1; transform-origin: bottom; }
+@keyframes sx-bar-1 { 0%, 71.5% { transform: scaleY(0); } 75.5%, 100% { transform: scaleY(1); } }
+.sx-bar-2 { animation-name: sx-bar-2; transform-origin: bottom; }
+@keyframes sx-bar-2 { 0%, 73.0% { transform: scaleY(0); } 77.0%, 100% { transform: scaleY(1); } }
+.sx-bar-3 { animation-name: sx-bar-3; transform-origin: bottom; }
+@keyframes sx-bar-3 { 0%, 74.5% { transform: scaleY(0); } 78.5%, 100% { transform: scaleY(1); } }
+.sx-bar-4 { animation-name: sx-bar-4; transform-origin: bottom; }
+@keyframes sx-bar-4 { 0%, 76.0% { transform: scaleY(0); } 80.0%, 100% { transform: scaleY(1); } }
+.sx-bar-5 { animation-name: sx-bar-5; transform-origin: bottom; }
+@keyframes sx-bar-5 { 0%, 77.5% { transform: scaleY(0); } 81.5%, 100% { transform: scaleY(1); } }
+.sx-bar-6 { animation-name: sx-bar-6; transform-origin: bottom; }
+@keyframes sx-bar-6 { 0%, 79.0% { transform: scaleY(0); } 83.0%, 100% { transform: scaleY(1); } }
+.sx-dms { animation-name: sx-dms; }
+@keyframes sx-dms { 0%, 84% { opacity: 0; transform: translateY(6px); } 87% { opacity: 1; transform: translateY(-2px) scale(1.04); } 89%, 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @media (prefers-reduced-motion: reduce) {
-  .soc-f, .soc-tile, .soc-heart, .soc-like, .soc-ping, .soc-msg, .soc-typing, .soc-crm { animation: none !important; }
-  .soc-f-0, .soc-f-1, .soc-like, .soc-typing { opacity: 0; } .soc-typing { display: none; }
+  .sx-step, .sx-progress, .sx-stage, .sx-rec, .sx-subject, .sx-caption, .sx-playhead, .sx-sched, .sx-posted, .sx-stat, .sx-bar, .sx-dms { animation: none !important; }
+  .sx-stage { opacity: 0; visibility: hidden; } .sx-stage-3 { opacity: 1; visibility: visible; }
+  .sx-progress { width: 100%; } .sx-step { background-color: rgba(252,182,50,0.25); color: #001d21; }
 }
