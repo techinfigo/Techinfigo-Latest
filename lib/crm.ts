@@ -1,4 +1,4 @@
-import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { FieldValue, getFirestore, type Firestore } from 'firebase-admin/firestore';
 import type { NewLead } from './leads-schema';
 
@@ -27,23 +27,26 @@ export function isCrmConfigured(): boolean {
   );
 }
 
-function crmDb(): Firestore {
-  if (db) return db;
+/** The firebase-admin app for the CRM project (also used for phone alerts). */
+export function crmApp(): App {
   const existing = getApps().find((a) => a.name === APP_NAME);
-  const app =
-    existing ??
-    initializeApp(
-      {
-        credential: cert({
-          projectId: process.env.CRM_FIREBASE_PROJECT_ID,
-          clientEmail: process.env.CRM_FIREBASE_CLIENT_EMAIL,
-          // Vercel stores the key with literal \n escapes.
-          privateKey: (process.env.CRM_FIREBASE_PRIVATE_KEY ?? '').replace(/\\n/g, '\n'),
-        }),
-      },
-      APP_NAME,
-    );
-  db = getFirestore(app);
+  if (existing) return existing;
+  return initializeApp(
+    {
+      credential: cert({
+        projectId: process.env.CRM_FIREBASE_PROJECT_ID,
+        clientEmail: process.env.CRM_FIREBASE_CLIENT_EMAIL,
+        // Vercel stores the key with literal \n escapes.
+        privateKey: (process.env.CRM_FIREBASE_PRIVATE_KEY ?? '').replace(/\\n/g, '\n'),
+      }),
+    },
+    APP_NAME,
+  );
+}
+
+export function crmDb(): Firestore {
+  if (db) return db;
+  db = getFirestore(crmApp());
   return db;
 }
 
@@ -82,7 +85,28 @@ export async function sendToCrm(
         createdAt: FieldValue.serverTimestamp(),
       }),
     );
+  // Phone alert to the owner's devices. Never throws: a failed alert must not
+  // lose or delay the enquiry itself. Spam is stored silently.
+  if (extra.status === 'new') {
+    const { notifyNewEnquiry } = await import('./crm-push');
+    await notifyNewEnquiry({
+      id: ref.id,
+      name: lead.name,
+      businessName: lead.brandName,
+      source: extra.sourceName || sourceLabel(lead.sourceForm),
+    });
+  }
   return ref.id;
+}
+
+/** Plain-language source for the alert text. */
+function sourceLabel(sourceForm: string | null | undefined): string {
+  const f = (sourceForm || '').toLowerCase();
+  if (f.includes('website-offer')) return '₹9,999 website page';
+  if (f.includes('meta') || f.includes('facebook')) return 'Facebook/Instagram ad';
+  if (f.includes('google')) return 'Google ad';
+  if (f.includes('careers')) return 'Careers';
+  return 'Website';
 }
 
 /* ------------------------------------------------------------------------ */
