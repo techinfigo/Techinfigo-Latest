@@ -1,0 +1,22 @@
+name: CRM reminders
+
+# Every 15 minutes, asks the website to send any due CRM reminders
+# (lead follow-ups, tasks, 9 AM summary) to the owner's phone.
+# GitHub may start a scheduled run a few minutes late; the website
+# allows for that and never sends the same reminder twice.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Send due reminders
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl -fsS -m 60 -X POST "https://www.techinfigo.com/api/crm-reminders" \
+            ${CRON_SECRET:+-H "Authorization: Bearer $CRON_SECRET"}

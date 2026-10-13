@@ -18,7 +18,7 @@ import { crmApp, crmDb, isCrmConfigured } from './crm';
 export const PUSH_TOKENS = 'pushTokens';
 
 /** Accounts allowed to receive alerts — same list as the CRM's Firestore rules. */
-function allowedEmails(): string[] {
+export function allowedEmails(): string[] {
   return (process.env.CRM_ALERT_EMAILS || 'sachin.kumar.zone@gmail.com')
     .split(',')
     .map((e) => e.trim().toLowerCase())
@@ -78,10 +78,10 @@ export async function removeDevice(token: unknown): Promise<void> {
   await crmDb().collection(PUSH_TOKENS).doc(tokenId(token)).delete();
 }
 
-type Alert = { title: string; body: string; path: string; tag: string };
+export type Alert = { title: string; body: string; path: string; tag: string };
 
 /** Sends one alert to the given devices (all registered devices if none given). */
-async function send(alert: Alert, only?: string[]): Promise<number> {
+export async function send(alert: Alert, only?: string[]): Promise<number> {
   const snap = await crmDb().collection(PUSH_TOKENS).get();
   const devices = snap.docs
     .map((d) => ({ ref: d.ref, token: d.get('token') as string, origin: (d.get('origin') as string) || process.env.CRM_APP_URL || '' }))
