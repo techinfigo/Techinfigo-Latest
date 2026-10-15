@@ -12,6 +12,7 @@ jobs:
         run: |
           mkdir -p /tmp/out && cd /tmp/out
           {
+            echo "=== DIAG"; curl -sS -m 60 https://www.techinfigo.com/api/diag-push; echo
             echo "=== GET www /api/crm-push (with CRM origin)"; curl -sS -i -m 30 -H "Origin: https://techinfigo-crm-main.vercel.app" https://www.techinfigo.com/api/crm-push | head -40; echo
             echo "=== GET apex /api/crm-push"; curl -sS -i -m 30 https://techinfigo.com/api/crm-push | head -15; echo
             echo "=== OPTIONS /api/crm-push"; curl -sS -i -m 30 -X OPTIONS -H "Origin: https://techinfigo-crm-main.vercel.app" -H "Access-Control-Request-Method: POST" https://www.techinfigo.com/api/crm-push | head -20; echo
