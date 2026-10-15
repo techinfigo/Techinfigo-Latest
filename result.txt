@@ -1,0 +1,62 @@
+=== DIAG
+{"node":"v24.21.0","env":"CRM_FIREBASE_PROJECT_ID=set CRM_FIREBASE_CLIENT_EMAIL=set CRM_FIREBASE_PRIVATE_KEY=set CRM_ALERT_EMAILS=missing CRON_SECRET=missing","import web-push":"ok loaded","import lib/crm":"ok configured","firestore read":"ok 0 device(s)","import lib/crm-push":"ok loaded","push keys":"ok public key length 87","import lib/crm-reminders":"ok loaded"}
+=== GET www /api/crm-push (with CRM origin)
+HTTP/2 200 
+access-control-allow-headers: Content-Type
+access-control-allow-methods: GET, POST, DELETE, OPTIONS
+access-control-allow-origin: https://techinfigo-crm-main.vercel.app
+access-control-max-age: 86400
+age: 0
+cache-control: no-store
+content-type: application/json
+date: Thu, 15 Oct 2026 12:39:00 GMT
+server: Vercel
+strict-transport-security: max-age=63072000
+vary: Origin
+x-matched-path: /api/crm-push
+x-vercel-cache: MISS
+x-vercel-id: cle1::iad1::lhvdz-1792067939992-ee7e97b83dc4
+
+{"ok":true,"publicKey":"BPff4RhJN15uTXz3AIjXygINC18nOg72bQZguH_gotETpuToLsZ6X8Dh4HJukeVc7T9sSzuvyECwdaLf4qCEDPs"}
+=== GET apex /api/crm-push
+HTTP/2 307 
+cache-control: public, max-age=0, must-revalidate
+content-type: text/plain
+date: Thu, 15 Oct 2026 12:39:00 GMT
+location: https://www.techinfigo.com/api/crm-push
+server: Vercel
+strict-transport-security: max-age=63072000
+x-vercel-id: cle1::nqk6p-1792067940185-bbd7fa6016a6
+
+Redirecting...
+
+=== OPTIONS /api/crm-push
+HTTP/2 204 
+access-control-allow-headers: Content-Type
+access-control-allow-methods: GET, POST, DELETE, OPTIONS
+access-control-allow-origin: https://techinfigo-crm-main.vercel.app
+access-control-max-age: 86400
+cache-control: public, max-age=0, must-revalidate
+date: Thu, 15 Oct 2026 12:39:00 GMT
+server: Vercel
+strict-transport-security: max-age=63072000
+vary: Origin
+x-matched-path: /api/crm-push
+x-vercel-cache: MISS
+x-vercel-id: cle1::iad1::w25ln-1792067940378-d5b076ba7499
+
+
+=== POST /api/crm-reminders
+HTTP/2 200 
+cache-control: public, max-age=0, must-revalidate
+content-type: application/json
+date: Thu, 15 Oct 2026 12:39:03 GMT
+server: Vercel
+strict-transport-security: max-age=63072000
+x-matched-path: /api/crm-reminders
+x-vercel-cache: MISS
+x-vercel-id: cle1::iad1::cvhfm-1792067940601-79733363d217
+
+{"ok":true,"checked":0,"sent":0,"skipped":"no phone has alerts turned on"}
+=== CRM sw.js (first lines)
+30:      wins.forEach((w) => w.postMessage({ type: 'crm-push-received', title, shown, error: error ? String(error) : null })),
