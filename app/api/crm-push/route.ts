@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { removeDevice, saveDevice, sendTest, verifyCrmUser } from '../../../lib/crm-push';
+import { getVapidKeys, removeDevice, saveDevice, sendTest, verifyCrmUser } from '../../../lib/crm-push';
+import { isCrmConfigured } from '../../../lib/crm';
 import { clientKey, rateLimit } from '../../../lib/rate-limit';
 
 /**
@@ -7,6 +8,7 @@ import { clientKey, rateLimit } from '../../../lib/rate-limit';
  *  POST   { idToken, token, origin, device }  → turn alerts on for this device
  *  POST ?test=1 { idToken, token }            → send a test alert to this device
  *  DELETE { idToken, token }                  → turn alerts off for this device
+ *  GET                                        → the public Web Push key the app subscribes with
  *
  * Called from the CRM app (a different domain), so it answers CORS. No cookies
  * are used: every call is authorised by the CRM user's Firebase ID token.
@@ -19,11 +21,25 @@ function cors(request: Request): Record<string, string> {
   const origin = request.headers.get('origin');
   return {
     'Access-Control-Allow-Origin': origin || '*',
-    'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };
+}
+
+export async function GET(request: Request) {
+  const headers = cors(request);
+  if (!isCrmConfigured()) return NextResponse.json({ ok: false }, { status: 503, headers });
+  const limit = rateLimit(`crm-push-key:${clientKey(request)}`, 60, 60 * 60 * 1000);
+  if (!limit.allowed) return NextResponse.json({ ok: false }, { status: 429, headers });
+  try {
+    const { publicKey } = await getVapidKeys();
+    return NextResponse.json({ ok: true, publicKey }, { headers: { ...headers, 'Cache-Control': 'no-store' } });
+  } catch (error) {
+    console.error('[crm-push] key failed:', error);
+    return NextResponse.json({ ok: false }, { status: 500, headers });
+  }
 }
 
 export async function OPTIONS(request: Request) {

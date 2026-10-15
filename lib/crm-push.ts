@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { getAuth } from 'firebase-admin/auth';
 import { getMessaging } from 'firebase-admin/messaging';
+import webpush, { type PushSubscription } from 'web-push';
 import { FieldValue } from 'firebase-admin/firestore';
 import { crmApp, crmDb, isCrmConfigured } from './crm';
 
@@ -27,6 +28,34 @@ export function allowedEmails(): string[] {
 
 function tokenId(token: string): string {
   return createHash('sha256').update(token).digest('hex').slice(0, 40);
+}
+
+/**
+ * Web Push keys. Created by this server the first time they are needed and
+ * kept in the CRM project's `pushConfig/vapid` document, which only this
+ * server can read (no Firestore rule lets browsers in). The public half is
+ * handed to the CRM app; the private half never leaves the server.
+ */
+let vapidCache: { publicKey: string; privateKey: string } | null = null;
+
+export async function getVapidKeys(): Promise<{ publicKey: string; privateKey: string }> {
+  if (vapidCache) return vapidCache;
+  const ref = crmDb().collection('pushConfig').doc('vapid');
+  const existing = await ref.get();
+  if (existing.exists && existing.get('publicKey') && existing.get('privateKey')) {
+    vapidCache = { publicKey: existing.get('publicKey'), privateKey: existing.get('privateKey') };
+    return vapidCache;
+  }
+  const keys = webpush.generateVAPIDKeys();
+  try {
+    await ref.create({ ...keys, createdAt: FieldValue.serverTimestamp() });
+    vapidCache = keys;
+  } catch {
+    // Another request created them at the same moment: use those.
+    const again = await ref.get();
+    vapidCache = { publicKey: again.get('publicKey'), privateKey: again.get('privateKey') };
+  }
+  return vapidCache;
 }
 
 /** Verifies the CRM user. Returns their email, or null if not allowed. */
@@ -89,9 +118,36 @@ export async function send(alert: Alert, only?: string[]): Promise<number> {
   if (devices.length === 0) return 0;
 
   const messaging = getMessaging(crmApp());
+  const vapid = devices.some((d) => d.token.startsWith('{')) ? await getVapidKeys() : null;
   let sent = 0;
   await Promise.all(
     devices.map(async (d) => {
+      const link = d.origin ? `${d.origin}${alert.path}` : alert.path;
+      // Standard Web Push subscription (what the CRM app uses now).
+      if (d.token.startsWith('{') && vapid) {
+        try {
+          const sub = JSON.parse(d.token) as PushSubscription;
+          await webpush.sendNotification(
+            sub,
+            JSON.stringify({ data: { title: alert.title, body: alert.body, tag: alert.tag, link } }),
+            {
+              TTL: 60 * 60 * 24,
+              urgency: 'high',
+              vapidDetails: { subject: 'mailto:contact@techinfigo.com', publicKey: vapid.publicKey, privateKey: vapid.privateKey },
+            },
+          );
+          sent++;
+        } catch (error) {
+          const status = (error as { statusCode?: number }).statusCode;
+          // 404/410: the phone turned alerts off or uninstalled the app.
+          if (status === 404 || status === 410 || error instanceof SyntaxError) {
+            await d.ref.delete().catch(() => {});
+          } else {
+            console.error('[crm-push] web push failed:', status || error);
+          }
+        }
+        return;
+      }
       try {
         await messaging.send({
           token: d.token,
@@ -100,7 +156,7 @@ export async function send(alert: Alert, only?: string[]): Promise<number> {
             title: alert.title,
             body: alert.body,
             tag: alert.tag,
-            link: d.origin ? `${d.origin}${alert.path}` : alert.path,
+            link,
           },
           webpush: { headers: { Urgency: 'high', TTL: String(60 * 60 * 24) } },
         });
