@@ -59,6 +59,34 @@ const QUESTIONS = [
   'Are you open to trying new offers, posts and ads?',
 ];
 
+
+type Point = { title: string; desc: string };
+
+/**
+ * Lines each "good fit" point up with its opposite "not a fit" point
+ * (reply quickly vs enquiries go unanswered, and so on). Points we don't
+ * recognise (edited in admin) keep their order.
+ */
+const OPPOSITES: [RegExp, RegExp][] = [
+  [/customers|likes/i, /guarantee/i],
+  [/reply|quick/i, /unanswered|no one/i],
+  [/months|time/i, /magic|one-month|overnight/i],
+  [/trying|open|test/i, /budget/i],
+];
+
+function pairUp(good: readonly Point[], bad: readonly Point[]): { good?: Point; bad?: Point }[] {
+  const left = [...bad];
+  const pairs: { good?: Point; bad?: Point }[] = good.map((g) => {
+    const rule = OPPOSITES.find(([gRe]) => gRe.test(g.title));
+    const idx = rule ? left.findIndex((b) => rule[1].test(b.title)) : -1;
+    return { good: g, bad: idx >= 0 ? left.splice(idx, 1)[0] : undefined };
+  });
+  // Fill any gaps with the leftover points, in order.
+  for (const p of pairs) if (!p.bad && left.length) p.bad = left.shift();
+  for (const b of left) pairs.push({ bad: b });
+  return pairs;
+}
+
 function FitCheck({ onNavigate }: { onNavigate: (page: string) => void }) {
   const [answers, setAnswers] = useState<(boolean | null)[]>(QUESTIONS.map(() => null));
   const answered = answers.filter((a) => a !== null).length;
@@ -172,6 +200,7 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({
   greenLights = DEFAULT_CONTENT.qualification.greenLights,
   redFlags = DEFAULT_CONTENT.qualification.redFlags,
 }) => {
+  const pairs = pairUp(greenLights, redFlags);
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* Header */}
@@ -219,57 +248,87 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({
         </div>
       </section>
 
-      {/* Good fit / not a fit */}
+      {/* Good fit vs not a fit, side by side */}
       <section className="py-16 lg:py-24 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto space-y-14 lg:space-y-20">
-          <div className="space-y-8">
-            <div className="flex items-center gap-4">
-              <span className="w-12 h-12 rounded-2xl bg-brandYellow text-brandDark flex items-center justify-center shrink-0">
-                <Check className="w-6 h-6" aria-hidden="true" />
-              </span>
-              <h2 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight">We’re a good fit if…</h2>
-            </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {greenLights.map((g, i) => {
-                const Icon = GREEN_ICONS[i % GREEN_ICONS.length];
-                return (
-                  <li
-                    key={g.title}
-                    className="rounded-[2rem] bg-white border border-brandDark/5 shadow-[0_10px_40px_-20px_rgba(0,29,33,0.25)] p-6 lg:p-7 space-y-4"
-                  >
-                    <span className="w-12 h-12 rounded-2xl bg-brandYellow/15 text-brandDark flex items-center justify-center">
-                      <Icon className="w-6 h-6" aria-hidden="true" />
-                    </span>
-                    <h3 className="text-lg font-black text-brandDark leading-snug">{g.title}</h3>
-                    <p className="text-brandDark/60 text-sm leading-relaxed">{g.desc}</p>
-                  </li>
-                );
-              })}
-            </ul>
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="max-w-2xl space-y-3 mb-4 lg:mb-8">
+            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-brandDark/40">Side by side</span>
+            <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tight leading-tight">Good fit vs not the right fit.</h2>
           </div>
 
-          <div className="space-y-8">
-            <div className="flex items-center gap-4">
-              <span className="w-12 h-12 rounded-2xl bg-brandDark text-white flex items-center justify-center shrink-0">
-                <X className="w-6 h-6" aria-hidden="true" />
+          {/* Column headings (desktop) */}
+          <div className="hidden md:grid grid-cols-[1fr_56px_1fr] items-center gap-0">
+            <div className="flex items-center gap-3 px-2">
+              <span className="w-10 h-10 rounded-xl bg-brandYellow text-brandDark flex items-center justify-center">
+                <Check className="w-5 h-5" aria-hidden="true" />
               </span>
-              <h2 className="text-3xl lg:text-4xl font-black text-brandDark tracking-tight">We’re not the right fit if…</h2>
+              <p className="text-xl font-black text-brandDark">We’re a good fit if…</p>
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {redFlags.map((r, i) => {
-                const Icon = RED_ICONS[i % RED_ICONS.length];
-                return (
-                  <li key={r.title} className="rounded-[2rem] bg-brandDark p-6 lg:p-7 space-y-4">
-                    <span className="w-12 h-12 rounded-2xl bg-white/10 text-white/85 flex items-center justify-center">
-                      <Icon className="w-6 h-6" aria-hidden="true" />
-                    </span>
-                    <h3 className="text-lg font-black text-white leading-snug">{r.title}</h3>
-                    <p className="text-white/60 text-sm leading-relaxed">{r.desc}</p>
-                  </li>
-                );
-              })}
-            </ul>
+            <span />
+            <div className="flex items-center gap-3 px-2">
+              <span className="w-10 h-10 rounded-xl bg-brandDark text-white flex items-center justify-center">
+                <X className="w-5 h-5" aria-hidden="true" />
+              </span>
+              <p className="text-xl font-black text-brandDark">We’re not the right fit if…</p>
+            </div>
           </div>
+
+          <ol className="space-y-5 md:space-y-4">
+            {pairs.map(({ good, bad }, i) => {
+              const GoodIcon = GREEN_ICONS[i % GREEN_ICONS.length];
+              const BadIcon = bad
+                ? /budget/i.test(bad.title)
+                  ? Wallet
+                  : /magic|one-month/i.test(bad.title)
+                    ? Zap
+                    : /unanswered/i.test(bad.title)
+                      ? PhoneOff
+                      : /guarantee/i.test(bad.title)
+                        ? ShieldAlert
+                        : RED_ICONS[i % RED_ICONS.length]
+                : ShieldAlert;
+              return (
+                <li key={i} className="grid grid-cols-1 md:grid-cols-[1fr_56px_1fr] items-stretch">
+                  {good ? (
+                    <div className="rounded-t-[1.75rem] md:rounded-[1.75rem] bg-white border border-brandDark/5 shadow-[0_10px_40px_-20px_rgba(0,29,33,0.25)] p-6 lg:p-7 flex gap-4">
+                      <span className="w-11 h-11 rounded-xl bg-brandYellow text-brandDark flex items-center justify-center shrink-0">
+                        <GoodIcon className="w-5 h-5" aria-hidden="true" />
+                      </span>
+                      <div className="space-y-1.5">
+                        <p className="md:hidden text-[10px] font-black uppercase tracking-[0.3em] text-emerald-600">Good fit</p>
+                        <h3 className="text-lg font-black text-brandDark leading-snug">{good.title}</h3>
+                        <p className="text-brandDark/60 text-sm leading-relaxed">{good.desc}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+
+                  <div className="relative flex items-center justify-center h-0 md:h-auto z-10" aria-hidden="true">
+                    <span className="hidden md:block absolute inset-y-3 left-1/2 w-px bg-brandDark/10" />
+                    <span className="relative w-10 h-10 rounded-full bg-brandBg border-2 border-brandDark/10 text-[11px] font-black uppercase text-brandDark/50 flex items-center justify-center">
+                      vs
+                    </span>
+                  </div>
+
+                  {bad ? (
+                    <div className="rounded-b-[1.75rem] md:rounded-[1.75rem] bg-brandDark p-6 lg:p-7 flex gap-4">
+                      <span className="w-11 h-11 rounded-xl bg-white/10 text-white/85 flex items-center justify-center shrink-0">
+                        <BadIcon className="w-5 h-5" aria-hidden="true" />
+                      </span>
+                      <div className="space-y-1.5">
+                        <p className="md:hidden text-[10px] font-black uppercase tracking-[0.3em] text-rose-300">Not the right fit</p>
+                        <h3 className="text-lg font-black text-white leading-snug">{bad.title}</h3>
+                        <p className="text-white/60 text-sm leading-relaxed">{bad.desc}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
 
