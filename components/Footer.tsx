@@ -26,6 +26,7 @@ const CAPABILITIES = [
 const LEGAL_LINKS = [
   { name: 'Privacy', id: 'privacy' },
   { name: 'Terms', id: 'terms' },
+  { name: 'Refunds', id: 'refund-policy' },
   { name: 'Sitemap', id: 'sitemap' }
 ];
 

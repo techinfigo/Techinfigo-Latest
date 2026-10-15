@@ -47,6 +47,7 @@ const treeData: TreeNodeData = {
       children: [
         { label: 'Privacy', page: 'privacy' },
         { label: 'Terms', page: 'terms' },
+        { label: 'Refund Policy', page: 'refund-policy' },
       ]
     }
   ]
