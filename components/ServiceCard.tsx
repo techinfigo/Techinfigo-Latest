@@ -29,7 +29,7 @@ export function ServiceCard({ s }: { s: Pick<Service, 'slug' | 'title' | 'short'
       href={`/services/${s.slug}`}
       className="group flex flex-col rounded-[2.5rem] bg-white border border-brandDark/5 shadow-[0_10px_40px_-20px_rgba(0,29,33,0.25)] overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,29,33,0.35)] transition-all duration-300 focus-visible:outline-2 focus-visible:outline-brandYellow"
     >
-      <div className="h-60 bg-brandBg flex items-center justify-center overflow-hidden" aria-hidden="true">
+      <div className="svc-scene-white h-60 bg-white border-b border-brandDark/5 flex items-center justify-center overflow-hidden" aria-hidden="true">
         {hasCardScene(s.slug) ? (
           <div className="w-full h-full pointer-events-none">
             <ServiceCardScene slug={s.slug} />
