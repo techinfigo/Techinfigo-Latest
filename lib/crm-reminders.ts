@@ -1,6 +1,5 @@
-import { getAuth } from 'firebase-admin/auth';
-import { crmApp, crmDb, isCrmConfigured } from './crm';
-import { allowedEmails, send, type Alert } from './crm-push';
+import { crmDb, isCrmConfigured } from './crm';
+import { PUSH_TOKENS, send, type Alert } from './crm-push';
 
 /**
  * Follow-up and task reminders for the CRM owner's phone. NODE RUNTIME ONLY.
@@ -101,14 +100,12 @@ export async function runReminders(nowMs = Date.now()): Promise<ReminderResult> 
   const alerts: { id: string; alert: Alert }[] = [];
   const today = istParts(nowMs);
 
-  for (const email of allowedEmails()) {
-    let uid: string;
-    try {
-      uid = (await getAuth(crmApp()).getUserByEmail(email)).uid;
-    } catch {
-      continue; // no CRM account for this email
-    }
+  // Whose CRM to check: the accounts that turned on alerts on a device.
+  const devices = await crmDb().collection(PUSH_TOKENS).get();
+  const uids = Array.from(new Set(devices.docs.map((d) => d.get('uid') as string | undefined).filter((u): u is string => !!u)));
+  if (uids.length === 0) return { checked: 0, sent: 0, skipped: 'no phone has alerts turned on' };
 
+  for (const uid of uids) {
     const [leads, globalTasks, projects] = await Promise.all([
       readList<Lead>(uid, 'crm_leads'),
       readList<Task>(uid, 'crm_tasks'),

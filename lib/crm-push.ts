@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { getAuth } from 'firebase-admin/auth';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { getMessaging } from 'firebase-admin/messaging';
 import webpush, { type PushSubscription } from 'web-push';
 import { FieldValue } from 'firebase-admin/firestore';
@@ -58,13 +58,30 @@ export async function getVapidKeys(): Promise<{ publicKey: string; privateKey: s
   return vapidCache;
 }
 
-/** Verifies the CRM user. Returns their email, or null if not allowed. */
-export async function verifyCrmUser(idToken: unknown): Promise<string | null> {
-  if (!isCrmConfigured() || typeof idToken !== 'string' || idToken.length > 5000) return null;
+/**
+ * Firebase ID tokens are signed by Google; check them against Google's public
+ * keys with `jose`. (firebase-admin/auth is not used: on Vercel it fails to
+ * load because it needs an older jose than the one this site uses.)
+ */
+const GOOGLE_KEYS = createRemoteJWKSet(
+  new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'),
+);
+
+export type CrmUser = { email: string; uid: string };
+
+/** Verifies the CRM user. Returns their email and uid, or null if not allowed. */
+export async function verifyCrmUser(idToken: unknown): Promise<CrmUser | null> {
+  const projectId = process.env.CRM_FIREBASE_PROJECT_ID;
+  if (!isCrmConfigured() || !projectId || typeof idToken !== 'string' || idToken.length > 5000) return null;
   try {
-    const decoded = await getAuth(crmApp()).verifyIdToken(idToken);
-    const email = (decoded.email || '').toLowerCase();
-    return email && allowedEmails().includes(email) ? email : null;
+    const { payload } = await jwtVerify(idToken, GOOGLE_KEYS, {
+      issuer: `https://securetoken.google.com/${projectId}`,
+      audience: projectId,
+      algorithms: ['RS256'],
+    });
+    const email = String(payload.email || '').toLowerCase();
+    const uid = String(payload.sub || '');
+    return uid && email && allowedEmails().includes(email) ? { email, uid } : null;
   } catch {
     return null;
   }
@@ -84,7 +101,7 @@ function cleanOrigin(origin: unknown): string | null {
   }
 }
 
-export async function saveDevice(email: string, token: unknown, origin: unknown, device: unknown): Promise<boolean> {
+export async function saveDevice(user: CrmUser, token: unknown, origin: unknown, device: unknown): Promise<boolean> {
   if (!validToken(token)) return false;
   await crmDb()
     .collection(PUSH_TOKENS)
@@ -92,7 +109,8 @@ export async function saveDevice(email: string, token: unknown, origin: unknown,
     .set(
       {
         token,
-        email,
+        email: user.email,
+        uid: user.uid,
         origin: cleanOrigin(origin),
         device: typeof device === 'string' ? device.slice(0, 200) : null,
         updatedAt: FieldValue.serverTimestamp(),

@@ -59,8 +59,8 @@ export async function POST(request: Request) {
   const body = await readBody(request);
   if (!body) return NextResponse.json({ ok: false, error: 'Bad request.' }, { status: 400, headers });
 
-  const email = await verifyCrmUser(body.idToken);
-  if (!email) return NextResponse.json({ ok: false, error: 'Only the CRM owner can turn on alerts.' }, { status: 403, headers });
+  const user = await verifyCrmUser(body.idToken);
+  if (!user) return NextResponse.json({ ok: false, error: 'Only the CRM owner can turn on alerts.' }, { status: 403, headers });
 
   try {
     if (new URL(request.url).searchParams.get('test') === '1') {
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
         { status: result.sent > 0 ? 200 : 404, headers },
       );
     }
-    const saved = await saveDevice(email, body.token, body.origin, body.device);
+    const saved = await saveDevice(user, body.token, body.origin, body.device);
     return NextResponse.json({ ok: saved }, { status: saved ? 200 : 400, headers });
   } catch (error) {
     console.error('[crm-push] failed:', error);
@@ -81,8 +81,8 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   const headers = cors(request);
   const body = await readBody(request);
-  const email = body ? await verifyCrmUser(body.idToken) : null;
-  if (!email) return NextResponse.json({ ok: false }, { status: 403, headers });
+  const user = body ? await verifyCrmUser(body.idToken) : null;
+  if (!user) return NextResponse.json({ ok: false }, { status: 403, headers });
   await removeDevice(body!.token).catch(() => {});
   return NextResponse.json({ ok: true }, { headers });
 }
