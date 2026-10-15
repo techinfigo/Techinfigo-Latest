@@ -10,6 +10,7 @@ import { PUSH_TOKENS, send, type Alert } from './crm-push';
  *   - at 9 AM India time: "Today: 3 follow-ups, 1 overdue · 2 tasks due"
  *   - shortly before each follow-up time set on a lead
  *   - shortly before each task that has a due time
+ *   - shortly before each client shoot / meeting (client Calendar tab) with a time
  * Every alert is written to `reminderLog` first, so it is never sent twice,
  * however often (or late) the timer fires.
  */
@@ -33,6 +34,19 @@ type Task = { id: string; title?: string; dueDate?: string | null; status?: stri
 type Project = { id: string; name?: string; tasks?: Task[] };
 type Opportunity = { id: string; clientId: string; service?: string; amount?: number; stage?: string; followUpDate?: string | null };
 type ClientLite = { id: string; name?: string; companyName?: string; phone?: string };
+type PlanItem = { id: string; clientId: string; date?: string; time?: string; kind?: string; title?: string; status?: string };
+
+/** Client calendar kinds that ring the phone before their time; posts/reels/ads only count in the morning summary. */
+const PLAN_ALERT_KINDS = new Set(['Shoot', 'Meeting', 'Other']);
+const PLAN_CONTENT_KINDS = new Set(['Post', 'Reel', 'Story', 'Ad']);
+
+/** Plan date + time are saved as India-time text ("2026-10-16", "11:00"). */
+function planAt(p: PlanItem): number | null {
+  const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(p.date || '');
+  const t = /^(\d{1,2}):(\d{2})$/.exec(p.time || '');
+  if (!d || !t) return null;
+  return Date.UTC(+d[1], +d[2] - 1, +d[3], +t[1], +t[2]) - IST_OFFSET_MS;
+}
 
 const CLOSED_LEAD = new Set(['Closed Won', 'Closed Lost']);
 
@@ -108,12 +122,13 @@ export async function runReminders(nowMs = Date.now()): Promise<ReminderResult> 
   if (uids.length === 0) return { checked: 0, sent: 0, skipped: 'no phone has alerts turned on' };
 
   for (const uid of uids) {
-    const [leads, globalTasks, projects, opportunities, clients] = await Promise.all([
+    const [leads, globalTasks, projects, opportunities, clients, plans] = await Promise.all([
       readList<Lead>(uid, 'crm_leads'),
       readList<Task>(uid, 'crm_tasks'),
       readList<Project>(uid, 'crm_projects'),
       readList<Opportunity>(uid, 'crm_opportunities'),
       readList<ClientLite>(uid, 'crm_clients'),
+      readList<PlanItem>(uid, 'crm_client_plans'),
     ]);
     const tasks = [...globalTasks, ...projects.flatMap((p) => p.tasks || [])].filter(isOpenTask);
     checked += leads.length + tasks.length;
@@ -185,12 +200,42 @@ export async function runReminders(nowMs = Date.now()): Promise<ReminderResult> 
       }
     }
 
+    // 2b. Client calendar: shoots / meetings ring before their time; everything counts in the summary.
+    let eventsToday = 0;
+    let postsToday = 0;
+    for (const p of plans) {
+      if (p.status === 'Done' || !p.date) continue;
+      if (p.date === today.day) {
+        if (PLAN_CONTENT_KINDS.has(p.kind || '')) postsToday++;
+        else eventsToday++;
+      }
+      if (!PLAN_ALERT_KINDS.has(p.kind || 'Other')) continue;
+      const at = planAt(p);
+      if (at === null) continue;
+      checked++;
+      if (at <= nowMs + AHEAD_MS && at > nowMs - LATE_MS) {
+        const c = clients.find((x) => x.id === p.clientId);
+        const who = c ? c.companyName || c.name || 'client' : 'client';
+        alerts.push({
+          id: `plan_${uid}_${p.id}_${at}`,
+          alert: {
+            title: `${p.kind || 'Plan'} at ${timeIST(at)}: ${who}`.slice(0, 100),
+            body: `${p.title || ''}${c?.phone ? ` · ${c.phone}` : ''}`.slice(0, 120) || 'Tap to open the client.',
+            path: '/?view=CLIENTS',
+            tag: `plan-${p.id}`,
+          },
+        });
+      }
+    }
+
     // 3. Morning summary, once a day.
-    if (today.hour >= SUMMARY_FROM_HOUR && today.hour < SUMMARY_UNTIL_HOUR && followUpsToday + overdue + tasksToday > 0) {
+    if (today.hour >= SUMMARY_FROM_HOUR && today.hour < SUMMARY_UNTIL_HOUR && followUpsToday + overdue + tasksToday + eventsToday + postsToday > 0) {
       const parts = [
         followUpsToday ? `${followUpsToday} follow-up${followUpsToday > 1 ? 's' : ''}` : '',
         overdue ? `${overdue} overdue` : '',
         tasksToday ? `${tasksToday} task${tasksToday > 1 ? 's' : ''} due` : '',
+        eventsToday ? `${eventsToday} ${eventsToday > 1 ? "shoots/meetings" : "shoot/meeting"}` : '',
+        postsToday ? `${postsToday} post${postsToday > 1 ? 's' : ''} to publish` : '',
       ].filter(Boolean);
       alerts.push({
         id: `summary_${uid}_${today.day}`,
