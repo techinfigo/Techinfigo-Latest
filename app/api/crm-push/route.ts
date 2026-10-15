@@ -64,8 +64,11 @@ export async function POST(request: Request) {
 
   try {
     if (new URL(request.url).searchParams.get('test') === '1') {
-      const sent = typeof body.token === 'string' ? await sendTest(body.token) : 0;
-      return NextResponse.json({ ok: sent > 0 }, { status: sent > 0 ? 200 : 404, headers });
+      const result = typeof body.token === 'string' ? await sendTest(body.token) : { sent: 0, detail: 'no device token' };
+      return NextResponse.json(
+        { ok: result.sent > 0, error: result.sent > 0 ? undefined : result.detail },
+        { status: result.sent > 0 ? 200 : 404, headers },
+      );
     }
     const saved = await saveDevice(email, body.token, body.origin, body.device);
     return NextResponse.json({ ok: saved }, { status: saved ? 200 : 400, headers });

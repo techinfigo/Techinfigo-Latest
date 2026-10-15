@@ -110,7 +110,7 @@ export async function removeDevice(token: unknown): Promise<void> {
 export type Alert = { title: string; body: string; path: string; tag: string };
 
 /** Sends one alert to the given devices (all registered devices if none given). */
-export async function send(alert: Alert, only?: string[]): Promise<number> {
+export async function send(alert: Alert, only?: string[], report?: string[]): Promise<number> {
   const snap = await crmDb().collection(PUSH_TOKENS).get();
   const devices = snap.docs
     .map((d) => ({ ref: d.ref, token: d.get('token') as string, origin: (d.get('origin') as string) || process.env.CRM_APP_URL || '' }))
@@ -137,8 +137,11 @@ export async function send(alert: Alert, only?: string[]): Promise<number> {
             },
           );
           sent++;
+          report?.push('accepted');
         } catch (error) {
           const status = (error as { statusCode?: number }).statusCode;
+          const body = String((error as { body?: string }).body || (error as Error).message || '').slice(0, 160);
+          report?.push(`push service answered ${status ?? 'no response'}${body ? `: ${body}` : ''}`);
           // 404/410: the phone turned alerts off or uninstalled the app.
           if (status === 404 || status === 410 || error instanceof SyntaxError) {
             await d.ref.delete().catch(() => {});
@@ -190,6 +193,12 @@ export async function notifyNewEnquiry(e: { id: string; name: string; businessNa
 }
 
 /** "Send test" from the CRM: only to the device that asked. */
-export async function sendTest(token: string): Promise<number> {
-  return send({ title: 'Test alert from Techinfigo', body: 'Phone alerts are working. New enquiries will show like this.', path: '/?view=LEADS', tag: 'test' }, [token]);
+export async function sendTest(token: string): Promise<{ sent: number; detail: string }> {
+  const report: string[] = [];
+  const sent = await send(
+    { title: 'Test alert from Techinfigo', body: 'Phone alerts are working. New enquiries will show like this.', path: '/?view=LEADS', tag: 'test' },
+    [token],
+    report,
+  );
+  return { sent, detail: report.join('; ') || 'this phone is not registered on the server, tap Turn off then Turn on' };
 }
