@@ -31,6 +31,8 @@ type Lead = {
 };
 type Task = { id: string; title?: string; dueDate?: string | null; status?: string; completed?: boolean };
 type Project = { id: string; name?: string; tasks?: Task[] };
+type Opportunity = { id: string; clientId: string; service?: string; amount?: number; stage?: string; followUpDate?: string | null };
+type ClientLite = { id: string; name?: string; companyName?: string; phone?: string };
 
 const CLOSED_LEAD = new Set(['Closed Won', 'Closed Lost']);
 
@@ -106,10 +108,12 @@ export async function runReminders(nowMs = Date.now()): Promise<ReminderResult> 
   if (uids.length === 0) return { checked: 0, sent: 0, skipped: 'no phone has alerts turned on' };
 
   for (const uid of uids) {
-    const [leads, globalTasks, projects] = await Promise.all([
+    const [leads, globalTasks, projects, opportunities, clients] = await Promise.all([
       readList<Lead>(uid, 'crm_leads'),
       readList<Task>(uid, 'crm_tasks'),
       readList<Project>(uid, 'crm_projects'),
+      readList<Opportunity>(uid, 'crm_opportunities'),
+      readList<ClientLite>(uid, 'crm_clients'),
     ]);
     const tasks = [...globalTasks, ...projects.flatMap((p) => p.tasks || [])].filter(isOpenTask);
     checked += leads.length + tasks.length;
@@ -133,6 +137,29 @@ export async function runReminders(nowMs = Date.now()): Promise<ReminderResult> 
             body: lead.phone ? `Call ${lead.phone}. Tap to open the lead.` : 'Tap to open the lead.',
             path: '/?view=LEADS',
             tag: `fu-${lead.id}`,
+          },
+        });
+      }
+    }
+
+    // 1b. Follow-ups on extra services existing clients are interested in.
+    for (const o of opportunities) {
+      if (!o.followUpDate || (o.stage !== 'Interested' && o.stage !== 'Quote sent')) continue;
+      const at = new Date(o.followUpDate).getTime();
+      if (Number.isNaN(at)) continue;
+      const day = istParts(at).day;
+      if (day === today.day) followUpsToday++;
+      else if (day < today.day) overdue++;
+      if (at <= nowMs + AHEAD_MS && at > nowMs - LATE_MS) {
+        const c = clients.find((x) => x.id === o.clientId);
+        const who = c ? c.companyName || c.name || 'client' : 'client';
+        alerts.push({
+          id: `opp_${uid}_${o.id}_${at}`,
+          alert: {
+            title: `Follow up at ${timeIST(at)}: ${who} (${o.service || 'new service'})`.slice(0, 100),
+            body: c?.phone ? `Existing client, interested in ${o.service}. Call ${c.phone}.` : `Existing client, interested in ${o.service}.`,
+            path: '/?view=CLIENTS',
+            tag: `opp-${o.id}`,
           },
         });
       }
