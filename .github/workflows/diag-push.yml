@@ -1,0 +1,22 @@
+name: Diagnose alert server
+on:
+  push:
+    branches: [diag-push]
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call the live endpoints
+        run: |
+          mkdir -p /tmp/out && cd /tmp/out
+          {
+            echo "=== GET www /api/crm-push (with CRM origin)"; curl -sS -i -m 30 -H "Origin: https://techinfigo-crm-main.vercel.app" https://www.techinfigo.com/api/crm-push | head -40; echo
+            echo "=== GET apex /api/crm-push"; curl -sS -i -m 30 https://techinfigo.com/api/crm-push | head -15; echo
+            echo "=== OPTIONS /api/crm-push"; curl -sS -i -m 30 -X OPTIONS -H "Origin: https://techinfigo-crm-main.vercel.app" -H "Access-Control-Request-Method: POST" https://www.techinfigo.com/api/crm-push | head -20; echo
+            echo "=== POST /api/crm-reminders"; curl -sS -i -m 60 -X POST https://www.techinfigo.com/api/crm-reminders | head -25; echo
+            echo "=== CRM sw.js (first lines)"; curl -sS -m 30 https://techinfigo-crm-main.vercel.app/sw.js | grep -n "crm-push-received" | head -3
+          } > result.txt 2>&1
+          git init -q -b diag-push-out && git config user.name ci && git config user.email ci@users.noreply.github.com
+          git add -A && git commit -qm "diag" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" diag-push-out
