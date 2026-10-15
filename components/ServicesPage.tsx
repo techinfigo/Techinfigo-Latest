@@ -7,7 +7,9 @@ import { DEFAULT_CONTENT } from '../config/content';
 import type { SiteContent } from '../lib/content-schema';
 import { SERVICES, getService } from '../lib/services';
 import { TABS, PricingTabs } from './PricingTabs';
-import { ServiceCardScene, ServiceVisual, TrackVisual, hasCardScene } from './HowWeWorkVisuals';
+import { TrackVisual } from './HowWeWorkVisuals';
+import { ServiceCard } from './ServiceCard';
+import { ServiceRoadmap } from './ServiceRoadmap';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 
@@ -18,21 +20,9 @@ import { trackContact } from '../lib/track';
  * in code.
  */
 
-/** Lowest numeric price among the plans a service shows, e.g. "₹4,999". */
-export function startingPrice(slug: string): { price: string; unit: string } | null {
-  const service = getService(slug);
-  if (!service) return null;
-  const tab = TABS.find((t) => t.id === service.pricing.tab);
-  if (!tab) return null;
-  const plans = tab.plans.filter((p) => !service.pricing.plans || service.pricing.plans.includes(p.name));
-  const priced = plans
-    .map((p) => ({ p, n: Number(p.price.replace(/[^\d]/g, '')) }))
-    .filter((x) => x.n > 0)
-    .sort((a, b) => a.n - b.n)[0];
-  return priced ? { price: priced.p.price, unit: priced.p.unit } : null;
-}
+export { startingPrice } from './ServiceCard';
 
-/** The six service cards (picture, title, line, real "from" price). Used on /services and the home page. */
+/** The six service cards in a grid. Used on the home page. */
 export function ServiceCards({
   pillars = DEFAULT_CONTENT.services.pillars,
 }: {
@@ -45,46 +35,8 @@ export function ServiceCards({
   });
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {cards.map((s) => {
-            const from = startingPrice(s.slug);
-            return (
-              <Link
-                key={s.slug}
-                href={`/services/${s.slug}`}
-                className="group flex flex-col rounded-[2.5rem] bg-white border border-brandDark/5 shadow-[0_10px_40px_-20px_rgba(0,29,33,0.25)] overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(0,29,33,0.35)] transition-all duration-300 focus-visible:outline-2 focus-visible:outline-brandYellow"
-              >
-                <div className="h-60 bg-brandBg flex items-center justify-center overflow-hidden" aria-hidden="true">
-                  {hasCardScene(s.slug) ? (
-                    <div className="w-full h-full pointer-events-none">
-                      <ServiceCardScene slug={s.slug} />
-                    </div>
-                  ) : (
-                    <div className="scale-[0.72] origin-center pointer-events-none">
-                      <ServiceVisual slug={s.slug} />
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1 flex flex-col p-7 lg:p-8 space-y-3">
-                  <h2 className="text-2xl font-black text-brandDark tracking-tight leading-tight">{s.title}</h2>
-                  <p className="text-brandDark/60 text-sm leading-relaxed flex-1">{s.short}</p>
-                  <div className="flex items-center justify-between pt-3">
-                    {from ? (
-                      <p className="text-sm text-brandDark/60">
-                        From <span className="font-black text-brandDark">{from.price}</span>{' '}
-                        <span className="text-xs">{from.unit}</span>
-                      </p>
-                    ) : (
-                      <span />
-                    )}
-                    <span className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-brandDark group-hover:text-brandYellow transition-colors">
-                      Details <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+      {cards.map((s) => <ServiceCard key={s.slug} s={s} />)}
+    </div>
   );
 }
 
@@ -112,10 +64,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ pillars = DEFAULT_CO
         </div>
       </section>
 
-      {/* Service cards */}
+      {/* Service cards, as a step-by-step growth roadmap */}
       <section className="py-20 lg:py-28 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <ServiceCards pillars={pillars} />
+          <div className="max-w-2xl mb-14 lg:mb-20 lg:mx-auto lg:text-center space-y-3">
+            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-brandDark/40">Your growth roadmap</span>
+            <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tight leading-tight">Grow step by step.</h2>
+            <p className="text-brandDark/60 lg:text-lg">Start with the basics, then add more as enquiries grow. Pick any stop, or the whole road.</p>
+          </div>
+          <ServiceRoadmap pillars={pillars} />
         </div>
       </section>
 
