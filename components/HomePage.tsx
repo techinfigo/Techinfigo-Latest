@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, MessageCircle, PhoneOff, MapPin, ThumbsDown, MessageSquareX, HelpCircle, type LucideIcon } from 'lucide-react';
+import { SitePhoto, usePhoto } from './SitePhoto';
+import { useSiteSettings } from './SiteSettingsProvider';
 import type { SiteContent } from '../lib/content-schema';
 import type { ClientVideo } from '../lib/settings-schema';
 import { HeroDashboard } from './HeroDashboard';
@@ -39,6 +41,8 @@ interface HomePageProps {
 }
 
 export function HomePage({ home, steps, pillars, rating, reviewCount, videos, reviews }: HomePageProps) {
+  const { founder } = useSiteSettings();
+  const founderPhoto = usePhoto('founder');
   const router = useRouter();
   const { hero, marquee, painPoints } = home;
   const strip = [marquee.onboarding, marquee.capacityOff, marquee.offer].filter(Boolean);
@@ -109,6 +113,28 @@ export function HomePage({ home, steps, pillars, rating, reviewCount, videos, re
             ))}
           </div>
         </div>
+      )}
+
+      {/* Talk to the founder: shown once a real photo is uploaded (admin → Website photos). */}
+      {founderPhoto && (
+        <section className="px-6 lg:px-12 pt-16 lg:pt-20 bg-white">
+          <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center gap-6 sm:gap-10 rounded-[2.5rem] bg-brandBg border border-brandDark/5 p-6 sm:p-8">
+            <SitePhoto slot="founder" alt={`${founder.name || 'Sachin Bauddh'}, founder of Techinfigo`} className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-brandYellow shadow-xl shrink-0" />
+            <div className="space-y-3 text-center sm:text-left">
+              <p className="text-2xl lg:text-3xl font-black text-brandDark tracking-tight leading-tight">You talk to me directly, not a call centre.</p>
+              <p className="text-brandDark/60 font-medium">{founder.name || 'Sachin Bauddh'} · Founder, Techinfigo · Sanjay Place, Agra</p>
+              <a
+                href={whatsappUrl(`Hi ${(founder.name || 'Sachin').split(' ')[0]}, I would like more enquiries for my business.`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackContact('whatsapp', 'home-founder')}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brandDark text-white font-black text-xs uppercase tracking-[0.2em] hover:bg-brandYellow hover:text-brandDark transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp me
+              </a>
+            </div>
+          </div>
+        </section>
       )}
 
       {/* 3. Sound familiar? */}

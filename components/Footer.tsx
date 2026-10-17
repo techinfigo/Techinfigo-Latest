@@ -8,6 +8,15 @@ import { telUrl, whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
 import { brandAssetUrl } from '../lib/settings-schema';
 import { useSiteSettings } from './SiteSettingsProvider';
+import { usePathname } from 'next/navigation';
+import { ClientVideos } from './ClientVideos';
+
+/**
+ * Client videos sit just above the footer on every main page. Not on pages
+ * that already show them in their own place, on legal pages, or in the
+ * lead form (where the focus is the form).
+ */
+const NO_VIDEO_PATHS = ['/', '/digital-marketing-agency-agra', '/website-design-agra', '/privacy', '/terms', '/refund-policy', '/sitemap', '/lead-capture'];
 
 interface FooterProps {
   onNavigate?: (page: string, serviceId?: string) => void;
@@ -31,10 +40,17 @@ const LEGAL_LINKS = [
 ];
 
 export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
-  const { contact, brand } = useSiteSettings();
+  const { contact, brand, videos } = useSiteSettings();
   const logo = brandAssetUrl('logo', brand.logo);
+  const pathname = usePathname() || '/';
+  const showVideos = videos.length > 0 && !NO_VIDEO_PATHS.includes(pathname.replace(/\/$/, '') || '/');
+  // On a service page, that service's videos come first.
+  const service = pathname.startsWith('/services/') ? pathname.split('/')[2] : '';
+  const ordered = service ? [...videos.filter((v) => v.service === service), ...videos.filter((v) => v.service !== service)] : videos;
 
   return (
+    <>
+    {showVideos && <ClientVideos videos={ordered} />}
     <footer className="bg-brandDark text-white pt-10 lg:pt-12 pb-8 px-6 lg:px-12 overflow-hidden border-t border-white/5 font-sans">
       <div className="max-w-7xl mx-auto">
         
@@ -263,5 +279,6 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
 
       </div>
     </footer>
+    </>
   );
 };

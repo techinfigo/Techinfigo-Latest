@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { SitePhoto } from './SitePhoto';
 import { HoneypotField } from './HoneypotField';
 import { submitLead } from '../lib/submit-lead';
 import { CareerRoles, CAREER_ROLES } from './CareerRoles';
@@ -170,6 +171,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
               We’re a small, founder-led team in Sanjay Place. There are no openings listed right now, but we always want to hear from good people.
             </p>
           </div>
+          <SitePhoto slot="team" alt="The Techinfigo team at work in Agra" className="mt-10 w-full max-w-4xl aspect-[16/9] object-cover rounded-[2.5rem] border border-white/10 shadow-2xl" />
         </div>
       </section>
 

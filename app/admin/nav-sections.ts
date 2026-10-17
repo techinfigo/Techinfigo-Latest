@@ -22,6 +22,7 @@ export const ADMIN_SECTIONS: readonly AdminSection[] = [
   { href: '/admin', label: 'Pipeline', subtree: ['/admin/leads'] },
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/content', label: 'Content' },
+  { href: '/admin/photos', label: 'Website photos' },
   { href: '/admin/settings', label: 'Settings' },
 ];
 

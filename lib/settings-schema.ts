@@ -43,8 +43,56 @@ export type BrandAssetMeta = {
   uploadedAt: string;
 };
 
-/** A client video on the Agra page (Settings → Client videos). */
-export type ClientVideo = { title: string; url: string };
+/**
+ * A client video (Settings → Client videos). Shown above the footer on every
+ * main page. `service` (optional) puts the video first on that service's page.
+ */
+export type ClientVideo = { title: string; url: string; service?: string };
+
+/** Service pages a video can be tagged with (slug → label for the admin form). */
+export const VIDEO_SERVICE_TAGS: { slug: string; label: string }[] = [
+  { slug: 'website', label: 'Website' },
+  { slug: 'google-business-profile', label: 'Google Business Profile' },
+  { slug: 'social-media', label: 'Social media' },
+  { slug: 'ads', label: 'Ads' },
+  { slug: 'seo', label: 'SEO' },
+];
+
+/* --- Website photos (admin → Website photos) ------------------------------ */
+
+/**
+ * Every place on the site that can show a real photo. A page shows the photo
+ * only once one is uploaded; until then it looks exactly as before.
+ */
+export const PHOTO_SLOTS = [
+  { id: 'founder', label: 'Your photo', where: 'Home, About and Contact', shape: 'portrait', hint: 'You at your desk, looking at the camera and smiling. Vertical photo, daylight.' },
+  { id: 'office', label: 'Office / entrance', where: 'About and Contact', shape: 'landscape', hint: 'The Sanjay Place office entrance or your desk area.' },
+  { id: 'team', label: 'You with a client or your team', where: 'About and Careers', shape: 'landscape', hint: 'A real meeting or your team at work.' },
+  { id: 'behind', label: 'Behind the scenes', where: 'How We Work', shape: 'wide', hint: 'A client shoot, a planning session, or editing on a laptop.' },
+  { id: 'work-website', label: 'Our work: website', where: 'Website service page', shape: 'portrait', hint: 'A client website on a phone screen.' },
+  { id: 'work-google-business-profile', label: 'Our work: Google profile', where: 'Google Business Profile page', shape: 'portrait', hint: 'A client Google profile on a phone (with reviews/photos).' },
+  { id: 'work-social-media', label: 'Our work: social media', where: 'Social media page', shape: 'portrait', hint: 'A reel or post you made, on a phone.' },
+  { id: 'work-ads', label: 'Our work: ads', where: 'Ads page', shape: 'portrait', hint: 'An ad you ran, or the results screen.' },
+  { id: 'work-seo', label: 'Our work: SEO', where: 'SEO page', shape: 'portrait', hint: 'A client ranking on Google (screenshot on a phone).' },
+  { id: 'fit-clinic', label: 'Industry: clinics', where: 'Who We Fit', shape: 'square', hint: 'A clinic or doctor setting. Good stock photos are fine here.' },
+  { id: 'fit-coaching', label: 'Industry: coaching', where: 'Who We Fit', shape: 'square', hint: 'A classroom or coaching centre.' },
+  { id: 'fit-realestate', label: 'Industry: real estate', where: 'Who We Fit', shape: 'square', hint: 'A building, flat or site visit.' },
+  { id: 'fit-hotel', label: 'Industry: hotels & travel', where: 'Who We Fit', shape: 'square', hint: 'A hotel room, reception or Agra view.' },
+  { id: 'fit-shop', label: 'Industry: shops & showrooms', where: 'Who We Fit', shape: 'square', hint: 'A shop counter or showroom.' },
+  { id: 'fit-restaurant', label: 'Industry: restaurants & sweets', where: 'Who We Fit', shape: 'square', hint: 'Food, a sweet shop counter or a restaurant.' },
+  { id: 'fit-d2c', label: 'Industry: online brands', where: 'Who We Fit', shape: 'square', hint: 'Product packaging or an online order.' },
+] as const;
+export type PhotoSlotId = (typeof PHOTO_SLOTS)[number]['id'];
+export const PHOTO_SLOT_IDS: readonly string[] = PHOTO_SLOTS.map((s) => s.id);
+export const isPhotoSlot = (v: unknown): v is PhotoSlotId => typeof v === 'string' && PHOTO_SLOT_IDS.includes(v);
+
+/** What pages know about an uploaded photo (the bytes are served by /api/photo/<slot>). */
+export type PhotoMeta = { hash: string; width: number; height: number; uploadedAt: string };
+
+/** Cache-busted address of an uploaded photo. */
+export function photoUrl(slot: PhotoSlotId, meta: PhotoMeta): string {
+  return `/api/photo/${slot}?v=${meta.hash.slice(0, 16)}`;
+}
 
 /** Most videos the Settings page accepts; more would make the section heavy. */
 export const MAX_CLIENT_VIDEOS = 12;
@@ -86,6 +134,7 @@ export type SiteSettings = {
   targets: { blendedMer: number; netProfit: number; contributionLift: number };
   brand: { logo: BrandAssetMeta | null; favicon: BrandAssetMeta | null };
   videos: ClientVideo[];
+  photos: Partial<Record<PhotoSlotId, PhotoMeta>>;
 };
 
 /**
@@ -110,6 +159,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   },
   brand: { logo: null, favicon: null },
   videos: [],
+  photos: {},
 };
 
 // --- field-level normalisation ---------------------------------------------
@@ -212,8 +262,25 @@ function clientVideos(value: unknown): ClientVideo[] {
     const id = url ? youtubeId(url) : null;
     if (!id || seen.has(id)) continue;
     seen.add(id);
-    out.push({ title: text(v.title, SETTINGS_LIMITS.videoTitle), url });
+    const service = typeof v.service === 'string' && VIDEO_SERVICE_TAGS.some((t) => t.slug === v.service) ? v.service : '';
+    out.push({ title: text(v.title, SETTINGS_LIMITS.videoTitle), url, ...(service ? { service } : {}) });
     if (out.length >= MAX_CLIENT_VIDEOS) break;
+  }
+  return out;
+}
+
+/** Uploaded-photo metadata, keeping only known slots with a usable hash and size. */
+function sitePhotos(value: unknown): SiteSettings['photos'] {
+  if (!value || typeof value !== 'object') return {};
+  const out: SiteSettings['photos'] = {};
+  for (const [slot, raw] of Object.entries(value as Record<string, unknown>)) {
+    if (!isPhotoSlot(slot) || !raw || typeof raw !== 'object') continue;
+    const m = raw as Record<string, unknown>;
+    const hash = typeof m.hash === 'string' && /^[a-f0-9]{16,128}$/.test(m.hash) ? m.hash : '';
+    const width = Number(m.width);
+    const height = Number(m.height);
+    if (!hash || !(width > 0) || !(height > 0)) continue;
+    out[slot] = { hash, width, height, uploadedAt: typeof m.uploadedAt === 'string' ? m.uploadedAt : '' };
   }
   return out;
 }
@@ -279,6 +346,7 @@ export function normalizeSettings(input: unknown): SiteSettings {
     },
     brand: { logo: brandMeta(brand.logo), favicon: brandMeta(brand.favicon) },
     videos: clientVideos(d.videos),
+    photos: sitePhotos(d.photos),
   };
 }
 

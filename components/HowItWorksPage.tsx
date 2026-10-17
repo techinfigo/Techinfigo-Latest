@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
+import { SitePhoto, usePhoto } from './SitePhoto';
 import { DEFAULT_CONTENT } from '../config/content';
 import { whatsappUrl } from '../config/site';
 import { trackContact } from '../lib/track';
@@ -32,6 +33,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
   rating = null,
   reviewCount = null,
 }) => {
+  const behindPhoto = usePhoto('behind');
   return (
     <div className="min-h-screen bg-brandBg font-sans selection:bg-brandYellow selection:text-brandDark">
       {/* 1. Header */}
@@ -56,6 +58,16 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
           </div>
         </div>
       </section>
+
+      {/* Behind the scenes photo (admin → Website photos) */}
+      {behindPhoto && (
+        <section className="px-6 lg:px-12 pt-16 lg:pt-24 bg-white">
+          <figure className="max-w-6xl mx-auto space-y-3">
+            <SitePhoto slot="behind" alt="Techinfigo team at work behind the scenes" className="w-full aspect-[16/9] object-cover rounded-[2.5rem] shadow-2xl" />
+            <figcaption className="text-sm font-bold text-brandDark/60">Behind the scenes: real work for a real client</figcaption>
+          </figure>
+        </section>
+      )}
 
       {/* 2. The problem / what we do differently */}
       <section className="py-24 lg:py-40 px-6 lg:px-12 bg-white relative">

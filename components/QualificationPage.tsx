@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { SitePhoto, usePhoto } from './SitePhoto';
 import {
   Check,
   X,
@@ -43,14 +44,30 @@ const GREEN_ICONS = [Target, PhoneCall, CalendarClock, FlaskConical];
 const RED_ICONS = [ShieldAlert, PhoneOff, Wallet, Zap];
 
 const INDUSTRIES = [
-  { label: 'Clinics & doctors', Icon: Stethoscope },
-  { label: 'Coaching & schools', Icon: GraduationCap },
-  { label: 'Real estate', Icon: Building2 },
-  { label: 'Hotels & travel', Icon: Hotel },
-  { label: 'Shops & showrooms', Icon: Store },
-  { label: 'Restaurants & sweets', Icon: UtensilsCrossed },
-  { label: 'Online brands (D2C)', Icon: ShoppingBag },
-];
+  { label: 'Clinics & doctors', Icon: Stethoscope, slot: 'fit-clinic' },
+  { label: 'Coaching & schools', Icon: GraduationCap, slot: 'fit-coaching' },
+  { label: 'Real estate', Icon: Building2, slot: 'fit-realestate' },
+  { label: 'Hotels & travel', Icon: Hotel, slot: 'fit-hotel' },
+  { label: 'Shops & showrooms', Icon: Store, slot: 'fit-shop' },
+  { label: 'Restaurants & sweets', Icon: UtensilsCrossed, slot: 'fit-restaurant' },
+  { label: 'Online brands (D2C)', Icon: ShoppingBag, slot: 'fit-d2c' },
+] as const;
+
+/** One industry tile: the uploaded photo on top when there is one, the icon either way. */
+function IndustryTile({ label, Icon, slot }: (typeof INDUSTRIES)[number]) {
+  const photo = usePhoto(slot);
+  return (
+    <li className="rounded-2xl bg-white border border-brandDark/5 shadow-[0_10px_30px_-20px_rgba(0,29,33,0.25)] overflow-hidden flex flex-col hover:-translate-y-1 transition-transform">
+      {photo && <SitePhoto slot={slot} alt={label} className="w-full aspect-[4/3] object-cover" />}
+      <div className="p-4 lg:p-5 flex flex-col items-start gap-3">
+        <span className={`w-11 h-11 rounded-xl text-brandDark flex items-center justify-center ${photo ? '-mt-10 bg-brandYellow shadow-lg' : 'bg-brandYellow/15'}`}>
+          <Icon className="w-5 h-5" aria-hidden="true" />
+        </span>
+        <span className="text-sm font-black text-brandDark leading-tight">{label}</span>
+      </div>
+    </li>
+  );
+}
 
 const QUESTIONS = [
   'Do you want more calls and WhatsApp enquiries, not just likes?',
@@ -226,16 +243,8 @@ export const QualificationPage: React.FC<QualificationPageProps> = ({
             <h2 className="text-3xl lg:text-5xl font-black text-brandDark tracking-tight leading-tight">Local businesses that live on enquiries.</h2>
           </div>
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 lg:gap-4">
-            {INDUSTRIES.map(({ label, Icon }) => (
-              <li
-                key={label}
-                className="rounded-2xl bg-white border border-brandDark/5 shadow-[0_10px_30px_-20px_rgba(0,29,33,0.25)] p-4 lg:p-5 flex flex-col items-start gap-3 hover:-translate-y-1 transition-transform"
-              >
-                <span className="w-11 h-11 rounded-xl bg-brandYellow/15 text-brandDark flex items-center justify-center">
-                  <Icon className="w-5 h-5" aria-hidden="true" />
-                </span>
-                <span className="text-sm font-black text-brandDark leading-tight">{label}</span>
-              </li>
+            {INDUSTRIES.map((ind) => (
+              <IndustryTile key={ind.label} {...ind} />
             ))}
           </ul>
         </div>

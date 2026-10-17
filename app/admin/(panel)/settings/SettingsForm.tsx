@@ -7,8 +7,7 @@ import {
   PROOF_MODES,
   SETTINGS_LIMITS,
   youtubeId,
-  type SiteSettings,
-} from '../../../../lib/settings-schema';
+  type SiteSettings, VIDEO_SERVICE_TAGS } from '../../../../lib/settings-schema';
 
 /**
  * The editable half of the settings page.
@@ -247,7 +246,7 @@ export function SettingsForm({
 
       <Group
         title="Client videos"
-        note="The video section on the Agra page, right after the Google reviews. Paste YouTube links (normal videos or Shorts). Each card shows only the video's YouTube thumbnail, so set the thumbnail on YouTube. The section is hidden while this list is empty."
+        note="Shown on the Home page, the Agra page and the website offer page, and just above the footer on every other main page (not the legal pages). Paste YouTube links (normal videos or Shorts). Tag a video with a service to show it first on that service's page. Each card shows only the video's YouTube thumbnail, so set the thumbnail on YouTube. The section is hidden while this list is empty."
       >
         <VideoListEditor value={form.videos ?? []} onChange={(videos) => setField('videos', videos)} />
       </Group>
@@ -503,6 +502,19 @@ function VideoListEditor({
                 placeholder="Short description (not shown on the card, helps Google and screen readers)"
                 onChange={(title) => update(i, { title })}
               />
+              <select
+                value={video.service || ''}
+                onChange={(e) => update(i, { service: e.target.value || undefined })}
+                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-sm text-white"
+                aria-label="Show first on a service page"
+              >
+                <option value="" className="text-brandDark">Any page (no service)</option>
+                {VIDEO_SERVICE_TAGS.map((t) => (
+                  <option key={t.slug} value={t.slug} className="text-brandDark">
+                    Show first on: {t.label} page
+                  </option>
+                ))}
+              </select>
               {invalid ? (
                 <p className="text-red-400 text-xs font-medium">
                   This is not a YouTube video link. It will be removed when you save.

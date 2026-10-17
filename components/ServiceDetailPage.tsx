@@ -3,6 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Check, MessageCircle } from 'lucide-react';
+import { SitePhoto, usePhoto } from './SitePhoto';
+import type { PhotoSlotId } from '../lib/settings-schema';
 import { SERVICES, getService, type Service } from '../lib/services';
 import { TABS } from './PricingTabs';
 import { ServiceVisual } from './HowWeWorkVisuals';
@@ -28,6 +30,8 @@ function plansFor(service: Service) {
 
 export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId, onNavigate }) => {
   const service = getService(serviceId) ?? SERVICES[0];
+  const workSlot = `work-${service.slug}` as PhotoSlotId;
+  const workPhoto = usePhoto(workSlot); // null until a photo is uploaded (and always for services without a slot)
   const { terms, plans } = plansFor(service);
   const others = SERVICES.filter((s) => s.slug !== service.slug);
 
@@ -64,9 +68,16 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId,
               </a>
             </div>
           </div>
+          {workPhoto ? (
+            <figure className="lg:col-span-5 flex flex-col items-center gap-3">
+              <SitePhoto slot={workSlot} alt={`Our ${service.title.toLowerCase()} work for a client`} className="w-full max-w-sm aspect-[4/5] object-cover rounded-[2.5rem] border-4 border-white/10 shadow-2xl" priority />
+              <figcaption className="text-[11px] font-black uppercase tracking-[0.3em] text-brandYellow">Our work</figcaption>
+            </figure>
+          ) : (
           <div className="lg:col-span-5 flex justify-center" aria-hidden="true">
             <ServiceVisual slug={service.slug} />
           </div>
+          )}
         </div>
       </section>
 

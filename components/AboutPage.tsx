@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MapPin, MessageCircle, Linkedin } from 'lucide-react';
+import { SitePhoto, usePhoto } from './SitePhoto';
 import { useSiteSettings } from './SiteSettingsProvider';
 import { WhoWeWorkWith } from './WhoWeWorkWith';
 import { SERVICES } from '../lib/services';
@@ -31,6 +32,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, rating = null,
   const { founder } = useSiteSettings();
   const name = founder.name || 'Sachin Bauddh';
   const firstName = name.split(' ')[0];
+  const founderPhoto = usePhoto('founder');
+  const officePhoto = usePhoto('office');
+  const teamPhoto = usePhoto('team');
 
   const facts = [
     { big: '10 yrs', small: 'in digital marketing' },
@@ -72,7 +76,16 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, rating = null,
       <section className="py-20 lg:py-32 px-6 lg:px-12 bg-white">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <div className="lg:col-span-5">
-            {/* Replace with a real photo of Sachin when available. Never a stock photo. */}
+            {/* Real photo from admin → Website photos; the initials card until one is uploaded. Never a stock photo. */}
+            {founderPhoto ? (
+              <div className="relative aspect-[4/5] max-w-md mx-auto rounded-[3rem] overflow-hidden shadow-4xl bg-brandDark">
+                <SitePhoto slot="founder" alt={`${name}, founder of Techinfigo`} className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-brandDark/80 backdrop-blur px-5 py-3">
+                  <p className="text-white text-lg font-black tracking-tight">{name}</p>
+                  <p className="text-brandYellow text-xs font-bold">Founder, Techinfigo · Agra</p>
+                </div>
+              </div>
+            ) : (
             <div className="aspect-[4/5] max-w-md mx-auto rounded-[3rem] bg-brandDark flex flex-col items-center justify-center gap-6 p-10 text-center shadow-4xl">
               <span className="w-32 h-32 rounded-full bg-brandYellow text-brandDark text-5xl font-black flex items-center justify-center tracking-tighter">
                 {name.split(' ').map((p) => p[0]).join('').slice(0, 2)}
@@ -82,6 +95,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, rating = null,
                 <p className="text-brandYellow text-sm font-bold">Founder, Techinfigo</p>
               </div>
             </div>
+            )}
           </div>
 
           <div className="lg:col-span-7 space-y-8">
@@ -124,6 +138,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, rating = null,
       <WhoWeWorkWith />
 
       {/* What we do */}
+      {(officePhoto || teamPhoto) && (
+        <section className="pb-20 lg:pb-28 px-6 lg:px-12 bg-white">
+          <div className={`max-w-7xl mx-auto grid gap-6 ${officePhoto && teamPhoto ? 'md:grid-cols-2' : ''}`}>
+            {officePhoto && (
+              <figure className="space-y-3">
+                <SitePhoto slot="office" alt="Techinfigo office in Sanjay Place, Agra" className="w-full aspect-[4/3] object-cover rounded-[2rem] shadow-xl" />
+                <figcaption className="text-sm font-bold text-brandDark/60">Our office, Sanjay Place, Agra</figcaption>
+              </figure>
+            )}
+            {teamPhoto && (
+              <figure className="space-y-3">
+                <SitePhoto slot="team" alt="Techinfigo at work with a client" className="w-full aspect-[4/3] object-cover rounded-[2rem] shadow-xl" />
+                <figcaption className="text-sm font-bold text-brandDark/60">At work with our clients</figcaption>
+              </figure>
+            )}
+          </div>
+        </section>
+      )}
+
       <section className="py-20 lg:py-28 px-6 lg:px-12 bg-white">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           <div className="lg:col-span-5 space-y-5">

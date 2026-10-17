@@ -142,7 +142,8 @@ export async function getBrandAsset(
  * `merge: true` creates the document on first save; there is no migration step.
  */
 export async function saveSiteSettings(settings: SiteSettings): Promise<void> {
-  const { brand: _brand, ...editable } = settings;
+  // Images (brand + photos) are written by their own upload routes, never by the text form.
+  const { brand: _brand, photos: _photos, ...editable } = settings;
   await settingsRef().set({ ...editable, updatedAt: new Date().toISOString() }, { merge: true });
 }
 

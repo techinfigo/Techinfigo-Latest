@@ -10,6 +10,7 @@ import { Footer } from './Footer';
 import { submitLead } from '../lib/submit-lead';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, ArrowRight, ChevronLeft, ShieldCheck, Zap, BarChart3, Target, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { SitePhoto, usePhoto } from './SitePhoto';
 
 interface Option {
   label: string;
@@ -96,7 +97,8 @@ interface ContactPageProps {
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, onBookAudit }) => {
-  const { contact } = useSiteSettings();
+  const { contact, founder } = useSiteSettings();
+  const founderPhoto = usePhoto('founder');
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -319,7 +321,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
 
               {/* Talk directly */}
               <div className="relative z-10 pt-6 border-t border-white/10 space-y-4">
+                {founderPhoto ? (
+                  <div className="flex items-center gap-3">
+                    <SitePhoto slot="founder" alt={`${founder.name || 'Sachin Bauddh'}, founder of Techinfigo`} className="w-14 h-14 rounded-full object-cover border-2 border-brandYellow shrink-0" />
+                    <div>
+                      <p className="text-white font-black text-sm tracking-tight">You'll talk to {(founder.name || 'Sachin').split(' ')[0]} directly</p>
+                      <p className="text-white/50 text-xs font-medium">Founder, Techinfigo</p>
+                    </div>
+                  </div>
+                ) : (
                 <p className="text-white font-black text-sm uppercase tracking-tight">Prefer to talk?</p>
+                )}
                 <div className="grid grid-cols-2 gap-3">
                   <a
                     href={whatsappUrl('Hi Techinfigo, I would like a growth audit for my brand.')}
@@ -359,6 +371,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onBack, onNavigate, on
                   </span>
                 </a>
               </div>
+
+              <SitePhoto slot="office" alt="Techinfigo office in Sanjay Place, Agra" className="relative z-10 w-full aspect-[4/3] object-cover rounded-2xl" />
 
               {/* Privacy */}
               <p className="relative z-10 flex items-center gap-2 text-[11px] font-medium text-white/50">
