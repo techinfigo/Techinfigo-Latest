@@ -1,7 +1,10 @@
 import { after } from 'next/server';
 import { isCrmConfigured } from '../../../lib/crm';
 import { isProposalId, loadProposal, recordView } from '../../../lib/proposals';
-import { renderProposalHtml } from '../../../lib/proposal-design';
+import { renderProposalHtml, type ProposalProof } from '../../../lib/proposal-design';
+import { getGoogleReviews, GOOGLE_REVIEWS_URL } from '../../../lib/google-reviews';
+import { getSiteSettings } from '../../../lib/settings';
+import { photoUrl } from '../../../lib/settings-schema';
 
 /**
  * The page a client opens from WhatsApp: www.techinfigo.com/p/<id>.
@@ -34,7 +37,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const ua = request.headers.get('user-agent') || '';
   after(() => recordView(id, ua).catch((e) => console.error('[proposal page] view:', e)));
 
-  const html = renderProposalHtml(data, { logoSrc: '/proposal-logo.png', pdfButton: true });
+  // Real proof only: the live Google rating + a real review, your photo and a
+  // client video if they exist. Anything missing is simply left out.
+  const [reviews, settings] = await Promise.all([getGoogleReviews().catch(() => null), getSiteSettings().catch(() => null)]);
+  const best = reviews?.reviews.find((r) => r.rating >= 5 && r.text.trim().length > 30);
+  const proof: ProposalProof = {
+    ...(reviews && reviews.count > 0 ? { rating: reviews.rating, count: reviews.count, reviewsUrl: reviews.mapsUrl || GOOGLE_REVIEWS_URL } : {}),
+    ...(best ? { review: { text: best.text.trim(), author: best.author } } : {}),
+    ...(settings?.videos?.[0]?.url ? { videoUrl: settings.videos[0].url } : {}),
+  };
+  const founder = settings?.photos?.founder;
+  const html = renderProposalHtml(data, {
+    logoSrc: '/proposal-logo.png',
+    pdfButton: true,
+    proof,
+    founderPhoto: founder ? photoUrl('founder', founder) : undefined,
+    today: new Date(Date.now() + 5.5 * 3600 * 1000).toISOString().slice(0, 10),
+  });
   return new Response(html, {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',

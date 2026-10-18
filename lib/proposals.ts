@@ -75,6 +75,7 @@ export function cleanDesign(raw: unknown): ProposalDesign | null {
       adBudget: num(roi.adBudget, 0, 10_000_000),
     },
     ctaLine: str(r.ctaLine, 80),
+    note: str(r.note, 300),
     contact: {
       name: str(contact.name, 60),
       phone: str(contact.phone, 20),
