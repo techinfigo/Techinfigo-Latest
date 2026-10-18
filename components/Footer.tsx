@@ -12,11 +12,11 @@ import { usePathname } from 'next/navigation';
 import { ClientVideos } from './ClientVideos';
 
 /**
- * Client videos sit just above the footer on every main page. Not on pages
- * that already show them in their own place, on legal pages, or in the
- * lead form (where the focus is the form).
+ * Client videos sit just above the footer on every main page (including the
+ * Free Health Check page). Not on pages that already show them in their own
+ * place, or on legal pages.
  */
-const NO_VIDEO_PATHS = ['/', '/digital-marketing-agency-agra', '/website-design-agra', '/privacy', '/terms', '/refund-policy', '/sitemap', '/lead-capture'];
+const NO_VIDEO_PATHS = ['/', '/digital-marketing-agency-agra', '/website-design-agra', '/privacy', '/terms', '/refund-policy', '/sitemap'];
 
 interface FooterProps {
   onNavigate?: (page: string, serviceId?: string) => void;
