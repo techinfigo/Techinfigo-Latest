@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { PHOTO_SLOTS, photoUrl, type PhotoMeta, type PhotoSlotId, type SiteSettings } from '../../../../lib/settings-schema';
+import { PHOTO_SLOTS, SHOW_SPOTS_KEY, photoUrl, type PhotoMeta, type PhotoSlotId, type SiteSettings } from '../../../../lib/settings-schema';
 
 /**
  * One card per photo spot: preview, upload, remove.
@@ -69,6 +69,9 @@ function Slot({ slot, meta, configured, onChange }: { slot: (typeof PHOTO_SLOTS)
         <p className="text-sm font-black text-white">{slot.label}</p>
         <p className="text-[11px] text-brandYellow font-bold">Shows on: {slot.where}</p>
         <p className="text-xs text-white/50 leading-relaxed">{slot.hint}</p>
+        <a href={slot.page} target="_blank" rel="noopener noreferrer" className="inline-block text-[11px] font-bold text-white/70 underline underline-offset-2 hover:text-white">
+          See this page ↗
+        </a>
       </div>
       <input
         ref={input}
@@ -102,6 +105,51 @@ function Slot({ slot, meta, configured, onChange }: { slot: (typeof PHOTO_SLOTS)
   );
 }
 
+function SpotsSwitch() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    try {
+      setOn(localStorage.getItem(SHOW_SPOTS_KEY) === '1');
+    } catch {
+      /* private mode: switch stays off */
+    }
+  }, []);
+  const toggle = () => {
+    const next = !on;
+    try {
+      if (next) localStorage.setItem(SHOW_SPOTS_KEY, '1');
+      else localStorage.removeItem(SHOW_SPOTS_KEY);
+    } catch {
+      /* ignore */
+    }
+    setOn(next);
+  };
+  return (
+    <div className="flex flex-wrap items-center gap-4 border border-brandYellow/40 bg-brandYellow/5 rounded-2xl p-4">
+      <div className="flex-1 min-w-[16rem] space-y-1">
+        <p className="text-sm font-black text-white">Show photo spots on the website</p>
+        <p className="text-xs text-white/55 leading-relaxed">
+          Turn on to see every empty photo and video spot as a dashed yellow box on the site, so you know where each photo goes.
+          Only on this phone or computer: visitors never see them. Turn off when you're done.
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={toggle}
+        aria-pressed={on}
+        className={`px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] ${on ? 'bg-brandYellow text-brandDark' : 'bg-white/10 text-white'}`}
+      >
+        {on ? 'Spots ON' : 'Spots OFF'}
+      </button>
+      {on && (
+        <a href="/" target="_blank" rel="noopener noreferrer" className="px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] border border-white/20 text-white">
+          Open website ↗
+        </a>
+      )}
+    </div>
+  );
+}
+
 export function PhotoSlots({ initial, configured }: { initial: SiteSettings['photos']; configured: boolean }) {
   const router = useRouter();
   const [photos, setPhotos] = useState(initial);
@@ -112,6 +160,7 @@ export function PhotoSlots({ initial, configured }: { initial: SiteSettings['pho
   ];
   return (
     <div className="space-y-10">
+      <SpotsSwitch />
       {groups.map((g) => (
         <section key={g.title} className="space-y-4">
           <h2 className="text-lg font-black uppercase tracking-tighter">{g.title}</h2>

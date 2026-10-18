@@ -65,22 +65,22 @@ export const VIDEO_SERVICE_TAGS: { slug: string; label: string }[] = [
  * only once one is uploaded; until then it looks exactly as before.
  */
 export const PHOTO_SLOTS = [
-  { id: 'founder', label: 'Your photo', where: 'Home, About and Contact', shape: 'portrait', hint: 'You at your desk, looking at the camera and smiling. Vertical photo, daylight.' },
-  { id: 'office', label: 'Office / entrance', where: 'About and Contact', shape: 'landscape', hint: 'The Sanjay Place office entrance or your desk area.' },
-  { id: 'team', label: 'You with a client or your team', where: 'About and Careers', shape: 'landscape', hint: 'A real meeting or your team at work.' },
-  { id: 'behind', label: 'Behind the scenes', where: 'How We Work', shape: 'wide', hint: 'A client shoot, a planning session, or editing on a laptop.' },
-  { id: 'work-website', label: 'Our work: website', where: 'Website service page', shape: 'portrait', hint: 'A client website on a phone screen.' },
-  { id: 'work-google-business-profile', label: 'Our work: Google profile', where: 'Google Business Profile page', shape: 'portrait', hint: 'A client Google profile on a phone (with reviews/photos).' },
-  { id: 'work-social-media', label: 'Our work: social media', where: 'Social media page', shape: 'portrait', hint: 'A reel or post you made, on a phone.' },
-  { id: 'work-ads', label: 'Our work: ads', where: 'Ads page', shape: 'portrait', hint: 'An ad you ran, or the results screen.' },
-  { id: 'work-seo', label: 'Our work: SEO', where: 'SEO page', shape: 'portrait', hint: 'A client ranking on Google (screenshot on a phone).' },
-  { id: 'fit-clinic', label: 'Industry: clinics', where: 'Who We Fit', shape: 'square', hint: 'A clinic or doctor setting. Good stock photos are fine here.' },
-  { id: 'fit-coaching', label: 'Industry: coaching', where: 'Who We Fit', shape: 'square', hint: 'A classroom or coaching centre.' },
-  { id: 'fit-realestate', label: 'Industry: real estate', where: 'Who We Fit', shape: 'square', hint: 'A building, flat or site visit.' },
-  { id: 'fit-hotel', label: 'Industry: hotels & travel', where: 'Who We Fit', shape: 'square', hint: 'A hotel room, reception or Agra view.' },
-  { id: 'fit-shop', label: 'Industry: shops & showrooms', where: 'Who We Fit', shape: 'square', hint: 'A shop counter or showroom.' },
-  { id: 'fit-restaurant', label: 'Industry: restaurants & sweets', where: 'Who We Fit', shape: 'square', hint: 'Food, a sweet shop counter or a restaurant.' },
-  { id: 'fit-d2c', label: 'Industry: online brands', where: 'Who We Fit', shape: 'square', hint: 'Product packaging or an online order.' },
+  { id: 'founder', page: '/', label: 'Your photo', where: 'Home, About and Contact', shape: 'portrait', hint: 'You at your desk, looking at the camera and smiling. Vertical photo, daylight.' },
+  { id: 'office', page: '/about', label: 'Office / entrance', where: 'About and Contact', shape: 'landscape', hint: 'The Sanjay Place office entrance or your desk area.' },
+  { id: 'team', page: '/about', label: 'You with a client or your team', where: 'About and Careers', shape: 'landscape', hint: 'A real meeting or your team at work.' },
+  { id: 'behind', page: '/how-it-works', label: 'Behind the scenes', where: 'How We Work', shape: 'wide', hint: 'A client shoot, a planning session, or editing on a laptop.' },
+  { id: 'work-website', page: '/services/website', label: 'Our work: website', where: 'Website service page', shape: 'portrait', hint: 'A client website on a phone screen.' },
+  { id: 'work-google-business-profile', page: '/services/google-business-profile', label: 'Our work: Google profile', where: 'Google Business Profile page', shape: 'portrait', hint: 'A client Google profile on a phone (with reviews/photos).' },
+  { id: 'work-social-media', page: '/services/social-media', label: 'Our work: social media', where: 'Social media page', shape: 'portrait', hint: 'A reel or post you made, on a phone.' },
+  { id: 'work-ads', page: '/services/ads', label: 'Our work: ads', where: 'Ads page', shape: 'portrait', hint: 'An ad you ran, or the results screen.' },
+  { id: 'work-seo', page: '/services/seo', label: 'Our work: SEO', where: 'SEO page', shape: 'portrait', hint: 'A client ranking on Google (screenshot on a phone).' },
+  { id: 'fit-clinic', page: '/qualification', label: 'Industry: clinics', where: 'Who We Fit', shape: 'square', hint: 'A clinic or doctor setting. Good stock photos are fine here.' },
+  { id: 'fit-coaching', page: '/qualification', label: 'Industry: coaching', where: 'Who We Fit', shape: 'square', hint: 'A classroom or coaching centre.' },
+  { id: 'fit-realestate', page: '/qualification', label: 'Industry: real estate', where: 'Who We Fit', shape: 'square', hint: 'A building, flat or site visit.' },
+  { id: 'fit-hotel', page: '/qualification', label: 'Industry: hotels & travel', where: 'Who We Fit', shape: 'square', hint: 'A hotel room, reception or Agra view.' },
+  { id: 'fit-shop', page: '/qualification', label: 'Industry: shops & showrooms', where: 'Who We Fit', shape: 'square', hint: 'A shop counter or showroom.' },
+  { id: 'fit-restaurant', page: '/qualification', label: 'Industry: restaurants & sweets', where: 'Who We Fit', shape: 'square', hint: 'Food, a sweet shop counter or a restaurant.' },
+  { id: 'fit-d2c', page: '/qualification', label: 'Industry: online brands', where: 'Who We Fit', shape: 'square', hint: 'Product packaging or an online order.' },
 ] as const;
 export type PhotoSlotId = (typeof PHOTO_SLOTS)[number]['id'];
 export const PHOTO_SLOT_IDS: readonly string[] = PHOTO_SLOTS.map((s) => s.id);
@@ -90,6 +90,9 @@ export const isPhotoSlot = (v: unknown): v is PhotoSlotId => typeof v === 'strin
 export type PhotoMeta = { hash: string; width: number; height: number; uploadedAt: string };
 
 /** Cache-busted address of an uploaded photo. */
+/** Admin switch: show empty photo/video spots on this device only (never to visitors). */
+export const SHOW_SPOTS_KEY = 'tf_show_photo_spots';
+
 export function photoUrl(slot: PhotoSlotId, meta: PhotoMeta): string {
   return `/api/photo/${slot}?v=${meta.hash.slice(0, 16)}`;
 }

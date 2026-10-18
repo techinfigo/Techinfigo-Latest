@@ -2,7 +2,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Play, X } from 'lucide-react';
+import { Play, X, Video } from 'lucide-react';
+import { useShowSpots } from './SitePhoto';
 import { isShortsUrl, youtubeId, type ClientVideo } from '../lib/settings-schema';
 
 /**
@@ -110,8 +111,29 @@ export function ClientVideos({ videos }: { videos?: ClientVideo[] }) {
 
   const [open, setOpen] = useState<Item | null>(null);
   const close = useCallback(() => setOpen(null), []);
+  const spots = useShowSpots();
 
-  if (items.length === 0) return null;
+  if (items.length === 0) {
+    // Owner's "Show photo spots" switch: show where the videos will appear.
+    if (!spots) return null;
+    return (
+      <section className="py-24 px-6 lg:px-12 bg-brandBg overflow-hidden" aria-label="Video spot">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <span className="text-brandYellow text-[11px] font-bold uppercase tracking-[0.4em]">Client Stories</span>
+          <div className="flex gap-4 overflow-hidden">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="shrink-0 w-[230px] sm:w-[260px] aspect-[9/16] rounded-[2rem] border-2 border-dashed border-brandYellow bg-brandYellow/10 flex flex-col items-center justify-center gap-2 p-4 text-center text-brandDark">
+                <Video className="w-8 h-8 text-brandYellow" aria-hidden="true" />
+                <span className="text-xs font-black uppercase tracking-widest bg-brandYellow rounded px-2 py-1">Video spot</span>
+                <span className="text-xs font-semibold">Client video {i + 1}</span>
+                <span className="text-[11px] font-semibold">Add in admin → Settings → Client videos</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
   const sliding = items.length >= 5;
   const repeats = Math.max(1, Math.ceil(8 / items.length));
   const set = Array.from({ length: repeats }, () => items).flat();

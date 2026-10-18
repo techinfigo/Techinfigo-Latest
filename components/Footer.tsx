@@ -10,6 +10,7 @@ import { brandAssetUrl } from '../lib/settings-schema';
 import { useSiteSettings } from './SiteSettingsProvider';
 import { usePathname } from 'next/navigation';
 import { ClientVideos } from './ClientVideos';
+import { useShowSpots } from './SitePhoto';
 
 /**
  * Client videos sit just above the footer on every main page (including the
@@ -43,7 +44,8 @@ export const Footer = ({ onNavigate, onBookAudit }: FooterProps) => {
   const { contact, brand, videos } = useSiteSettings();
   const logo = brandAssetUrl('logo', brand.logo);
   const pathname = usePathname() || '/';
-  const showVideos = videos.length > 0 && !NO_VIDEO_PATHS.includes(pathname.replace(/\/$/, '') || '/');
+  const spots = useShowSpots();
+  const showVideos = (videos.length > 0 || spots) && !NO_VIDEO_PATHS.includes(pathname.replace(/\/$/, '') || '/');
   // On a service page, that service's videos come first.
   const service = pathname.startsWith('/services/') ? pathname.split('/')[2] : '';
   const ordered = service ? [...videos.filter((v) => v.service === service), ...videos.filter((v) => v.service !== service)] : videos;
