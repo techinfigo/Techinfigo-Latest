@@ -450,10 +450,9 @@ function FindingCard({ f }: { f: Finding }) {
         <p className="mt-1 font-black text-lg text-red-900">{f.problem}</p>
         <p className="mt-1 text-sm font-semibold text-red-700">💸 {f.loss}</p>
       </div>
-      <div className="bg-emerald-50 px-5 py-4">
-        <p className="text-xs font-black uppercase tracking-widest text-emerald-700">✅ Ilaaj</p>
-        <p className="mt-1 font-bold text-emerald-900">{f.fix}</p>
-        <p className="ck-added mt-2 inline-flex items-center gap-1 rounded-full bg-brandDark text-white text-xs font-bold px-3 py-1">➕ Aapke plan mein jud gaya!</p>
+      {/* Only the problem here; its fix is kept for the plan at the end. */}
+      <div className="px-5 py-3 bg-brandDark text-white flex items-center gap-2">
+        <span className="ck-added text-sm font-bold">🔒 Iska ilaaj aapke plan mein jud gaya. Aakhir mein milega!</span>
       </div>
     </div>
   );
