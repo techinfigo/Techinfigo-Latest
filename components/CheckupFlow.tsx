@@ -58,7 +58,7 @@ export default function CheckupFlow() {
 
   const go = (s: Screen) => {
     setScreen(s);
-    requestAnimationFrame(() => topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }));
   };
   const set = (patch: Answers) => {
     setA((x) => ({ ...x, ...patch }));
@@ -124,6 +124,26 @@ function progressLine(step: number) {
 
 function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: Answers; b: Biz; set: (p: Answers) => void; onBack: () => void; onNext: () => void }) {
   const last = n === STEPS;
+  // The reply card can sit below the fold on small phones. Instead of jumping
+  // the page (which pulls the options out from under the finger), show a small
+  // button that brings it into view, and hide it once the card is visible.
+  const reactRef = useRef<HTMLDivElement>(null);
+  const [reactSeen, setReactSeen] = useState(true);
+  useEffect(() => {
+    const check = () => {
+      const el = reactRef.current;
+      if (!el || !el.firstElementChild) return setReactSeen(true);
+      // "Seen" once the top of the card is clearly above the bottom buttons.
+      setReactSeen(el.getBoundingClientRect().top + 70 < window.innerHeight - 80);
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    return () => {
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+    };
+  });
   let body: React.ReactNode = null;
   let reaction: React.ReactNode = null;
   let done = false;
@@ -306,7 +326,18 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
   return (
     <section className="ck-in">
       {body}
-      {reaction}
+      <div ref={reactRef}>{reaction}</div>
+      {reaction && !reactSeen && (
+        <div className="fixed inset-x-0 bottom-[84px] z-20 flex justify-center pointer-events-none">
+          <button
+            type="button"
+            onClick={() => reactRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+            className="ck-pop pointer-events-auto rounded-full bg-brandDark text-white text-sm font-bold px-4 py-2 shadow-3xl"
+          >
+            👇 Aapka jawaab neeche dekhein
+          </button>
+        </div>
+      )}
       <Nav onBack={onBack} onNext={done ? onNext : undefined} nextLabel={last ? 'Mera plan dikhao 🎁' : 'Aage chalo 👉'} />
     </section>
   );
@@ -394,29 +425,17 @@ function Choices({ opts, value, values, multi, onPick }: { opts: Option[]; value
   );
 }
 
-/** Brings a just-shown answer card into view above the bottom buttons. */
-function useShowMe<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  useEffect(() => {
-    const t = setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 120);
-    return () => clearTimeout(t);
-  }, []);
-  return ref;
-}
-
 function Good({ children }: { children: React.ReactNode }) {
-  const ref = useShowMe<HTMLDivElement>();
   return (
-    <div ref={ref} className="ck-pop mt-5 rounded-2xl px-5 py-4 bg-emerald-50 border-2 border-emerald-300 text-emerald-900">
+    <div className="ck-pop mt-5 rounded-2xl px-5 py-4 bg-emerald-50 border-2 border-emerald-300 text-emerald-900">
       <p className="font-bold text-lg">{children}</p>
     </div>
   );
 }
 
 function Tip({ title, children }: { title: string; children: React.ReactNode }) {
-  const ref = useShowMe<HTMLDivElement>();
   return (
-    <div ref={ref} className="ck-pop mt-5 rounded-2xl px-5 py-4 bg-white border-2 border-brandYellow">
+    <div className="ck-pop mt-5 rounded-2xl px-5 py-4 bg-white border-2 border-brandYellow">
       <p className="font-bold">{title}</p>
       <p className="mt-1">{children}</p>
     </div>
@@ -424,9 +443,8 @@ function Tip({ title, children }: { title: string; children: React.ReactNode }) 
 }
 
 function FindingCard({ f }: { f: Finding }) {
-  const ref = useShowMe<HTMLDivElement>();
   return (
-    <div ref={ref} className="ck-pop mt-5 rounded-2xl overflow-hidden border-2 border-brandDark/10 bg-white">
+    <div className="ck-pop mt-5 rounded-2xl overflow-hidden border-2 border-brandDark/10 bg-white">
       <div className="bg-red-50 px-5 py-4">
         <p className="text-xs font-black uppercase tracking-widest text-red-600">🔴 Problem mila</p>
         <p className="mt-1 font-black text-lg text-red-900">{f.problem}</p>
@@ -668,7 +686,7 @@ const CSS = `
 .ck-added{animation:ckPop .5s .25s cubic-bezier(.2,1.4,.4,1) both}
 .ck-pulse{animation:ckPulse 1.8s ease-in-out infinite}
 .ck-tile:active{transform:scale(.97)}
-@keyframes ckIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes ckIn{from{opacity:0}to{opacity:1}}
 @keyframes ckPop{0%{opacity:0;transform:scale(.9) translateY(8px)}100%{opacity:1;transform:none}}
 @keyframes ckBump{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
 @keyframes ckPulse{0%,100%{box-shadow:0 0 0 0 rgba(252,182,50,.55)}50%{box-shadow:0 0 0 10px rgba(252,182,50,0)}}
