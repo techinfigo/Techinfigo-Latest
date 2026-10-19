@@ -89,7 +89,7 @@ export default function CheckupFlow() {
           </a>
           {showBar && (
             <span key={bump} className="ck-bump ml-auto inline-flex items-center gap-1.5 rounded-full bg-brandDark text-white text-xs font-bold px-3 py-1.5">
-              🩺 Aapka plan: <b className="text-brandYellow">{planCount}</b> ilaaj
+              🩺 Aapka plan: <b className="text-brandYellow">{planCount}</b> {planCount === 1 ? 'solution' : 'solutions'}
             </span>
           )}
         </div>
@@ -98,7 +98,7 @@ export default function CheckupFlow() {
             <div className="h-2.5 rounded-full bg-brandDark/10 overflow-hidden">
               <div className="h-full rounded-full bg-brandYellow transition-all duration-500" style={{ width: `${Math.max(6, pct)}%` }} />
             </div>
-            <p className="mt-1.5 text-xs font-semibold text-brandDark/60">{screen.kind === 'result' ? 'Aapka plan taiyaar hai ✅' : progressLine(stepNo)}</p>
+            <p className="mt-1.5 text-xs font-semibold text-brandDark/60">{screen.kind === 'result' ? 'Aapka plan ready hai ✅' : progressLine(stepNo)}</p>
           </div>
         )}
       </header>
@@ -114,10 +114,10 @@ export default function CheckupFlow() {
 }
 
 function progressLine(step: number) {
-  if (step <= 2) return 'Shuruaat ho gayi 👍';
-  if (step === STEPS) return 'Bas ye aakhri sawaal! 🏁';
+  if (step <= 2) return 'Start ho gaya 👍';
+  if (step === STEPS) return 'Bas last question! 🏁';
   const pct = Math.round((step / STEPS) * 100);
-  return `Aapka plan ${pct}% taiyaar ${pct < 60 ? '💪' : '🔥'}`;
+  return `Aapka plan ${pct}% ready ${pct < 60 ? '💪' : '🔥'}`;
 }
 
 /* ------------------------------------------------------------------ steps */
@@ -164,14 +164,14 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
           </div>
         </>
       );
-      if (a.biz) reaction = <Tip key={a.biz} title="💡 Kya aap jaante ho?">{b.tip}</Tip>;
+      if (a.biz) reaction = <Tip key={a.biz} title="💡 Kya aapko pata hai?">{b.tip}</Tip>;
       break;
 
     case 'pain': {
       done = !!a.pain;
       body = (
         <>
-          <Ask n={n}>Abhi sabse badi pareshani kya hai?</Ask>
+          <Ask n={n}>Abhi business mein sabse badi problem kya hai?</Ask>
           <Choices opts={PAIN} value={a.pain} onPick={(v) => set({ pain: v })} />
         </>
       );
@@ -185,7 +185,7 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
       done = picked.length > 0;
       body = (
         <>
-          <Ask n={n} hint="Jitne sahi lagein, sab chuniye">
+          <Ask n={n} hint="Ek se zyada select kar sakte ho">
             Abhi naye {b.many} kahan se aate hain?
           </Ask>
           <Choices
@@ -240,7 +240,7 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
         const g = Number(a.goal);
         reaction = (
           <Tip key={a.goal} title="🎯 Aapka target set!">
-            {g} naye {b.many} ke liye har mahine ≈ <b>{enquiriesNeeded(g)} enquiries</b> chahiye. Aapke plan mein iska poora rasta hai 👍
+            {g} naye {b.many} ke liye har mahine ≈ <b>{enquiriesNeeded(g)} enquiries</b> chahiye. Aapke plan mein iska poora system hai 👍
           </Tip>
         );
       }
@@ -268,7 +268,7 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
       );
       if (a.value && a.goal) {
         reaction = (
-          <Tip key={a.value} title="💰 Socho zara!">
+          <Tip key={a.value} title="💰 Zara sochiye!">
             {a.goal} naye {b.many} = <b>≈ {rupeesShort(Number(a.goal) * Number(a.value))} ka extra business</b> har mahine!
           </Tip>
         );
@@ -291,10 +291,10 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
         const lo = BUDGET.find((x) => x.id === a.budget);
         reaction =
           mid === 0 ? (
-            <Good key="0">Koi baat nahi! 🙂 Google Maps aur website se bina ads ke bhi shuruaat ho sakti hai.</Good>
+            <Good key="0">Koi baat nahi! 🙂 Google Maps aur website se bina ads ke bhi start kar sakte hain.</Good>
           ) : (
             <Tip key={a.budget} title="📈 Achha start!">
-              {lo?.label} mein ads se ≈ <b>{adEnquiries(lo?.id === '5-10' ? 5000 : lo?.id === '10-25' ? 10000 : 25000)}+ enquiries</b> har mahine aa sakti hain (andaaza).
+              {lo?.label} mein ads se ≈ <b>{adEnquiries(lo?.id === '5-10' ? 5000 : lo?.id === '10-25' ? 10000 : 25000)}+ enquiries</b> har mahine aa sakti hain (estimate).
             </Tip>
           );
       }
@@ -305,7 +305,7 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
       done = !!a.when;
       body = (
         <>
-          <Ask n={n}>Kab shuru karna chahte ho?</Ask>
+          <Ask n={n}>Kab start karna chahte ho?</Ask>
           <Choices opts={WHEN} value={a.when} onPick={(v) => set({ when: v })} />
         </>
       );
@@ -313,7 +313,7 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
         reaction = (
           <Good key={a.when}>
             {a.when === 'now'
-              ? '🔥 Badhiya! Aapka plan sabse pehle banega.'
+              ? '🔥 Great! Aapka plan sabse pehle banega.'
               : a.when === 'month'
                 ? '👍 Theek hai! Hum aapke plan ke saath ready rahenge.'
                 : '🙂 Koi baat nahi! Plan dekh lijiye, koi pressure nahi.'}
@@ -334,11 +334,11 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
             onClick={() => reactRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
             className="ck-pop pointer-events-auto rounded-full bg-brandDark text-white text-sm font-bold px-4 py-2 shadow-3xl"
           >
-            👇 Aapka jawaab neeche dekhein
+            👇 Result neeche dekhiye
           </button>
         </div>
       )}
-      <Nav onBack={onBack} onNext={done ? onNext : undefined} nextLabel={last ? 'Mera plan dikhao 🎁' : 'Aage chalo 👉'} />
+      <Nav onBack={onBack} onNext={done ? onNext : undefined} nextLabel={last ? 'Mera plan dikhao 🎁' : 'Next 👉'} />
     </section>
   );
 }
@@ -355,10 +355,10 @@ function Intro({ onStart }: { onStart: () => void }) {
       <p className="mt-4 text-lg font-semibold text-brandDark/80">
         Sirf 60 second. Sirf tap karna hai.
         <br />
-        Har jawaab pe turant milega aapke business ka ilaaj. 💡
+        Last mein milega aapke business ka poora growth plan. 💡
       </p>
       <ul className="mt-6 grid gap-2 text-left max-w-sm mx-auto">
-        {['Kahan se customers chhoot rahe hain', 'Unka aasaan ilaaj', 'Kitni extra kamaai ho sakti hai'].map((t, i) => (
+        {['Customers kahan miss ho rahe hain', 'Unka simple solution', 'Kitni extra income ho sakti hai'].map((t, i) => (
           <li key={t} className="flex items-center gap-3 rounded-xl bg-white border border-brandDark/10 px-4 py-3 font-semibold">
             <span className="text-xl">{['🔍', '✅', '📈'][i]}</span>
             {t}
@@ -366,7 +366,7 @@ function Intro({ onStart }: { onStart: () => void }) {
         ))}
       </ul>
       <button type="button" onClick={onStart} className="ck-pulse mt-8 w-full max-w-sm rounded-2xl bg-brandYellow text-brandDark text-xl font-black py-4 shadow-glow">
-        Shuru karein 👉
+        Start karein 👉
       </button>
       <p className="mt-3 text-sm text-brandDark/60">100% free · Koi login nahi · Koi spam nahi</p>
     </div>
@@ -377,7 +377,7 @@ function Ask({ n, hint, children }: { n: number; hint?: string; children: React.
   return (
     <div className="mb-5">
       <p className="text-xs font-black uppercase tracking-widest text-brandDark/50">
-        Sawaal {n} / {STEPS}
+        Question {n} / {STEPS}
       </p>
       <h2 className="mt-1 text-2xl sm:text-3xl font-black leading-snug">{children}</h2>
       {hint && <p className="mt-1 text-base font-semibold text-brandDark/60">{hint}</p>}
@@ -452,7 +452,7 @@ function FindingCard({ f }: { f: Finding }) {
       </div>
       {/* Only the problem here; its fix is kept for the plan at the end. */}
       <div className="px-5 py-3 bg-brandDark text-white flex items-center gap-2">
-        <span className="ck-added text-sm font-bold">🔒 Iska ilaaj aapke plan mein jud gaya. Aakhir mein milega!</span>
+        <span className="ck-added text-sm font-bold">🔒 Iska solution aapke plan mein add ho gaya. Last mein milega!</span>
       </div>
     </div>
   );
@@ -462,7 +462,7 @@ function Nav({ onBack, onNext, nextLabel }: { onBack: () => void; onNext?: () =>
   return (
     <div className="fixed bottom-0 inset-x-0 z-20 bg-brandBg/95 backdrop-blur border-t border-brandDark/10">
       <div className="max-w-xl mx-auto px-4 py-3 flex gap-3">
-        <button type="button" onClick={onBack} className="rounded-2xl border-2 border-brandDark/15 px-5 py-3.5 font-bold" aria-label="Peeche">
+        <button type="button" onClick={onBack} className="rounded-2xl border-2 border-brandDark/15 px-5 py-3.5 font-bold" aria-label="Back">
           ←
         </button>
         <button
@@ -471,7 +471,7 @@ function Nav({ onBack, onNext, nextLabel }: { onBack: () => void; onNext?: () =>
           disabled={!onNext}
           className={`flex-1 rounded-2xl py-3.5 text-lg font-black transition ${onNext ? 'bg-brandYellow text-brandDark shadow-glow' : 'bg-brandDark/10 text-brandDark/40'}`}
         >
-          {onNext ? nextLabel : 'Ek option chuno ☝️'}
+          {onNext ? nextLabel : 'Ek option select karein ☝️'}
         </button>
       </div>
     </div>
@@ -501,7 +501,7 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
   const r = computeResult(a);
   const score = useCountUp(r.score);
   const color = r.score < 40 ? '#e04848' : r.score < 70 ? '#f6b324' : '#16a172';
-  const label = r.score < 40 ? 'Bahut kuch chhoot raha hai' : r.score < 70 ? 'Theek hai, par aur ho sakta hai' : 'Badhiya! Ab aur aage badhein';
+  const label = r.score < 40 ? 'Bahut customers miss ho rahe hain' : r.score < 70 ? 'Theek hai, par aur ho sakta hai' : 'Good! Ab next level pe le chalein';
   const [name, setName] = useState('');
   const [business, setBusiness] = useState('');
   const [phone, setPhone] = useState('');
@@ -526,7 +526,7 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
   const send = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ready || busy) {
-      setError(!phoneOk ? 'Apna 10 digit WhatsApp number daaliye 🙏' : 'Apna naam daaliye 🙏');
+      setError(!phoneOk ? 'Apna 10 digit WhatsApp number likhiye 🙏' : 'Apna naam likhiye 🙏');
       return;
     }
     setBusy(true);
@@ -543,7 +543,7 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
     });
     setBusy(false);
     if (res.ok) onDone();
-    else setError('Kuch gadbad ho gayi. Dobara try karein, ya neeche WhatsApp button dabayein.');
+    else setError('Kuch problem aa gayi. Dobara try karein, ya humein WhatsApp karein.');
   };
 
   const fixes = r.findings.length ? r.findings.map((f) => f.fix) : ['Jo chal raha hai usse aur bada karna: ads + content'];
@@ -552,7 +552,7 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
     <section className="ck-in">
       <div className="text-center">
         <p className="text-4xl">🎉</p>
-        <h2 className="mt-2 text-3xl font-black leading-tight">Badhai ho! Aapka Growth Plan taiyaar hai</h2>
+        <h2 className="mt-2 text-3xl font-black leading-tight">Congratulations! Aapka Growth Plan ready hai</h2>
       </div>
 
       {/* Score */}
@@ -571,7 +571,7 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
 
       {/* Fixes */}
       <div className="mt-5 rounded-3xl bg-white border-2 border-brandDark/10 p-5">
-        <p className="font-black text-lg">✅ Aapke liye {fixes.length} ilaaj</p>
+        <p className="font-black text-lg">✅ Aapke liye {fixes.length} {fixes.length === 1 ? 'solution' : 'solutions'}</p>
         <ul className="mt-3 grid gap-2.5">
           {fixes.map((fix, i) => (
             <li key={i} className="ck-pop flex gap-3 rounded-xl bg-emerald-50 px-4 py-3" style={{ animationDelay: `${150 * i}ms` }}>
@@ -599,14 +599,14 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
           </p>
         )}
         <p className="mt-2 text-xs font-semibold text-brandDark/60">
-          Ye sirf andaaza hai (estimate), guarantee nahi. Asli result aapke area, season aur enquiry ka jaldi jawaab dene pe depend karta hai.
+          Ye sirf estimate hai, guarantee nahi. Real result aapke area, season aur enquiry ka jaldi reply dene pe depend karta hai.
         </p>
       </div>
 
       {/* Contact */}
       <form ref={formRef} onSubmit={send} className="mt-6 rounded-3xl bg-white border-2 border-brandDark p-5 shadow-3xl" noValidate>
         <HoneypotField />
-        <p className="text-xl font-black">📲 Ye poora plan apne WhatsApp pe paayein</p>
+        <p className="text-xl font-black">📲 Poora plan apne WhatsApp pe paaiye</p>
         <p className="mt-1 text-sm font-semibold text-brandDark/60">Saath mein free audit report bhi. Bilkul free.</p>
         <label className="block mt-4">
           <span className="text-sm font-bold">Aapka naam</span>
@@ -637,14 +637,14 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
       </form>
 
       <button type="button" onClick={onBack} className="mt-4 w-full text-sm font-bold text-brandDark/60 underline">
-        ← Jawaab badlein
+        ← Answers change karein
       </button>
 
       {!formSeen && (
         <div className="fixed bottom-0 inset-x-0 z-20 bg-brandBg/95 backdrop-blur border-t border-brandDark/10">
           <div className="max-w-xl mx-auto px-4 py-3">
             <button type="button" onClick={() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="ck-pulse w-full rounded-2xl bg-brandYellow text-brandDark py-3.5 text-lg font-black">
-              📲 Ye plan WhatsApp pe paayein 👇
+              📲 Plan WhatsApp pe paaiye 👇
             </button>
           </div>
         </div>

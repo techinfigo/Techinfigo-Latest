@@ -6,7 +6,7 @@
  * answer. Pure data and maths only: used by the form in the browser and by
  * the lead API on the server (which re-checks everything the browser sends).
  *
- * Every number shown to the visitor is an estimate ("andaaza").
+ * Every number shown to the visitor is an estimate.
  */
 
 export type BizKey = 'coaching' | 'clinic' | 'gym' | 'restaurant' | 'salon' | 'shop' | 'd2c' | 'other';
@@ -84,7 +84,7 @@ export const SOURCES: Option[] = [
   { id: 'google', emoji: '🗺️', label: 'Google' },
   { id: 'social', emoji: '📱', label: 'Instagram / Facebook' },
   { id: 'banner', emoji: '📰', label: 'Banner / pamphlet' },
-  { id: 'walkin', emoji: '🚶', label: 'Saamne se guzarne wale' },
+  { id: 'walkin', emoji: '🚶', label: 'Walk-in (dukaan ke saamne se)' },
 ];
 
 export const WEBSITE: Option[] = [
@@ -115,11 +115,11 @@ export function painFinding(id: string | undefined, b: Biz): Finding | null {
     case 'few':
       return { problem: `Naye ${b.many} kam aa rahe hain`, loss: 'Business ek jagah ruk gaya hai', fix: 'Google Maps + chhote budget ke ads, sirf aapke area ke sahi logon tak', services: ['gbp', 'ads'], proposalProblems: ['Not on Google Maps', 'No ads running'] };
     case 'convert':
-      return { problem: 'Log poochte hain, par aate nahi', loss: 'Har chhooti enquiry = paisa haath se gaya', fix: 'Har enquiry ka turant WhatsApp jawaab + follow-up system. Koi enquiry nahi chhootegi', services: ['website'], proposalProblems: ['Enquiries not tracked'] };
+      return { problem: 'Log poochte hain, par aate nahi', loss: 'Har missed enquiry = paisa haath se gaya', fix: 'Har enquiry ka turant WhatsApp reply + follow-up system. Koi enquiry miss nahi hogi', services: ['website'], proposalProblems: ['Enquiries not tracked'] };
     case 'found':
       return { problem: 'Log aapko online dhoondh nahi pa rahe', loss: 'Har mahine ≈ 20 log aapke paas aate aate reh jaate hain', fix: 'Google Maps pe aapka business, photos aur reviews ke saath (7 din mein)', services: ['gbp'], proposalProblems: ['Not on Google Maps'] };
     case 'rivals':
-      return { problem: 'Competition aage nikal raha hai', loss: `Jo zyada dikhta hai, ${b.many} usi ke paas jaate hain`, fix: 'Aap unse zyada bharosemand dikho: reviews, reels aur ads', services: ['gbp', 'social', 'ads'], proposalProblems: ['Very few Google reviews', 'Social media inactive'] };
+      return { problem: 'Competition aage nikal raha hai', loss: `Jo zyada dikhta hai, ${b.many} usi ke paas jaate hain`, fix: 'Aap unse zyada trusted dikho: reviews, reels aur ads', services: ['gbp', 'social', 'ads'], proposalProblems: ['Very few Google reviews', 'Social media inactive'] };
     case 'time':
       return { problem: 'Marketing ka time nahi milta', loss: 'Marketing ruki, toh naye customers bhi ruke', fix: 'Poora kaam hamari team karegi. Aap sirf approve karo (hafte mein 5 minute)', services: ['social', 'gbp'], proposalProblems: ['Social media inactive'] };
     default:
@@ -135,7 +135,7 @@ export function sourcesFinding(ids: string[] | undefined): Finding | null {
   const social = s.has('social');
   if (google && social) return null;
   if (!google && !social)
-    return { problem: 'Naye log sirf jaan-pehchaan / saamne se aate hain', loss: 'Ye dheere badhta hai aur ek din ruk jaata hai', fix: 'Google + Instagram se roz naye log, aapke area se', services: ['gbp', 'social'], proposalProblems: ['Not on Google Maps', 'Social media inactive'] };
+    return { problem: 'Naye log sirf jaan-pehchaan / saamne se aate hain', loss: 'Isse business bahut slow badhta hai', fix: 'Google + Instagram se roz naye log, aapke area se', services: ['gbp', 'social'], proposalProblems: ['Not on Google Maps', 'Social media inactive'] };
   if (!google)
     return { problem: 'Google se koi nahi aa raha', loss: 'Jo log "near me" search karte hain, wo rivals ke paas jaate hain', fix: 'Google Maps pe aapka business, photos aur reviews ke saath', services: ['gbp'], proposalProblems: ['Not on Google Maps'] };
   return { problem: 'Instagram / Facebook se koi nahi aa raha', loss: 'Naye log aapko yaad hi nahi rakhte', fix: 'Har mahine 12 post + 4 reels, aap sirf approve karo', services: ['social'], proposalProblems: ['Social media inactive'] };
@@ -148,8 +148,8 @@ export function websiteFinding(id: string | undefined): Finding | null {
 }
 
 export const PRAISE: Partial<Record<StepId, string>> = {
-  sources: 'Zabardast! 🔥 Google aur Instagram dono se log aa rahe hain. Ab inhe aur badhana hai.',
-  website: 'Badhiya! 👏 Ab bas usse zyada log tak pahunchana hai.',
+  sources: 'Great! 🔥 Google aur Instagram dono se log aa rahe hain. Ab inhe aur badhana hai.',
+  website: 'Great! 👏 Ab bas usse zyada logon tak le jaana hai.',
 };
 
 /* ------------------------------------------------------------------ maths */
