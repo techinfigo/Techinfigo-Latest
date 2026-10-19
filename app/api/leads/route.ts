@@ -6,6 +6,7 @@ import { SESSION_COOKIE, readSession } from '../../../lib/auth';
 import { clientKey, rateLimit } from '../../../lib/rate-limit';
 import { screen } from '../../../lib/spam';
 import { isCrmConfigured, recordReceived, sendToCrm } from '../../../lib/crm';
+import { checkupSummary, cleanCheckup } from '../../../lib/checkup';
 
 /** At most this many enquiries per connection per hour. */
 const MAX_PER_HOUR = 5;
@@ -44,6 +45,11 @@ export async function POST(request: Request) {
   }
   const lead = parsed.lead;
 
+  // Free Business Check-up: answers are re-scored here, and the notes are
+  // written from them, so nothing the browser claims is taken on trust.
+  const checkup = lead.sourceForm === 'growth-checkup' ? cleanCheckup(body.checkup) : null;
+  if (checkup) lead.message = checkupSummary(checkup);
+
   const check = await screen(body, ip, {
     name: lead.name,
     phone: lead.phone,
@@ -69,6 +75,7 @@ export async function POST(request: Request) {
         status: isRealEnquiry ? 'new' : 'spam',
         spamReasons: check.reasons,
         needs,
+        checkup,
       });
       crm = true;
       if (isRealEnquiry) await recordReceived('website');

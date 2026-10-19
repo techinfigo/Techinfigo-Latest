@@ -34,6 +34,8 @@ export type SubmitLeadInput = {
    * message so a bespoke questionnaire never silently loses answers.
    */
   extra?: Record<string, unknown>;
+  /** Free Business Check-up answers (www.techinfigo.com/checkup). Re-checked on the server. */
+  checkup?: unknown;
 };
 
 export type SubmitLeadResult = {

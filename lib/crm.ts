@@ -1,6 +1,7 @@
 import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { FieldValue, getFirestore, type Firestore } from 'firebase-admin/firestore';
 import type { NewLead } from './leads-schema';
+import type { CheckupPayload } from './checkup';
 
 /**
  * Delivers website enquiries into the Techinfigo CRM's own Firebase project
@@ -57,7 +58,7 @@ function clean<T extends Record<string, unknown>>(obj: T): Record<string, unknow
 
 export async function sendToCrm(
   lead: NewLead,
-  extra: { status: EnquiryStatus; spamReasons: string[]; needs: string[]; sourceName?: string | null },
+  extra: { status: EnquiryStatus; spamReasons: string[]; needs: string[]; sourceName?: string | null; checkup?: CheckupPayload | null },
 ): Promise<string> {
   const ref = await crmDb()
     .collection(ENQUIRIES)
@@ -70,6 +71,7 @@ export async function sendToCrm(
         website: lead.website,
         message: lead.message,
         needs: extra.needs,
+        checkup: extra.checkup ?? null,
         sourceForm: lead.sourceForm,
         sourceName: extra.sourceName ?? null,
         landingPage: lead.landingPage,
@@ -103,6 +105,7 @@ export async function sendToCrm(
 function sourceLabel(sourceForm: string | null | undefined): string {
   const f = (sourceForm || '').toLowerCase();
   if (f.includes('website-offer')) return '₹9,999 website page';
+  if (f.includes('growth-checkup')) return 'Free check-up form';
   if (f.includes('meta') || f.includes('facebook')) return 'Facebook/Instagram ad';
   if (f.includes('google')) return 'Google ad';
   if (f.includes('careers')) return 'Careers';

@@ -19,13 +19,15 @@ function WhatsAppIcon({ className }: { className?: string }) {
  *
  * Phones get a full-width bar pinned to the bottom with Call and WhatsApp,
  * the highest-converting element for local businesses. Larger screens get a
- * single floating WhatsApp button. Hidden inside the admin panel.
+ * single floating WhatsApp button. Hidden inside the admin panel and on the
+ * check-up page (it has its own bottom buttons).
  */
 export function ContactBar() {
   const pathname = usePathname();
   const { contact } = useSiteSettings();
 
-  if (pathname?.startsWith('/admin')) return null;
+  // The check-up page has its own bottom buttons.
+  if (pathname?.startsWith('/admin') || pathname === '/checkup') return null;
 
   return (
     <>
