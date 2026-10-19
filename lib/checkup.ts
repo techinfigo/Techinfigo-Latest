@@ -67,6 +67,8 @@ export type Answers = {
   value?: string;
   budget?: string;
   when?: string;
+  /** Their website link, for the free audit (goes to the lead, not scored). */
+  websiteUrl?: string;
 };
 
 /* ---------------------------------------------------------------- options */
@@ -93,14 +95,15 @@ export const WEBSITE: Option[] = [
   { id: 'none', emoji: '❌', label: 'Nahi hai' },
 ];
 
-export const GOALS = [5, 10, 25, 50];
-
-export const BUDGET: (Option & { mid: number })[] = [
-  { id: '0', emoji: '🙂', label: 'Abhi kuch nahi', mid: 0 },
-  { id: '5-10', emoji: '💵', label: '₹5K – 10K', mid: 7500 },
-  { id: '10-25', emoji: '💰', label: '₹10K – 25K', mid: 17500 },
-  { id: '25+', emoji: '🚀', label: '₹25K se zyada', mid: 30000 },
-];
+/* Slider steps (drag low → high). Nice round numbers, not every rupee. */
+const NICE = [100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000, 7500, 10000, 15000, 20000, 25000, 30000, 40000, 50000, 75000, 100000, 150000, 200000, 300000, 500000];
+/** ₹ per customer, from a little below to well above this business's usual range. */
+export const valueSteps = (b: Biz) => NICE.filter((n) => n >= Math.max(100, b.values[0] / 5) && n <= b.values[b.values.length - 1] * 4);
+export const valueDefault = (b: Biz) => b.values[1];
+export const GOAL_STEPS = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 40, 50, 75, 100];
+export const GOAL_DEFAULT = 10;
+export const BUDGET_STEPS = [0, 2000, 3000, 5000, 7500, 10000, 15000, 20000, 25000, 30000, 40000, 50000, 75000, 100000];
+export const BUDGET_DEFAULT = 10000;
 
 export const WHEN: Option[] = [
   { id: 'now', emoji: '🔥', label: 'Abhi, jaldi se jaldi' },
@@ -165,7 +168,7 @@ const ORGANIC: Partial<Record<ServiceKey, number>> = { gbp: 12, website: 6, soci
 
 export const enquiriesNeeded = (goal: number) => Math.round(goal / JOIN);
 export const adEnquiries = (budget: number) => Math.round(budget / PER_ENQUIRY);
-export const budgetOf = (id: string | undefined) => BUDGET.find((x) => x.id === id)?.mid ?? 0;
+export const budgetOf = (v: string | undefined) => Math.max(0, Number(v) || 0);
 
 export function findingsOf(a: Answers): Finding[] {
   const b = bizOf(a.biz);
@@ -289,14 +292,15 @@ export function cleanCheckup(raw: unknown): CheckupPayload | null {
   if (!biz) return null;
   const goal = Number(r.goal);
   const value = Number(r.value);
+  const budget = Number(r.budget);
   const a: Answers = {
     biz,
     pain: pick(r.pain, PAIN),
     sources: Array.isArray(r.sources) ? [...new Set(r.sources.filter((s): s is string => !!pick(s, SOURCES)))] : [],
     website: pick(r.website, WEBSITE),
-    goal: GOALS.includes(goal) ? String(goal) : undefined,
+    goal: Number.isFinite(goal) && goal >= 1 && goal <= 1000 ? String(Math.round(goal)) : undefined,
     value: Number.isFinite(value) && value > 0 && value <= 10_000_000 ? String(Math.round(value)) : undefined,
-    budget: pick(r.budget, BUDGET),
+    budget: Number.isFinite(budget) && budget >= 0 && budget <= 10_000_000 ? String(Math.round(budget)) : undefined,
     when: pick(r.when, WHEN),
   };
   return buildPayload(a);
@@ -321,9 +325,9 @@ export function checkupSummary(p: CheckupPayload): string {
     `Biggest problem: ${labelOf(PAIN, p.pain)}`,
     `Customers come from: ${p.sources.length ? p.sources.map((s) => labelOf(SOURCES, s)).join(', ') : '—'}`,
     `Website: ${labelOf(WEBSITE, p.website)}`,
-    `Wants: ${p.goal ? `${p.goal}${p.goal === 50 ? '+' : ''} new ${b.many} a month` : '—'}`,
+    `Wants: ${p.goal ? `${p.goal} new ${b.many} a month` : '—'}`,
     `Value of one ${b.one}: ${p.value ? rupees(p.value) + (b.valueNote ? ` (${b.valueNote})` : '') : '—'}`,
-    `Marketing budget: ${labelOf(BUDGET, p.budget)} a month`,
+    `Marketing budget: ${p.budget === '' ? '—' : p.adBudget ? `${rupees(p.adBudget)} a month` : 'Nothing right now'}`,
     `Wants to start: ${labelOf(WHEN, p.when)}`,
     `Suggested: ${p.services.map((s) => SERVICE_NAMES[s]).join(' + ')}`,
     `Estimate shown to them: ≈ ${p.estimate.low}–${p.estimate.high} new ${b.many} a month (from ≈ ${p.estimate.enquiries} enquiries)`,

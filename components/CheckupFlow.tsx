@@ -6,8 +6,10 @@ import { submitLead } from '../lib/submit-lead';
 import { whatsappUrl } from '../config/site';
 import {
   BIZ,
-  BUDGET,
-  GOALS,
+  BUDGET_DEFAULT,
+  BUDGET_STEPS,
+  GOAL_DEFAULT,
+  GOAL_STEPS,
   PAIN,
   PRAISE,
   SERVICE_NAMES,
@@ -22,8 +24,12 @@ import {
   computeResult,
   enquiriesNeeded,
   painFinding,
+  budgetOf,
+  rupees,
   rupeesShort,
   sourcesFinding,
+  valueDefault,
+  valueSteps,
   websiteFinding,
   type Answers,
   type Biz,
@@ -46,7 +52,6 @@ const STEPS = STEP_IDS.length;
 export default function CheckupFlow() {
   const [screen, setScreen] = useState<Screen>({ kind: 'intro' });
   const [a, setA] = useState<Answers>({});
-  const [bump, setBump] = useState(0);
   const topRef = useRef<HTMLDivElement>(null);
 
   const b = bizOf(a.biz);
@@ -62,7 +67,6 @@ export default function CheckupFlow() {
   };
   const set = (patch: Answers) => {
     setA((x) => ({ ...x, ...patch }));
-    setBump((n) => n + 1);
   };
   const back = () => {
     if (screen.kind === 'step') go(screen.i === 0 ? { kind: 'intro' } : { kind: 'step', i: screen.i - 1 });
@@ -88,7 +92,7 @@ export default function CheckupFlow() {
             <span className="font-black tracking-wide text-sm">TECHINFIGO</span>
           </a>
           {showBar && (
-            <span key={bump} className="ck-bump ml-auto inline-flex items-center gap-1.5 rounded-full bg-brandDark text-white text-xs font-bold px-3 py-1.5">
+            <span key={planCount} className="ck-bump ml-auto inline-flex items-center gap-1.5 rounded-full bg-brandDark text-white text-xs font-bold px-3 py-1.5">
               🩺 Aapka plan: <b className="text-brandYellow">{planCount}</b> {planCount === 1 ? 'solution' : 'solutions'}
             </span>
           )}
@@ -205,10 +209,28 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
 
     case 'website': {
       done = !!a.website;
+      const hasSite = a.website === 'good' || a.website === 'old';
       body = (
         <>
           <Ask n={n}>Kya aapki website hai? 🌐</Ask>
           <Choices opts={WEBSITE} value={a.website} onPick={(v) => set({ website: v })} />
+          {hasSite && (
+            <label className="ck-pop block mt-4 rounded-2xl bg-white border-2 border-brandYellow p-4">
+              <span className="block font-bold">🔍 Website ka link daaliye <span className="font-normal text-brandDark/50">(optional)</span></span>
+              <span className="block text-sm text-brandDark/60">Hum free mein check karke batayenge kya theek karna hai.</span>
+              <input
+                value={a.websiteUrl || ''}
+                onChange={(e) => set({ websiteUrl: e.target.value })}
+                inputMode="url"
+                autoComplete="url"
+                autoCapitalize="none"
+                spellCheck={false}
+                placeholder="jaise: www.aapkabusiness.com"
+                maxLength={200}
+                className="mt-2 w-full rounded-xl border-2 border-brandDark/15 px-4 py-3 text-base font-semibold focus:border-brandYellow outline-none"
+              />
+            </label>
+          )}
         </>
       );
       if (a.website) {
@@ -220,84 +242,64 @@ function Step({ id, n, a, b, set, onBack, onNext }: { id: StepId; n: number; a: 
 
     case 'goal': {
       done = !!a.goal;
+      const g = Number(a.goal) || GOAL_DEFAULT;
       body = (
         <>
-          <Ask n={n}>Har mahine kitne naye {b.many} chahiye? 🎯</Ask>
-          <div className="grid grid-cols-2 gap-3">
-            {GOALS.map((g, i) => (
-              <Tile key={g} on={a.goal === String(g)} onClick={() => set({ goal: String(g) })}>
-                <span className="block text-3xl font-black">
-                  {g}
-                  {i === GOALS.length - 1 ? '+' : ''}
-                </span>
-                <span className="block text-sm font-semibold text-brandDark/60">naye {b.many}</span>
-              </Tile>
-            ))}
-          </div>
+          <Ask n={n} hint="Slider ko left-right drag karein 👆">
+            Har mahine kitne naye {b.many} chahiye? 🎯
+          </Ask>
+          <Slider steps={GOAL_STEPS} value={a.goal} fallback={GOAL_DEFAULT} onChange={(v) => set({ goal: String(v) })} show={(v) => `${v}`} unit={`naye ${b.many} / mahina`} />
         </>
       );
-      if (a.goal) {
-        const g = Number(a.goal);
+      if (a.goal)
         reaction = (
-          <Tip key={a.goal} title="🎯 Aapka target set!">
+          <Tip key="goal" title="🎯 Aapka target set!">
             {g} naye {b.many} ke liye har mahine ≈ <b>{enquiriesNeeded(g)} enquiries</b> chahiye. Aapke plan mein iska poora system hai 👍
           </Tip>
         );
-      }
       break;
     }
 
     case 'value': {
       done = !!a.value;
+      const v = Number(a.value) || valueDefault(b);
       body = (
         <>
-          <Ask n={n} hint={b.valueNote ? `(${b.valueNote})` : undefined}>
+          <Ask n={n} hint={`Slider drag karein 👆${b.valueNote ? ` (${b.valueNote})` : ''}`}>
             Ek {b.one} se aapko kitna milta hai? 💰
           </Ask>
-          <div className="grid grid-cols-2 gap-3">
-            {b.values.map((v, i) => (
-              <Tile key={v} on={a.value === String(v)} onClick={() => set({ value: String(v) })}>
-                <span className="block text-2xl font-black">
-                  {rupeesShort(v)}
-                  {i === b.values.length - 1 ? '+' : ''}
-                </span>
-              </Tile>
-            ))}
-          </div>
+          <Slider steps={valueSteps(b)} value={a.value} fallback={valueDefault(b)} onChange={(x) => set({ value: String(x) })} show={(x) => rupees(x)} unit={`ek ${b.one} se`} />
         </>
       );
-      if (a.value && a.goal) {
+      if (a.value && a.goal)
         reaction = (
-          <Tip key={a.value} title="💰 Zara sochiye!">
-            {a.goal} naye {b.many} = <b>≈ {rupeesShort(Number(a.goal) * Number(a.value))} ka extra business</b> har mahine!
+          <Tip key="value" title="💰 Zara sochiye!">
+            {a.goal} naye {b.many} × {rupees(v)} = <b>≈ {rupeesShort(Number(a.goal) * v)} ka extra business</b> har mahine!
           </Tip>
         );
-      }
       break;
     }
 
     case 'budget': {
-      done = !!a.budget;
+      done = a.budget !== undefined;
+      const m = budgetOf(a.budget);
       body = (
         <>
-          <Ask n={n} hint="Ads + marketing, har mahine">
+          <Ask n={n} hint="Ads + marketing, har mahine. Slider drag karein 👆">
             Marketing pe kitna laga sakte ho?
           </Ask>
-          <Choices opts={BUDGET} value={a.budget} onPick={(v) => set({ budget: v })} />
+          <Slider steps={BUDGET_STEPS} value={a.budget} fallback={BUDGET_DEFAULT} onChange={(x) => set({ budget: String(x) })} show={(x) => (x === 0 ? 'Abhi kuch nahi' : rupees(x))} unit="har mahine" />
         </>
       );
-      if (a.budget) {
-        const mid = BUDGET.find((x) => x.id === a.budget)?.mid || 0;
-        const lo = BUDGET.find((x) => x.id === a.budget);
+      if (a.budget !== undefined)
         reaction =
-          mid === 0 ? (
-            <Good key="0">Koi baat nahi! 🙂 Google Maps aur website se bina ads ke bhi start kar sakte hain.</Good>
+          m === 0 ? (
+            <Good key="b0">Koi baat nahi! 🙂 Google Maps aur website se bina ads ke bhi start kar sakte hain.</Good>
           ) : (
-            <Tip key={a.budget} title="📈 Achha start!">
-              {lo?.label} mein ads se ≈ <b>{adEnquiries(lo?.id === '5-10' ? 5000 : lo?.id === '10-25' ? 10000 : 25000)}+ enquiries</b> har mahine aa sakti hain (estimate).
+            <Tip key="b" title="📈 Achha start!">
+              {rupees(m)} ke ads se ≈ <b>{adEnquiries(m)} enquiries</b> har mahine aa sakti hain (estimate).
             </Tip>
           );
-      }
       break;
     }
 
@@ -395,6 +397,47 @@ function Tile({ on, onClick, big, children }: { on: boolean; onClick: () => void
     >
       {children}
     </button>
+  );
+}
+
+/** Drag low → high. Big live number, − / + for small taps, min and max below. */
+function Slider({ steps, value, fallback, onChange, show, unit }: { steps: number[]; value?: string; fallback: number; onChange: (v: number) => void; show: (v: number) => string; unit: string }) {
+  const cur = value !== undefined && value !== '' ? Number(value) : fallback;
+  let idx = steps.findIndex((s) => s >= cur);
+  if (idx < 0) idx = steps.length - 1;
+  // Start at a sensible middle value so "Next" works even without dragging.
+  useEffect(() => {
+    if (value === undefined) onChange(steps[idx]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const pct = (idx / (steps.length - 1)) * 100;
+  const go = (i: number) => onChange(steps[Math.max(0, Math.min(steps.length - 1, i))]);
+  return (
+    <div className="rounded-3xl bg-white border-2 border-brandDark/10 px-5 pt-5 pb-4">
+      <p className="text-center">
+        <span className="block text-4xl font-black tabular-nums">{show(steps[idx])}{idx === steps.length - 1 ? '+' : ''}</span>
+        <span className="block mt-1 text-sm font-semibold text-brandDark/60">{unit}</span>
+      </p>
+      <div className="mt-5 flex items-center gap-3">
+        <button type="button" onClick={() => go(idx - 1)} aria-label="Kam karein" className="w-11 h-11 shrink-0 rounded-full border-2 border-brandDark/15 text-2xl font-black leading-none">−</button>
+        <input
+          type="range"
+          min={0}
+          max={steps.length - 1}
+          step={1}
+          value={idx}
+          onChange={(e) => go(Number(e.target.value))}
+          aria-valuetext={show(steps[idx])}
+          className="ck-range flex-1"
+          style={{ ['--p' as string]: `${pct}%` }}
+        />
+        <button type="button" onClick={() => go(idx + 1)} aria-label="Zyada karein" className="w-11 h-11 shrink-0 rounded-full border-2 border-brandDark/15 text-2xl font-black leading-none">+</button>
+      </div>
+      <div className="mt-2 flex justify-between px-14 text-xs font-bold text-brandDark/50">
+        <span>{show(steps[0])}</span>
+        <span>{show(steps[steps.length - 1])}+</span>
+      </div>
+    </div>
   );
 }
 
@@ -496,6 +539,13 @@ function useCountUp(target: number, ms = 1200) {
 
 /* ----------------------------------------------------------------- result */
 
+/** "abc.com" → "https://abc.com"; empty or junk → undefined. */
+function cleanUrl(raw?: string): string | undefined {
+  const t = (raw || '').trim().replace(/\s+/g, '');
+  if (!t || !/\.[a-z]{2,}/i.test(t)) return undefined;
+  return /^https?:\/\//i.test(t) ? t : `https://${t}`;
+}
+
 function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; onDone: () => void }) {
   const b = bizOf(a.biz);
   const r = computeResult(a);
@@ -537,6 +587,7 @@ function ResultScreen({ a, onBack, onDone }: { a: Answers; onBack: () => void; o
       name: name.trim(),
       phone: digits,
       brandName: business.trim() || undefined,
+      website: cleanUrl(a.websiteUrl),
       message: checkupSummary(checkup),
       extra: { needs: checkup.services.map((s) => SERVICE_NAMES[s]) },
       checkup,
@@ -685,6 +736,10 @@ const CSS = `
 .ck-added{animation:ckPop .5s .25s cubic-bezier(.2,1.4,.4,1) both}
 .ck-pulse{animation:ckPulse 1.8s ease-in-out infinite}
 .ck-tile:active{transform:scale(.97)}
+.ck-range{-webkit-appearance:none;appearance:none;height:14px;border-radius:999px;background:linear-gradient(to right,#fcb632 var(--p),rgba(0,29,33,.12) var(--p));outline:none;cursor:pointer}
+.ck-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:34px;height:34px;border-radius:50%;background:#001d21;border:5px solid #fcb632;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ck-range::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#001d21;border:5px solid #fcb632;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ck-range:focus-visible{box-shadow:0 0 0 3px rgba(252,182,50,.5)}
 @keyframes ckIn{from{opacity:0}to{opacity:1}}
 @keyframes ckPop{0%{opacity:0;transform:scale(.9) translateY(8px)}100%{opacity:1;transform:none}}
 @keyframes ckBump{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
