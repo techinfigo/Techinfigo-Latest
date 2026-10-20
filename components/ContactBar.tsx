@@ -27,7 +27,7 @@ export function ContactBar() {
   const { contact } = useSiteSettings();
 
   // The check-up page has its own bottom buttons.
-  if (pathname?.startsWith('/admin') || pathname === '/checkup' || pathname?.startsWith('/c/')) return null;
+  if (pathname?.startsWith('/admin') || pathname === '/checkup' || pathname?.startsWith('/c/') || pathname?.startsWith('/portal')) return null;
 
   return (
     <>
