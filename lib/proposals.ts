@@ -76,6 +76,9 @@ export function cleanDesign(raw: unknown): ProposalDesign | null {
     },
     ctaLine: str(r.ctaLine, 80),
     note: str(r.note, 300),
+    ...(r.discount && typeof r.discount === 'object' && num(r.discount.amount, 0, 10_000_000) > 0
+      ? { discount: { amount: num(r.discount.amount, 0, 10_000_000), on: r.discount.on === 'monthly' ? ('monthly' as const) : ('one-time' as const) } }
+      : {}),
     contact: {
       name: str(contact.name, 60),
       phone: str(contact.phone, 20),
