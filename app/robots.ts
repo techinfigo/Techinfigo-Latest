@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       // The admin panel and form/API endpoints have nothing for search engines.
       // /api/brand stays open: the logo and favicon are served from there.
       allow: ['/', '/api/brand/'],
-      disallow: ['/admin', '/api/', '/p/'],
+      disallow: ['/admin', '/api/', '/p/', '/c/'],
     },
     sitemap: `${SITE.url}/sitemap.xml`,
   };
