@@ -38,7 +38,7 @@ export const site = {
  * contact block has one shape for the settings document to override.
  */
 export const CONTACT = {
-  email: 'contact@techinfigo.com',
+  email: 'info@techinfigo.com',
   phone: site.phone,
 } as const;
 

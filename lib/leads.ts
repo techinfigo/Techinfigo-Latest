@@ -79,7 +79,7 @@ export function parseLead(input: LeadInput): ParsedLead {
   };
 }
 
-const MIRROR_ENDPOINT = 'https://formsubmit.co/ajax/contact@techinfigo.com';
+const MIRROR_ENDPOINT = 'https://formsubmit.co/ajax/info@techinfigo.com';
 
 /**
  * Mirror every submission to the existing inbox.

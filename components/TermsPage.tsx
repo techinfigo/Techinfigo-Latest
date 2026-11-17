@@ -218,7 +218,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
                     <p>Questions about these terms? Contact us:</p>
                     <ul className="space-y-3">
                       <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Techinfigo, Office no. 03, Second Floor, Block no. 25, Sanjay Place, Civil Lines, Agra, Uttar Pradesh 282002, India</span></li>
-                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Email: <a href="mailto:contact@techinfigo.com" target="_blank" rel="noopener noreferrer" className="text-brandDark font-bold border-b border-brandYellow hover:text-brandYellow transition-colors">contact@techinfigo.com</a></span></li>
+                      <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Email: <a href="mailto:info@techinfigo.com" target="_blank" rel="noopener noreferrer" className="text-brandDark font-bold border-b border-brandYellow hover:text-brandYellow transition-colors">info@techinfigo.com</a></span></li>
                       <li className="flex gap-4 items-start"><span className="w-1.5 h-1.5 rounded-full bg-brandYellow mt-3 flex-shrink-0"></span><span>Phone and WhatsApp: <a href="https://wa.me/919557338487" target="_blank" rel="noopener noreferrer" className="text-brandDark font-bold border-b border-brandYellow hover:text-brandYellow transition-colors">+91 95573 38487</a></span></li>
                     </ul>
                   </div>

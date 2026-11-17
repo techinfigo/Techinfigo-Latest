@@ -151,7 +151,7 @@ export async function send(alert: Alert, only?: string[], report?: string[]): Pr
             {
               TTL: 60 * 60 * 24,
               urgency: 'high',
-              vapidDetails: { subject: 'mailto:contact@techinfigo.com', publicKey: vapid.publicKey, privateKey: vapid.privateKey },
+              vapidDetails: { subject: 'mailto:info@techinfigo.com', publicKey: vapid.publicKey, privateKey: vapid.privateKey },
             },
           );
           sent++;
