@@ -290,10 +290,19 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
     onAddLead(nm.trim(), ph.trim(), nt.trim());
     setNm(''); setPh(''); setNt(''); setAdding(false);
   };
+  const [filter, setFilter] = useState<'all' | PortalLead['status']>('all');
   const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
   const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
+  const shown = filter === 'all' ? sorted : sorted.filter((l) => l.status === filter);
   const newCount = leads.filter((l) => l.status === 'New').length;
   const wonCount = leads.filter((l) => l.status === 'Converted').length;
+  const daysAgo = (at?: string) => (at ? Math.floor((Date.now() - new Date(at).getTime()) / 86400000) : 0);
+  const filters: { k: 'all' | PortalLead['status']; label: string; n: number }[] = [
+    { k: 'all', label: 'All', n: leads.length },
+    { k: 'New', label: 'New', n: newCount },
+    { k: 'Contacted', label: 'Contacted', n: leads.filter((l) => l.status === 'Contacted').length },
+    { k: 'Converted', label: 'Converted', n: wonCount },
+  ];
 
   if (leads.length === 0) {
     return (
@@ -352,8 +361,15 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
         <span className="font-bold text-brandDark/70">Conversion rate</span>
         <span className="text-xl font-black text-emerald-600">{leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%</span>
       </div>
+      <div className="flex flex-wrap gap-2">
+        {filters.map((f) => (
+          <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3 py-1.5 text-sm font-bold border-2 ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10'}`}>
+            {f.label} {f.n > 0 && <span className={filter === f.k ? 'text-brandYellow' : 'text-brandDark/40'}>{f.n}</span>}
+          </button>
+        ))}
+      </div>
       <ul className="grid gap-3">
-        {sorted.map((l) => {
+        {shown.map((l) => {
           const b = leadBadge(l.status);
           const digits = (l.phone || '').replace(/[^0-9]/g, '');
           return (
@@ -368,6 +384,9 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                 </div>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}>{b.text}</span>
               </div>
+              {l.status === 'New' && daysAgo(l.at) >= 1 && (
+                <p className="mt-2 inline-block rounded-lg bg-red-100 text-red-800 text-xs font-bold px-2 py-1">⏰ {daysAgo(l.at)} {daysAgo(l.at) === 1 ? 'din' : 'din'} purana — aaj hi call karein!</p>
+              )}
               {l.note && <p className="mt-2 text-sm text-brandDark/70">{l.note}</p>}
               {(l.phone || l.email) && (
                 <div className="mt-3 flex flex-wrap gap-2">
