@@ -93,8 +93,14 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
     }
   }, []);
   const enableAlerts = async () => {
+    const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const installed = typeof window !== 'undefined' && (window.matchMedia('(display-mode: standalone)').matches || (navigator as unknown as { standalone?: boolean }).standalone === true);
+    if (isIOS && !installed) {
+      alert('iPhone par alerts ke liye: niche Share button (⬆️) dabayein → "Add to Home Screen" → phir is app ko khol kar alerts on karein.');
+      return;
+    }
     if (typeof Notification === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
-      alert('Is browser mein alerts support nahi hai. Chrome ya Safari try karein.');
+      alert('Is browser mein alerts support nahi hai. Chrome ya Safari (iPhone par Home Screen par add karke) try karein.');
       return;
     }
     setAlertsBusy(true);

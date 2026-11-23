@@ -9,10 +9,15 @@ import { PORTAL_COOKIE, readPortal } from '../../lib/portal';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
-  title: 'Client portal | Techinfigo',
+  title: 'Techinfigo Client Portal',
   robots: { index: false, follow: false },
   referrer: 'no-referrer',
+  manifest: '/portal.webmanifest',
+  appleWebApp: { capable: true, title: 'Techinfigo', statusBarStyle: 'black-translucent' },
+  icons: { apple: '/proposal-logo.png' },
 };
+
+export const viewport = { themeColor: '#001d21' };
 
 export default async function Page() {
   const token = (await cookies()).get(PORTAL_COOKIE)?.value;
