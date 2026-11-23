@@ -291,6 +291,8 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
     setNm(''); setPh(''); setNt(''); setAdding(false);
   };
   const [filter, setFilter] = useState<'all' | PortalLead['status']>('all');
+  const [noteFor, setNoteFor] = useState<string | null>(null);
+  const [noteText, setNoteText] = useState('');
   const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
   const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
   const shown = filter === 'all' ? sorted : sorted.filter((l) => l.status === filter);
@@ -409,6 +411,13 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                   )}
                   <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5">✅ Converted</button>
                   <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5">✖️ Lost</button>
+                  <button type="button" onClick={() => { setNoteFor(noteFor === l.id ? null : l.id); setNoteText(l.note || ''); }} className="rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5">📝 Note</button>
+                </div>
+              )}
+              {noteFor === l.id && (
+                <div className="mt-2 flex gap-2">
+                  <input value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="e.g. Called — call back Friday" className="flex-1 rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
+                  <button type="button" onClick={() => { onAct(l.id, { note: noteText.trim() }); setNoteFor(null); }} className="rounded-xl bg-brandDark text-white text-sm font-bold px-3 py-2">Save</button>
                 </div>
               )}
             </li>
