@@ -21,8 +21,8 @@ const SESSION_DAYS = 30;
 
 /* ---------------------------------------------------------------- types */
 
-import type { PortalPlan, PortalSnapshot } from './portal-types';
-export type { PortalPlan, PortalInvoice, PortalService, PortalDoc, PortalSnapshot } from './portal-types';
+import type { PortalPlan, PortalLead, PortalSnapshot } from './portal-types';
+export type { PortalPlan, PortalInvoice, PortalService, PortalDoc, PortalLead, PortalSnapshot } from './portal-types';
 
 /* ------------------------------------------------------------- helpers */
 
@@ -88,6 +88,18 @@ export function cleanSnapshot(raw: unknown): PortalSnapshot {
     docs: arr(r.docs, 20)
       .map((d) => ({ title: str(d.title, 80), url: httpUrl(d.url), ...(day(d.date) ? { date: day(d.date) } : {}) }))
       .filter((d) => d.title && d.url),
+    leads: arr(r.leads, 500)
+      .map((l) => ({
+        id: str(l.id, 80),
+        name: str(l.name, 120) || 'Lead',
+        ...(str(l.phone, 20) ? { phone: str(l.phone, 20) } : {}),
+        ...(str(l.email, 120) ? { email: str(l.email, 120) } : {}),
+        ...(str(l.source, 40) ? { source: str(l.source, 40) } : {}),
+        status: (['New', 'Contacted', 'Converted', 'Lost'] as readonly string[]).includes(String(l.status)) ? (l.status as PortalLead['status']) : 'New',
+        ...(str(l.note, 500) ? { note: str(l.note, 500) } : {}),
+        ...(str(l.at, 40) ? { at: str(l.at, 40) } : {}),
+      }))
+      .filter((l) => l.id),
     upiId: /^[\w.\-]{2,64}@[\w.\-]{2,64}$/.test(str(r.upiId, 130)) ? str(r.upiId, 130) : '',
     contactName: str(r.contactName, 60),
     contactPhone: str(r.contactPhone, 20),

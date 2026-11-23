@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { whatsappUrl } from '../../config/site';
-import type { PortalPlan, PortalSnapshot } from '../../lib/portal-types';
+import type { PortalPlan, PortalLead, PortalSnapshot } from '../../lib/portal-types';
 
 /**
  * The client's dashboard: this month at a glance, the content calendar with
@@ -10,7 +10,7 @@ import type { PortalPlan, PortalSnapshot } from '../../lib/portal-types';
  * snapshot the CRM keeps up to date; nothing internal is ever in it.
  */
 
-type Tab = 'home' | 'calendar' | 'payments' | 'docs';
+type Tab = 'home' | 'leads' | 'calendar' | 'payments' | 'docs';
 
 const EMOJI: Record<string, string> = { Post: '🖼️', Reel: '🎬', Story: '📱', Ad: '📢', Shoot: '📸', Meeting: '🤝', Other: '📌' };
 const CONTENT = ['Post', 'Reel', 'Story', 'Ad'];
@@ -50,6 +50,8 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
   const upcoming = plans.filter((p) => !isContent(p.kind) && p.date >= todayKey && p.status !== 'Done').sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || ''))).slice(0, 3);
   const dueInvoices = data.invoices.filter((i) => i.due > 0.5).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const totalDue = dueInvoices.reduce((a, i) => a + i.due, 0);
+  const leads = data.leads || [];
+  const newLeads = leads.filter((l) => l.status === 'New').length;
 
   const logout = async () => {
     await fetch('/api/portal/logout', { method: 'POST' }).catch(() => 0);
@@ -60,6 +62,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
 
   const tabs: { t: Tab; icon: string; label: string; count?: number }[] = [
     { t: 'home', icon: '🏠', label: 'Home' },
+    { t: 'leads', icon: '🎯', label: 'Leads', count: newLeads },
     { t: 'calendar', icon: '📅', label: 'Calendar', count: waiting.length },
     { t: 'payments', icon: '🧾', label: 'Payments', count: dueInvoices.length },
     { t: 'docs', icon: '📄', label: 'Documents' },
@@ -128,6 +131,13 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                 <p className="mt-3 inline-block rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Review now 👉</p>
               </button>
             )}
+            {newLeads > 0 && (
+              <button type="button" onClick={() => setTab('leads')} className="text-left rounded-3xl bg-emerald-50 border-2 border-emerald-400 p-5">
+                <p className="text-lg font-black">🎯 {newLeads} new {newLeads === 1 ? 'lead' : 'leads'} to call</p>
+                <p className="mt-1 font-semibold text-brandDark/70">Naye leads aaye hain — jaldi call karein, warna chale jayenge.</p>
+                <p className="mt-3 inline-block rounded-xl bg-emerald-600 text-white text-sm font-bold px-4 py-2">See leads 👉</p>
+              </button>
+            )}
             {dueInvoices.length > 0 && (
               <button type="button" onClick={() => setTab('payments')} className="text-left rounded-3xl bg-white border-2 border-brandDark/10 p-5">
                 <p className="text-sm font-bold text-brandDark/60">Payment due</p>
@@ -173,6 +183,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           </div>
         )}
 
+        {tab === 'leads' && <LeadsTab leads={leads} />}
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
@@ -186,7 +197,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
       </main>
 
       {/* Phone tab bar */}
-      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-brandDark/10 grid grid-cols-4">
+      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-brandDark/10 grid grid-cols-5">
         {tabs.map((x) => (
           <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`relative py-2.5 text-[11px] font-bold flex flex-col items-center gap-0.5 ${tab === x.t ? 'text-brandDark' : 'text-brandDark/45'}`}>
             <span className="text-xl leading-none">{x.icon}</span>
@@ -207,6 +218,76 @@ function Stat({ n, label, good, warn }: { n: number; label: string; good?: boole
     <div className={`rounded-2xl p-3 text-center border-2 ${warn ? 'bg-brandYellow/25 border-brandYellow' : 'bg-white border-brandDark/10'}`}>
       <p className={`text-3xl font-black ${good ? 'text-emerald-600' : ''}`}>{n}</p>
       <p className="text-[11px] font-bold text-brandDark/60 leading-tight">{label}</p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------ leads */
+
+function leadBadge(status: PortalLead['status']): { text: string; cls: string } {
+  if (status === 'Converted') return { text: '✅ Converted', cls: 'bg-emerald-100 text-emerald-900' };
+  if (status === 'Contacted') return { text: '📞 Contacted', cls: 'bg-sky-100 text-sky-900' };
+  if (status === 'Lost') return { text: '✖️ Lost', cls: 'bg-brandDark/10 text-brandDark/60' };
+  return { text: '🆕 New', cls: 'bg-brandYellow/40 text-brandDark' };
+}
+
+function LeadsTab({ leads }: { leads: PortalLead[] }) {
+  const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
+  const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
+  const newCount = leads.filter((l) => l.status === 'New').length;
+  const wonCount = leads.filter((l) => l.status === 'Converted').length;
+
+  if (leads.length === 0) {
+    return (
+      <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-8 text-center">
+        <p className="text-5xl">🎯</p>
+        <p className="mt-3 text-lg font-black">No leads yet</p>
+        <p className="mt-1 font-semibold text-brandDark/60">Jaise hi aapke ads ya website se koi enquiry aayegi, woh yahan dikhegi — turant call kar sakte hain.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4">
+      <div className="grid grid-cols-3 gap-3">
+        <Stat n={leads.length} label="Total leads" />
+        <Stat n={newCount} label="New to call" warn={newCount > 0} />
+        <Stat n={wonCount} label="Converted" good />
+      </div>
+      <ul className="grid gap-3">
+        {sorted.map((l) => {
+          const b = leadBadge(l.status);
+          const digits = (l.phone || '').replace(/[^0-9]/g, '');
+          return (
+            <li key={l.id} className="rounded-3xl bg-white border-2 border-brandDark/10 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-black truncate">{l.name}</p>
+                  <p className="text-sm font-semibold text-brandDark/60">
+                    {l.source ? `${l.source}` : 'Enquiry'}
+                    {l.at ? ` · ${new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}` : ''}
+                  </p>
+                </div>
+                <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}>{b.text}</span>
+              </div>
+              {l.note && <p className="mt-2 text-sm text-brandDark/70">{l.note}</p>}
+              {(l.phone || l.email) && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {l.phone && (
+                    <a href={`tel:${l.phone}`} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">📞 Call</a>
+                  )}
+                  {digits && (
+                    <a href={`https://wa.me/${digits.length === 10 ? '91' + digits : digits}`} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-emerald-500 text-white text-sm font-bold px-4 py-2">💬 WhatsApp</a>
+                  )}
+                  {l.email && (
+                    <a href={`mailto:${l.email}`} className="rounded-xl bg-white border-2 border-brandDark/15 text-brandDark text-sm font-bold px-4 py-2">✉️ Email</a>
+                  )}
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
