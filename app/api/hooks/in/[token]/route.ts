@@ -56,6 +56,7 @@ async function handle(request: Request, token: string) {
       source: 'webhook',
       sourceName: connection.name,
       statsKey: connection.id,
+      clientId: connection.clientId ?? null,
       name,
       phone: found.phone ?? null,
       email: found.email ?? null,

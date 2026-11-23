@@ -58,7 +58,7 @@ function clean<T extends Record<string, unknown>>(obj: T): Record<string, unknow
 
 export async function sendToCrm(
   lead: NewLead,
-  extra: { status: EnquiryStatus; spamReasons: string[]; needs: string[]; sourceName?: string | null; checkup?: CheckupPayload | null },
+  extra: { status: EnquiryStatus; spamReasons: string[]; needs: string[]; sourceName?: string | null; checkup?: CheckupPayload | null; clientId?: string | null },
 ): Promise<string> {
   const ref = await crmDb()
     .collection(ENQUIRIES)
@@ -74,6 +74,7 @@ export async function sendToCrm(
         checkup: extra.checkup ?? null,
         sourceForm: lead.sourceForm,
         sourceName: extra.sourceName ?? null,
+        clientId: extra.clientId ?? null,
         landingPage: lead.landingPage,
         submittedFrom: lead.submittedFrom,
         utmSource: lead.utmSource,
@@ -124,6 +125,7 @@ export type Connection = {
   kind: 'webhook' | 'google-ads';
   name: string;
   enabled: boolean;
+  clientId?: string;
 };
 
 /** Finds the connection that owns this secret token (URL token or Google Ads key). */
@@ -138,7 +140,7 @@ export async function findConnection(token: string, kind: Connection['kind']): P
   if (!doc) return null;
   const d = doc.data();
   if (d.kind !== kind) return null;
-  return { id: doc.id, kind, name: typeof d.name === 'string' && d.name ? d.name : 'Connection', enabled: d.enabled !== false };
+  return { id: doc.id, kind, name: typeof d.name === 'string' && d.name ? d.name : 'Connection', enabled: d.enabled !== false, ...(typeof d.clientId === 'string' && d.clientId ? { clientId: d.clientId } : {}) };
 }
 
 /**

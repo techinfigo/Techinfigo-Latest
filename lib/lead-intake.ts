@@ -29,6 +29,8 @@ export type ExternalLead = {
   campaign: string | null;
   adName: string | null;
   isTest: boolean;
+  /** Which client this connection's leads belong to (client portal). */
+  clientId?: string | null;
 };
 
 export async function intakeExternalLead(lead: ExternalLead): Promise<{ stored: boolean; id?: string }> {
@@ -71,6 +73,7 @@ export async function intakeExternalLead(lead: ExternalLead): Promise<{ stored: 
     spamReasons: reasons,
     needs: [],
     sourceName: lead.sourceName ?? null,
+    clientId: lead.clientId ?? null,
   });
   if (!reasons.length || lead.isTest) await recordReceived(lead.statsKey, lead.isTest);
   return { stored: true, id };
