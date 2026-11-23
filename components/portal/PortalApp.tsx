@@ -52,6 +52,14 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
   const totalDue = dueInvoices.reduce((a, i) => a + i.due, 0);
   const [leads, setLeads] = useState<PortalLead[]>(data.leads || []);
   const newLeads = leads.filter((l) => l.status === 'New').length;
+  const leadStats = {
+    total: leads.length,
+    newC: newLeads,
+    contacted: leads.filter((l) => l.status === 'Contacted').length,
+    converted: leads.filter((l) => l.status === 'Converted').length,
+    thisMonth: leads.filter((l) => (l.at || '').startsWith(monthKey)).length,
+  };
+  const convRate = leadStats.total ? Math.round((leadStats.converted / leadStats.total) * 100) : 0;
 
   const onLeadAct = async (id: string, patch: { status?: PortalLead['status']; note?: string }) => {
     setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
@@ -122,6 +130,28 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
               <Stat n={posted} label="Posted" good />
               <Stat n={waiting.length} label="Need your OK" warn={waiting.length > 0} />
             </div>
+            {leadStats.total > 0 && (
+              <button type="button" onClick={() => setTab('leads')} className="text-left rounded-3xl bg-brandDark text-brandBg p-5">
+                <div className="flex items-center justify-between">
+                  <p className="font-black text-lg">🎯 Your leads</p>
+                  <span className="text-sm font-bold text-brandYellow">See all 👉</span>
+                </div>
+                <div className="mt-3 grid grid-cols-4 gap-2 text-center">
+                  <div><p className="text-2xl font-black">{leadStats.total}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Total</p></div>
+                  <div><p className="text-2xl font-black text-brandYellow">{leadStats.newC}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">New</p></div>
+                  <div><p className="text-2xl font-black">{leadStats.contacted}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Contacted</p></div>
+                  <div><p className="text-2xl font-black text-emerald-400">{leadStats.converted}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Converted</p></div>
+                </div>
+                <div className="mt-4 flex items-center justify-between text-sm">
+                  <span className="font-bold">Conversion rate</span>
+                  <span className="font-black text-emerald-400">{convRate}%</span>
+                </div>
+                <div className="mt-1.5 h-2.5 rounded-full bg-brandBg/15 overflow-hidden">
+                  <div className="h-full rounded-full bg-emerald-400" style={{ width: `${convRate}%` }} />
+                </div>
+                {leadStats.newC > 0 && <p className="mt-3 text-sm font-semibold text-brandYellow">⏳ {leadStats.newC} {leadStats.newC === 1 ? 'lead' : 'leads'} waiting — call now!</p>}
+              </button>
+            )}
             {content.length > 0 && (
               <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5">
                 <div className="flex justify-between text-sm font-bold">
@@ -262,6 +292,10 @@ function LeadsTab({ leads, onAct }: { leads: PortalLead[]; onAct: (id: string, p
         <Stat n={leads.length} label="Total leads" />
         <Stat n={newCount} label="New to call" warn={newCount > 0} />
         <Stat n={wonCount} label="Converted" good />
+      </div>
+      <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4 flex items-center justify-between">
+        <span className="font-bold text-brandDark/70">Conversion rate</span>
+        <span className="text-xl font-black text-emerald-600">{leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%</span>
       </div>
       <ul className="grid gap-3">
         {sorted.map((l) => {
