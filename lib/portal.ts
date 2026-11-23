@@ -217,6 +217,37 @@ export async function clientAction(clientId: string, planId: string, action: 'ap
   return 'ok';
 }
 
+/** Signed-in client updates one of their leads (status / note). */
+export async function clientLeadAction(clientId: string, leadId: string, status: string, note: string): Promise<'ok' | 'bad'> {
+  const ref = crmDb().collection(PORTALS).doc(clientId);
+  let owner = '';
+  let business = '';
+  let leadName = '';
+  const ok = await crmDb().runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists || !snap.get('enabled')) return false;
+    const s = cleanSnapshot(snap.get('snapshot'));
+    const l = s.leads.find((x) => x.id === leadId);
+    if (!l) return false;
+    if (status === 'New' || status === 'Contacted' || status === 'Converted' || status === 'Lost') l.status = status as typeof l.status;
+    if (note) l.note = note;
+    owner = String(snap.get('uid') || '');
+    business = s.business;
+    leadName = l.name;
+    tx.update(ref, { snapshot: s });
+    tx.set(crmDb().collection(PORTAL_ACTIONS).doc(), { uid: owner, clientId, leadId, leadStatus: status, leadNote: note, at: Date.now() });
+    return true;
+  });
+  if (!ok) return 'bad';
+  await send({
+    title: `\uD83C\uDFAF ${business || 'Client'} updated a lead: ${leadName}`,
+    body: note ? `${status} — \u201C${note}\u201D` : `Marked ${status}.`,
+    path: '/',
+    tag: `portal-lead-${clientId}`,
+  }).catch(() => 0);
+  return 'ok';
+}
+
 /* ---------------------------------------------------------- CRM (owner) */
 
 export type PortalSetup = { clientId: string; enabled: boolean; phone: string; syncedAt: number; hasPassword: boolean };
@@ -262,6 +293,14 @@ export async function syncPortal(user: CrmUser, clientId: string, raw: unknown):
       p.clientComment = String(a.get('comment') || '');
     }
   }
+  for (const a of pending.docs.filter((d) => d.get('leadId')).sort((x, y) => Number(x.get('at')) - Number(y.get('at')))) {
+    const l = s.leads.find((x) => x.id === a.get('leadId'));
+    if (!l) continue;
+    const st = String(a.get('leadStatus') || '');
+    if (st === 'New' || st === 'Contacted' || st === 'Converted' || st === 'Lost') l.status = st;
+    const note = String(a.get('leadNote') || '');
+    if (note) l.note = note;
+  }
   await ref.update({ snapshot: s, syncedAt: Date.now() });
   return true;
 }
@@ -271,12 +310,12 @@ export async function portalStatus(user: CrmUser): Promise<PortalSetup[]> {
   return docs.docs.map((d) => ({ clientId: d.id, enabled: !!d.get('enabled'), phone: String(d.get('phone') || ''), syncedAt: Number(d.get('syncedAt') || 0), hasPassword: !!d.get('passHash') }));
 }
 
-export type PortalAction = { id: string; clientId: string; planId: string; action: 'approve' | 'change'; comment: string; at: number };
+export type PortalAction = { id: string; clientId: string; planId: string; action: 'approve' | 'change'; comment: string; at: number; leadId?: string; leadStatus?: string; leadNote?: string };
 
 export async function pullActions(user: CrmUser): Promise<PortalAction[]> {
   const docs = await crmDb().collection(PORTAL_ACTIONS).where('uid', '==', user.uid).get();
   return docs.docs
-    .map((d) => ({ id: d.id, clientId: String(d.get('clientId')), planId: String(d.get('planId')), action: d.get('action') === 'change' ? ('change' as const) : ('approve' as const), comment: String(d.get('comment') || ''), at: Number(d.get('at') || 0) }))
+    .map((d) => ({ id: d.id, clientId: String(d.get('clientId')), planId: String(d.get('planId') || ''), action: d.get('action') === 'change' ? ('change' as const) : ('approve' as const), comment: String(d.get('comment') || ''), at: Number(d.get('at') || 0), ...(d.get('leadId') ? { leadId: String(d.get('leadId')), leadStatus: String(d.get('leadStatus') || ''), leadNote: String(d.get('leadNote') || '') } : {}) }))
     .sort((a, b) => a.at - b.at);
 }
 

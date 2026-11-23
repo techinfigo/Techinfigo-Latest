@@ -50,8 +50,17 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
   const upcoming = plans.filter((p) => !isContent(p.kind) && p.date >= todayKey && p.status !== 'Done').sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || ''))).slice(0, 3);
   const dueInvoices = data.invoices.filter((i) => i.due > 0.5).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const totalDue = dueInvoices.reduce((a, i) => a + i.due, 0);
-  const leads = data.leads || [];
+  const [leads, setLeads] = useState<PortalLead[]>(data.leads || []);
   const newLeads = leads.filter((l) => l.status === 'New').length;
+
+  const onLeadAct = async (id: string, patch: { status?: PortalLead['status']; note?: string }) => {
+    setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
+    await fetch('/api/portal/act', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ leadId: id, status: patch.status || '', note: patch.note || '' }),
+    }).catch(() => 0);
+  };
 
   const logout = async () => {
     await fetch('/api/portal/logout', { method: 'POST' }).catch(() => 0);
@@ -183,7 +192,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           </div>
         )}
 
-        {tab === 'leads' && <LeadsTab leads={leads} />}
+        {tab === 'leads' && <LeadsTab leads={leads} onAct={onLeadAct} />}
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
@@ -231,7 +240,7 @@ function leadBadge(status: PortalLead['status']): { text: string; cls: string } 
   return { text: '🆕 New', cls: 'bg-brandYellow/40 text-brandDark' };
 }
 
-function LeadsTab({ leads }: { leads: PortalLead[] }) {
+function LeadsTab({ leads, onAct }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void }) {
   const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
   const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
   const newCount = leads.filter((l) => l.status === 'New').length;
@@ -282,6 +291,16 @@ function LeadsTab({ leads }: { leads: PortalLead[] }) {
                   {l.email && (
                     <a href={`mailto:${l.email}`} className="rounded-xl bg-white border-2 border-brandDark/15 text-brandDark text-sm font-bold px-4 py-2">✉️ Email</a>
                   )}
+                </div>
+              )}
+              {l.status !== 'Converted' && l.status !== 'Lost' && (
+                <div className="mt-3 flex flex-wrap gap-2 border-t border-brandDark/5 pt-3">
+                  <span className="text-xs font-bold text-brandDark/50 self-center">Update:</span>
+                  {l.status === 'New' && (
+                    <button type="button" onClick={() => onAct(l.id, { status: 'Contacted' })} className="rounded-xl bg-sky-100 text-sky-900 text-sm font-bold px-3 py-1.5">📞 Mark Contacted</button>
+                  )}
+                  <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5">✅ Converted</button>
+                  <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5">✖️ Lost</button>
                 </div>
               )}
             </li>
