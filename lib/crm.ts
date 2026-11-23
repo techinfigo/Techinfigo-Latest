@@ -98,6 +98,16 @@ export async function sendToCrm(
       businessName: lead.brandName,
       source: extra.sourceName || sourceLabel(lead.sourceForm),
     });
+    // Also alert the client's own team, if this lead belongs to a client.
+    if (extra.clientId) {
+      const { sendClientAlert } = await import('./portal-push');
+      await sendClientAlert(
+        extra.clientId,
+        `\uD83C\uDFAF New lead: ${lead.name}`.slice(0, 100),
+        lead.phone ? `${lead.phone} — abhi call karein!` : 'Naya lead aaya — abhi call karein!',
+        `lead-${ref.id}`,
+      ).catch(() => 0);
+    }
   }
   return ref.id;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalSnapshot } from '../../lib/portal-types';
 
@@ -85,6 +85,41 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
     window.location.reload();
   };
 
+  const [alertsOn, setAlertsOn] = useState(false);
+  const [alertsBusy, setAlertsBusy] = useState(false);
+  useEffect(() => {
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration('/portal-sw.js').then((r) => r?.pushManager.getSubscription()).then((sub) => setAlertsOn(!!sub)).catch(() => 0);
+    }
+  }, []);
+  const enableAlerts = async () => {
+    if (typeof Notification === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+      alert('Is browser mein alerts support nahi hai. Chrome ya Safari try karein.');
+      return;
+    }
+    setAlertsBusy(true);
+    try {
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') { setAlertsBusy(false); return; }
+      const reg = await navigator.serviceWorker.register('/portal-sw.js');
+      await navigator.serviceWorker.ready;
+      const keyRes = await fetch('/api/portal/push').then((r) => r.json());
+      if (!keyRes.ok) throw new Error('no key');
+      const b64 = keyRes.publicKey.replace(/-/g, '+').replace(/_/g, '/');
+      const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4);
+      const raw = atob(padded);
+      const appKey = new Uint8Array([...raw].map((c) => c.charCodeAt(0)));
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey });
+      const r = await fetch('/api/portal/push', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub }) }).then((x) => x.json());
+      setAlertsOn(!!r.ok);
+    } catch (e) {
+      console.error(e);
+      alert('Alerts on nahi ho paye. Dobara try karein.');
+    } finally {
+      setAlertsBusy(false);
+    }
+  };
+
   const onAct = (id: string, patch: Partial<PortalPlan>) => setPlans((ps) => ps.map((p) => (p.id === id ? { ...p, ...patch } : p)));
 
   const tabs: { t: Tab; icon: string; label: string; count?: number }[] = [
@@ -119,6 +154,10 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
             </button>
             {menu && (
               <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-white border border-brandDark/10 shadow-3xl p-2 text-sm font-semibold">
+                {!alertsOn && (
+                  <button type="button" disabled={alertsBusy} onClick={() => { enableAlerts(); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5">🔔 Turn on lead alerts</button>
+                )}
+                {alertsOn && <p className="px-3 py-2 text-xs text-emerald-600 font-bold">🔔 Lead alerts on</p>}
                 <button type="button" onClick={() => { setPwOpen(true); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5">🔑 Change password</button>
                 <a href={whatsappUrl(`Namaste, ${data.business} ke baare mein baat karni hai.`)} target="_blank" rel="noopener noreferrer" className="block px-3 py-2 rounded-xl hover:bg-brandDark/5">💬 WhatsApp Techinfigo</a>
                 <button type="button" onClick={logout} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5 text-red-600">↩️ Log out</button>
@@ -160,6 +199,13 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                   <div className="h-full rounded-full bg-emerald-400" style={{ width: `${convRate}%` }} />
                 </div>
                 {leadStats.newC > 0 && <p className="mt-3 text-sm font-semibold text-brandYellow">⏳ {leadStats.newC} {leadStats.newC === 1 ? 'lead' : 'leads'} waiting — call now!</p>}
+              </button>
+            )}
+            {!alertsOn && leadStats.total > 0 && (
+              <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="text-left rounded-3xl bg-brandYellow/20 border-2 border-brandYellow p-5">
+                <p className="font-black">🔔 Naye lead ka turant alert paayein</p>
+                <p className="mt-1 text-sm font-semibold text-brandDark/70">Jaise hi naya lead aaye, aapke phone par notification aa jayega — turant call kar sakein.</p>
+                <p className="mt-3 inline-block rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">{alertsBusy ? 'On kar rahe hain…' : 'Turn on alerts'}</p>
               </button>
             )}
             {content.length > 0 && (
