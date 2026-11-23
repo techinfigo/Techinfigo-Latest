@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { rateLimit } from '../../../../lib/rate-limit';
-import { PORTAL_COOKIE, clientAction, clientLeadAction, readPortal } from '../../../../lib/portal';
+import { PORTAL_COOKIE, clientAction, clientLeadAction, clientAddLead, readPortal } from '../../../../lib/portal';
 
 /** Signed-in client approves a post, or asks for a change. */
 
@@ -14,6 +14,17 @@ export async function POST(request: Request) {
   if (!session) return NextResponse.json({ ok: false, error: 'Dobara login karein.' }, { status: 401, headers: H });
   if (!rateLimit(`portalact:${session.clientId}`, 120, 60 * 60 * 1000).allowed) return NextResponse.json({ ok: false, error: 'Thodi der baad try karein.' }, { status: 429, headers: H });
   const raw = (await request.json().catch(() => null)) as Record<string, unknown> | null;
+
+  // New lead added by the client (walk-in / phone call).
+  if (raw && raw.newLead && typeof raw.newLead === 'object') {
+    const nl = raw.newLead as Record<string, unknown>;
+    const name = typeof nl.name === 'string' ? nl.name.trim().slice(0, 120) : '';
+    const phone = typeof nl.phone === 'string' ? nl.phone.trim().slice(0, 20) : '';
+    const note = typeof nl.note === 'string' ? nl.note.trim().slice(0, 500) : '';
+    if (!name && !phone) return NextResponse.json({ ok: false, error: 'Naam ya phone number daaliye.' }, { status: 400, headers: H });
+    const ar = await clientAddLead(session.clientId, name, phone, note).catch((e) => { console.error('[portal add lead]', e); return 'bad' as const; });
+    return ar === 'ok' ? NextResponse.json({ ok: true }, { headers: H }) : NextResponse.json({ ok: false, error: 'Ye abhi nahi ho paya. Refresh karke try karein.' }, { status: 409, headers: H });
+  }
 
   // Lead update (status / note) — kept separate from calendar actions.
   if (raw && typeof raw.leadId === 'string') {

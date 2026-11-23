@@ -70,6 +70,16 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
     }).catch(() => 0);
   };
 
+  const onAddLead = async (name: string, phone: string, note: string) => {
+    const tempId = `plead-${Date.now()}`;
+    setLeads((ls) => [{ id: tempId, name: name || 'Lead', phone, source: 'Added by you', status: 'New', note, at: new Date().toISOString() }, ...ls]);
+    await fetch('/api/portal/act', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newLead: { name, phone, note } }),
+    }).catch(() => 0);
+  };
+
   const logout = async () => {
     await fetch('/api/portal/logout', { method: 'POST' }).catch(() => 0);
     window.location.reload();
@@ -222,7 +232,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           </div>
         )}
 
-        {tab === 'leads' && <LeadsTab leads={leads} onAct={onLeadAct} />}
+        {tab === 'leads' && <LeadsTab leads={leads} onAct={onLeadAct} onAddLead={onAddLead} />}
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
@@ -270,7 +280,16 @@ function leadBadge(status: PortalLead['status']): { text: string; cls: string } 
   return { text: '🆕 New', cls: 'bg-brandYellow/40 text-brandDark' };
 }
 
-function LeadsTab({ leads, onAct }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void }) {
+function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void; onAddLead: (name: string, phone: string, note: string) => void }) {
+  const [adding, setAdding] = useState(false);
+  const [nm, setNm] = useState('');
+  const [ph, setPh] = useState('');
+  const [nt, setNt] = useState('');
+  const submitAdd = () => {
+    if (!nm.trim() && !ph.trim()) return;
+    onAddLead(nm.trim(), ph.trim(), nt.trim());
+    setNm(''); setPh(''); setNt(''); setAdding(false);
+  };
   const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
   const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
   const newCount = leads.filter((l) => l.status === 'New').length;
@@ -278,16 +297,52 @@ function LeadsTab({ leads, onAct }: { leads: PortalLead[]; onAct: (id: string, p
 
   if (leads.length === 0) {
     return (
-      <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-8 text-center">
-        <p className="text-5xl">🎯</p>
-        <p className="mt-3 text-lg font-black">No leads yet</p>
-        <p className="mt-1 font-semibold text-brandDark/60">Jaise hi aapke ads ya website se koi enquiry aayegi, woh yahan dikhegi — turant call kar sakte hain.</p>
+      <div className="grid gap-4">
+        {!adding ? (
+          <>
+            <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-8 text-center">
+              <p className="text-5xl">🎯</p>
+              <p className="mt-3 text-lg font-black">No leads yet</p>
+              <p className="mt-1 font-semibold text-brandDark/60">Jaise hi aapke ads ya website se koi enquiry aayegi, woh yahan dikhegi. Ya khud se add karein:</p>
+            </div>
+            <button type="button" onClick={() => setAdding(true)} className="w-full rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5">+ Add a lead (walk-in / phone call)</button>
+          </>
+        ) : (
+          <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2">
+            <input value={nm} onChange={(e) => setNm(e.target.value)} placeholder="Name" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
+            <input value={ph} onChange={(e) => setPh(e.target.value)} placeholder="Phone number" inputMode="tel" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
+            <input value={nt} onChange={(e) => setNt(e.target.value)} placeholder="Note (optional)" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
+            <div className="flex gap-2">
+              <button type="button" onClick={submitAdd} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Add lead</button>
+              <button type="button" onClick={() => setAdding(false)} className="rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-4 py-2">Cancel</button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
+  const addBox = (
+    <div>
+      {!adding ? (
+        <button type="button" onClick={() => setAdding(true)} className="w-full rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5">+ Add a lead (walk-in / phone call)</button>
+      ) : (
+        <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2">
+          <input value={nm} onChange={(e) => setNm(e.target.value)} placeholder="Name" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
+          <input value={ph} onChange={(e) => setPh(e.target.value)} placeholder="Phone number" inputMode="tel" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
+          <input value={nt} onChange={(e) => setNt(e.target.value)} placeholder="Note (optional)" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
+          <div className="flex gap-2">
+            <button type="button" onClick={submitAdd} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Add lead</button>
+            <button type="button" onClick={() => setAdding(false)} className="rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-4 py-2">Cancel</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="grid gap-4">
+      {addBox}
       <div className="grid grid-cols-3 gap-3">
         <Stat n={leads.length} label="Total leads" />
         <Stat n={newCount} label="New to call" warn={newCount > 0} />

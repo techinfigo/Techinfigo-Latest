@@ -248,6 +248,33 @@ export async function clientLeadAction(clientId: string, leadId: string, status:
   return 'ok';
 }
 
+/** Signed-in client adds their own lead (walk-in, phone call). */
+export async function clientAddLead(clientId: string, name: string, phone: string, note: string): Promise<'ok' | 'bad'> {
+  const ref = crmDb().collection(PORTALS).doc(clientId);
+  const leadId = `plead-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  let owner = '';
+  let business = '';
+  const ok = await crmDb().runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists || !snap.get('enabled')) return false;
+    const s = cleanSnapshot(snap.get('snapshot'));
+    s.leads.unshift({ id: leadId, name: name || 'Lead', phone: phone || '', source: 'Added by you', status: 'New', ...(note ? { note } : {}), at: new Date().toISOString() });
+    owner = String(snap.get('uid') || '');
+    business = s.business;
+    tx.update(ref, { snapshot: s });
+    tx.set(crmDb().collection(PORTAL_ACTIONS).doc(), { uid: owner, clientId, leadId, leadNew: true, leadName: name, leadPhone: phone, leadNote: note, leadStatus: 'New', at: Date.now() });
+    return true;
+  });
+  if (!ok) return 'bad';
+  await send({
+    title: `\uD83C\uDFAF ${business || 'Client'} added a lead: ${name}`,
+    body: phone ? `${phone}${note ? ' — ' + note : ''}` : (note || 'New lead added from portal.'),
+    path: '/',
+    tag: `portal-lead-${clientId}`,
+  }).catch(() => 0);
+  return 'ok';
+}
+
 /* ---------------------------------------------------------- CRM (owner) */
 
 export type PortalSetup = { clientId: string; enabled: boolean; phone: string; syncedAt: number; hasPassword: boolean };
@@ -294,7 +321,11 @@ export async function syncPortal(user: CrmUser, clientId: string, raw: unknown):
     }
   }
   for (const a of pending.docs.filter((d) => d.get('leadId')).sort((x, y) => Number(x.get('at')) - Number(y.get('at')))) {
-    const l = s.leads.find((x) => x.id === a.get('leadId'));
+    let l = s.leads.find((x) => x.id === a.get('leadId'));
+    if (!l && a.get('leadNew')) {
+      l = { id: String(a.get('leadId')), name: String(a.get('leadName') || 'Lead'), phone: String(a.get('leadPhone') || ''), source: 'Added by you', status: 'New', at: new Date(Number(a.get('at')) || Date.now()).toISOString() };
+      s.leads.unshift(l);
+    }
     if (!l) continue;
     const st = String(a.get('leadStatus') || '');
     if (st === 'New' || st === 'Contacted' || st === 'Converted' || st === 'Lost') l.status = st;
@@ -310,12 +341,12 @@ export async function portalStatus(user: CrmUser): Promise<PortalSetup[]> {
   return docs.docs.map((d) => ({ clientId: d.id, enabled: !!d.get('enabled'), phone: String(d.get('phone') || ''), syncedAt: Number(d.get('syncedAt') || 0), hasPassword: !!d.get('passHash') }));
 }
 
-export type PortalAction = { id: string; clientId: string; planId: string; action: 'approve' | 'change'; comment: string; at: number; leadId?: string; leadStatus?: string; leadNote?: string };
+export type PortalAction = { id: string; clientId: string; planId: string; action: 'approve' | 'change'; comment: string; at: number; leadId?: string; leadStatus?: string; leadNote?: string; leadNew?: boolean; leadName?: string; leadPhone?: string };
 
 export async function pullActions(user: CrmUser): Promise<PortalAction[]> {
   const docs = await crmDb().collection(PORTAL_ACTIONS).where('uid', '==', user.uid).get();
   return docs.docs
-    .map((d) => ({ id: d.id, clientId: String(d.get('clientId')), planId: String(d.get('planId') || ''), action: d.get('action') === 'change' ? ('change' as const) : ('approve' as const), comment: String(d.get('comment') || ''), at: Number(d.get('at') || 0), ...(d.get('leadId') ? { leadId: String(d.get('leadId')), leadStatus: String(d.get('leadStatus') || ''), leadNote: String(d.get('leadNote') || '') } : {}) }))
+    .map((d) => ({ id: d.id, clientId: String(d.get('clientId')), planId: String(d.get('planId') || ''), action: d.get('action') === 'change' ? ('change' as const) : ('approve' as const), comment: String(d.get('comment') || ''), at: Number(d.get('at') || 0), ...(d.get('leadId') ? { leadId: String(d.get('leadId')), leadStatus: String(d.get('leadStatus') || ''), leadNote: String(d.get('leadNote') || ''), ...(d.get('leadNew') ? { leadNew: true, leadName: String(d.get('leadName') || ''), leadPhone: String(d.get('leadPhone') || '') } : {}) } : {}) }))
     .sort((a, b) => a.at - b.at);
 }
 
