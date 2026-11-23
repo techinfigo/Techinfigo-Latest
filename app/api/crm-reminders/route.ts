@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { runReminders } from '../../../lib/crm-reminders';
+import { runPortalLeadReminders } from '../../../lib/portal-reminders';
 import { clientKey, rateLimit } from '../../../lib/rate-limit';
 
 /**
@@ -27,7 +28,12 @@ async function handle(request: Request) {
 
   try {
     const result = await runReminders();
-    return NextResponse.json({ ok: true, ...result });
+    // Also nudge clients' teams about leads they haven't called (deduped per day).
+    const portal = await runPortalLeadReminders().catch((e) => {
+      console.error('[portal-reminders] failed:', e);
+      return { checked: 0, sent: 0 };
+    });
+    return NextResponse.json({ ok: true, ...result, portalReminders: portal });
   } catch (error) {
     console.error('[crm-reminders] failed:', error);
     return NextResponse.json({ ok: false, error: 'Reminder run failed.' }, { status: 500 });
