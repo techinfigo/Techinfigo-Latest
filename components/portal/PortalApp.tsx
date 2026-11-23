@@ -415,6 +415,29 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
         <span className="font-bold text-brandDark/70">Conversion rate</span>
         <span className="text-xl font-black text-emerald-600">{leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%</span>
       </div>
+      {(() => {
+        const bySource: Record<string, number> = {};
+        leads.forEach((l) => { const k = l.source || 'Other'; bySource[k] = (bySource[k] || 0) + 1; });
+        const rows = Object.entries(bySource).sort((a, b) => b[1] - a[1]).slice(0, 6);
+        if (rows.length < 2) return null;
+        const max = rows[0][1] || 1;
+        return (
+          <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4">
+            <p className="font-black text-brandDark/70 mb-2">Where your leads come from</p>
+            <ul className="grid gap-2">
+              {rows.map(([src, n]) => (
+                <li key={src} className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-brandDark/60 w-28 truncate">{src}</span>
+                  <div className="flex-1 h-2.5 rounded-full bg-brandDark/5 overflow-hidden">
+                    <div className="h-full rounded-full bg-brandYellow" style={{ width: `${Math.round((n / max) * 100)}%` }} />
+                  </div>
+                  <span className="text-xs font-black w-6 text-right">{n}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
       <div className="flex flex-wrap gap-2">
         {filters.map((f) => (
           <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3 py-1.5 text-sm font-bold border-2 ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10'}`}>
