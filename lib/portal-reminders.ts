@@ -46,7 +46,7 @@ export async function runPortalLeadReminders(nowMs = Date.now()): Promise<Portal
         const doc = await crmDb().collection('portals').doc(clientId).get();
         if (!doc.exists || !doc.get('enabled')) return;
         const snap = cleanSnapshot(doc.get('snapshot'));
-        const stale = snap.leads.filter((l) => l.status === 'New' && l.at && new Date(l.at).getTime() <= staleBefore);
+        const stale = snap.leads.filter((l) => l.status === 'New Lead' && l.at && new Date(l.at).getTime() <= staleBefore);
         if (stale.length === 0) return;
         if (!(await claim(`plead-remind-${clientId}-${dayKey}`))) return; // already nudged today
         const n = stale.length;

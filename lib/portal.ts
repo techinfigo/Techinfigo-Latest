@@ -22,6 +22,7 @@ const SESSION_DAYS = 30;
 /* ---------------------------------------------------------------- types */
 
 import type { PortalPlan, PortalLead, PortalSnapshot } from './portal-types';
+import { normalizeStage, PORTAL_STAGES } from './portal-types';
 export type { PortalPlan, PortalInvoice, PortalService, PortalDoc, PortalLead, PortalSnapshot } from './portal-types';
 
 /* ------------------------------------------------------------- helpers */
@@ -95,7 +96,7 @@ export function cleanSnapshot(raw: unknown): PortalSnapshot {
         ...(str(l.phone, 20) ? { phone: str(l.phone, 20) } : {}),
         ...(str(l.email, 120) ? { email: str(l.email, 120) } : {}),
         ...(str(l.source, 40) ? { source: str(l.source, 40) } : {}),
-        status: (['New', 'Contacted', 'Converted', 'Lost'] as readonly string[]).includes(String(l.status)) ? (l.status as PortalLead['status']) : 'New',
+        status: normalizeStage(l.status),
         ...(str(l.note, 500) ? { note: str(l.note, 500) } : {}),
         ...(str(l.at, 40) ? { at: str(l.at, 40) } : {}),
         ...(str(l.nextFollowUp, 40) ? { nextFollowUp: str(l.nextFollowUp, 40) } : {}),
@@ -238,7 +239,7 @@ export async function clientLeadAction(clientId: string, leadId: string, status:
     const s = cleanSnapshot(snap.get('snapshot'));
     const l = s.leads.find((x) => x.id === leadId);
     if (!l) return false;
-    if (status === 'New' || status === 'Contacted' || status === 'Converted' || status === 'Lost') l.status = status as typeof l.status;
+    if ((PORTAL_STAGES as readonly string[]).includes(status)) l.status = status as typeof l.status;
     if (note) l.note = note;
     owner = String(snap.get('uid') || '');
     business = s.business;
@@ -274,7 +275,7 @@ export async function clientLeadFollowUp(clientId: string, leadId: string, next:
     if (actNote) {
       const item = { type: actType || 'Other', note: actNote, at: nowIso };
       l.activity = [item, ...(l.activity || [])].slice(0, 20);
-      if (l.status === 'New') l.status = 'Contacted';
+      if (l.status === 'New Lead') l.status = 'Contacted';
     }
     owner = String(snap.get('uid') || '');
     business = s.business;
@@ -303,11 +304,11 @@ export async function clientAddLead(clientId: string, name: string, phone: strin
     const snap = await tx.get(ref);
     if (!snap.exists || !snap.get('enabled')) return false;
     const s = cleanSnapshot(snap.get('snapshot'));
-    s.leads.unshift({ id: leadId, name: name || 'Lead', phone: phone || '', source: 'Added by you', status: 'New', ...(note ? { note } : {}), at: new Date().toISOString() });
+    s.leads.unshift({ id: leadId, name: name || 'Lead', phone: phone || '', source: 'Added by you', status: 'New Lead', ...(note ? { note } : {}), at: new Date().toISOString() });
     owner = String(snap.get('uid') || '');
     business = s.business;
     tx.update(ref, { snapshot: s });
-    tx.set(crmDb().collection(PORTAL_ACTIONS).doc(), { uid: owner, clientId, leadId, leadNew: true, leadName: name, leadPhone: phone, leadNote: note, leadStatus: 'New', at: Date.now() });
+    tx.set(crmDb().collection(PORTAL_ACTIONS).doc(), { uid: owner, clientId, leadId, leadNew: true, leadName: name, leadPhone: phone, leadNote: note, leadStatus: 'New Lead', at: Date.now() });
     return true;
   });
   if (!ok) return 'bad';
@@ -368,14 +369,21 @@ export async function syncPortal(user: CrmUser, clientId: string, raw: unknown):
   for (const a of pending.docs.filter((d) => d.get('leadId')).sort((x, y) => Number(x.get('at')) - Number(y.get('at')))) {
     let l = s.leads.find((x) => x.id === a.get('leadId'));
     if (!l && a.get('leadNew')) {
-      l = { id: String(a.get('leadId')), name: String(a.get('leadName') || 'Lead'), phone: String(a.get('leadPhone') || ''), source: 'Added by you', status: 'New', at: new Date(Number(a.get('at')) || Date.now()).toISOString() };
+      l = { id: String(a.get('leadId')), name: String(a.get('leadName') || 'Lead'), phone: String(a.get('leadPhone') || ''), source: 'Added by you', status: 'New Lead', at: new Date(Number(a.get('at')) || Date.now()).toISOString() };
       s.leads.unshift(l);
     }
     if (!l) continue;
     const st = String(a.get('leadStatus') || '');
-    if (st === 'New' || st === 'Contacted' || st === 'Converted' || st === 'Lost') l.status = st;
+    if ((PORTAL_STAGES as readonly string[]).includes(st)) l.status = st as PortalLead['status'];
     const note = String(a.get('leadNote') || '');
     if (note) l.note = note;
+    const nxt = String(a.get('leadNextFollowUp') || '');
+    if (nxt) l.nextFollowUp = nxt;
+    const actNote = String(a.get('leadActivityNote') || '');
+    if (actNote) {
+      l.activity = [{ type: String(a.get('leadActivityType') || 'Other'), note: actNote, at: new Date(Number(a.get('at')) || Date.now()).toISOString() }, ...(l.activity || [])].slice(0, 20);
+      if (l.status === 'New Lead') l.status = 'Contacted';
+    }
   }
   await ref.update({ snapshot: s, syncedAt: Date.now() });
   return true;

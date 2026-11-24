@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, X, PenLine, Clock, ArrowRight, Plus, CheckCircle2, Search, type LucideIcon } from 'lucide-react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
-import type { PortalPlan, PortalLead, PortalSnapshot } from '../../lib/portal-types';
+import type { PortalPlan, PortalLead, PortalLeadStatus, PortalSnapshot } from '../../lib/portal-types';
+import { PORTAL_STAGES } from '../../lib/portal-types';
 
 /**
  * The client's dashboard: this month at a glance, the content calendar with
@@ -52,12 +53,12 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
   const dueInvoices = data.invoices.filter((i) => i.due > 0.5).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const totalDue = dueInvoices.reduce((a, i) => a + i.due, 0);
   const [leads, setLeads] = useState<PortalLead[]>(data.leads || []);
-  const newLeads = leads.filter((l) => l.status === 'New').length;
+  const newLeads = leads.filter((l) => l.status === 'New Lead').length;
   const leadStats = {
     total: leads.length,
     newC: newLeads,
     contacted: leads.filter((l) => l.status === 'Contacted').length,
-    converted: leads.filter((l) => l.status === 'Converted').length,
+    converted: leads.filter((l) => l.status === 'Closed Won').length,
     thisMonth: leads.filter((l) => (l.at || '').startsWith(monthKey)).length,
   };
   const convRate = leadStats.total ? Math.round((leadStats.converted / leadStats.total) * 100) : 0;
@@ -73,7 +74,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
 
   const onAddLead = async (name: string, phone: string, note: string) => {
     const tempId = `plead-${Date.now()}`;
-    setLeads((ls) => [{ id: tempId, name: name || 'Lead', phone, source: 'Added by you', status: 'New', note, at: new Date().toISOString() }, ...ls]);
+    setLeads((ls) => [{ id: tempId, name: name || 'Lead', phone, source: 'Added by you', status: 'New Lead', note, at: new Date().toISOString() }, ...ls]);
     await fetch('/api/portal/act', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -88,7 +89,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
       if (fu.next) next.nextFollowUp = fu.next;
       if (fu.note) {
         next.activity = [{ type: fu.type || 'Other', note: fu.note, at: new Date().toISOString() }, ...(l.activity || [])].slice(0, 20);
-        if (next.status === 'New') next.status = 'Contacted';
+        if (next.status === 'New Lead') next.status = 'Contacted';
       }
       return next;
     }));
@@ -386,11 +387,21 @@ function KpiCard({ n, label, tone }: { n: number | string; label: string; tone?:
 
 /* ------------------------------------------------------------ leads */
 
-function leadBadge(status: PortalLead['status']): { text: string; cls: string; dot: string } {
-  if (status === 'Converted') return { text: 'Converted', cls: 'bg-emerald-100 text-emerald-900', dot: 'bg-emerald-500' };
-  if (status === 'Contacted') return { text: 'Contacted', cls: 'bg-sky-100 text-sky-900', dot: 'bg-sky-500' };
-  if (status === 'Lost') return { text: 'Lost', cls: 'bg-brandDark/10 text-brandDark/50', dot: 'bg-brandDark/30' };
-  return { text: 'New', cls: 'bg-brandYellow/40 text-brandDark', dot: 'bg-brandYellow' };
+function stageLabel(s: PortalLeadStatus): string {
+  return s === 'New Lead' ? 'New' : s === 'Closed Won' ? 'Won' : s === 'Closed Lost' ? 'Lost' : s === 'Proposal Sent' ? 'Proposal' : s;
+}
+// Same stage colours as the agency CRM.
+function leadBadge(status: PortalLeadStatus): { text: string; cls: string; dot: string } {
+  const text = stageLabel(status);
+  switch (status) {
+    case 'New Lead': return { text, cls: 'bg-blue-100 text-blue-800', dot: 'bg-blue-500' };
+    case 'Contacted': return { text, cls: 'bg-amber-100 text-amber-800', dot: 'bg-amber-500' };
+    case 'Proposal Sent': return { text, cls: 'bg-violet-100 text-violet-800', dot: 'bg-violet-500' };
+    case 'Negotiation': return { text, cls: 'bg-orange-100 text-orange-800', dot: 'bg-orange-500' };
+    case 'Closed Won': return { text, cls: 'bg-emerald-100 text-emerald-800', dot: 'bg-emerald-500' };
+    case 'Closed Lost': return { text, cls: 'bg-rose-100 text-rose-700', dot: 'bg-rose-400' };
+    default: return { text, cls: 'bg-brandDark/10 text-brandDark/50', dot: 'bg-brandDark/30' };
+  }
 }
 
 function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void; onAddLead: (name: string, phone: string, note: string) => void; onFollowUp: (id: string, fu: { next: string; type: string; note: string }) => void }) {
@@ -412,7 +423,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
   const [fuType, setFuType] = useState('Call');
   const [fuNote, setFuNote] = useState('');
   const [fuNext, setFuNext] = useState('');
-  const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
+  const order: Record<PortalLeadStatus, number> = { 'New Lead': 0, 'Contacted': 1, 'Proposal Sent': 2, 'Negotiation': 3, 'Closed Won': 4, 'Closed Lost': 5 };
   // Leads with a pending follow-up float to the top, soonest first — like the CRM.
   const sorted = [...leads].sort((a, b) => {
     const ap = !!a.nextFollowUp, bp = !!b.nextFollowUp;
@@ -424,8 +435,8 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
   const ql = q.trim().toLowerCase();
   const searched = sorted.filter((l) => !ql || (l.name || '').toLowerCase().includes(ql) || (l.phone || '').toLowerCase().includes(ql) || (l.source || '').toLowerCase().includes(ql));
   const shown = filter === 'all' ? searched : searched.filter((l) => l.status === filter);
-  const newCount = leads.filter((l) => l.status === 'New').length;
-  const wonCount = leads.filter((l) => l.status === 'Converted').length;
+  const newCount = leads.filter((l) => l.status === 'New Lead').length;
+  const wonCount = leads.filter((l) => l.status === 'Closed Won').length;
   const daysAgo = (at?: string) => (at ? Math.floor((Date.now() - new Date(at).getTime()) / 86400000) : 0);
   const isSameDay = (s?: string) => {
     if (!s) return false;
@@ -455,12 +466,23 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
     setFuFor(null);
   };
   const actTypes = ['Call', 'WhatsApp', 'Visit', 'Other'];
-  const filters: { k: 'all' | PortalLead['status']; label: string; n: number }[] = [
+  const filters: { k: 'all' | PortalLeadStatus; label: string; n: number }[] = [
     { k: 'all', label: 'All', n: leads.length },
-    { k: 'New', label: 'New', n: newCount },
-    { k: 'Contacted', label: 'Contacted', n: leads.filter((l) => l.status === 'Contacted').length },
-    { k: 'Converted', label: 'Converted', n: wonCount },
+    ...PORTAL_STAGES.map((s) => ({ k: s, label: stageLabel(s), n: leads.filter((l) => l.status === s).length })),
   ];
+  // Compact stage dropdown used in the list + mobile cards.
+  const StageSelect = ({ l, size }: { l: PortalLead; size?: 'sm' }) => {
+    const b = leadBadge(l.status);
+    return (
+      <select
+        value={l.status}
+        onChange={(e) => onAct(l.id, { status: e.target.value as PortalLeadStatus })}
+        className={`appearance-none cursor-pointer rounded-full border-2 border-transparent font-bold ${b.cls} ${size === 'sm' ? 'text-[11px] px-2.5 py-1' : 'text-xs px-3 py-1.5'}`}
+      >
+        {PORTAL_STAGES.map((s) => <option key={s} value={s} className="bg-white text-brandDark">{stageLabel(s)}</option>)}
+      </select>
+    );
+  };
 
   // Shared follow-up / activity editor (used in the table, cards and pipeline).
   const fuEditor = (id: string) => (
@@ -574,7 +596,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
               {fs && (
                 <p className={`mt-2 inline-flex items-center gap-1.5 rounded-lg text-xs font-bold px-2 py-1 ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {fs === 'today' ? 'Follow-up today' : fs === 'overdue' ? 'Follow-up overdue' : `Next: ${fuLabel(l.nextFollowUp)}`}</p>
               )}
-              {!fs && l.status === 'New' && daysAgo(l.at) >= 1 && (
+              {!fs && l.status === 'New Lead' && daysAgo(l.at) >= 1 && (
                 <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-red-100 text-red-800 text-xs font-bold px-2 py-1"><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {daysAgo(l.at)} din purana — aaj hi call karein!</p>
               )}
               {last ? <p className="mt-2 text-sm text-brandDark/70"><span className="font-bold">{last.type}:</span> {last.note}</p> : l.note ? <p className="mt-2 text-sm text-brandDark/70">{l.note}</p> : null}
@@ -591,14 +613,10 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
                   )}
                 </div>
               )}
-              <div className="mt-3 flex flex-wrap gap-2 border-t border-brandDark/5 pt-3">
-                {l.status !== 'Converted' && l.status !== 'Lost' && (
-                  <>
-                    <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5"><CheckCircle2 className="w-4 h-4" strokeWidth={2.4} /> Converted</button>
-                    <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="inline-flex items-center gap-1.5 rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5"><X className="w-4 h-4" strokeWidth={2.8} /> Lost</button>
-                  </>
-                )}
-                <button type="button" onClick={() => openFu(l)} className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Log / Follow-up</button>
+              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-brandDark/5 pt-3">
+                <span className="text-xs font-bold text-brandDark/50">Stage:</span>
+                <StageSelect l={l} />
+                <button type="button" onClick={() => openFu(l)} className="ml-auto inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Log / Follow-up</button>
               </div>
               {fuFor === l.id && <div className="mt-2.5">{fuEditor(l.id)}</div>}
             </li>
@@ -621,7 +639,6 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
           </thead>
           <tbody className="divide-y divide-brandDark/5">
             {shown.map((l) => {
-              const b = leadBadge(l.status);
               const digits = (l.phone || '').replace(/[^0-9]/g, '');
               const wa = digits.length === 10 ? '91' + digits : digits;
               const fs = fuState(l);
@@ -634,7 +651,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
                       <p className="font-black text-sm text-brandDark">{l.name}</p>
                       {l.phone && <p className="text-xs font-semibold text-brandDark/50 tabular-nums">{l.phone}</p>}
                       <p className="text-[11px] font-semibold text-brandDark/35">{l.at ? new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''}</p>
-                      {!fs && l.status === 'New' && daysAgo(l.at) >= 1 && (
+                      {!fs && l.status === 'New Lead' && daysAgo(l.at) >= 1 && (
                         <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-red-100 text-red-800 text-[10px] font-bold px-1.5 py-0.5"><Clock className="w-3 h-3" strokeWidth={2.4} /> {daysAgo(l.at)} din — aaj call karein</span>
                       )}
                     </td>
@@ -654,18 +671,12 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
                         <p className="max-w-[240px] truncate text-xs text-brandDark/55" title={l.note}>{l.note}</p>
                       ) : <span className="text-brandDark/25 text-xs">No activity</span>}
                     </td>
-                    <td className="px-4 py-3"><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${b.dot}`} />{b.text}</span></td>
+                    <td className="px-4 py-3"><StageSelect l={l} size="sm" /></td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1.5">
                         {l.phone && <a href={`tel:${l.phone}`} title="Call" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-white hover:brightness-110 transition"><Phone className="w-4 h-4" strokeWidth={2.4} /></a>}
                         {digits && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" title="WhatsApp" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-500 text-white hover:brightness-110 transition"><MessageCircle className="w-4 h-4" strokeWidth={2.4} /></a>}
                         {l.email && <a href={`mailto:${l.email}`} title="Email" className="grid place-items-center h-8 w-8 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark hover:border-brandDark/30 transition"><Mail className="w-4 h-4" strokeWidth={2.4} /></a>}
-                        {l.status !== 'Converted' && l.status !== 'Lost' && (
-                          <>
-                            <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} title="Mark Converted" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition"><CheckCircle2 className="w-4 h-4" strokeWidth={2.4} /></button>
-                            <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} title="Mark Lost" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark/5 text-brandDark/50 hover:bg-brandDark/10 transition"><X className="w-4 h-4" strokeWidth={2.8} /></button>
-                          </>
-                        )}
                         <button type="button" onClick={() => openFu(l)} title="Log / Follow-up" className={`grid place-items-center h-8 w-8 rounded-lg border-2 transition ${fuFor === l.id ? 'bg-brandDark text-white border-brandDark' : 'bg-white border-brandDark/15 text-brandDark/70 hover:border-brandDark/30'}`}><PenLine className="w-4 h-4" strokeWidth={2.4} /></button>
                       </div>
                     </td>
@@ -694,7 +705,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
       {view === 'pipeline' && (
         <div className="overflow-x-auto pb-2 -mx-1 px-1">
           <div className="flex gap-4 min-w-max">
-            {(['New', 'Contacted', 'Converted', 'Lost'] as const).map((st) => {
+            {PORTAL_STAGES.map((st) => {
               const col = searched.filter((l) => l.status === st);
               const bb = leadBadge(st);
               return (
@@ -706,7 +717,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
                   className={`w-[300px] shrink-0 rounded-2xl p-3 transition ${dragOver === st ? 'bg-brandYellow/15 ring-2 ring-brandYellow' : 'bg-brandDark/[0.03]'}`}
                 >
                   <div className="flex items-center justify-between px-1 pb-2.5">
-                    <span className="inline-flex items-center gap-1.5 text-sm font-black text-brandDark/70"><span className={`h-2 w-2 rounded-full ${bb.dot}`} />{st}</span>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-black text-brandDark/70"><span className={`h-2 w-2 rounded-full ${bb.dot}`} />{stageLabel(st)}</span>
                     <span className="rounded-full bg-white px-2 py-0.5 text-xs font-bold text-brandDark/55">{col.length}</span>
                   </div>
                   <div className="grid gap-2">

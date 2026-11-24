@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     const leadId = raw.leadId.slice(0, 80);
     const status = typeof raw.status === 'string' ? raw.status : '';
     const note = typeof raw.note === 'string' ? raw.note.trim().slice(0, 500) : '';
-    if (!['New', 'Contacted', 'Converted', 'Lost'].includes(status) && !note) {
+    if (!['New Lead', 'Contacted', 'Proposal Sent', 'Negotiation', 'Closed Won', 'Closed Lost'].includes(status) && !note) {
       return NextResponse.json({ ok: false, error: 'Bad request.' }, { status: 400, headers: H });
     }
     const lr = await clientLeadAction(session.clientId, leadId, status, note).catch((e) => {
