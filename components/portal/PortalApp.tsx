@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, Check, X, PenLine, Clock, ArrowRight, Plus, CheckCircle2, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalSnapshot } from '../../lib/portal-types';
 
@@ -128,12 +129,12 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
 
   const onAct = (id: string, patch: Partial<PortalPlan>) => setPlans((ps) => ps.map((p) => (p.id === id ? { ...p, ...patch } : p)));
 
-  const tabs: { t: Tab; icon: string; label: string; count?: number }[] = [
-    { t: 'home', icon: '🏠', label: 'Home' },
-    { t: 'leads', icon: '🎯', label: 'Leads', count: newLeads },
-    { t: 'calendar', icon: '📅', label: 'Calendar', count: waiting.length },
-    { t: 'payments', icon: '🧾', label: 'Payments', count: dueInvoices.length },
-    { t: 'docs', icon: '📄', label: 'Documents' },
+  const tabs: { t: Tab; Icon: LucideIcon; label: string; count?: number }[] = [
+    { t: 'home', Icon: Home, label: 'Home' },
+    { t: 'leads', Icon: Target, label: 'Leads', count: newLeads },
+    { t: 'calendar', Icon: Calendar, label: 'Calendar', count: waiting.length },
+    { t: 'payments', Icon: Receipt, label: 'Payments', count: dueInvoices.length },
+    { t: 'docs', Icon: FileText, label: 'Documents' },
   ];
 
   return (
@@ -152,7 +153,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           <nav className="mt-7 grid gap-1">
             {tabs.map((x) => (
               <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition ${tab === x.t ? 'bg-brandYellow text-brandDark' : 'text-brandBg/70 hover:bg-brandBg/10'}`}>
-                <span className="text-base leading-none">{x.icon}</span>{x.label}
+                <x.Icon className="w-[18px] h-[18px]" strokeWidth={2.4} />{x.label}
                 {x.count ? <span className={`ml-auto inline-grid place-items-center min-w-5 h-5 px-1 rounded-full text-[11px] ${tab === x.t ? 'bg-brandDark text-brandYellow' : 'bg-brandYellow text-brandDark'}`}>{x.count}</span> : null}
               </button>
             ))}
@@ -160,12 +161,12 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           <div className="mt-auto grid gap-3">
             {!alertsOn && (
               <div className="rounded-2xl bg-brandSurface/70 ring-1 ring-brandBg/10 p-3.5">
-                <p className="text-xs font-bold text-brandYellow">🔔 Lead alerts</p>
+                <p className="flex items-center gap-1.5 text-xs font-bold text-brandYellow"><Bell className="w-3.5 h-3.5" strokeWidth={2.4} /> Lead alerts</p>
                 <p className="text-[11px] text-brandBg/50 mt-1 leading-snug">Get a phone buzz the second a new lead arrives.</p>
                 <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="mt-2.5 w-full rounded-lg bg-brandYellow text-brandDark text-xs font-black py-2 disabled:opacity-50">{alertsBusy ? 'Turning on…' : 'Turn on'}</button>
               </div>
             )}
-            {alertsOn && <p className="rounded-xl bg-brandSurface/70 px-3 py-2 text-xs font-bold text-emerald-400">🔔 Lead alerts on</p>}
+            {alertsOn && <p className="flex items-center gap-1.5 rounded-xl bg-brandSurface/70 px-3 py-2 text-xs font-bold text-emerald-400"><Bell className="w-3.5 h-3.5" strokeWidth={2.4} /> Lead alerts on</p>}
             <div className="relative flex items-center gap-2 border-t border-brandBg/10 pt-3">
               <div className="w-9 h-9 rounded-full bg-brandYellow text-brandDark grid place-items-center font-black">{(data.person || data.business || 'C').charAt(0).toUpperCase()}</div>
               <p className="min-w-0 flex-1 text-xs font-bold truncate">{data.person || data.business}</p>
@@ -224,8 +225,8 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
             {leadStats.total > 0 && (
               <button type="button" onClick={() => setTab('leads')} className="text-left rounded-3xl bg-brandDark text-brandBg p-5">
                 <div className="flex items-center justify-between">
-                  <p className="font-black text-lg">🎯 Your leads</p>
-                  <span className="text-sm font-bold text-brandYellow">See all 👉</span>
+                  <p className="flex items-center gap-2 font-black text-lg"><Target className="w-5 h-5" strokeWidth={2.4} /> Your leads</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-bold text-brandYellow">See all <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></span>
                 </div>
                 <div className="mt-3 grid grid-cols-4 gap-2 text-center">
                   <div><p className="text-2xl font-black">{leadStats.total}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Total</p></div>
@@ -240,12 +241,12 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                 <div className="mt-1.5 h-2.5 rounded-full bg-brandBg/15 overflow-hidden">
                   <div className="h-full rounded-full bg-emerald-400" style={{ width: `${convRate}%` }} />
                 </div>
-                {leadStats.newC > 0 && <p className="mt-3 text-sm font-semibold text-brandYellow">⏳ {leadStats.newC} {leadStats.newC === 1 ? 'lead' : 'leads'} waiting — call now!</p>}
+                {leadStats.newC > 0 && <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brandYellow"><Clock className="w-4 h-4" strokeWidth={2.4} /> {leadStats.newC} {leadStats.newC === 1 ? 'lead' : 'leads'} waiting — call now!</p>}
               </button>
             )}
             {!alertsOn && leadStats.total > 0 && (
               <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="text-left rounded-3xl bg-brandYellow/20 border-2 border-brandYellow p-5">
-                <p className="font-black">🔔 Naye lead ka turant alert paayein</p>
+                <p className="flex items-center gap-2 font-black"><Bell className="w-5 h-5" strokeWidth={2.4} /> Naye lead ka turant alert paayein</p>
                 <p className="mt-1 text-sm font-semibold text-brandDark/70">Jaise hi naya lead aaye, aapke phone par notification aa jayega — turant call kar sakein.</p>
                 <p className="mt-3 inline-block rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">{alertsBusy ? 'On kar rahe hain…' : 'Turn on alerts'}</p>
               </button>
@@ -270,9 +271,9 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
             )}
             {newLeads > 0 && (
               <button type="button" onClick={() => setTab('leads')} className="text-left rounded-3xl bg-emerald-50 border-2 border-emerald-400 p-5">
-                <p className="text-lg font-black">🎯 {newLeads} new {newLeads === 1 ? 'lead' : 'leads'} to call</p>
+                <p className="flex items-center gap-2 text-lg font-black"><Target className="w-5 h-5" strokeWidth={2.4} /> {newLeads} new {newLeads === 1 ? 'lead' : 'leads'} to call</p>
                 <p className="mt-1 font-semibold text-brandDark/70">Naye leads aaye hain — jaldi call karein, warna chale jayenge.</p>
-                <p className="mt-3 inline-block rounded-xl bg-emerald-600 text-white text-sm font-bold px-4 py-2">See leads 👉</p>
+                <p className="mt-3 inline-flex items-center gap-1 rounded-xl bg-emerald-600 text-white text-sm font-bold px-4 py-2">See leads <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></p>
               </button>
             )}
             {dueInvoices.length > 0 && (
@@ -339,7 +340,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
       <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-brandDark/10 grid grid-cols-5">
         {tabs.map((x) => (
           <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`relative py-2.5 text-[11px] font-bold flex flex-col items-center gap-0.5 ${tab === x.t ? 'text-brandDark' : 'text-brandDark/45'}`}>
-            <span className="text-xl leading-none">{x.icon}</span>
+            <x.Icon className="w-5 h-5" strokeWidth={2.4} />
             {x.label}
             {x.count ? <span className="absolute top-1.5 right-[22%] min-w-5 h-5 px-1 grid place-items-center rounded-full bg-brandYellow text-brandDark text-[11px]">{x.count}</span> : null}
             {tab === x.t && <span className="absolute top-0 inset-x-6 h-1 rounded-b bg-brandYellow" />}
@@ -363,11 +364,11 @@ function Stat({ n, label, good, warn }: { n: number; label: string; good?: boole
 
 /* ------------------------------------------------------------ leads */
 
-function leadBadge(status: PortalLead['status']): { text: string; cls: string } {
-  if (status === 'Converted') return { text: '✅ Converted', cls: 'bg-emerald-100 text-emerald-900' };
-  if (status === 'Contacted') return { text: '📞 Contacted', cls: 'bg-sky-100 text-sky-900' };
-  if (status === 'Lost') return { text: '✖️ Lost', cls: 'bg-brandDark/10 text-brandDark/60' };
-  return { text: '🆕 New', cls: 'bg-brandYellow/40 text-brandDark' };
+function leadBadge(status: PortalLead['status']): { text: string; cls: string; dot: string } {
+  if (status === 'Converted') return { text: 'Converted', cls: 'bg-emerald-100 text-emerald-900', dot: 'bg-emerald-500' };
+  if (status === 'Contacted') return { text: 'Contacted', cls: 'bg-sky-100 text-sky-900', dot: 'bg-sky-500' };
+  if (status === 'Lost') return { text: 'Lost', cls: 'bg-brandDark/10 text-brandDark/50', dot: 'bg-brandDark/30' };
+  return { text: 'New', cls: 'bg-brandYellow/40 text-brandDark', dot: 'bg-brandYellow' };
 }
 
 function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void; onAddLead: (name: string, phone: string, note: string) => void }) {
@@ -402,11 +403,11 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
         {!adding ? (
           <>
             <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-8 text-center">
-              <p className="text-5xl">🎯</p>
+              <div className="mx-auto w-16 h-16 rounded-2xl bg-brandDark/5 grid place-items-center text-brandDark/40"><Target className="w-8 h-8" strokeWidth={2} /></div>
               <p className="mt-3 text-lg font-black">No leads yet</p>
               <p className="mt-1 font-semibold text-brandDark/60">Jaise hi aapke ads ya website se koi enquiry aayegi, woh yahan dikhegi. Ya khud se add karein:</p>
             </div>
-            <button type="button" onClick={() => setAdding(true)} className="w-full rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5">+ Add a lead (walk-in / phone call)</button>
+            <button type="button" onClick={() => setAdding(true)} className="w-full inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add a lead (walk-in / phone call)</button>
           </>
         ) : (
           <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2">
@@ -426,7 +427,7 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
   const addBox = (
     <div>
       {!adding ? (
-        <button type="button" onClick={() => setAdding(true)} className="w-full rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5">+ Add a lead (walk-in / phone call)</button>
+        <button type="button" onClick={() => setAdding(true)} className="w-full inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add a lead (walk-in / phone call)</button>
       ) : (
         <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2">
           <input value={nm} onChange={(e) => setNm(e.target.value)} placeholder="Name" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
@@ -497,22 +498,22 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                     {l.at ? ` · ${new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}` : ''}
                   </p>
                 </div>
-                <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}>{b.text}</span>
+                <span className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${b.dot}`} />{b.text}</span>
               </div>
               {l.status === 'New' && daysAgo(l.at) >= 1 && (
-                <p className="mt-2 inline-block rounded-lg bg-red-100 text-red-800 text-xs font-bold px-2 py-1">⏰ {daysAgo(l.at)} {daysAgo(l.at) === 1 ? 'din' : 'din'} purana — aaj hi call karein!</p>
+                <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-red-100 text-red-800 text-xs font-bold px-2 py-1"><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {daysAgo(l.at)} din purana — aaj hi call karein!</p>
               )}
               {l.note && <p className="mt-2 text-sm text-brandDark/70">{l.note}</p>}
               {(l.phone || l.email) && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {l.phone && (
-                    <a href={`tel:${l.phone}`} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">📞 Call</a>
+                    <a href={`tel:${l.phone}`} className="inline-flex items-center gap-1.5 rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2"><Phone className="w-4 h-4" strokeWidth={2.4} /> Call</a>
                   )}
                   {digits && (
-                    <a href={`https://wa.me/${digits.length === 10 ? '91' + digits : digits}`} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-emerald-500 text-white text-sm font-bold px-4 py-2">💬 WhatsApp</a>
+                    <a href={`https://wa.me/${digits.length === 10 ? '91' + digits : digits}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500 text-white text-sm font-bold px-4 py-2"><MessageCircle className="w-4 h-4" strokeWidth={2.4} /> WhatsApp</a>
                   )}
                   {l.email && (
-                    <a href={`mailto:${l.email}`} className="rounded-xl bg-white border-2 border-brandDark/15 text-brandDark text-sm font-bold px-4 py-2">✉️ Email</a>
+                    <a href={`mailto:${l.email}`} className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark text-sm font-bold px-4 py-2"><Mail className="w-4 h-4" strokeWidth={2.4} /> Email</a>
                   )}
                 </div>
               )}
@@ -520,11 +521,11 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                 <div className="mt-3 flex flex-wrap gap-2 border-t border-brandDark/5 pt-3">
                   <span className="text-xs font-bold text-brandDark/50 self-center">Update:</span>
                   {l.status === 'New' && (
-                    <button type="button" onClick={() => onAct(l.id, { status: 'Contacted' })} className="rounded-xl bg-sky-100 text-sky-900 text-sm font-bold px-3 py-1.5">📞 Mark Contacted</button>
+                    <button type="button" onClick={() => onAct(l.id, { status: 'Contacted' })} className="inline-flex items-center gap-1.5 rounded-xl bg-sky-100 text-sky-900 text-sm font-bold px-3 py-1.5"><Phone className="w-4 h-4" strokeWidth={2.4} /> Mark Contacted</button>
                   )}
-                  <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5">✅ Converted</button>
-                  <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5">✖️ Lost</button>
-                  <button type="button" onClick={() => { setNoteFor(noteFor === l.id ? null : l.id); setNoteText(l.note || ''); }} className="rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5">📝 Note</button>
+                  <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5"><Check className="w-4 h-4" strokeWidth={2.8} /> Converted</button>
+                  <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="inline-flex items-center gap-1.5 rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5"><X className="w-4 h-4" strokeWidth={2.8} /> Lost</button>
+                  <button type="button" onClick={() => { setNoteFor(noteFor === l.id ? null : l.id); setNoteText(l.note || ''); }} className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Note</button>
                 </div>
               )}
               {noteFor === l.id && (
