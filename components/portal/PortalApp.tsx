@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, Check, X, PenLine, Clock, ArrowRight, Plus, CheckCircle2, type LucideIcon } from 'lucide-react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, Check, X, PenLine, Clock, ArrowRight, Plus, CheckCircle2, Search, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalSnapshot } from '../../lib/portal-types';
 
@@ -208,7 +208,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
             </div>
           </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-8 pt-5 sm:pt-7">
+      <main className="w-full px-4 sm:px-8 pt-5 sm:pt-7">
         {tab === 'home' && (
           <div className="grid gap-4">
             <div className="relative overflow-hidden rounded-[28px] bg-brandDark text-brandBg p-6 sm:p-8 shadow-xl">
@@ -386,11 +386,14 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
     setNm(''); setPh(''); setNt(''); setAdding(false);
   };
   const [filter, setFilter] = useState<'all' | PortalLead['status']>('all');
+  const [q, setQ] = useState('');
   const [noteFor, setNoteFor] = useState<string | null>(null);
   const [noteText, setNoteText] = useState('');
   const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
   const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
-  const shown = filter === 'all' ? sorted : sorted.filter((l) => l.status === filter);
+  const ql = q.trim().toLowerCase();
+  const shown = (filter === 'all' ? sorted : sorted.filter((l) => l.status === filter))
+    .filter((l) => !ql || (l.name || '').toLowerCase().includes(ql) || (l.phone || '').toLowerCase().includes(ql) || (l.source || '').toLowerCase().includes(ql));
   const newCount = leads.filter((l) => l.status === 'New').length;
   const wonCount = leads.filter((l) => l.status === 'Converted').length;
   const daysAgo = (at?: string) => (at ? Math.floor((Date.now() - new Date(at).getTime()) / 86400000) : 0);
@@ -428,69 +431,43 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
     );
   }
 
-  const addBox = (
-    <div>
-      {!adding ? (
-        <button type="button" onClick={() => setAdding(true)} className="w-full inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-brandDark/20 text-brandDark/70 font-bold py-3 hover:bg-brandDark/5"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add a lead (walk-in / phone call)</button>
-      ) : (
-        <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2">
+  return (
+    <div className="grid gap-4">
+      {/* Toolbar: search + add */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[220px]">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brandDark/40" strokeWidth={2.4} />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, phone or source…" className="w-full rounded-2xl bg-white border-2 border-brandDark/10 pl-10 pr-4 py-2.5 text-sm font-semibold outline-none focus:border-brandYellow transition" />
+        </div>
+        <button type="button" onClick={() => setAdding((a) => !a)} className="inline-flex items-center gap-1.5 rounded-2xl bg-brandDark text-white font-bold px-5 py-2.5 text-sm shadow-card"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add lead</button>
+      </div>
+      {adding && (
+        <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2 sm:grid-cols-3">
           <input value={nm} onChange={(e) => setNm(e.target.value)} placeholder="Name" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
           <input value={ph} onChange={(e) => setPh(e.target.value)} placeholder="Phone number" inputMode="tel" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm font-semibold" />
           <input value={nt} onChange={(e) => setNt(e.target.value)} placeholder="Note (optional)" className="rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
-          <div className="flex gap-2">
+          <div className="flex gap-2 sm:col-span-3">
             <button type="button" onClick={submitAdd} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Add lead</button>
             <button type="button" onClick={() => setAdding(false)} className="rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-4 py-2">Cancel</button>
           </div>
         </div>
       )}
-    </div>
-  );
-
-  return (
-    <div className="grid gap-4">
-      {addBox}
-      <div className="grid grid-cols-3 gap-3">
-        <Stat n={leads.length} label="Total leads" />
-        <Stat n={newCount} label="New to call" warn={newCount > 0} />
-        <Stat n={wonCount} label="Converted" good />
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <KpiCard n={leads.length} label="Total leads" />
+        <KpiCard n={newCount} label="New to call" tone="yellow" />
+        <KpiCard n={wonCount} label="Converted" tone="emerald" />
+        <KpiCard n={`${leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%`} label="Conversion rate" />
       </div>
-      <div className="grid sm:grid-cols-2 gap-4 items-start">
-      <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4 flex items-center justify-between">
-        <span className="font-bold text-brandDark/70">Conversion rate</span>
-        <span className="text-xl font-black text-emerald-600">{leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%</span>
-      </div>
-      {(() => {
-        const bySource: Record<string, number> = {};
-        leads.forEach((l) => { const k = l.source || 'Other'; bySource[k] = (bySource[k] || 0) + 1; });
-        const rows = Object.entries(bySource).sort((a, b) => b[1] - a[1]).slice(0, 6);
-        if (rows.length < 2) return null;
-        const max = rows[0][1] || 1;
-        return (
-          <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4">
-            <p className="font-black text-brandDark/70 mb-2">Where your leads come from</p>
-            <ul className="grid gap-2">
-              {rows.map(([src, n]) => (
-                <li key={src} className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-brandDark/60 w-28 truncate">{src}</span>
-                  <div className="flex-1 h-2.5 rounded-full bg-brandDark/5 overflow-hidden">
-                    <div className="h-full rounded-full bg-brandYellow" style={{ width: `${Math.round((n / max) * 100)}%` }} />
-                  </div>
-                  <span className="text-xs font-black w-6 text-right">{n}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })()}
-      </div>
+      {/* Filter chips */}
       <div className="flex flex-wrap gap-2">
         {filters.map((f) => (
-          <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3 py-1.5 text-sm font-bold border-2 ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10'}`}>
+          <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3.5 py-1.5 text-sm font-bold border-2 transition ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10 hover:border-brandDark/25'}`}>
             {f.label} {f.n > 0 && <span className={filter === f.k ? 'text-brandYellow' : 'text-brandDark/40'}>{f.n}</span>}
           </button>
         ))}
       </div>
-      <ul className="grid gap-3 lg:grid-cols-2 items-start">
+      <ul className="md:hidden grid gap-3">
         {shown.map((l) => {
           const b = leadBadge(l.status);
           const digits = (l.phone || '').replace(/[^0-9]/g, '');
@@ -544,6 +521,77 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
           );
         })}
       </ul>
+
+      {/* Desktop: CRM-style table */}
+      <div className="hidden md:block overflow-hidden rounded-2xl border-2 border-brandDark/10 bg-white shadow-card">
+        <table className="min-w-full">
+          <thead className="bg-brandDark/[0.03] border-b-2 border-brandDark/10">
+            <tr className="text-left text-[11px] font-black uppercase tracking-wider text-brandDark/45">
+              <th className="px-4 py-3">Lead</th>
+              <th className="px-4 py-3">Source</th>
+              <th className="px-4 py-3">Added</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-brandDark/5">
+            {shown.map((l) => {
+              const b = leadBadge(l.status);
+              const digits = (l.phone || '').replace(/[^0-9]/g, '');
+              const wa = digits.length === 10 ? '91' + digits : digits;
+              const overdue = l.status === 'New' && daysAgo(l.at) >= 1;
+              return (
+                <React.Fragment key={l.id}>
+                  <tr className="hover:bg-brandYellow/[0.05] transition-colors align-top">
+                    <td className="px-4 py-3">
+                      <p className="font-black text-sm text-brandDark">{l.name}</p>
+                      {l.phone && <p className="text-xs font-semibold text-brandDark/50 tabular-nums">{l.phone}</p>}
+                      {overdue && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-red-100 text-red-800 text-[10px] font-bold px-1.5 py-0.5"><Clock className="w-3 h-3" strokeWidth={2.4} /> {daysAgo(l.at)} din — aaj call karein</span>
+                      )}
+                      {l.note && <p className="mt-1 max-w-[260px] truncate text-xs text-brandDark/60" title={l.note}>{l.note}</p>}
+                    </td>
+                    <td className="px-4 py-3 text-sm font-semibold text-brandDark/70 whitespace-nowrap">{l.source || 'Enquiry'}</td>
+                    <td className="px-4 py-3 text-sm font-semibold text-brandDark/55 whitespace-nowrap">{l.at ? new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—'}</td>
+                    <td className="px-4 py-3"><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${b.dot}`} />{b.text}</span></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-1.5">
+                        {l.phone && <a href={`tel:${l.phone}`} title="Call" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-white hover:brightness-110 transition"><Phone className="w-4 h-4" strokeWidth={2.4} /></a>}
+                        {digits && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" title="WhatsApp" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-500 text-white hover:brightness-110 transition"><MessageCircle className="w-4 h-4" strokeWidth={2.4} /></a>}
+                        {l.email && <a href={`mailto:${l.email}`} title="Email" className="grid place-items-center h-8 w-8 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark hover:border-brandDark/30 transition"><Mail className="w-4 h-4" strokeWidth={2.4} /></a>}
+                        {l.status !== 'Converted' && l.status !== 'Lost' && (
+                          <>
+                            {l.status === 'New' && <button type="button" onClick={() => onAct(l.id, { status: 'Contacted' })} title="Mark Contacted" className="grid place-items-center h-8 w-8 rounded-lg bg-sky-100 text-sky-800 hover:bg-sky-200 transition"><Check className="w-4 h-4" strokeWidth={2.6} /></button>}
+                            <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} title="Mark Converted" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition"><CheckCircle2 className="w-4 h-4" strokeWidth={2.4} /></button>
+                            <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} title="Mark Lost" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark/5 text-brandDark/50 hover:bg-brandDark/10 transition"><X className="w-4 h-4" strokeWidth={2.8} /></button>
+                          </>
+                        )}
+                        <button type="button" onClick={() => { setNoteFor(noteFor === l.id ? null : l.id); setNoteText(l.note || ''); }} title="Add note" className="grid place-items-center h-8 w-8 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark/70 hover:border-brandDark/30 transition"><PenLine className="w-4 h-4" strokeWidth={2.4} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                  {noteFor === l.id && (
+                    <tr className="bg-brandYellow/[0.04]">
+                      <td colSpan={5} className="px-4 pb-3 pt-0">
+                        <div className="flex gap-2">
+                          <input value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="e.g. Called — call back Friday" className="flex-1 rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
+                          <button type="button" onClick={() => { onAct(l.id, { note: noteText.trim() }); setNoteFor(null); }} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Save</button>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {shown.length === 0 && (
+        <div className="rounded-2xl bg-white border-2 border-dashed border-brandDark/15 p-8 text-center text-sm font-semibold text-brandDark/50">
+          {ql ? `No leads match "${q}".` : 'No leads in this filter.'}
+        </div>
+      )}
     </div>
   );
 }
