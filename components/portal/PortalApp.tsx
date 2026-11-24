@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, type LucideIcon } from 'lucide-react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalLeadStatus, PortalSnapshot } from '../../lib/portal-types';
 import { PORTAL_STAGES } from '../../lib/portal-types';
@@ -62,6 +62,19 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
     thisMonth: leads.filter((l) => (l.at || '').startsWith(monthKey)).length,
   };
   const convRate = leadStats.total ? Math.round((leadStats.converted / leadStats.total) * 100) : 0;
+  // Dashboard: who needs calling today = new leads + follow-ups due today or overdue.
+  const todayEnd = new Date(); todayEnd.setHours(23, 59, 59, 999);
+  const followDue = leads.filter((l) => l.nextFollowUp && new Date(l.nextFollowUp).getTime() <= todayEnd.getTime() && l.status !== 'Closed Won' && l.status !== 'Closed Lost').length;
+  const callToday = newLeads + followDue;
+  const recentLeads = [...leads].sort((a, b) => {
+    const pa = a.status === 'New Lead' ? 0 : 1, pb = b.status === 'New Lead' ? 0 : 1;
+    return (pa - pb) || (b.at || '').localeCompare(a.at || '');
+  }).slice(0, 4);
+
+  const approvePlan = async (id: string) => {
+    setPlans((ps) => ps.map((p) => (p.id === id ? { ...p, status: 'Approved', changeRequested: undefined } : p)));
+    await fetch('/api/portal/act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId: id, action: 'approve' }) }).catch(() => 0);
+  };
 
   const onLeadAct = async (id: string, patch: { status?: PortalLead['status']; note?: string }) => {
     setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
@@ -230,31 +243,36 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
       <main className="w-full px-4 sm:px-8 pt-5 sm:pt-7">
         {tab === 'home' && (
           <div className="grid gap-4">
+            {/* Hero */}
             <div className="relative overflow-hidden rounded-[28px] bg-brandDark text-brandBg p-6 sm:p-8 shadow-xl">
               <div aria-hidden className="pointer-events-none absolute -top-16 -right-10 h-56 w-56 rounded-full bg-brandYellow/15 blur-[90px]" />
-              <p className="text-xs font-bold uppercase tracking-widest text-brandYellow">{new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-brandYellow">{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
               <h1 className="mt-2 text-3xl sm:text-4xl font-black tracking-tight">Namaste{data.person ? ` ${data.person.split(' ')[0]}` : ''} 👋</h1>
               <p className="mt-1.5 font-medium text-brandBg/60">Here&apos;s everything happening with your growth, at a glance.</p>
             </div>
-            {newLeads > 0 && (
-              <button type="button" onClick={() => setTab('leads')} className="relative overflow-hidden rounded-[24px] bg-brandDark text-brandBg p-6 text-left shadow-xl">
-                <div aria-hidden className="pointer-events-none absolute -top-16 -right-8 h-48 w-48 rounded-full bg-brandYellow/15 blur-[80px]" />
-                <div className="relative flex items-center justify-between gap-4 flex-wrap">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-brandYellow">Needs your attention</p>
-                    <p className="mt-1 text-2xl font-black">{newLeads} new {newLeads === 1 ? 'lead' : 'leads'} waiting — call now</p>
-                    <p className="mt-0.5 font-medium text-brandBg/55">Fastest reply wins the customer.</p>
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark font-black px-5 py-3">See leads <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></span>
+
+            {/* Call Today band */}
+            {callToday > 0 && (
+              <button type="button" onClick={() => setTab('leads')} className="rounded-[24px] bg-brandYellow text-brandDark p-5 sm:p-6 text-left flex items-center gap-4 shadow-glow">
+                <span className="grid place-items-center h-12 w-12 rounded-2xl bg-brandDark/10 shrink-0"><Phone className="w-6 h-6" strokeWidth={2.4} /></span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xl font-black leading-tight">{callToday} {callToday === 1 ? 'lead needs' : 'leads need'} you today</p>
+                  <p className="text-sm font-semibold text-brandDark/70">{newLeads} new to call{followDue > 0 ? ` + ${followDue} follow-up${followDue === 1 ? '' : 's'} due` : ''} — fastest reply wins the customer.</p>
                 </div>
+                <span className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-brandDark text-white font-black px-5 py-3 shrink-0">Open leads <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></span>
               </button>
             )}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+
+            {/* KPI row */}
+            <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
               <KpiCard n={leadStats.total} label="Total leads" />
               <KpiCard n={leadStats.newC} label="New to call" tone="yellow" />
-              <KpiCard n={leadStats.converted} label="Converted" tone="emerald" />
-              <KpiCard n={`${convRate}%`} label="Conversion rate" />
+              <KpiCard n={leadStats.converted} label="Won" tone="emerald" />
+              <KpiCard n={`${convRate}%`} label="Conversion" />
+              <KpiCard n={followDue} label="Follow-ups today" tone={followDue > 0 ? 'yellow' : undefined} />
+              <KpiCard n={inr(totalDue)} label="Payment due" />
             </div>
+
             {leadStats.total === 0 && content.length === 0 && (
               <div className="rounded-[24px] bg-white border-2 border-dashed border-brandDark/15 p-8 text-center">
                 <div className="mx-auto w-16 h-16 rounded-2xl bg-brandDark/5 grid place-items-center text-brandDark/40"><Target className="w-8 h-8" strokeWidth={2} /></div>
@@ -262,74 +280,119 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                 <p className="mt-1 font-medium text-brandDark/55 max-w-md mx-auto">As soon as leads come from your ads, website or walk-ins, they&apos;ll show here — ready to call. Aapka pehla lead jald aa raha hai!</p>
               </div>
             )}
-            <div className="grid lg:grid-cols-2 gap-5 items-start">
-            {!alertsOn && leadStats.total > 0 && (
-              <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="text-left rounded-3xl bg-brandYellow/20 border-2 border-brandYellow p-5">
-                <p className="flex items-center gap-2 font-black"><Bell className="w-5 h-5" strokeWidth={2.4} /> Naye lead ka turant alert paayein</p>
-                <p className="mt-1 text-sm font-semibold text-brandDark/70">Jaise hi naya lead aaye, aapke phone par notification aa jayega — turant call kar sakein.</p>
-                <p className="mt-3 inline-block rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">{alertsBusy ? 'On kar rahe hain…' : 'Turn on alerts'}</p>
-              </button>
-            )}
-            {content.length > 0 && (
-              <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5">
-                <div className="flex justify-between text-sm font-bold">
-                  <span>Content progress</span>
-                  <span>{Math.round((posted / content.length) * 100)}%</span>
-                </div>
-                <div className="mt-2 h-3 rounded-full bg-brandDark/10 overflow-hidden">
-                  <div className="h-full rounded-full bg-emerald-500" style={{ width: `${(posted / content.length) * 100}%` }} />
-                </div>
+
+            <div className="grid lg:grid-cols-5 gap-5 items-start">
+              {/* Left column (wider) */}
+              <div className="lg:col-span-3 grid gap-5">
+                {recentLeads.length > 0 && (
+                  <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5 shadow-card">
+                    <div className="flex items-center justify-between">
+                      <p className="font-black">Recent leads</p>
+                      <button type="button" onClick={() => setTab('leads')} className="text-sm font-bold text-brandDark/50 hover:text-brandDark inline-flex items-center gap-1">View all <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.6} /></button>
+                    </div>
+                    <div className="mt-2">
+                      {recentLeads.map((l) => {
+                        const bdg = leadBadge(l.status);
+                        const digits = (l.phone || '').replace(/[^0-9]/g, '');
+                        const wa = digits.length === 10 ? '91' + digits : digits;
+                        return (
+                          <div key={l.id} className="flex items-center gap-3 py-2.5 border-b border-brandDark/[0.06] last:border-none">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-bold text-sm truncate">{l.name}</p>
+                              <p className="text-xs text-brandDark/45">{l.source || 'Enquiry'}{l.at ? ` · ${new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}` : ''}</p>
+                            </div>
+                            <span className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${bdg.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${bdg.dot}`} />{bdg.text}</span>
+                            {l.phone && <a href={`tel:${l.phone}`} title="Call" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-white shrink-0"><Phone className="w-4 h-4" strokeWidth={2.4} /></a>}
+                            {digits && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" title="WhatsApp" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-500 text-white shrink-0"><MessageCircle className="w-4 h-4" strokeWidth={2.4} /></a>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                {waiting.length > 0 && (
+                  <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5 shadow-card">
+                    <div className="flex items-center justify-between">
+                      <p className="font-black">Designs need your approval</p>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-brandYellow/30 px-2.5 py-1 text-[11px] font-bold"><Clock className="w-3 h-3" strokeWidth={2.4} /> {waiting.length} waiting</span>
+                    </div>
+                    <div className="mt-2">
+                      {waiting.slice(0, 4).map((p) => (
+                        <div key={p.id} className="flex items-center gap-3 py-2.5 border-b border-brandDark/[0.06] last:border-none">
+                          <span className="grid place-items-center h-11 w-11 rounded-xl bg-gradient-to-br from-brandSurface to-brandDark text-lg shrink-0">{EMOJI[p.kind] || '📌'}</span>
+                          <div className="min-w-0 flex-1">
+                            <p className="font-bold text-sm truncate">{p.title}</p>
+                            <p className="text-xs text-brandDark/45">{p.kind}{p.platforms.length ? ` · ${p.platforms.join(', ')}` : ''}</p>
+                          </div>
+                          <button type="button" onClick={() => approvePlan(p.id)} className="inline-flex items-center gap-1 rounded-xl bg-brandYellow text-brandDark text-sm font-bold px-3 py-1.5 shrink-0"><Check className="w-4 h-4" strokeWidth={2.6} /> Approve</button>
+                          <button type="button" onClick={() => setTab('calendar')} className="inline-flex items-center gap-1 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark text-sm font-bold px-3 py-1.5 shrink-0"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Change</button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {waiting.length > 0 && (
-              <button type="button" onClick={() => setTab('calendar')} className="text-left rounded-3xl bg-brandYellow/25 border-2 border-brandYellow p-5">
-                <p className="flex items-center gap-2 text-lg font-black"><Clock className="w-5 h-5" strokeWidth={2.4} /> {waiting.length} {waiting.length === 1 ? 'design needs' : 'designs need'} your approval</p>
-                <p className="mt-1 font-semibold text-brandDark/70">{waiting.slice(0, 3).map((p) => p.title).join(' · ')}</p>
-                <p className="mt-3 inline-flex items-center gap-1 rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Review now <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></p>
-              </button>
-            )}
-            {dueInvoices.length > 0 && (
-              <button type="button" onClick={() => setTab('payments')} className="text-left rounded-3xl bg-white border-2 border-brandDark/10 p-5">
-                <p className="text-sm font-bold text-brandDark/60">Payment due</p>
-                <p className="text-2xl font-black">{inr(totalDue)}</p>
-                <p className="text-sm font-semibold text-brandDark/60">Next due {niceDay(dueInvoices[0].dueDate)}</p>
-              </button>
-            )}
-            {upcoming.length > 0 && (
-              <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5">
-                <p className="font-black">Coming up</p>
-                <ul className="mt-2 grid gap-2">
-                  {upcoming.map((p) => (
-                    <li key={p.id} className="flex items-center gap-3">
-                      <span className="text-2xl">{EMOJI[p.kind] || '📌'}</span>
-                      <div>
-                        <p className="font-bold">{p.title}</p>
-                        <p className="text-sm text-brandDark/60">
-                          {niceDay(p.date)}
-                          {p.time ? ` · ${time12(p.time)}` : ''}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+
+              {/* Right column */}
+              <div className="lg:col-span-2 grid gap-5">
+                {totalDue > 0.5 && (
+                  <button type="button" onClick={() => setTab('payments')} className="text-left relative overflow-hidden rounded-3xl bg-brandDark text-brandBg p-5 shadow-xl">
+                    <div aria-hidden className="pointer-events-none absolute -top-12 -right-8 h-40 w-40 rounded-full bg-brandYellow/15 blur-[70px]" />
+                    <p className="relative text-xs font-bold uppercase tracking-wider text-brandYellow/90">Payment due</p>
+                    <p className="relative mt-1 text-3xl font-black">{inr(totalDue)}</p>
+                    {dueInvoices[0] && <p className="relative text-sm text-brandBg/50">Invoice {dueInvoices[0].number} · due {niceDay(dueInvoices[0].dueDate)}</p>}
+                    <span className="relative mt-3 inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark font-black px-4 py-2 text-sm"><CreditCard className="w-4 h-4" strokeWidth={2.4} /> Pay with UPI</span>
+                  </button>
+                )}
+                {content.length > 0 && (
+                  <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5 shadow-card">
+                    <p className="font-black">Content progress</p>
+                    <div className="flex justify-between text-sm font-bold mt-2 text-brandDark/60">
+                      <span>{posted} of {content.length} posted this month</span>
+                      <span>{Math.round((posted / content.length) * 100)}%</span>
+                    </div>
+                    <div className="mt-2 h-3 rounded-full bg-brandDark/10 overflow-hidden">
+                      <div className="h-full rounded-full bg-emerald-500" style={{ width: `${(posted / content.length) * 100}%` }} />
+                    </div>
+                  </div>
+                )}
+                {upcoming.length > 0 && (
+                  <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5 shadow-card">
+                    <p className="font-black">Coming up</p>
+                    <ul className="mt-2 grid gap-2">
+                      {upcoming.map((p) => (
+                        <li key={p.id} className="flex items-center gap-3">
+                          <span className="grid place-items-center h-9 w-9 rounded-xl bg-brandYellow/20 text-base">{EMOJI[p.kind] || '📌'}</span>
+                          <div>
+                            <p className="font-bold text-sm">{p.title}</p>
+                            <p className="text-xs text-brandDark/50">{niceDay(p.date)}{p.time ? ` · ${time12(p.time)}` : ''}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {data.services.length > 0 && (
+                  <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5 shadow-card">
+                    <p className="font-black">Your plan</p>
+                    <ul className="mt-2 grid gap-1.5">
+                      {data.services.map((s, i) => (
+                        <li key={i} className="flex justify-between gap-3 text-sm py-1 border-b border-brandDark/[0.05] last:border-none">
+                          <span className="font-semibold text-brandDark/70">{s.name}</span>
+                          <span className="font-bold whitespace-nowrap">{inr(s.cost)}<span className="text-brandDark/45 font-semibold">{/month/i.test(s.billingType) ? '/mo' : ''}</span></span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {!alertsOn && leadStats.total > 0 && (
+                  <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="text-left rounded-3xl bg-brandYellow/20 border-2 border-brandYellow p-5">
+                    <p className="flex items-center gap-2 font-black"><Bell className="w-5 h-5" strokeWidth={2.4} /> Lead alerts on your phone</p>
+                    <p className="mt-1 text-sm font-semibold text-brandDark/70">Jaise hi naya lead aaye, turant notification — turant call karein.</p>
+                    <p className="mt-3 inline-block rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">{alertsBusy ? 'On kar rahe hain…' : 'Turn on alerts'}</p>
+                  </button>
+                )}
               </div>
-            )}
-            {data.services.length > 0 && (
-              <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5">
-                <p className="font-black">Your plan with us</p>
-                <ul className="mt-2 grid gap-1.5">
-                  {data.services.map((s, i) => (
-                    <li key={i} className="flex justify-between gap-3 text-sm">
-                      <span className="font-semibold">{s.name}</span>
-                      <span className="font-bold whitespace-nowrap">
-                        {inr(s.cost)}
-                        <span className="text-brandDark/50 font-semibold">{/month/i.test(s.billingType) ? '/mo' : ' one-time'}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
             </div>
           </div>
         )}
@@ -768,56 +831,47 @@ function CalendarTab({ plans, todayKey, onAct }: { plans: PortalPlan[]; todayKey
       (filter === 'approve' ? plans.filter(needsApproval) : plans.filter((p) => p.date.startsWith(month))).sort((a, b) => (a.date + (a.time || '99')).localeCompare(b.date + (b.time || '99'))),
     [plans, month, filter],
   );
-  const byDay = new Map<string, PortalPlan[]>();
-  list.forEach((p) => byDay.set(p.date, [...(byDay.get(p.date) || []), p]));
   const waitingCount = plans.filter(needsApproval).length;
 
   return (
     <div className="grid gap-4">
-      <div className="flex gap-2">
-        <button type="button" onClick={() => setFilter('approve')} className={`flex-1 rounded-xl py-2.5 text-sm font-bold border-2 ${filter === 'approve' ? 'bg-brandDark text-white border-brandDark' : 'border-brandDark/15'}`}>
-          ⏳ Need your OK ({waitingCount})
-        </button>
-        <button type="button" onClick={() => setFilter('all')} className={`flex-1 rounded-xl py-2.5 text-sm font-bold border-2 ${filter === 'all' ? 'bg-brandDark text-white border-brandDark' : 'border-brandDark/15'}`}>
-          📅 Full calendar
-        </button>
-      </div>
-      {filter === 'all' && (
-        <div className="flex items-center justify-between">
-          <button type="button" onClick={() => shift(-1)} className="w-10 h-10 rounded-full border-2 border-brandDark/15 font-black" aria-label="Previous month">‹</button>
-          <p className="text-lg font-black">{label}</p>
-          <button type="button" onClick={() => shift(1)} className="w-10 h-10 rounded-full border-2 border-brandDark/15 font-black" aria-label="Next month">›</button>
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex gap-1.5">
+          <button type="button" onClick={() => shift(-1)} className="w-10 h-10 rounded-xl bg-white border-2 border-brandDark/10 font-black" aria-label="Previous month">‹</button>
+          <button type="button" onClick={() => shift(1)} className="w-10 h-10 rounded-xl bg-white border-2 border-brandDark/10 font-black" aria-label="Next month">›</button>
         </div>
-      )}
+        <h2 className="text-xl font-black">{filter === 'approve' ? 'Needs your approval' : label}</h2>
+        <div className="ml-auto flex gap-2">
+          <button type="button" onClick={() => setFilter('approve')} className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-bold border-2 ${filter === 'approve' ? 'bg-brandDark text-white border-brandDark' : waitingCount > 0 ? 'bg-brandYellow/25 border-brandYellow text-brandDark' : 'bg-white border-brandDark/10 text-brandDark/60'}`}><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> Needs approval {waitingCount}</button>
+          <button type="button" onClick={() => setFilter('all')} className={`rounded-full px-3.5 py-1.5 text-sm font-bold border-2 ${filter === 'all' ? 'bg-brandDark text-white border-brandDark' : 'bg-white border-brandDark/10 text-brandDark/60'}`}>All {plans.filter((p) => p.date.startsWith(month)).length}</button>
+        </div>
+      </div>
       {list.length === 0 && (
         <p className="rounded-3xl bg-white border-2 border-brandDark/10 p-6 text-center font-semibold text-brandDark/60">
           {filter === 'approve' ? '🎉 Nothing waiting. All caught up!' : 'Nothing planned this month yet.'}
         </p>
       )}
-      {[...byDay.entries()].map(([d, items]) => (
-        <section key={d}>
-          <p className={`mb-2 text-sm font-black ${d === todayKey ? 'text-emerald-700' : 'text-brandDark/60'}`}>
-            {niceDay(d)}
-            {d === todayKey ? ' · Today' : ''}
-          </p>
-          <div className="grid gap-3">
-            {items.map((p) => (
-              <PlanCard key={p.id} p={p} onAct={onAct} />
-            ))}
-          </div>
-        </section>
-      ))}
+      <div className="grid gap-3">
+        {list.map((p) => (
+          <PlanCard key={p.id} p={p} todayKey={todayKey} onAct={onAct} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function PlanCard({ p, onAct }: { p: PortalPlan; onAct: (id: string, patch: Partial<PortalPlan>) => void }) {
+function PlanCard({ p, todayKey, onAct }: { p: PortalPlan; todayKey: string; onAct: (id: string, patch: Partial<PortalPlan>) => void }) {
   const [mode, setMode] = useState<'idle' | 'change'>('idle');
   const [comment, setComment] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const b = badge(p);
   const canAct = isContent(p.kind) && (p.status === 'Idea' || p.status === 'Making');
+  const need = needsApproval(p);
+  const d = new Date(`${p.date}T00:00`);
+  const dayNum = d.getDate();
+  const wd = d.toLocaleDateString('en-IN', { weekday: 'short' });
+  const isToday = p.date === todayKey;
 
   const send = async (action: 'approve' | 'change') => {
     if (action === 'change' && !comment.trim()) return setError('Kya change chahiye, likhiye.');
@@ -839,42 +893,38 @@ function PlanCard({ p, onAct }: { p: PortalPlan; onAct: (id: string, patch: Part
   };
 
   return (
-    <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4">
-      <div className="flex items-start gap-3">
-        <span className="text-3xl leading-none mt-0.5">{EMOJI[p.kind] || '📌'}</span>
-        <div className="flex-1 min-w-0">
+    <div className={`rounded-2xl border-2 p-4 ${need ? 'bg-brandYellow/[0.06] border-brandYellow' : 'bg-white border-brandDark/10'}`}>
+      <div className="flex items-center gap-4 flex-wrap">
+        <div className="w-11 text-center shrink-0">
+          <p className={`text-xl font-black leading-none ${isToday ? 'text-emerald-600' : ''}`}>{dayNum}</p>
+          <p className="text-[10px] font-bold text-brandDark/45 uppercase mt-0.5">{isToday ? 'Today' : wd}</p>
+        </div>
+        <span className="grid place-items-center h-14 w-14 rounded-xl bg-gradient-to-br from-brandSurface to-brandDark text-2xl shrink-0">{EMOJI[p.kind] || '📌'}</span>
+        <div className="flex-1 min-w-[150px]">
           <p className="font-black leading-snug">{p.title}</p>
-          <p className="text-sm text-brandDark/60">
+          <p className="text-xs text-brandDark/50">
             {p.kind}
             {p.platforms.length && isContent(p.kind) ? ` · ${p.platforms.join(', ')}` : ''}
             {p.time ? ` · ${time12(p.time)}` : ''}
           </p>
-          <span className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-bold ${b.cls}`}>{b.text}</span>
+          <span className={`mt-1.5 inline-block rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}>{b.text}</span>
+        </div>
+        <div className="flex flex-wrap gap-2 ml-auto">
+          {p.previewUrl && (
+            <a href={p.previewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 px-3.5 py-2 text-sm font-bold"><ExternalLink className="w-4 h-4" strokeWidth={2.4} /> See design</a>
+          )}
+          {canAct && mode === 'idle' && (
+            <>
+              <button type="button" disabled={busy} onClick={() => send('approve')} className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark px-4 py-2 text-sm font-bold disabled:opacity-50"><Check className="w-4 h-4" strokeWidth={2.6} /> {busy ? '…' : 'Approve'}</button>
+              <button type="button" disabled={busy} onClick={() => setMode('change')} className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark px-4 py-2 text-sm font-bold"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Request change</button>
+            </>
+          )}
         </div>
       </div>
       {p.clientComment && (
         <p className="mt-3 rounded-xl bg-brandBg px-3 py-2 text-sm">
           <b>Your note:</b> {p.clientComment}
         </p>
-      )}
-      {(p.previewUrl || canAct) && (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {p.previewUrl && (
-            <a href={p.previewUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl border-2 border-brandDark/15 px-4 py-2 text-sm font-bold">
-              👀 See design
-            </a>
-          )}
-          {canAct && mode === 'idle' && (
-            <>
-              <button type="button" disabled={busy} onClick={() => send('approve')} className="rounded-xl bg-emerald-600 text-white px-4 py-2 text-sm font-bold disabled:opacity-50">
-                {busy ? '…' : '✅ Approve'}
-              </button>
-              <button type="button" disabled={busy} onClick={() => setMode('change')} className="rounded-xl bg-brandYellow px-4 py-2 text-sm font-bold">
-                ✏️ Request change
-              </button>
-            </>
-          )}
-        </div>
       )}
       {mode === 'change' && (
         <div className="mt-3 grid gap-2">
@@ -898,51 +948,42 @@ function PlanCard({ p, onAct }: { p: PortalPlan; onAct: (id: string, patch: Part
 
 function PaymentsTab({ data }: { data: PortalSnapshot }) {
   const list = [...data.invoices].sort((a, b) => b.issueDate.localeCompare(a.issueDate));
+  const totalBilled = data.invoices.reduce((a, i) => a + i.total, 0);
+  const totalPaid = data.invoices.reduce((a, i) => a + i.paid, 0);
+  const totalDue = data.invoices.reduce((a, i) => a + Math.max(0, i.due), 0);
   const upi = (amount: number, number: string) =>
     `upi://pay?pa=${encodeURIComponent(data.upiId)}&pn=${encodeURIComponent('Techinfigo')}&am=${amount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(`Invoice ${number}`)}`;
   return (
-    <div className="grid gap-3">
+    <div className="grid gap-4">
       <h2 className="text-2xl font-black">Payments</h2>
+      {/* Summary */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4"><p className="text-xs font-bold text-brandDark/50">Total billed</p><p className="text-2xl font-black mt-0.5">{inr(totalBilled)}</p></div>
+        <div className="rounded-2xl bg-emerald-100 p-4"><p className="text-xs font-bold text-emerald-700">Paid</p><p className="text-2xl font-black text-emerald-700 mt-0.5">{inr(totalPaid)}</p></div>
+        <div className="rounded-2xl bg-brandDark text-brandBg p-4"><p className="text-xs font-bold text-brandYellow">Due now</p><p className="text-2xl font-black mt-0.5">{inr(totalDue)}</p></div>
+      </div>
       {list.length === 0 && <p className="rounded-3xl bg-white border-2 border-brandDark/10 p-6 text-center font-semibold text-brandDark/60">No invoices yet.</p>}
-      {list.map((i) => {
-        const paid = i.due <= 0.5;
-        return (
-          <div key={i.id} className="rounded-3xl bg-white border-2 border-brandDark/10 p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="font-black">Invoice {i.number}</p>
-                <p className="text-sm text-brandDark/60">
-                  {i.issueDate ? niceDay(i.issueDate) : ''}
-                  {!paid && i.dueDate ? ` · due ${niceDay(i.dueDate)}` : ''}
-                </p>
+      <div className="grid gap-3">
+        {list.map((i) => {
+          const paid = i.due <= 0.5;
+          return (
+            <div key={i.id} className={`rounded-2xl border-2 p-4 flex flex-wrap items-center gap-4 ${paid ? 'bg-white border-brandDark/10' : 'bg-red-50/40 border-red-200'}`}>
+              <div className="flex-1 min-w-[180px]">
+                <p className="font-black text-sm">Invoice {i.number}</p>
+                <p className="text-xs text-brandDark/50">{i.issueDate ? (paid ? `Paid · ${niceDay(i.issueDate)}` : niceDay(i.issueDate)) : ''}{!paid && i.dueDate ? ` · due ${niceDay(i.dueDate)}` : ''}</p>
               </div>
-              <span className={`rounded-full px-3 py-1 text-xs font-bold ${paid ? 'bg-emerald-100 text-emerald-900' : i.status === 'Overdue' ? 'bg-red-100 text-red-800' : 'bg-brandYellow/30'}`}>
-                {paid ? '✅ Paid' : i.status === 'Overdue' ? '⚠️ Overdue' : '⏳ Due'}
+              <p className="font-black text-lg whitespace-nowrap">{inr(i.total)}</p>
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${paid ? 'bg-emerald-100 text-emerald-800' : i.status === 'Overdue' ? 'bg-red-100 text-red-800' : 'bg-brandYellow/30 text-brandDark'}`}>
+                {paid ? <><Check className="w-3.5 h-3.5" strokeWidth={2.6} /> Paid</> : <><span className="h-1.5 w-1.5 rounded-full bg-current" /> {i.status === 'Overdue' ? 'Overdue' : 'Due'}</>}
               </span>
+              {!paid && data.upiId && (
+                <a href={upi(i.due, i.number)} className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark font-black px-4 py-2.5 text-sm"><CreditCard className="w-4 h-4" strokeWidth={2.4} /> Pay with UPI</a>
+              )}
             </div>
-            <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-              <div className="rounded-xl bg-brandBg py-2">
-                <p className="text-[11px] font-bold text-brandDark/50">Total</p>
-                <p className="font-black">{inr(i.total)}</p>
-              </div>
-              <div className="rounded-xl bg-brandBg py-2">
-                <p className="text-[11px] font-bold text-brandDark/50">Paid</p>
-                <p className="font-black text-emerald-700">{inr(i.paid)}</p>
-              </div>
-              <div className="rounded-xl bg-brandBg py-2">
-                <p className="text-[11px] font-bold text-brandDark/50">Due</p>
-                <p className="font-black">{inr(i.due)}</p>
-              </div>
-            </div>
-            {!paid && data.upiId && (
-              <a href={upi(i.due, i.number)} className="mt-3 block w-full rounded-2xl bg-brandYellow py-3 text-center font-black">
-                Pay {inr(i.due)} via UPI
-              </a>
-            )}
-          </div>
-        );
-      })}
-      {data.upiId && <p className="text-center text-xs text-brandDark/50">UPI ID: {data.upiId} · Payment ke baad screenshot WhatsApp kar dijiye 🙏</p>}
+          );
+        })}
+      </div>
+      {data.upiId && <p className="text-center text-xs text-brandDark/50">UPI ID: <b>{data.upiId}</b> · Payment ke baad screenshot WhatsApp kar dijiye 🙏</p>}
     </div>
   );
 }
@@ -951,19 +992,22 @@ function PaymentsTab({ data }: { data: PortalSnapshot }) {
 
 function DocsTab({ data }: { data: PortalSnapshot }) {
   return (
-    <div className="grid gap-3">
+    <div className="grid gap-4">
       <h2 className="text-2xl font-black">Documents</h2>
-      {data.docs.length === 0 && <p className="rounded-3xl bg-white border-2 border-brandDark/10 p-6 text-center font-semibold text-brandDark/60">No documents yet.</p>}
-      {data.docs.map((d, i) => (
-        <a key={i} href={d.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-3xl bg-white border-2 border-brandDark/10 p-4">
-          <span className="text-3xl">📄</span>
-          <div className="flex-1">
-            <p className="font-black">{d.title}</p>
-            {d.date && <p className="text-sm text-brandDark/60">{niceDay(d.date)}</p>}
+      {data.docs.length === 0 && <p className="rounded-3xl bg-white border-2 border-brandDark/10 p-6 text-center font-semibold text-brandDark/60">No documents yet. Proposals, agreements and reports will show here.</p>}
+      <div className="grid gap-3">
+        {data.docs.map((d, i) => (
+          <div key={i} className="flex items-center gap-4 rounded-2xl bg-white border-2 border-brandDark/10 p-4">
+            <span className="grid place-items-center h-11 w-11 rounded-xl bg-brandYellow/20 text-brandDark shrink-0"><FileText className="w-5 h-5" strokeWidth={2.2} /></span>
+            <div className="flex-1 min-w-0">
+              <p className="font-black text-sm truncate">{d.title}</p>
+              {d.date && <p className="text-xs text-brandDark/50">{niceDay(d.date)}</p>}
+            </div>
+            <a href={d.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2 shrink-0"><ExternalLink className="w-4 h-4" strokeWidth={2.4} /> View</a>
+            <a href={d.url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-2 shrink-0"><Download className="w-4 h-4" strokeWidth={2.4} /></a>
           </div>
-          <span className="font-black">↗</span>
-        </a>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
