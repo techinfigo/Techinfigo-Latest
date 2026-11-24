@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect, useRef } from 'react';
-import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, Upload, SlidersHorizontal, CalendarRange, type LucideIcon } from 'lucide-react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, Upload, SlidersHorizontal, CalendarRange, Blocks, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalLeadStatus, PortalSnapshot } from '../../lib/portal-types';
 import { PORTAL_STAGES } from '../../lib/portal-types';
@@ -12,7 +12,7 @@ import { PORTAL_STAGES } from '../../lib/portal-types';
  * snapshot the CRM keeps up to date; nothing internal is ever in it.
  */
 
-type Tab = 'home' | 'leads' | 'calendar' | 'payments' | 'docs';
+type Tab = 'home' | 'leads' | 'calendar' | 'payments' | 'docs' | 'apps';
 
 const EMOJI: Record<string, string> = { Post: '🖼️', Reel: '🎬', Story: '📱', Ad: '📢', Shoot: '📸', Meeting: '🤝', Other: '📌' };
 const CONTENT = ['Post', 'Reel', 'Story', 'Ad'];
@@ -178,6 +178,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
     { t: 'calendar', Icon: Calendar, label: 'Calendar', count: waiting.length },
     { t: 'payments', Icon: Receipt, label: 'Payments', count: dueInvoices.length },
     { t: 'docs', Icon: FileText, label: 'Documents' },
+    { t: 'apps', Icon: Blocks, label: 'Connect' },
   ];
 
   return (
@@ -412,6 +413,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
+        {tab === 'apps' && <IntegrationsTab data={data} />}
 
         <p className="mt-8 text-center text-xs text-brandDark/40">
           Updated {syncedAt ? new Date(syncedAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : 'soon'} · Questions?{' '}
@@ -424,7 +426,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
       </div>
 
       {/* Phone tab bar */}
-      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-brandDark/10 grid grid-cols-5">
+      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-brandDark/10 grid grid-cols-6">
         {tabs.map((x) => (
           <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`relative py-2.5 text-[11px] font-bold flex flex-col items-center gap-0.5 ${tab === x.t ? 'text-brandDark' : 'text-brandDark/45'}`}>
             <x.Icon className="w-5 h-5" strokeWidth={2.4} />
@@ -1124,6 +1126,39 @@ function DocsTab({ data }: { data: PortalSnapshot }) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------ integrations */
+
+function IntegrationsTab({ data }: { data: PortalSnapshot }) {
+  const apps: { name: string; desc: string; badge: string }[] = [
+    { name: 'Instagram', desc: 'Let us post, run ads and pull insights from your Instagram.', badge: 'IG' },
+    { name: 'Facebook Page', desc: 'Connect your Page for posts, ads and lead forms.', badge: 'f' },
+    { name: 'Google Business Profile', desc: 'Manage reviews and Google Maps posts.', badge: 'G' },
+    { name: 'WhatsApp Business', desc: 'Auto-reply and chat with leads in one place.', badge: 'W' },
+    { name: 'Website / Forms', desc: 'Send website enquiries straight into your leads.', badge: '🌐' },
+  ];
+  return (
+    <div className="grid gap-4">
+      <div>
+        <h2 className="text-2xl font-black">Connect your accounts</h2>
+        <p className="text-sm font-medium text-brandDark/55">Link your pages so Techinfigo can run and track everything from one place. Tap <b>Connect</b> and our team sets it up for you on WhatsApp.</p>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {apps.map((a) => (
+          <div key={a.name} className="rounded-2xl bg-white border-2 border-brandDark/10 p-4 flex items-center gap-4">
+            <span className="grid place-items-center h-11 w-11 rounded-xl bg-brandDark text-brandYellow font-black text-sm shrink-0">{a.badge}</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-black text-sm">{a.name}</p>
+              <p className="text-xs text-brandDark/55">{a.desc}</p>
+            </div>
+            <a href={whatsappUrl(`Namaste, main apne ${a.name} ko ${data.business || 'portal'} se connect karna chahta hoon.`)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark text-sm font-bold px-4 py-2 shrink-0"><Plus className="w-4 h-4" strokeWidth={2.6} /> Connect</a>
+          </div>
+        ))}
+      </div>
+      <p className="text-center text-xs text-brandDark/45">More integrations coming soon. Questions? <a className="font-bold underline" href={whatsappUrl('Namaste, integrations ke baare mein puchna hai.')} target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
     </div>
   );
 }
