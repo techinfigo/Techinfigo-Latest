@@ -208,7 +208,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
             </div>
           </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-8 pt-5 sm:pt-7">
+      <main className="max-w-6xl mx-auto px-4 sm:px-8 pt-5 sm:pt-7">
         {tab === 'home' && (
           <div className="grid gap-4">
             <div className="relative overflow-hidden rounded-[28px] bg-brandDark text-brandBg p-6 sm:p-8 shadow-xl">
@@ -243,6 +243,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                 <p className="mt-1 font-medium text-brandDark/55 max-w-md mx-auto">As soon as leads come from your ads, website or walk-ins, they&apos;ll show here — ready to call. Aapka pehla lead jald aa raha hai!</p>
               </div>
             )}
+            <div className="grid lg:grid-cols-2 gap-5 items-start">
             {!alertsOn && leadStats.total > 0 && (
               <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="text-left rounded-3xl bg-brandYellow/20 border-2 border-brandYellow p-5">
                 <p className="flex items-center gap-2 font-black"><Bell className="w-5 h-5" strokeWidth={2.4} /> Naye lead ka turant alert paayein</p>
@@ -266,13 +267,6 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                 <p className="flex items-center gap-2 text-lg font-black"><Clock className="w-5 h-5" strokeWidth={2.4} /> {waiting.length} {waiting.length === 1 ? 'design needs' : 'designs need'} your approval</p>
                 <p className="mt-1 font-semibold text-brandDark/70">{waiting.slice(0, 3).map((p) => p.title).join(' · ')}</p>
                 <p className="mt-3 inline-flex items-center gap-1 rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Review now <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></p>
-              </button>
-            )}
-            {newLeads > 0 && (
-              <button type="button" onClick={() => setTab('leads')} className="text-left rounded-3xl bg-emerald-50 border-2 border-emerald-400 p-5">
-                <p className="flex items-center gap-2 text-lg font-black"><Target className="w-5 h-5" strokeWidth={2.4} /> {newLeads} new {newLeads === 1 ? 'lead' : 'leads'} to call</p>
-                <p className="mt-1 font-semibold text-brandDark/70">Naye leads aaye hain — jaldi call karein, warna chale jayenge.</p>
-                <p className="mt-3 inline-flex items-center gap-1 rounded-xl bg-emerald-600 text-white text-sm font-bold px-4 py-2">See leads <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></p>
               </button>
             )}
             {dueInvoices.length > 0 && (
@@ -317,6 +311,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
                 </ul>
               </div>
             )}
+            </div>
           </div>
         )}
 
@@ -459,6 +454,7 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
         <Stat n={newCount} label="New to call" warn={newCount > 0} />
         <Stat n={wonCount} label="Converted" good />
       </div>
+      <div className="grid sm:grid-cols-2 gap-4 items-start">
       <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4 flex items-center justify-between">
         <span className="font-bold text-brandDark/70">Conversion rate</span>
         <span className="text-xl font-black text-emerald-600">{leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%</span>
@@ -486,6 +482,7 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
           </div>
         );
       })()}
+      </div>
       <div className="flex flex-wrap gap-2">
         {filters.map((f) => (
           <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3 py-1.5 text-sm font-bold border-2 ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10'}`}>
@@ -493,7 +490,7 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
           </button>
         ))}
       </div>
-      <ul className="grid gap-3">
+      <ul className="grid gap-3 lg:grid-cols-2 items-start">
         {shown.map((l) => {
           const b = leadBadge(l.status);
           const digits = (l.phone || '').replace(/[^0-9]/g, '');
