@@ -30,81 +30,81 @@ export default function PortalLogin() {
   };
 
   return (
-    <div className="relative min-h-[100svh] overflow-hidden bg-brandDark text-brandBg">
-      {/* Premium ambient glow + grid */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[520px] w-[520px] rounded-full bg-brandYellow/20 blur-[140px]" />
-        <div className="absolute bottom-[-10rem] right-[-6rem] h-[420px] w-[420px] rounded-full bg-brandYellow/10 blur-[120px]" />
-        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(#faf6ed 1px, transparent 1px), linear-gradient(90deg, #faf6ed 1px, transparent 1px)', backgroundSize: '44px 44px' }} />
-      </div>
-
-      <header className="relative">
-        <div className="max-w-6xl mx-auto px-5 py-5 flex items-center gap-2.5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/proposal-logo.png" alt="" width={34} height={34} className="w-8 h-8 rounded-xl bg-brandSurface ring-1 ring-brandBg/10 p-1.5" />
-          <span className="font-black tracking-wide text-sm">
-            <span className="text-brandYellow">TECH</span>INFIGO
-          </span>
-          <span className="ml-auto text-[11px] font-bold uppercase tracking-widest text-brandBg/40">Client Portal</span>
+    <div className="min-h-[100svh] bg-brandDark sm:grid sm:place-items-center sm:p-6">
+      <div className="w-full sm:max-w-5xl grid md:grid-cols-2 sm:rounded-[32px] overflow-hidden sm:shadow-big min-h-[100svh] sm:min-h-[580px]">
+        {/* Left — brand panel */}
+        <div className="relative bg-brandDark text-brandBg p-8 sm:p-10 flex flex-col overflow-hidden">
+          <div aria-hidden className="pointer-events-none absolute -top-24 -left-16 h-80 w-80 rounded-full bg-brandYellow/20 blur-[120px]" />
+          <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'linear-gradient(#faf6ed 1px, transparent 1px), linear-gradient(90deg, #faf6ed 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          <div className="relative flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/proposal-logo.png" alt="" width={36} height={36} className="w-9 h-9 rounded-xl bg-brandSurface ring-1 ring-brandBg/10 p-1.5" />
+            <span className="font-black tracking-wide"><span className="text-brandYellow">TECH</span>INFIGO</span>
+          </div>
+          <div className="relative mt-auto pt-10">
+            <h1 className="text-[2.4rem] sm:text-[2.7rem] leading-[1.05] font-black tracking-tight">Your leads,<br />handled with care.</h1>
+            <p className="mt-4 font-medium text-brandBg/60 max-w-xs">Every enquiry from your ads and website lands here — ready to call before it goes cold.</p>
+            <div className="mt-7 w-full max-w-sm rounded-2xl bg-brandSurface/80 backdrop-blur ring-1 ring-brandBg/10 p-4 shadow-card">
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-brandYellow"><span className="h-1.5 w-1.5 rounded-full bg-brandYellow animate-pulse" />New lead just now</div>
+              <div className="mt-2.5 flex items-center justify-between">
+                <div>
+                  <p className="font-black">Rahul Mehta</p>
+                  <p className="text-sm text-brandBg/50">Facebook Ad · Skincare</p>
+                </div>
+                <div className="flex gap-2">
+                  <span className="grid place-items-center h-9 w-9 rounded-xl bg-brandYellow text-brandDark">📞</span>
+                  <span className="grid place-items-center h-9 w-9 rounded-xl bg-emerald-500 text-white">💬</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </header>
 
-      <main className="relative flex items-center justify-center px-5 pb-20 pt-6 sm:pt-10">
-        <div className="w-full max-w-md">
-          <div className="text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-brandBg/5 ring-1 ring-brandBg/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-brandYellow">
-              <span className="h-1.5 w-1.5 rounded-full bg-brandYellow animate-pulse" /> Growth Dashboard
-            </span>
-            <h1 className="mt-5 text-[2.6rem] leading-[1.05] font-black tracking-tight">
-              Welcome <span className="text-brandYellow">back</span>
-            </h1>
-            <p className="mt-3 font-medium text-brandBg/60">
-              Your leads, content and payments — <br className="hidden sm:block" />all in one premium place.
+        {/* Right — form panel */}
+        <div className="bg-brandBg text-brandDark p-8 sm:p-10 flex items-center">
+          <div className="w-full max-w-sm mx-auto">
+            <h2 className="text-3xl font-black">Welcome back</h2>
+            <p className="mt-2 font-medium text-brandDark/55">Log in to see your dashboard.</p>
+
+            <form onSubmit={submit} className="mt-7 grid gap-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brandDark/45 mb-2">Mobile number</label>
+                <div className="flex rounded-2xl bg-white ring-1 ring-brandDark/10 focus-within:ring-2 focus-within:ring-brandYellow overflow-hidden transition">
+                  <span className="px-4 grid place-items-center bg-brandDark/5 font-bold text-brandDark/60 border-r border-brandDark/10">+91</span>
+                  <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="numeric" autoComplete="tel-national" placeholder="98765 43210" maxLength={14} className="w-full bg-transparent px-4 py-3.5 text-lg font-semibold outline-none" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-brandDark/45 mb-2">Password</label>
+                <div className="relative rounded-2xl bg-white ring-1 ring-brandDark/10 focus-within:ring-2 focus-within:ring-brandYellow overflow-hidden transition">
+                  <input type={show ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" placeholder="••••••••" className="w-full bg-transparent px-4 py-3.5 pr-16 text-lg font-semibold outline-none" />
+                  <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold uppercase tracking-wide text-brandDark/40 hover:text-brandDark">
+                    {show ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </div>
+
+              {error && (
+                <p className="rounded-xl bg-red-50 ring-1 ring-red-200 px-3 py-2 text-sm font-bold text-red-700" role="alert">
+                  {error}
+                </p>
+              )}
+
+              <button type="submit" disabled={busy || !phone || !password} className="mt-1 w-full rounded-2xl bg-brandYellow py-4 text-lg font-black text-brandDark shadow-glow transition hover:brightness-105 disabled:opacity-40 disabled:shadow-none">
+                {busy ? 'Logging in…' : 'Log in to dashboard'}
+              </button>
+            </form>
+
+            <p className="mt-5 text-center text-sm font-medium text-brandDark/50">
+              Forgot password?{' '}
+              <a className="font-bold text-brandDark underline decoration-brandYellow decoration-2 underline-offset-2" href={whatsappUrl('Namaste, mujhe client portal ka password chahiye.')} target="_blank" rel="noopener noreferrer">
+                WhatsApp us
+              </a>
             </p>
           </div>
-
-          <form onSubmit={submit} className="mt-8 rounded-[28px] bg-brandSurface/80 backdrop-blur ring-1 ring-brandBg/10 shadow-3xl p-6 sm:p-7 grid gap-5">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-brandBg/50 mb-2">Mobile number</label>
-              <div className="flex rounded-2xl bg-brandDark/60 ring-1 ring-brandBg/10 focus-within:ring-2 focus-within:ring-brandYellow overflow-hidden transition">
-                <span className="px-4 flex items-center bg-brandBg/5 font-bold text-brandBg/70 border-r border-brandBg/10">+91</span>
-                <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="numeric" autoComplete="tel-national" placeholder="98765 43210" maxLength={14} className="w-full bg-transparent px-4 py-3.5 text-lg font-semibold text-brandBg placeholder:text-brandBg/30 outline-none" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-brandBg/50 mb-2">Password</label>
-              <div className="relative rounded-2xl bg-brandDark/60 ring-1 ring-brandBg/10 focus-within:ring-2 focus-within:ring-brandYellow overflow-hidden transition">
-                <input type={show ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" placeholder="••••••••" className="w-full bg-transparent px-4 py-3.5 pr-20 text-lg font-semibold text-brandBg placeholder:text-brandBg/30 outline-none" />
-                <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase tracking-wide text-brandBg/50 hover:text-brandYellow">
-                  {show ? 'Hide' : 'Show'}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <p className="rounded-xl bg-red-500/10 ring-1 ring-red-500/30 px-3 py-2 text-sm font-bold text-red-300" role="alert">
-                {error}
-              </p>
-            )}
-
-            <button type="submit" disabled={busy || !phone || !password} className="group w-full rounded-2xl bg-brandYellow py-4 text-lg font-black text-brandDark shadow-glow transition hover:brightness-105 disabled:opacity-40 disabled:shadow-none">
-              {busy ? 'Logging in…' : 'Login to dashboard →'}
-            </button>
-          </form>
-
-          <p className="mt-6 text-center text-sm font-medium text-brandBg/50">
-            Password bhool gaye?{' '}
-            <a className="font-bold text-brandYellow hover:underline" href={whatsappUrl('Namaste, mujhe client portal ka password chahiye.')} target="_blank" rel="noopener noreferrer">
-              WhatsApp karein
-            </a>
-          </p>
-
-          <p className="mt-10 text-center text-[11px] font-semibold uppercase tracking-widest text-brandBg/30">
-            Powered by Techinfigo
-          </p>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

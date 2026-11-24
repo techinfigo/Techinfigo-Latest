@@ -18,9 +18,11 @@ const config: Config = {
         sans: ['Poppins', 'Inter', 'system-ui', 'sans-serif']
       },
       boxShadow: {
-        'glow': '0 0 30px -5px rgba(252, 182, 50, 0.3)',
-        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.1)',
+        'glow': '0 12px 40px -8px rgba(252, 182, 50, 0.45)',
+        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
         '4xl': '0 50px 100px -20px rgba(0, 0, 0, 0.15)',
+        'card': '0 20px 45px -28px rgba(0, 29, 33, 0.4)',
+        'big': '0 50px 90px -40px rgba(0, 0, 0, 0.55)',
         'inner-glow': 'inset 0 0 20px rgba(252, 182, 50, 0.05)'
       }
     },

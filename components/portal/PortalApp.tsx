@@ -137,43 +137,77 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
   ];
 
   return (
-    <div className="min-h-[100svh] bg-brandBg text-brandDark pb-24 sm:pb-10">
-      <header className="sticky top-0 z-20 bg-brandDark text-brandBg shadow-lg">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/proposal-logo.png" alt="" width={34} height={34} className="w-8 h-8 rounded-xl bg-brandSurface ring-1 ring-brandBg/10 p-1.5" />
-          <div className="min-w-0">
-            <p className="font-black text-sm leading-tight truncate">{data.business || 'Your dashboard'}</p>
-            <p className="text-[11px] font-semibold text-brandBg/45 leading-tight">by Techinfigo</p>
+    <div className="min-h-[100svh] bg-brandBg text-brandDark">
+      <div className="flex">
+        {/* Desktop sidebar */}
+        <aside className="hidden sm:flex sticky top-0 h-screen w-60 shrink-0 flex-col bg-brandDark text-brandBg p-5">
+          <div className="flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/proposal-logo.png" alt="" width={36} height={36} className="w-9 h-9 rounded-xl bg-brandSurface ring-1 ring-brandBg/10 p-1.5" />
+            <div className="min-w-0">
+              <p className="font-black text-sm leading-tight truncate">{data.business || 'Your dashboard'}</p>
+              <p className="text-[11px] font-semibold text-brandBg/40 leading-tight">by Techinfigo</p>
+            </div>
           </div>
-          <nav className="hidden sm:flex ml-6 gap-1">
+          <nav className="mt-7 grid gap-1">
             {tabs.map((x) => (
-              <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`relative px-3.5 py-2 rounded-xl text-sm font-bold transition ${tab === x.t ? 'bg-brandYellow text-brandDark' : 'text-brandBg/70 hover:bg-brandBg/10'}`}>
-                {x.label}
-                {x.count ? <span className={`ml-1.5 inline-grid place-items-center min-w-5 h-5 px-1 rounded-full text-[11px] ${tab === x.t ? 'bg-brandDark text-brandYellow' : 'bg-brandYellow text-brandDark'}`}>{x.count}</span> : null}
+              <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition ${tab === x.t ? 'bg-brandYellow text-brandDark' : 'text-brandBg/70 hover:bg-brandBg/10'}`}>
+                <span className="text-base leading-none">{x.icon}</span>{x.label}
+                {x.count ? <span className={`ml-auto inline-grid place-items-center min-w-5 h-5 px-1 rounded-full text-[11px] ${tab === x.t ? 'bg-brandDark text-brandYellow' : 'bg-brandYellow text-brandDark'}`}>{x.count}</span> : null}
               </button>
             ))}
           </nav>
-          <div className="ml-auto relative">
-            <button type="button" onClick={() => setMenu((m) => !m)} className="w-9 h-9 rounded-full bg-brandYellow text-brandDark font-black ring-1 ring-brandBg/10" aria-label="Account menu">
-              {(data.person || data.business || 'C').charAt(0).toUpperCase()}
-            </button>
-            {menu && (
-              <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-white border border-brandDark/10 shadow-3xl p-2 text-sm font-semibold">
-                {!alertsOn && (
-                  <button type="button" disabled={alertsBusy} onClick={() => { enableAlerts(); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5">🔔 Turn on lead alerts</button>
-                )}
-                {alertsOn && <p className="px-3 py-2 text-xs text-emerald-600 font-bold">🔔 Lead alerts on</p>}
-                <button type="button" onClick={() => { setPwOpen(true); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5">🔑 Change password</button>
-                <a href={whatsappUrl(`Namaste, ${data.business} ke baare mein baat karni hai.`)} target="_blank" rel="noopener noreferrer" className="block px-3 py-2 rounded-xl hover:bg-brandDark/5">💬 WhatsApp Techinfigo</a>
-                <button type="button" onClick={logout} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5 text-red-600">↩️ Log out</button>
+          <div className="mt-auto grid gap-3">
+            {!alertsOn && (
+              <div className="rounded-2xl bg-brandSurface/70 ring-1 ring-brandBg/10 p-3.5">
+                <p className="text-xs font-bold text-brandYellow">🔔 Lead alerts</p>
+                <p className="text-[11px] text-brandBg/50 mt-1 leading-snug">Get a phone buzz the second a new lead arrives.</p>
+                <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="mt-2.5 w-full rounded-lg bg-brandYellow text-brandDark text-xs font-black py-2 disabled:opacity-50">{alertsBusy ? 'Turning on…' : 'Turn on'}</button>
               </div>
             )}
+            {alertsOn && <p className="rounded-xl bg-brandSurface/70 px-3 py-2 text-xs font-bold text-emerald-400">🔔 Lead alerts on</p>}
+            <div className="relative flex items-center gap-2 border-t border-brandBg/10 pt-3">
+              <div className="w-9 h-9 rounded-full bg-brandYellow text-brandDark grid place-items-center font-black">{(data.person || data.business || 'C').charAt(0).toUpperCase()}</div>
+              <p className="min-w-0 flex-1 text-xs font-bold truncate">{data.person || data.business}</p>
+              <button type="button" onClick={() => setMenu((m) => !m)} className="text-brandBg/50 hover:text-brandBg px-1 text-lg leading-none" aria-label="Account menu">⋯</button>
+              {menu && (
+                <div className="absolute bottom-12 right-0 w-52 rounded-2xl bg-brandSurface ring-1 ring-brandBg/10 shadow-3xl p-2 text-sm font-semibold grid gap-0.5">
+                  <button type="button" onClick={() => { setPwOpen(true); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandBg/10">🔑 Change password</button>
+                  <a href={whatsappUrl(`Namaste, ${data.business} ke baare mein baat karni hai.`)} target="_blank" rel="noopener noreferrer" className="block px-3 py-2 rounded-xl hover:bg-brandBg/10">💬 WhatsApp Techinfigo</a>
+                  <button type="button" onClick={logout} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandBg/10 text-red-400">↩️ Log out</button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </header>
+        </aside>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-5 sm:pt-6">
+        {/* Main column */}
+        <div className="flex-1 min-w-0 pb-24 sm:pb-8">
+          {/* Mobile top bar */}
+          <header className="sm:hidden sticky top-0 z-20 bg-brandDark text-brandBg shadow-lg">
+            <div className="px-4 py-3 flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/proposal-logo.png" alt="" width={34} height={34} className="w-8 h-8 rounded-xl bg-brandSurface ring-1 ring-brandBg/10 p-1.5" />
+              <div className="min-w-0">
+                <p className="font-black text-sm leading-tight truncate">{data.business || 'Your dashboard'}</p>
+                <p className="text-[11px] font-semibold text-brandBg/45 leading-tight">by Techinfigo</p>
+              </div>
+              <div className="ml-auto relative">
+                <button type="button" onClick={() => setMenu((m) => !m)} className="w-9 h-9 rounded-full bg-brandYellow text-brandDark font-black" aria-label="Account menu">{(data.person || data.business || 'C').charAt(0).toUpperCase()}</button>
+                {menu && (
+                  <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-white border border-brandDark/10 shadow-3xl p-2 text-sm font-semibold z-30">
+                    {!alertsOn && (<button type="button" disabled={alertsBusy} onClick={() => { enableAlerts(); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5">🔔 Turn on lead alerts</button>)}
+                    {alertsOn && <p className="px-3 py-2 text-xs text-emerald-600 font-bold">🔔 Lead alerts on</p>}
+                    <button type="button" onClick={() => { setPwOpen(true); setMenu(false); }} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5">🔑 Change password</button>
+                    <a href={whatsappUrl(`Namaste, ${data.business} ke baare mein baat karni hai.`)} target="_blank" rel="noopener noreferrer" className="block px-3 py-2 rounded-xl hover:bg-brandDark/5">💬 WhatsApp Techinfigo</a>
+                    <button type="button" onClick={logout} className="w-full text-left px-3 py-2 rounded-xl hover:bg-brandDark/5 text-red-600">↩️ Log out</button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </header>
+
+      <main className="max-w-4xl mx-auto px-4 sm:px-8 pt-5 sm:pt-7">
         {tab === 'home' && (
           <div className="grid gap-4">
             <div className="relative overflow-hidden rounded-[28px] bg-brandDark text-brandBg p-6 sm:p-8 shadow-xl">
@@ -298,6 +332,8 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           </a>
         </p>
       </main>
+        </div>
+      </div>
 
       {/* Phone tab bar */}
       <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white border-t border-brandDark/10 grid grid-cols-5">
