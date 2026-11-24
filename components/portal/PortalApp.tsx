@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
-import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, type LucideIcon } from 'lucide-react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, Upload, SlidersHorizontal, CalendarRange, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalLeadStatus, PortalSnapshot } from '../../lib/portal-types';
 import { PORTAL_STAGES } from '../../lib/portal-types';
@@ -488,10 +488,15 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
     onAddLead(nm.trim(), ph.trim(), nt.trim());
     setNm(''); setPh(''); setNt(''); setAdding(false);
   };
-  const [filter, setFilter] = useState<'all' | PortalLead['status']>('all');
   const [q, setQ] = useState('');
   const [view, setView] = useState<'list' | 'pipeline'>('list');
   const [dragOver, setDragOver] = useState<PortalLead['status'] | null>(null);
+  const [statusF, setStatusF] = useState<Set<PortalLeadStatus>>(new Set());
+  const [sourceF, setSourceF] = useState<Set<string>>(new Set());
+  const [fromD, setFromD] = useState('');
+  const [toD, setToD] = useState('');
+  const [menu, setMenu] = useState<'none' | 'dates' | 'filters'>('none');
+  const fileRef = useRef<HTMLInputElement>(null);
   // Follow-up / activity editor
   const [fuFor, setFuFor] = useState<string | null>(null);
   const [fuType, setFuType] = useState('Call');
@@ -507,8 +512,15 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
     return (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || '');
   });
   const ql = q.trim().toLowerCase();
-  const searched = sorted.filter((l) => !ql || (l.name || '').toLowerCase().includes(ql) || (l.phone || '').toLowerCase().includes(ql) || (l.source || '').toLowerCase().includes(ql));
-  const shown = filter === 'all' ? searched : searched.filter((l) => l.status === filter);
+  const base = sorted.filter((l) => {
+    const okQ = !ql || (l.name || '').toLowerCase().includes(ql) || (l.company || '').toLowerCase().includes(ql) || (l.phone || '').toLowerCase().includes(ql) || (l.source || '').toLowerCase().includes(ql) || (l.email || '').toLowerCase().includes(ql);
+    const okSrc = sourceF.size === 0 || (l.source ? sourceF.has(l.source) : false);
+    const day = (l.at || '').slice(0, 10);
+    const okDate = (!fromD || day >= fromD) && (!toD || day <= toD);
+    return okQ && okSrc && okDate;
+  });
+  const searched = base; // pipeline shows all stages (filtered by search/source/date)
+  const shown = statusF.size === 0 ? base : base.filter((l) => statusF.has(l.status));
   const newCount = leads.filter((l) => l.status === 'New Lead').length;
   const wonCount = leads.filter((l) => l.status === 'Closed Won').length;
   const daysAgo = (at?: string) => (at ? Math.floor((Date.now() - new Date(at).getTime()) / 86400000) : 0);
@@ -540,10 +552,37 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
     setFuFor(null);
   };
   const actTypes = ['Call', 'WhatsApp', 'Visit', 'Other'];
-  const filters: { k: 'all' | PortalLeadStatus; label: string; n: number }[] = [
-    { k: 'all', label: 'All', n: leads.length },
-    ...PORTAL_STAGES.map((s) => ({ k: s, label: stageLabel(s), n: leads.filter((l) => l.status === s).length })),
-  ];
+  const sourceList = Array.from(new Set(leads.map((l) => l.source).filter(Boolean))) as string[];
+  const activeFilters = statusF.size + sourceF.size + (fromD || toD ? 1 : 0);
+  const toggleStatus = (s: PortalLeadStatus) => setStatusF((prev) => { const n = new Set(prev); if (n.has(s)) n.delete(s); else n.add(s); return n; });
+  const toggleSource = (s: string) => setSourceF((prev) => { const n = new Set(prev); if (n.has(s)) n.delete(s); else n.add(s); return n; });
+  const clearFilters = () => { setStatusF(new Set()); setSourceF(new Set()); setFromD(''); setToD(''); };
+  const exportCsv = () => {
+    const esc = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const head = ['Name', 'Brand', 'Phone', 'Email', 'Source', 'Stage', 'Next follow-up', 'Added', 'Latest note'];
+    const rows = shown.map((l) => [l.name, l.company || '', l.phone || '', l.email || '', l.source || '', l.status, l.nextFollowUp || '', l.at || '', (l.activity && l.activity[0]?.note) || l.note || ''].map(esc).join(','));
+    const csv = [head.map(esc).join(','), ...rows].join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+    const a = document.createElement('a'); a.href = url; a.download = `leads-${new Date().toISOString().slice(0, 10)}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  };
+  const importCsv = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const lines = String(e.target?.result || '').split(/\r?\n/).filter((x) => x.trim());
+      if (!lines.length) return;
+      const split = (line: string) => { const out: string[] = []; let cur = '', inq = false; for (let i = 0; i < line.length; i++) { const c = line[i]; if (c === '"') { if (inq && line[i + 1] === '"') { cur += '"'; i++; } else inq = !inq; } else if (c === ',' && !inq) { out.push(cur); cur = ''; } else cur += c; } out.push(cur); return out; };
+      const start = /name|phone|mobile/i.test(lines[0]) ? 1 : 0;
+      let count = 0;
+      for (let i = start; i < lines.length && count < 200; i++) {
+        const c = split(lines[i]).map((x) => x.trim());
+        const name = c[0] || '', phone = c[1] || '', note = c[2] || '';
+        if (!name && !phone) continue;
+        onAddLead(name, phone, note); count++;
+      }
+      alert(`${count} lead${count === 1 ? '' : 's'} add ho gaye.\n(CSV format: Name, Phone, Note)`);
+    };
+    reader.readAsText(file);
+  };
   // Compact stage dropdown used in the list + mobile cards.
   const StageSelect = ({ l, size }: { l: PortalLead; size?: 'sm' }) => {
     const b = leadBadge(l.status);
@@ -607,17 +646,72 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
 
   return (
     <div className="grid gap-4">
-      {/* Toolbar: search + view toggle + add */}
-      <div className="flex flex-wrap items-center gap-3">
+      {/* Toolbar: search · date range · filters · view toggle · import · export · add — like the CRM */}
+      <input ref={fileRef} type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) importCsv(f); if (e.target) e.target.value = ''; }} />
+      <div className="flex flex-wrap items-center gap-2">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brandDark/40" strokeWidth={2.4} />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, phone or source…" className="w-full rounded-2xl bg-white border-2 border-brandDark/10 pl-10 pr-4 py-2.5 text-sm font-semibold outline-none focus:border-brandYellow transition" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, brand, phone, email…" className="w-full rounded-2xl bg-white border-2 border-brandDark/10 pl-10 pr-4 py-2.5 text-sm font-semibold outline-none focus:border-brandYellow transition" />
         </div>
+        {/* Date range */}
+        <div className="relative">
+          <button type="button" onClick={() => setMenu((m) => (m === 'dates' ? 'none' : 'dates'))} className={`inline-flex items-center gap-1.5 rounded-2xl bg-white border-2 px-3.5 py-2.5 text-sm font-bold transition ${fromD || toD ? 'border-brandYellow text-brandDark' : 'border-brandDark/10 text-brandDark/70'}`}><CalendarRange className="w-4 h-4" strokeWidth={2.2} /> Date Range</button>
+          {menu === 'dates' && (
+            <div className="absolute right-0 z-30 mt-2 w-64 rounded-2xl bg-white border-2 border-brandDark/10 shadow-3xl p-3 grid gap-2">
+              <label className="text-xs font-bold text-brandDark/55">From<input type="date" value={fromD} onChange={(e) => setFromD(e.target.value)} className="mt-1 w-full rounded-lg border-2 border-brandDark/10 px-2 py-1.5 text-sm font-semibold" /></label>
+              <label className="text-xs font-bold text-brandDark/55">To<input type="date" value={toD} onChange={(e) => setToD(e.target.value)} className="mt-1 w-full rounded-lg border-2 border-brandDark/10 px-2 py-1.5 text-sm font-semibold" /></label>
+              <div className="flex gap-2 pt-1">
+                <button type="button" onClick={() => { setFromD(''); setToD(''); }} className="flex-1 rounded-lg bg-brandDark/5 text-brandDark/60 text-sm font-bold py-1.5">Clear</button>
+                <button type="button" onClick={() => setMenu('none')} className="flex-1 rounded-lg bg-brandDark text-white text-sm font-bold py-1.5">Done</button>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Filters */}
+        <div className="relative">
+          <button type="button" onClick={() => setMenu((m) => (m === 'filters' ? 'none' : 'filters'))} className={`inline-flex items-center gap-1.5 rounded-2xl bg-white border-2 px-3.5 py-2.5 text-sm font-bold transition ${activeFilters > 0 ? 'border-brandYellow text-brandDark' : 'border-brandDark/10 text-brandDark/70'}`}><SlidersHorizontal className="w-4 h-4" strokeWidth={2.2} /> Filters{activeFilters > 0 ? ` (${activeFilters})` : ''}</button>
+          {menu === 'filters' && (
+            <div className="absolute right-0 z-30 mt-2 w-64 rounded-2xl bg-white border-2 border-brandDark/10 shadow-3xl p-3 grid gap-3">
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-wider text-brandDark/45 mb-1.5">Stage</p>
+                <div className="grid gap-1">
+                  {PORTAL_STAGES.map((s) => (
+                    <label key={s} className="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                      <input type="checkbox" checked={statusF.has(s)} onChange={() => toggleStatus(s)} className="accent-brandDark" /> {stageLabel(s)}
+                      <span className="ml-auto text-brandDark/40">{leads.filter((l) => l.status === s).length}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              {sourceList.length > 0 && (
+                <div>
+                  <p className="text-[11px] font-black uppercase tracking-wider text-brandDark/45 mb-1.5">Source</p>
+                  <div className="grid gap-1 max-h-32 overflow-y-auto">
+                    {sourceList.map((s) => (
+                      <label key={s} className="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                        <input type="checkbox" checked={sourceF.has(s)} onChange={() => toggleSource(s)} className="accent-brandDark" /> <span className="truncate">{s}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="flex gap-2">
+                <button type="button" onClick={clearFilters} className="flex-1 rounded-lg bg-brandDark/5 text-brandDark/60 text-sm font-bold py-1.5">Clear all</button>
+                <button type="button" onClick={() => setMenu('none')} className="flex-1 rounded-lg bg-brandDark text-white text-sm font-bold py-1.5">Done</button>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* List / Pipeline */}
         <div className="flex items-center rounded-2xl bg-white border-2 border-brandDark/10 p-1">
-          <button type="button" onClick={() => setView('list')} className={`rounded-xl px-3.5 py-1.5 text-sm font-bold transition ${view === 'list' ? 'bg-brandDark text-white' : 'text-brandDark/55'}`}>List</button>
-          <button type="button" onClick={() => setView('pipeline')} className={`rounded-xl px-3.5 py-1.5 text-sm font-bold transition ${view === 'pipeline' ? 'bg-brandDark text-white' : 'text-brandDark/55'}`}>Pipeline</button>
+          <button type="button" onClick={() => setView('list')} className={`rounded-xl px-3 py-1.5 text-sm font-bold transition ${view === 'list' ? 'bg-brandDark text-white' : 'text-brandDark/55'}`}>List</button>
+          <button type="button" onClick={() => setView('pipeline')} className={`rounded-xl px-3 py-1.5 text-sm font-bold transition ${view === 'pipeline' ? 'bg-brandDark text-white' : 'text-brandDark/55'}`}>Pipeline</button>
         </div>
-        <button type="button" onClick={() => setAdding((a) => !a)} className="inline-flex items-center gap-1.5 rounded-2xl bg-brandDark text-white font-bold px-5 py-2.5 text-sm shadow-card"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add lead</button>
+        {/* Import / Export */}
+        <button type="button" onClick={() => fileRef.current?.click()} title="Import leads from CSV" className="inline-flex items-center gap-1.5 rounded-2xl bg-white border-2 border-brandDark/10 text-brandDark/70 font-bold px-3.5 py-2.5 text-sm"><Upload className="w-4 h-4" strokeWidth={2.2} /> Import</button>
+        <button type="button" onClick={exportCsv} title="Export leads to CSV" className="inline-flex items-center gap-1.5 rounded-2xl bg-white border-2 border-brandDark/10 text-brandDark/70 font-bold px-3.5 py-2.5 text-sm"><Download className="w-4 h-4" strokeWidth={2.2} /> Export</button>
+        {/* Add */}
+        <button type="button" onClick={() => setAdding((a) => !a)} className="inline-flex items-center gap-1.5 rounded-2xl bg-brandYellow text-brandDark font-black px-4 py-2.5 text-sm shadow-glow"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add New Lead</button>
       </div>
       {adding && (
         <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-4 grid gap-2 sm:grid-cols-3">
@@ -637,14 +731,10 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
         <KpiCard n={wonCount} label="Converted" tone="emerald" />
         <KpiCard n={`${leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%`} label="Conversion rate" />
       </div>
-      {/* Filter chips (list view only) */}
-      {view === 'list' && (
-        <div className="flex flex-wrap gap-2">
-          {filters.map((f) => (
-            <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3.5 py-1.5 text-sm font-bold border-2 transition ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10 hover:border-brandDark/25'}`}>
-              {f.label} {f.n > 0 && <span className={filter === f.k ? 'text-brandYellow' : 'text-brandDark/40'}>{f.n}</span>}
-            </button>
-          ))}
+      {activeFilters > 0 && (
+        <div className="flex items-center gap-2 text-xs font-bold text-brandDark/50">
+          <span>Showing {shown.length} of {leads.length}</span>
+          <button type="button" onClick={clearFilters} className="rounded-full bg-brandDark/5 px-2.5 py-1 hover:bg-brandDark/10">Clear filters ✕</button>
         </div>
       )}
       {view === 'list' && (
