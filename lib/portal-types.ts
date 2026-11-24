@@ -22,6 +22,7 @@ export const PORTAL_STAGES: PortalLeadStatus[] = ['New Lead', 'Contacted', 'Prop
 export type PortalLead = {
   id: string;
   name: string;
+  company?: string;
   phone?: string;
   email?: string;
   source?: string;

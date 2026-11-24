@@ -93,6 +93,7 @@ export function cleanSnapshot(raw: unknown): PortalSnapshot {
       .map((l) => ({
         id: str(l.id, 80),
         name: str(l.name, 120) || 'Lead',
+        ...(str(l.company, 120) ? { company: str(l.company, 120) } : {}),
         ...(str(l.phone, 20) ? { phone: str(l.phone, 20) } : {}),
         ...(str(l.email, 120) ? { email: str(l.email, 120) } : {}),
         ...(str(l.source, 40) ? { source: str(l.source, 40) } : {}),

@@ -26,6 +26,17 @@ const time12 = (t?: string) => {
   const [h, m] = t.split(':').map(Number);
   return `${((h + 11) % 12) + 1}:${pad(m)} ${h >= 12 ? 'PM' : 'AM'}`;
 };
+const timeAgo = (iso?: string) => {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  if (isNaN(diff) || diff < 0) return 'just now';
+  const mins = Math.floor(diff / 60000), hrs = Math.floor(mins / 60), days = Math.floor(hrs / 24), mos = Math.floor(days / 30);
+  if (mos >= 1) return `${mos} month${mos > 1 ? 's' : ''} ago`;
+  if (days >= 1) return `${days} day${days > 1 ? 's' : ''} ago`;
+  if (hrs >= 1) return `${hrs} hour${hrs > 1 ? 's' : ''} ago`;
+  if (mins >= 1) return `${mins} min ago`;
+  return 'just now';
+};
 export const needsApproval = (p: PortalPlan) => isContent(p.kind) && (p.status === 'Making' || p.status === 'Idea') && !p.changeRequested && !!p.previewUrl;
 
 function badge(p: PortalPlan): { text: string; cls: string } {
@@ -649,7 +660,8 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="font-black truncate">{l.name}</p>
-                  <p className="text-sm font-semibold text-brandDark/60">
+                  {l.company && <p className="text-sm font-semibold text-brandDark/60 truncate">{l.company}</p>}
+                  <p className="text-xs font-semibold text-brandDark/45">
                     {l.source ? `${l.source}` : 'Enquiry'}
                     {l.at ? ` · ${new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}` : ''}
                   </p>
@@ -692,11 +704,11 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
         <table className="min-w-full">
           <thead className="bg-brandDark/[0.03] border-b-2 border-brandDark/10">
             <tr className="text-left text-[11px] font-black uppercase tracking-wider text-brandDark/45">
-              <th className="px-4 py-3">Lead</th>
-              <th className="px-4 py-3">Source</th>
-              <th className="px-4 py-3">Next follow-up</th>
-              <th className="px-4 py-3">Latest activity</th>
+              <th className="px-4 py-3">Name &amp; Brand</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Latest activity</th>
+              <th className="px-4 py-3">Next follow-up</th>
+              <th className="px-4 py-3">Source</th>
               <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -706,41 +718,55 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
               const wa = digits.length === 10 ? '91' + digits : digits;
               const fs = fuState(l);
               const last = l.activity && l.activity[0];
+              const ActIcon = last?.type === 'Call' ? Phone : last?.type === 'WhatsApp' ? MessageCircle : last?.type === 'Email' ? Mail : PenLine;
+              const accent = fs === 'today' ? 'border-l-[3px] border-l-rose-400' : fs === 'overdue' ? 'border-l-[3px] border-l-amber-400' : 'border-l-[3px] border-l-transparent';
               const rowBg = fs === 'today' ? 'bg-rose-50/50 hover:bg-rose-50' : fs === 'overdue' ? 'bg-amber-50/40 hover:bg-amber-50' : 'hover:bg-brandYellow/[0.05]';
               return (
                 <React.Fragment key={l.id}>
                   <tr className={`${rowBg} transition-colors align-top`}>
-                    <td className="px-4 py-3">
+                    {/* Name & Brand */}
+                    <td className={`px-4 py-3 ${accent}`}>
                       <p className="font-black text-sm text-brandDark">{l.name}</p>
-                      {l.phone && <p className="text-xs font-semibold text-brandDark/50 tabular-nums">{l.phone}</p>}
-                      <p className="text-[11px] font-semibold text-brandDark/35">{l.at ? new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''}</p>
-                      {!fs && l.status === 'New Lead' && daysAgo(l.at) >= 1 && (
-                        <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-red-100 text-red-800 text-[10px] font-bold px-1.5 py-0.5"><Clock className="w-3 h-3" strokeWidth={2.4} /> {daysAgo(l.at)} din — aaj call karein</span>
-                      )}
+                      {l.company && <p className="text-xs font-semibold text-brandDark/60">{l.company}</p>}
+                      {l.phone && <p className="text-[11px] font-semibold text-brandDark/40 tabular-nums">{l.phone}</p>}
+                      <p className="text-[10px] font-semibold text-brandDark/30">{l.at ? new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}</p>
                     </td>
-                    <td className="px-4 py-3 text-sm font-semibold text-brandDark/70 whitespace-nowrap">{l.source || 'Enquiry'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      {l.nextFollowUp ? (
-                        <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3 h-3" strokeWidth={2.4} /> {fs === 'today' ? 'Today' : fs === 'overdue' ? 'Overdue' : fuLabel(l.nextFollowUp)}</span>
-                      ) : <span className="text-brandDark/25 text-sm">—</span>}
-                    </td>
+                    {/* Status */}
+                    <td className="px-4 py-3"><StageSelect l={l} size="sm" /></td>
+                    {/* Latest activity */}
                     <td className="px-4 py-3">
                       {last ? (
-                        <div className="max-w-[240px]">
-                          <p className="text-[11px] font-bold text-brandDark/70">{last.type} · {last.at ? new Date(last.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''}</p>
-                          <p className="text-xs text-brandDark/60 truncate" title={last.note}>{last.note}</p>
+                        <div className="max-w-[260px]">
+                          <div className="flex items-center gap-1.5 text-[11px] font-bold text-brandDark/70">
+                            <ActIcon className="w-3.5 h-3.5" strokeWidth={2.4} />
+                            <span>{last.type}</span>
+                            <span className="rounded bg-brandDark/5 px-1.5 py-0.5 text-[10px] font-semibold text-brandDark/45">{timeAgo(last.at)}</span>
+                          </div>
+                          <div className="mt-1 rounded-lg bg-brandDark/[0.03] border border-brandDark/[0.06] px-2 py-1.5">
+                            <p className="line-clamp-2 text-xs italic text-brandDark/70" title={last.note}>&ldquo;{last.note}&rdquo;</p>
+                          </div>
                         </div>
                       ) : l.note ? (
-                        <p className="max-w-[240px] truncate text-xs text-brandDark/55" title={l.note}>{l.note}</p>
-                      ) : <span className="text-brandDark/25 text-xs">No activity</span>}
+                        <p className="max-w-[240px] truncate text-xs italic text-brandDark/55" title={l.note}>&ldquo;{l.note}&rdquo;</p>
+                      ) : <span className="text-brandDark/30 text-xs italic">No activity logged</span>}
                     </td>
-                    <td className="px-4 py-3"><StageSelect l={l} size="sm" /></td>
+                    {/* Next follow-up */}
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {l.nextFollowUp ? (
+                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-black uppercase tracking-wide ${fs === 'today' ? 'bg-rose-100 text-rose-700' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/[0.06] text-brandDark/60'}`}>
+                          {fs === 'today' ? 'Today' : fs === 'overdue' ? `Overdue (${new Date(l.nextFollowUp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })})` : fuLabel(l.nextFollowUp)}
+                        </span>
+                      ) : <span className="text-brandDark/25 text-sm">—</span>}
+                    </td>
+                    {/* Source */}
+                    <td className="px-4 py-3 text-sm font-semibold text-brandDark/70 whitespace-nowrap">{l.source || 'Enquiry'}</td>
+                    {/* Actions */}
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1.5">
                         {l.phone && <a href={`tel:${l.phone}`} title="Call" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-white hover:brightness-110 transition"><Phone className="w-4 h-4" strokeWidth={2.4} /></a>}
                         {digits && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" title="WhatsApp" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-500 text-white hover:brightness-110 transition"><MessageCircle className="w-4 h-4" strokeWidth={2.4} /></a>}
-                        {l.email && <a href={`mailto:${l.email}`} title="Email" className="grid place-items-center h-8 w-8 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark hover:border-brandDark/30 transition"><Mail className="w-4 h-4" strokeWidth={2.4} /></a>}
-                        <button type="button" onClick={() => openFu(l)} title="Log / Follow-up" className={`grid place-items-center h-8 w-8 rounded-lg border-2 transition ${fuFor === l.id ? 'bg-brandDark text-white border-brandDark' : 'bg-white border-brandDark/15 text-brandDark/70 hover:border-brandDark/30'}`}><PenLine className="w-4 h-4" strokeWidth={2.4} /></button>
+                        {l.email && <a href={`mailto:${l.email}`} title="Email" className="grid place-items-center h-8 w-8 rounded-lg bg-sky-100 text-sky-700 hover:bg-sky-200 transition"><Mail className="w-4 h-4" strokeWidth={2.4} /></a>}
+                        <button type="button" onClick={() => openFu(l)} title="Log / Follow-up" className={`grid place-items-center h-8 w-8 rounded-lg border-2 transition ${fuFor === l.id ? 'bg-brandDark text-white border-brandDark' : 'bg-violet-100 text-violet-700 border-transparent hover:bg-violet-200'}`}><PenLine className="w-4 h-4" strokeWidth={2.4} /></button>
                       </div>
                     </td>
                   </tr>
