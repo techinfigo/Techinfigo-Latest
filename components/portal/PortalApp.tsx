@@ -217,32 +217,31 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
               <h1 className="mt-2 text-3xl sm:text-4xl font-black tracking-tight">Namaste{data.person ? ` ${data.person.split(' ')[0]}` : ''} 👋</h1>
               <p className="mt-1.5 font-medium text-brandBg/60">Here&apos;s everything happening with your growth, at a glance.</p>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <Stat n={content.length} label="Planned this month" />
-              <Stat n={posted} label="Posted" good />
-              <Stat n={waiting.length} label="Need your OK" warn={waiting.length > 0} />
-            </div>
-            {leadStats.total > 0 && (
-              <button type="button" onClick={() => setTab('leads')} className="text-left rounded-3xl bg-brandDark text-brandBg p-5">
-                <div className="flex items-center justify-between">
-                  <p className="flex items-center gap-2 font-black text-lg"><Target className="w-5 h-5" strokeWidth={2.4} /> Your leads</p>
-                  <span className="inline-flex items-center gap-1 text-sm font-bold text-brandYellow">See all <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></span>
+            {newLeads > 0 && (
+              <button type="button" onClick={() => setTab('leads')} className="relative overflow-hidden rounded-[24px] bg-brandDark text-brandBg p-6 text-left shadow-xl">
+                <div aria-hidden className="pointer-events-none absolute -top-16 -right-8 h-48 w-48 rounded-full bg-brandYellow/15 blur-[80px]" />
+                <div className="relative flex items-center justify-between gap-4 flex-wrap">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-brandYellow">Needs your attention</p>
+                    <p className="mt-1 text-2xl font-black">{newLeads} new {newLeads === 1 ? 'lead' : 'leads'} waiting — call now</p>
+                    <p className="mt-0.5 font-medium text-brandBg/55">Fastest reply wins the customer.</p>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark font-black px-5 py-3">See leads <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></span>
                 </div>
-                <div className="mt-3 grid grid-cols-4 gap-2 text-center">
-                  <div><p className="text-2xl font-black">{leadStats.total}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Total</p></div>
-                  <div><p className="text-2xl font-black text-brandYellow">{leadStats.newC}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">New</p></div>
-                  <div><p className="text-2xl font-black">{leadStats.contacted}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Contacted</p></div>
-                  <div><p className="text-2xl font-black text-emerald-400">{leadStats.converted}</p><p className="text-[10px] font-bold text-brandBg/60 uppercase">Converted</p></div>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-sm">
-                  <span className="font-bold">Conversion rate</span>
-                  <span className="font-black text-emerald-400">{convRate}%</span>
-                </div>
-                <div className="mt-1.5 h-2.5 rounded-full bg-brandBg/15 overflow-hidden">
-                  <div className="h-full rounded-full bg-emerald-400" style={{ width: `${convRate}%` }} />
-                </div>
-                {leadStats.newC > 0 && <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brandYellow"><Clock className="w-4 h-4" strokeWidth={2.4} /> {leadStats.newC} {leadStats.newC === 1 ? 'lead' : 'leads'} waiting — call now!</p>}
               </button>
+            )}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <KpiCard n={leadStats.total} label="Total leads" />
+              <KpiCard n={leadStats.newC} label="New to call" tone="yellow" />
+              <KpiCard n={leadStats.converted} label="Converted" tone="emerald" />
+              <KpiCard n={`${convRate}%`} label="Conversion rate" />
+            </div>
+            {leadStats.total === 0 && content.length === 0 && (
+              <div className="rounded-[24px] bg-white border-2 border-dashed border-brandDark/15 p-8 text-center">
+                <div className="mx-auto w-16 h-16 rounded-2xl bg-brandDark/5 grid place-items-center text-brandDark/40"><Target className="w-8 h-8" strokeWidth={2} /></div>
+                <p className="mt-4 text-lg font-black">Your dashboard is ready</p>
+                <p className="mt-1 font-medium text-brandDark/55 max-w-md mx-auto">As soon as leads come from your ads, website or walk-ins, they&apos;ll show here — ready to call. Aapka pehla lead jald aa raha hai!</p>
+              </div>
             )}
             {!alertsOn && leadStats.total > 0 && (
               <button type="button" disabled={alertsBusy} onClick={enableAlerts} className="text-left rounded-3xl bg-brandYellow/20 border-2 border-brandYellow p-5">
@@ -264,9 +263,9 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
             )}
             {waiting.length > 0 && (
               <button type="button" onClick={() => setTab('calendar')} className="text-left rounded-3xl bg-brandYellow/25 border-2 border-brandYellow p-5">
-                <p className="text-lg font-black">⏳ {waiting.length} {waiting.length === 1 ? 'design needs' : 'designs need'} your approval</p>
+                <p className="flex items-center gap-2 text-lg font-black"><Clock className="w-5 h-5" strokeWidth={2.4} /> {waiting.length} {waiting.length === 1 ? 'design needs' : 'designs need'} your approval</p>
                 <p className="mt-1 font-semibold text-brandDark/70">{waiting.slice(0, 3).map((p) => p.title).join(' · ')}</p>
-                <p className="mt-3 inline-block rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Review now 👉</p>
+                <p className="mt-3 inline-flex items-center gap-1 rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Review now <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></p>
               </button>
             )}
             {newLeads > 0 && (
@@ -358,6 +357,16 @@ function Stat({ n, label, good, warn }: { n: number; label: string; good?: boole
     <div className={`rounded-2xl p-3 text-center border-2 ${warn ? 'bg-brandYellow/25 border-brandYellow' : 'bg-white border-brandDark/10'}`}>
       <p className={`text-3xl font-black ${good ? 'text-emerald-600' : ''}`}>{n}</p>
       <p className="text-[11px] font-bold text-brandDark/60 leading-tight">{label}</p>
+    </div>
+  );
+}
+
+function KpiCard({ n, label, tone }: { n: number | string; label: string; tone?: 'yellow' | 'emerald' }) {
+  const color = tone === 'yellow' ? 'text-brandYellow' : tone === 'emerald' ? 'text-emerald-600' : 'text-brandDark';
+  return (
+    <div className="rounded-2xl bg-white border border-brandDark/[0.08] p-5 shadow-card">
+      <p className={`text-3xl font-black leading-none ${color}`}>{n}</p>
+      <p className="mt-1.5 text-sm font-semibold text-brandDark/45">{label}</p>
     </div>
   );
 }
