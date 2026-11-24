@@ -48,7 +48,7 @@ function badge(p: PortalPlan): { text: string; cls: string } {
   return { text: '🗓️ Planned', cls: 'bg-brandDark/5 text-brandDark/70' };
 }
 
-export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; syncedAt: number }) {
+export default function PortalApp({ data, syncedAt, webhookToken }: { data: PortalSnapshot; syncedAt: number; webhookToken?: string }) {
   const [tab, setTab] = useState<Tab>('home');
   const [plans, setPlans] = useState<PortalPlan[]>(data.plans);
   const [menu, setMenu] = useState(false);
@@ -413,7 +413,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
-        {tab === 'apps' && <IntegrationsTab data={data} />}
+        {tab === 'apps' && <IntegrationsTab data={data} webhookToken={webhookToken} />}
 
         <p className="mt-8 text-center text-xs text-brandDark/40">
           Updated {syncedAt ? new Date(syncedAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : 'soon'} · Questions?{' '}
@@ -1132,33 +1132,64 @@ function DocsTab({ data }: { data: PortalSnapshot }) {
 
 /* ------------------------------------------------------------ integrations */
 
-function IntegrationsTab({ data }: { data: PortalSnapshot }) {
+function IntegrationsTab({ data, webhookToken }: { data: PortalSnapshot; webhookToken?: string }) {
+  const [copied, setCopied] = useState(false);
+  const hookUrl = webhookToken ? `https://www.techinfigo.com/api/hooks/in/${webhookToken}` : '';
+  const copy = async () => { try { await navigator.clipboard.writeText(hookUrl); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch { /* ignore */ } };
   const apps: { name: string; desc: string; badge: string }[] = [
     { name: 'Instagram', desc: 'Let us post, run ads and pull insights from your Instagram.', badge: 'IG' },
-    { name: 'Facebook Page', desc: 'Connect your Page for posts, ads and lead forms.', badge: 'f' },
     { name: 'Google Business Profile', desc: 'Manage reviews and Google Maps posts.', badge: 'G' },
     { name: 'WhatsApp Business', desc: 'Auto-reply and chat with leads in one place.', badge: 'W' },
-    { name: 'Website / Forms', desc: 'Send website enquiries straight into your leads.', badge: '🌐' },
   ];
   return (
     <div className="grid gap-4">
       <div>
-        <h2 className="text-2xl font-black">Connect your accounts</h2>
-        <p className="text-sm font-medium text-brandDark/55">Link your pages so Techinfigo can run and track everything from one place. Tap <b>Connect</b> and our team sets it up for you on WhatsApp.</p>
+        <h2 className="text-2xl font-black">Capture leads &amp; connect accounts</h2>
+        <p className="text-sm font-medium text-brandDark/55">Send every enquiry from your website and ads straight into your Leads — automatically.</p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        {apps.map((a) => (
-          <div key={a.name} className="rounded-2xl bg-white border-2 border-brandDark/10 p-4 flex items-center gap-4">
-            <span className="grid place-items-center h-11 w-11 rounded-xl bg-brandDark text-brandYellow font-black text-sm shrink-0">{a.badge}</span>
-            <div className="flex-1 min-w-0">
-              <p className="font-black text-sm">{a.name}</p>
-              <p className="text-xs text-brandDark/55">{a.desc}</p>
-            </div>
-            <a href={whatsappUrl(`Namaste, main apne ${a.name} ko ${data.business || 'portal'} se connect karna chahta hoon.`)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark text-sm font-bold px-4 py-2 shrink-0"><Plus className="w-4 h-4" strokeWidth={2.6} /> Connect</a>
+
+      {/* Lead capture webhook */}
+      <div className="rounded-3xl bg-brandDark text-brandBg p-5 sm:p-6 shadow-xl">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brandYellow"><Blocks className="w-4 h-4" strokeWidth={2.4} /> Your lead-capture link (webhook)</p>
+        <p className="mt-1.5 font-medium text-brandBg/60 text-sm">Paste this link into your website form tool or your Meta Lead Ads (via Zapier). Every new lead lands here on its own.</p>
+        {hookUrl ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <code className="flex-1 min-w-0 truncate rounded-xl bg-brandSurface/80 ring-1 ring-brandBg/10 px-3 py-2.5 text-sm text-brandBg">{hookUrl}</code>
+            <button type="button" onClick={copy} className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark font-black px-4 py-2.5 text-sm shrink-0">{copied ? <><Check className="w-4 h-4" strokeWidth={2.6} /> Copied</> : <><Download className="w-4 h-4" strokeWidth={2.4} /> Copy link</>}</button>
           </div>
-        ))}
+        ) : (
+          <p className="mt-3 rounded-xl bg-brandSurface/80 px-3 py-2.5 text-sm text-brandBg/70">Your link is being set up — refresh in a moment, or <a className="underline font-bold" href={whatsappUrl('Namaste, mujhe apna lead-capture webhook link chahiye.')} target="_blank" rel="noopener noreferrer">WhatsApp us</a>.</p>
+        )}
       </div>
-      <p className="text-center text-xs text-brandDark/45">More integrations coming soon. Questions? <a className="font-bold underline" href={whatsappUrl('Namaste, integrations ke baare mein puchna hai.')} target="_blank" rel="noopener noreferrer">WhatsApp us</a></p>
+
+      {/* How to use it */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4">
+          <p className="flex items-center gap-2 font-black"><span className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-brandYellow text-sm">🌐</span> Website form</p>
+          <p className="mt-2 text-sm text-brandDark/60">In your form tool (WordPress, Elementor, Shopify, etc.) add a <b>Webhook</b> action and paste the link above. Send <b>name</b>, <b>phone</b>, <b>email</b>.</p>
+        </div>
+        <div className="rounded-2xl bg-white border-2 border-brandDark/10 p-4">
+          <p className="flex items-center gap-2 font-black"><span className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-brandYellow text-sm">f</span> Meta (FB / Instagram) ads</p>
+          <p className="mt-2 text-sm text-brandDark/60">In <b>Zapier</b>: Facebook Lead Ads → <b>Webhooks POST</b> → paste the link above. Your ad leads arrive here instantly. Need help? <a className="font-bold underline" href={whatsappUrl('Namaste, Meta ads ko mere portal se connect karna hai.')} target="_blank" rel="noopener noreferrer">WhatsApp us</a>.</p>
+        </div>
+      </div>
+
+      {/* Other accounts */}
+      <div>
+        <p className="font-black text-sm text-brandDark/70 mb-2">Connect your accounts (we set these up for you)</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {apps.map((a) => (
+            <div key={a.name} className="rounded-2xl bg-white border-2 border-brandDark/10 p-4 flex items-center gap-4">
+              <span className="grid place-items-center h-11 w-11 rounded-xl bg-brandDark text-brandYellow font-black text-sm shrink-0">{a.badge}</span>
+              <div className="flex-1 min-w-0">
+                <p className="font-black text-sm">{a.name}</p>
+                <p className="text-xs text-brandDark/55">{a.desc}</p>
+              </div>
+              <a href={whatsappUrl(`Namaste, main apne ${a.name} ko ${data.business || 'portal'} se connect karna chahta hoon.`)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark text-sm font-bold px-4 py-2 shrink-0"><Plus className="w-4 h-4" strokeWidth={2.6} /> Connect</a>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

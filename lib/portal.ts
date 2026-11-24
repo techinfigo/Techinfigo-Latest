@@ -144,7 +144,7 @@ export const portalCookie = {
   maxAge: SESSION_DAYS * 86400,
 };
 
-export type PortalSession = { clientId: string; snapshot: PortalSnapshot; syncedAt: number; phone: string };
+export type PortalSession = { clientId: string; snapshot: PortalSnapshot; syncedAt: number; phone: string; webhookToken: string };
 
 /** The signed-in client's portal, or null (bad/expired cookie, access switched off, password changed). */
 export async function readPortal(token: string | undefined): Promise<PortalSession | null> {
@@ -155,7 +155,13 @@ export async function readPortal(token: string | undefined): Promise<PortalSessi
     if (!isClientId(clientId)) return null;
     const snap = await crmDb().collection(PORTALS).doc(clientId).get();
     if (!snap.exists || !snap.get('enabled') || Number(snap.get('passVersion') || 0) !== Number(payload.pv)) return null;
-    return { clientId, snapshot: cleanSnapshot(snap.get('snapshot')), syncedAt: Number(snap.get('syncedAt') || 0), phone: String(snap.get('phone') || '') };
+    // Each portal gets its own lead-capture webhook token (generated once).
+    let webhookToken = String(snap.get('webhookToken') || '');
+    if (!webhookToken) {
+      webhookToken = randomBytes(16).toString('hex');
+      await crmDb().collection(PORTALS).doc(clientId).set({ webhookToken }, { merge: true }).catch(() => {});
+    }
+    return { clientId, snapshot: cleanSnapshot(snap.get('snapshot')), syncedAt: Number(snap.get('syncedAt') || 0), phone: String(snap.get('phone') || ''), webhookToken };
   } catch {
     return null;
   }

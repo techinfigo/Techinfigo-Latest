@@ -147,7 +147,17 @@ export async function findConnection(token: string, kind: Connection['kind']): P
     .limit(1)
     .get();
   const doc = snap.docs[0];
-  if (!doc) return null;
+  if (!doc) {
+    // Self-serve portal webhook: the token lives on the client's own portal doc.
+    if (kind === 'webhook') {
+      const p = await crmDb().collection('portals').where('webhookToken', '==', token).limit(1).get();
+      const pd = p.docs[0];
+      if (pd && pd.get('enabled') !== false) {
+        return { id: `portal-${pd.id}`, kind: 'webhook', name: 'Website & Ads', enabled: true, clientId: pd.id };
+      }
+    }
+    return null;
+  }
   const d = doc.data();
   if (d.kind !== kind) return null;
   return { id: doc.id, kind, name: typeof d.name === 'string' && d.name ? d.name : 'Connection', enabled: d.enabled !== false, ...(typeof d.clientId === 'string' && d.clientId ? { clientId: d.clientId } : {}) };
