@@ -138,24 +138,24 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
 
   return (
     <div className="min-h-[100svh] bg-brandBg text-brandDark pb-24 sm:pb-10">
-      <header className="sticky top-0 z-20 bg-brandBg/95 backdrop-blur border-b border-brandDark/10">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
+      <header className="sticky top-0 z-20 bg-brandDark text-brandBg shadow-lg">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/proposal-logo.png" alt="" width={28} height={28} className="w-7 h-7 rounded-lg bg-brandDark p-1" />
+          <img src="/proposal-logo.png" alt="" width={34} height={34} className="w-8 h-8 rounded-xl bg-brandSurface ring-1 ring-brandBg/10 p-1.5" />
           <div className="min-w-0">
             <p className="font-black text-sm leading-tight truncate">{data.business || 'Your dashboard'}</p>
-            <p className="text-[11px] font-semibold text-brandDark/50 leading-tight">by Techinfigo</p>
+            <p className="text-[11px] font-semibold text-brandBg/45 leading-tight">by Techinfigo</p>
           </div>
           <nav className="hidden sm:flex ml-6 gap-1">
             {tabs.map((x) => (
-              <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`relative px-3 py-2 rounded-xl text-sm font-bold ${tab === x.t ? 'bg-brandDark text-white' : 'text-brandDark/70 hover:bg-brandDark/5'}`}>
+              <button key={x.t} type="button" onClick={() => setTab(x.t)} className={`relative px-3.5 py-2 rounded-xl text-sm font-bold transition ${tab === x.t ? 'bg-brandYellow text-brandDark' : 'text-brandBg/70 hover:bg-brandBg/10'}`}>
                 {x.label}
-                {x.count ? <span className="ml-1.5 inline-grid place-items-center min-w-5 h-5 px-1 rounded-full bg-brandYellow text-brandDark text-[11px]">{x.count}</span> : null}
+                {x.count ? <span className={`ml-1.5 inline-grid place-items-center min-w-5 h-5 px-1 rounded-full text-[11px] ${tab === x.t ? 'bg-brandDark text-brandYellow' : 'bg-brandYellow text-brandDark'}`}>{x.count}</span> : null}
               </button>
             ))}
           </nav>
           <div className="ml-auto relative">
-            <button type="button" onClick={() => setMenu((m) => !m)} className="w-9 h-9 rounded-full bg-brandDark text-white font-black" aria-label="Account menu">
+            <button type="button" onClick={() => setMenu((m) => !m)} className="w-9 h-9 rounded-full bg-brandYellow text-brandDark font-black ring-1 ring-brandBg/10" aria-label="Account menu">
               {(data.person || data.business || 'C').charAt(0).toUpperCase()}
             </button>
             {menu && (
@@ -173,12 +173,14 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 pt-5">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-5 sm:pt-6">
         {tab === 'home' && (
           <div className="grid gap-4">
-            <div>
-              <h1 className="text-2xl font-black">Namaste{data.person ? ` ${data.person.split(' ')[0]}` : ''} 👋</h1>
-              <p className="font-semibold text-brandDark/60">{new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })} at a glance</p>
+            <div className="relative overflow-hidden rounded-[28px] bg-brandDark text-brandBg p-6 sm:p-8 shadow-xl">
+              <div aria-hidden className="pointer-events-none absolute -top-16 -right-10 h-56 w-56 rounded-full bg-brandYellow/15 blur-[90px]" />
+              <p className="text-xs font-bold uppercase tracking-widest text-brandYellow">{new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</p>
+              <h1 className="mt-2 text-3xl sm:text-4xl font-black tracking-tight">Namaste{data.person ? ` ${data.person.split(' ')[0]}` : ''} 👋</h1>
+              <p className="mt-1.5 font-medium text-brandBg/60">Here&apos;s everything happening with your growth, at a glance.</p>
             </div>
             <div className="grid grid-cols-3 gap-3">
               <Stat n={content.length} label="Planned this month" />
