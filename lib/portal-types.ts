@@ -15,6 +15,7 @@ export type PortalPlan = {
 export type PortalInvoice = { id: string; number: string; issueDate: string; dueDate: string; total: number; paid: number; due: number; status: string };
 export type PortalService = { name: string; cost: number; billingType: string };
 export type PortalDoc = { title: string; url: string; date?: string };
+export type PortalFollowUp = { type: string; note: string; at: string };
 export type PortalLead = {
   id: string;
   name: string;
@@ -24,6 +25,8 @@ export type PortalLead = {
   status: 'New' | 'Contacted' | 'Converted' | 'Lost';
   note?: string;
   at?: string;
+  nextFollowUp?: string;        // ISO datetime of the next planned call/visit
+  activity?: PortalFollowUp[];  // recent logged activity, newest first
 };
 export type PortalSnapshot = {
   business: string;

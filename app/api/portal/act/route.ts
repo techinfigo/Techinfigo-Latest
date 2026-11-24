@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { rateLimit } from '../../../../lib/rate-limit';
-import { PORTAL_COOKIE, clientAction, clientLeadAction, clientAddLead, readPortal } from '../../../../lib/portal';
+import { PORTAL_COOKIE, clientAction, clientLeadAction, clientLeadFollowUp, clientAddLead, readPortal } from '../../../../lib/portal';
 
 /** Signed-in client approves a post, or asks for a change. */
 
@@ -24,6 +24,21 @@ export async function POST(request: Request) {
     if (!name && !phone) return NextResponse.json({ ok: false, error: 'Naam ya phone number daaliye.' }, { status: 400, headers: H });
     const ar = await clientAddLead(session.clientId, name, phone, note).catch((e) => { console.error('[portal add lead]', e); return 'bad' as const; });
     return ar === 'ok' ? NextResponse.json({ ok: true }, { headers: H }) : NextResponse.json({ ok: false, error: 'Ye abhi nahi ho paya. Refresh karke try karein.' }, { status: 409, headers: H });
+  }
+
+  // Lead follow-up: log an activity and/or set the next follow-up date.
+  if (raw && typeof raw.leadId === 'string' && raw.followUp && typeof raw.followUp === 'object') {
+    const leadId = raw.leadId.slice(0, 80);
+    const fu = raw.followUp as Record<string, unknown>;
+    const next = typeof fu.next === 'string' ? fu.next.slice(0, 40) : '';
+    const type = typeof fu.type === 'string' ? fu.type.slice(0, 20) : '';
+    const note = typeof fu.note === 'string' ? fu.note.trim().slice(0, 500) : '';
+    if (!next && !note) return NextResponse.json({ ok: false, error: 'Bad request.' }, { status: 400, headers: H });
+    const fr = await clientLeadFollowUp(session.clientId, leadId, next, type, note).catch((e) => {
+      console.error('[portal lead followup]', e);
+      return 'bad' as const;
+    });
+    return fr === 'ok' ? NextResponse.json({ ok: true }, { headers: H }) : NextResponse.json({ ok: false, error: 'Ye abhi nahi ho paya. Refresh karke try karein.' }, { status: 409, headers: H });
   }
 
   // Lead update (status / note) — kept separate from calendar actions.

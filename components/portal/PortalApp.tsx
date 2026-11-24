@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, Check, X, PenLine, Clock, ArrowRight, Plus, CheckCircle2, Search, type LucideIcon } from 'lucide-react';
+import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, X, PenLine, Clock, ArrowRight, Plus, CheckCircle2, Search, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalSnapshot } from '../../lib/portal-types';
 
@@ -78,6 +78,24 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ newLead: { name, phone, note } }),
+    }).catch(() => 0);
+  };
+
+  const onLeadFollowUp = async (id: string, fu: { next: string; type: string; note: string }) => {
+    setLeads((ls) => ls.map((l) => {
+      if (l.id !== id) return l;
+      const next = { ...l };
+      if (fu.next) next.nextFollowUp = fu.next;
+      if (fu.note) {
+        next.activity = [{ type: fu.type || 'Other', note: fu.note, at: new Date().toISOString() }, ...(l.activity || [])].slice(0, 20);
+        if (next.status === 'New') next.status = 'Contacted';
+      }
+      return next;
+    }));
+    await fetch('/api/portal/act', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ leadId: id, followUp: fu }),
     }).catch(() => 0);
   };
 
@@ -315,7 +333,7 @@ export default function PortalApp({ data, syncedAt }: { data: PortalSnapshot; sy
           </div>
         )}
 
-        {tab === 'leads' && <LeadsTab leads={leads} onAct={onLeadAct} onAddLead={onAddLead} />}
+        {tab === 'leads' && <LeadsTab leads={leads} onAct={onLeadAct} onAddLead={onAddLead} onFollowUp={onLeadFollowUp} />}
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
@@ -375,7 +393,7 @@ function leadBadge(status: PortalLead['status']): { text: string; cls: string; d
   return { text: 'New', cls: 'bg-brandYellow/40 text-brandDark', dot: 'bg-brandYellow' };
 }
 
-function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void; onAddLead: (name: string, phone: string, note: string) => void }) {
+function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void; onAddLead: (name: string, phone: string, note: string) => void; onFollowUp: (id: string, fu: { next: string; type: string; note: string }) => void }) {
   const [adding, setAdding] = useState(false);
   const [nm, setNm] = useState('');
   const [ph, setPh] = useState('');
@@ -387,22 +405,82 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
   };
   const [filter, setFilter] = useState<'all' | PortalLead['status']>('all');
   const [q, setQ] = useState('');
-  const [noteFor, setNoteFor] = useState<string | null>(null);
-  const [noteText, setNoteText] = useState('');
+  const [view, setView] = useState<'list' | 'pipeline'>('list');
+  const [dragOver, setDragOver] = useState<PortalLead['status'] | null>(null);
+  // Follow-up / activity editor
+  const [fuFor, setFuFor] = useState<string | null>(null);
+  const [fuType, setFuType] = useState('Call');
+  const [fuNote, setFuNote] = useState('');
+  const [fuNext, setFuNext] = useState('');
   const order: Record<PortalLead['status'], number> = { New: 0, Contacted: 1, Converted: 2, Lost: 3 };
-  const sorted = [...leads].sort((a, b) => (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || ''));
+  // Leads with a pending follow-up float to the top, soonest first — like the CRM.
+  const sorted = [...leads].sort((a, b) => {
+    const ap = !!a.nextFollowUp, bp = !!b.nextFollowUp;
+    if (ap && bp) return new Date(a.nextFollowUp!).getTime() - new Date(b.nextFollowUp!).getTime();
+    if (ap) return -1;
+    if (bp) return 1;
+    return (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || '');
+  });
   const ql = q.trim().toLowerCase();
-  const shown = (filter === 'all' ? sorted : sorted.filter((l) => l.status === filter))
-    .filter((l) => !ql || (l.name || '').toLowerCase().includes(ql) || (l.phone || '').toLowerCase().includes(ql) || (l.source || '').toLowerCase().includes(ql));
+  const searched = sorted.filter((l) => !ql || (l.name || '').toLowerCase().includes(ql) || (l.phone || '').toLowerCase().includes(ql) || (l.source || '').toLowerCase().includes(ql));
+  const shown = filter === 'all' ? searched : searched.filter((l) => l.status === filter);
   const newCount = leads.filter((l) => l.status === 'New').length;
   const wonCount = leads.filter((l) => l.status === 'Converted').length;
   const daysAgo = (at?: string) => (at ? Math.floor((Date.now() - new Date(at).getTime()) / 86400000) : 0);
+  const isSameDay = (s?: string) => {
+    if (!s) return false;
+    const d = new Date(s), n = new Date();
+    return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth() && d.getDate() === n.getDate();
+  };
+  const fuState = (l: PortalLead): 'today' | 'overdue' | 'upcoming' | null => {
+    if (!l.nextFollowUp) return null;
+    if (isSameDay(l.nextFollowUp)) return 'today';
+    return new Date(l.nextFollowUp).getTime() < Date.now() ? 'overdue' : 'upcoming';
+  };
+  const fuLabel = (s?: string) => (s ? new Date(s).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + (new Date(s).getHours() ? ', ' + new Date(s).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : '') : '');
+  const toLocalInput = (iso?: string) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+  };
+  const openFu = (l: PortalLead) => {
+    if (fuFor === l.id) { setFuFor(null); return; }
+    setFuFor(l.id); setFuType('Call'); setFuNote(''); setFuNext(toLocalInput(l.nextFollowUp));
+  };
+  const saveFu = (id: string) => {
+    if (!fuNote.trim() && !fuNext) { setFuFor(null); return; }
+    onFollowUp(id, { next: fuNext ? new Date(fuNext).toISOString() : '', type: fuType, note: fuNote.trim() });
+    setFuFor(null);
+  };
+  const actTypes = ['Call', 'WhatsApp', 'Visit', 'Other'];
   const filters: { k: 'all' | PortalLead['status']; label: string; n: number }[] = [
     { k: 'all', label: 'All', n: leads.length },
     { k: 'New', label: 'New', n: newCount },
     { k: 'Contacted', label: 'Contacted', n: leads.filter((l) => l.status === 'Contacted').length },
     { k: 'Converted', label: 'Converted', n: wonCount },
   ];
+
+  // Shared follow-up / activity editor (used in the table, cards and pipeline).
+  const fuEditor = (id: string) => (
+    <div className="rounded-xl bg-brandBg/60 border-2 border-brandDark/10 p-3 grid gap-2.5">
+      <div className="flex flex-wrap gap-1.5">
+        {actTypes.map((t) => (
+          <button key={t} type="button" onClick={() => setFuType(t)} className={`rounded-full px-3 py-1 text-xs font-bold border-2 transition ${fuType === t ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10'}`}>{t}</button>
+        ))}
+      </div>
+      <input value={fuNote} onChange={(e) => setFuNote(e.target.value)} placeholder="What happened? e.g. Called — interested, wants price" className="rounded-lg border-2 border-brandDark/10 px-3 py-2 text-sm" />
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="text-xs font-bold text-brandDark/50">Next follow-up:</label>
+        <input type="datetime-local" value={fuNext} onChange={(e) => setFuNext(e.target.value)} className="rounded-lg border-2 border-brandDark/10 px-3 py-1.5 text-sm font-semibold" />
+        <div className="ml-auto flex gap-2">
+          <button type="button" onClick={() => setFuFor(null)} className="rounded-lg bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5">Cancel</button>
+          <button type="button" onClick={() => saveFu(id)} className="rounded-lg bg-brandDark text-white text-sm font-bold px-4 py-1.5">Save</button>
+        </div>
+      </div>
+    </div>
+  );
 
   if (leads.length === 0) {
     return (
@@ -433,11 +511,15 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
 
   return (
     <div className="grid gap-4">
-      {/* Toolbar: search + add */}
+      {/* Toolbar: search + view toggle + add */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 min-w-[220px]">
+        <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brandDark/40" strokeWidth={2.4} />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, phone or source…" className="w-full rounded-2xl bg-white border-2 border-brandDark/10 pl-10 pr-4 py-2.5 text-sm font-semibold outline-none focus:border-brandYellow transition" />
+        </div>
+        <div className="flex items-center rounded-2xl bg-white border-2 border-brandDark/10 p-1">
+          <button type="button" onClick={() => setView('list')} className={`rounded-xl px-3.5 py-1.5 text-sm font-bold transition ${view === 'list' ? 'bg-brandDark text-white' : 'text-brandDark/55'}`}>List</button>
+          <button type="button" onClick={() => setView('pipeline')} className={`rounded-xl px-3.5 py-1.5 text-sm font-bold transition ${view === 'pipeline' ? 'bg-brandDark text-white' : 'text-brandDark/55'}`}>Pipeline</button>
         </div>
         <button type="button" onClick={() => setAdding((a) => !a)} className="inline-flex items-center gap-1.5 rounded-2xl bg-brandDark text-white font-bold px-5 py-2.5 text-sm shadow-card"><Plus className="w-4 h-4" strokeWidth={2.6} /> Add lead</button>
       </div>
@@ -459,20 +541,26 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
         <KpiCard n={wonCount} label="Converted" tone="emerald" />
         <KpiCard n={`${leads.length ? Math.round((wonCount / leads.length) * 100) : 0}%`} label="Conversion rate" />
       </div>
-      {/* Filter chips */}
-      <div className="flex flex-wrap gap-2">
-        {filters.map((f) => (
-          <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3.5 py-1.5 text-sm font-bold border-2 transition ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10 hover:border-brandDark/25'}`}>
-            {f.label} {f.n > 0 && <span className={filter === f.k ? 'text-brandYellow' : 'text-brandDark/40'}>{f.n}</span>}
-          </button>
-        ))}
-      </div>
+      {/* Filter chips (list view only) */}
+      {view === 'list' && (
+        <div className="flex flex-wrap gap-2">
+          {filters.map((f) => (
+            <button key={f.k} type="button" onClick={() => setFilter(f.k)} className={`rounded-full px-3.5 py-1.5 text-sm font-bold border-2 transition ${filter === f.k ? 'bg-brandDark text-white border-brandDark' : 'bg-white text-brandDark/60 border-brandDark/10 hover:border-brandDark/25'}`}>
+              {f.label} {f.n > 0 && <span className={filter === f.k ? 'text-brandYellow' : 'text-brandDark/40'}>{f.n}</span>}
+            </button>
+          ))}
+        </div>
+      )}
+      {view === 'list' && (
+      <>
       <ul className="md:hidden grid gap-3">
         {shown.map((l) => {
           const b = leadBadge(l.status);
           const digits = (l.phone || '').replace(/[^0-9]/g, '');
+          const fs = fuState(l);
+          const last = l.activity && l.activity[0];
           return (
-            <li key={l.id} className="rounded-3xl bg-white border-2 border-brandDark/10 p-4">
+            <li key={l.id} className={`rounded-3xl bg-white border-2 p-4 ${fs === 'today' ? 'border-rose-300' : fs === 'overdue' ? 'border-amber-300' : 'border-brandDark/10'}`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="font-black truncate">{l.name}</p>
@@ -483,10 +571,13 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                 </div>
                 <span className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${b.dot}`} />{b.text}</span>
               </div>
-              {l.status === 'New' && daysAgo(l.at) >= 1 && (
+              {fs && (
+                <p className={`mt-2 inline-flex items-center gap-1.5 rounded-lg text-xs font-bold px-2 py-1 ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {fs === 'today' ? 'Follow-up today' : fs === 'overdue' ? 'Follow-up overdue' : `Next: ${fuLabel(l.nextFollowUp)}`}</p>
+              )}
+              {!fs && l.status === 'New' && daysAgo(l.at) >= 1 && (
                 <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-red-100 text-red-800 text-xs font-bold px-2 py-1"><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {daysAgo(l.at)} din purana — aaj hi call karein!</p>
               )}
-              {l.note && <p className="mt-2 text-sm text-brandDark/70">{l.note}</p>}
+              {last ? <p className="mt-2 text-sm text-brandDark/70"><span className="font-bold">{last.type}:</span> {last.note}</p> : l.note ? <p className="mt-2 text-sm text-brandDark/70">{l.note}</p> : null}
               {(l.phone || l.email) && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {l.phone && (
@@ -500,23 +591,16 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                   )}
                 </div>
               )}
-              {l.status !== 'Converted' && l.status !== 'Lost' && (
-                <div className="mt-3 flex flex-wrap gap-2 border-t border-brandDark/5 pt-3">
-                  <span className="text-xs font-bold text-brandDark/50 self-center">Update:</span>
-                  {l.status === 'New' && (
-                    <button type="button" onClick={() => onAct(l.id, { status: 'Contacted' })} className="inline-flex items-center gap-1.5 rounded-xl bg-sky-100 text-sky-900 text-sm font-bold px-3 py-1.5"><Phone className="w-4 h-4" strokeWidth={2.4} /> Mark Contacted</button>
-                  )}
-                  <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5"><Check className="w-4 h-4" strokeWidth={2.8} /> Converted</button>
-                  <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="inline-flex items-center gap-1.5 rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5"><X className="w-4 h-4" strokeWidth={2.8} /> Lost</button>
-                  <button type="button" onClick={() => { setNoteFor(noteFor === l.id ? null : l.id); setNoteText(l.note || ''); }} className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Note</button>
-                </div>
-              )}
-              {noteFor === l.id && (
-                <div className="mt-2 flex gap-2">
-                  <input value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="e.g. Called — call back Friday" className="flex-1 rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
-                  <button type="button" onClick={() => { onAct(l.id, { note: noteText.trim() }); setNoteFor(null); }} className="rounded-xl bg-brandDark text-white text-sm font-bold px-3 py-2">Save</button>
-                </div>
-              )}
+              <div className="mt-3 flex flex-wrap gap-2 border-t border-brandDark/5 pt-3">
+                {l.status !== 'Converted' && l.status !== 'Lost' && (
+                  <>
+                    <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-sm font-bold px-3 py-1.5"><CheckCircle2 className="w-4 h-4" strokeWidth={2.4} /> Converted</button>
+                    <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} className="inline-flex items-center gap-1.5 rounded-xl bg-brandDark/5 text-brandDark/60 text-sm font-bold px-3 py-1.5"><X className="w-4 h-4" strokeWidth={2.8} /> Lost</button>
+                  </>
+                )}
+                <button type="button" onClick={() => openFu(l)} className="inline-flex items-center gap-1.5 rounded-xl bg-white border-2 border-brandDark/15 text-brandDark/70 text-sm font-bold px-3 py-1.5"><PenLine className="w-4 h-4" strokeWidth={2.4} /> Log / Follow-up</button>
+              </div>
+              {fuFor === l.id && <div className="mt-2.5">{fuEditor(l.id)}</div>}
             </li>
           );
         })}
@@ -529,7 +613,8 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
             <tr className="text-left text-[11px] font-black uppercase tracking-wider text-brandDark/45">
               <th className="px-4 py-3">Lead</th>
               <th className="px-4 py-3">Source</th>
-              <th className="px-4 py-3">Added</th>
+              <th className="px-4 py-3">Next follow-up</th>
+              <th className="px-4 py-3">Latest activity</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3 text-right">Actions</th>
             </tr>
@@ -539,20 +624,36 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
               const b = leadBadge(l.status);
               const digits = (l.phone || '').replace(/[^0-9]/g, '');
               const wa = digits.length === 10 ? '91' + digits : digits;
-              const overdue = l.status === 'New' && daysAgo(l.at) >= 1;
+              const fs = fuState(l);
+              const last = l.activity && l.activity[0];
+              const rowBg = fs === 'today' ? 'bg-rose-50/50 hover:bg-rose-50' : fs === 'overdue' ? 'bg-amber-50/40 hover:bg-amber-50' : 'hover:bg-brandYellow/[0.05]';
               return (
                 <React.Fragment key={l.id}>
-                  <tr className="hover:bg-brandYellow/[0.05] transition-colors align-top">
+                  <tr className={`${rowBg} transition-colors align-top`}>
                     <td className="px-4 py-3">
                       <p className="font-black text-sm text-brandDark">{l.name}</p>
                       {l.phone && <p className="text-xs font-semibold text-brandDark/50 tabular-nums">{l.phone}</p>}
-                      {overdue && (
+                      <p className="text-[11px] font-semibold text-brandDark/35">{l.at ? new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''}</p>
+                      {!fs && l.status === 'New' && daysAgo(l.at) >= 1 && (
                         <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-red-100 text-red-800 text-[10px] font-bold px-1.5 py-0.5"><Clock className="w-3 h-3" strokeWidth={2.4} /> {daysAgo(l.at)} din — aaj call karein</span>
                       )}
-                      {l.note && <p className="mt-1 max-w-[260px] truncate text-xs text-brandDark/60" title={l.note}>{l.note}</p>}
                     </td>
                     <td className="px-4 py-3 text-sm font-semibold text-brandDark/70 whitespace-nowrap">{l.source || 'Enquiry'}</td>
-                    <td className="px-4 py-3 text-sm font-semibold text-brandDark/55 whitespace-nowrap">{l.at ? new Date(l.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {l.nextFollowUp ? (
+                        <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3 h-3" strokeWidth={2.4} /> {fs === 'today' ? 'Today' : fs === 'overdue' ? 'Overdue' : fuLabel(l.nextFollowUp)}</span>
+                      ) : <span className="text-brandDark/25 text-sm">—</span>}
+                    </td>
+                    <td className="px-4 py-3">
+                      {last ? (
+                        <div className="max-w-[240px]">
+                          <p className="text-[11px] font-bold text-brandDark/70">{last.type} · {last.at ? new Date(last.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''}</p>
+                          <p className="text-xs text-brandDark/60 truncate" title={last.note}>{last.note}</p>
+                        </div>
+                      ) : l.note ? (
+                        <p className="max-w-[240px] truncate text-xs text-brandDark/55" title={l.note}>{l.note}</p>
+                      ) : <span className="text-brandDark/25 text-xs">No activity</span>}
+                    </td>
                     <td className="px-4 py-3"><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${b.dot}`} />{b.text}</span></td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1.5">
@@ -561,23 +662,17 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
                         {l.email && <a href={`mailto:${l.email}`} title="Email" className="grid place-items-center h-8 w-8 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark hover:border-brandDark/30 transition"><Mail className="w-4 h-4" strokeWidth={2.4} /></a>}
                         {l.status !== 'Converted' && l.status !== 'Lost' && (
                           <>
-                            {l.status === 'New' && <button type="button" onClick={() => onAct(l.id, { status: 'Contacted' })} title="Mark Contacted" className="grid place-items-center h-8 w-8 rounded-lg bg-sky-100 text-sky-800 hover:bg-sky-200 transition"><Check className="w-4 h-4" strokeWidth={2.6} /></button>}
                             <button type="button" onClick={() => onAct(l.id, { status: 'Converted' })} title="Mark Converted" className="grid place-items-center h-8 w-8 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition"><CheckCircle2 className="w-4 h-4" strokeWidth={2.4} /></button>
                             <button type="button" onClick={() => onAct(l.id, { status: 'Lost' })} title="Mark Lost" className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark/5 text-brandDark/50 hover:bg-brandDark/10 transition"><X className="w-4 h-4" strokeWidth={2.8} /></button>
                           </>
                         )}
-                        <button type="button" onClick={() => { setNoteFor(noteFor === l.id ? null : l.id); setNoteText(l.note || ''); }} title="Add note" className="grid place-items-center h-8 w-8 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark/70 hover:border-brandDark/30 transition"><PenLine className="w-4 h-4" strokeWidth={2.4} /></button>
+                        <button type="button" onClick={() => openFu(l)} title="Log / Follow-up" className={`grid place-items-center h-8 w-8 rounded-lg border-2 transition ${fuFor === l.id ? 'bg-brandDark text-white border-brandDark' : 'bg-white border-brandDark/15 text-brandDark/70 hover:border-brandDark/30'}`}><PenLine className="w-4 h-4" strokeWidth={2.4} /></button>
                       </div>
                     </td>
                   </tr>
-                  {noteFor === l.id && (
-                    <tr className="bg-brandYellow/[0.04]">
-                      <td colSpan={5} className="px-4 pb-3 pt-0">
-                        <div className="flex gap-2">
-                          <input value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="e.g. Called — call back Friday" className="flex-1 rounded-xl border-2 border-brandDark/10 px-3 py-2 text-sm" />
-                          <button type="button" onClick={() => { onAct(l.id, { note: noteText.trim() }); setNoteFor(null); }} className="rounded-xl bg-brandDark text-white text-sm font-bold px-4 py-2">Save</button>
-                        </div>
-                      </td>
+                  {fuFor === l.id && (
+                    <tr className={rowBg}>
+                      <td colSpan={6} className="px-4 pb-3 pt-0">{fuEditor(l.id)}</td>
                     </tr>
                   )}
                 </React.Fragment>
@@ -590,6 +685,56 @@ function LeadsTab({ leads, onAct, onAddLead }: { leads: PortalLead[]; onAct: (id
       {shown.length === 0 && (
         <div className="rounded-2xl bg-white border-2 border-dashed border-brandDark/15 p-8 text-center text-sm font-semibold text-brandDark/50">
           {ql ? `No leads match "${q}".` : 'No leads in this filter.'}
+        </div>
+      )}
+      </>
+      )}
+
+      {/* Pipeline (Kanban) view */}
+      {view === 'pipeline' && (
+        <div className="overflow-x-auto pb-2 -mx-1 px-1">
+          <div className="flex gap-4 min-w-max">
+            {(['New', 'Contacted', 'Converted', 'Lost'] as const).map((st) => {
+              const col = searched.filter((l) => l.status === st);
+              const bb = leadBadge(st);
+              return (
+                <div
+                  key={st}
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(st); }}
+                  onDragLeave={() => setDragOver((d) => (d === st ? null : d))}
+                  onDrop={(e) => { e.preventDefault(); const id = e.dataTransfer.getData('leadId'); if (id) onAct(id, { status: st }); setDragOver(null); }}
+                  className={`w-[300px] shrink-0 rounded-2xl p-3 transition ${dragOver === st ? 'bg-brandYellow/15 ring-2 ring-brandYellow' : 'bg-brandDark/[0.03]'}`}
+                >
+                  <div className="flex items-center justify-between px-1 pb-2.5">
+                    <span className="inline-flex items-center gap-1.5 text-sm font-black text-brandDark/70"><span className={`h-2 w-2 rounded-full ${bb.dot}`} />{st}</span>
+                    <span className="rounded-full bg-white px-2 py-0.5 text-xs font-bold text-brandDark/55">{col.length}</span>
+                  </div>
+                  <div className="grid gap-2">
+                    {col.map((l) => {
+                      const digits = (l.phone || '').replace(/[^0-9]/g, '');
+                      const wa = digits.length === 10 ? '91' + digits : digits;
+                      const fs = fuState(l);
+                      return (
+                        <div key={l.id} draggable onDragStart={(e) => e.dataTransfer.setData('leadId', l.id)} className="rounded-xl bg-white border-2 border-brandDark/10 p-3 cursor-grab active:cursor-grabbing shadow-sm">
+                          <p className="font-black text-sm truncate">{l.name}</p>
+                          {l.phone && <p className="text-xs font-semibold text-brandDark/50 tabular-nums">{l.phone}</p>}
+                          <p className="text-[11px] font-semibold text-brandDark/40 mt-0.5">{l.source || 'Enquiry'}</p>
+                          {fs && <p className={`mt-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3 h-3" strokeWidth={2.4} /> {fs === 'today' ? 'Today' : fs === 'overdue' ? 'Overdue' : fuLabel(l.nextFollowUp)}</p>}
+                          <div className="mt-2 flex gap-1.5">
+                            {l.phone && <a href={`tel:${l.phone}`} title="Call" className="grid place-items-center h-7 w-7 rounded-lg bg-brandDark text-white"><Phone className="w-3.5 h-3.5" strokeWidth={2.4} /></a>}
+                            {digits && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" title="WhatsApp" className="grid place-items-center h-7 w-7 rounded-lg bg-emerald-500 text-white"><MessageCircle className="w-3.5 h-3.5" strokeWidth={2.4} /></a>}
+                            <button type="button" onClick={() => openFu(l)} title="Log / Follow-up" className="grid place-items-center h-7 w-7 rounded-lg bg-white border-2 border-brandDark/15 text-brandDark/70"><PenLine className="w-3.5 h-3.5" strokeWidth={2.4} /></button>
+                          </div>
+                          {fuFor === l.id && <div className="mt-2">{fuEditor(l.id)}</div>}
+                        </div>
+                      );
+                    })}
+                    {col.length === 0 && <p className="text-xs text-brandDark/30 text-center py-6">—</p>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

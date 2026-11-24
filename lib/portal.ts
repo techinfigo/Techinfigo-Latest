@@ -98,6 +98,15 @@ export function cleanSnapshot(raw: unknown): PortalSnapshot {
         status: (['New', 'Contacted', 'Converted', 'Lost'] as readonly string[]).includes(String(l.status)) ? (l.status as PortalLead['status']) : 'New',
         ...(str(l.note, 500) ? { note: str(l.note, 500) } : {}),
         ...(str(l.at, 40) ? { at: str(l.at, 40) } : {}),
+        ...(str(l.nextFollowUp, 40) ? { nextFollowUp: str(l.nextFollowUp, 40) } : {}),
+        ...(Array.isArray(l.activity)
+          ? {
+              activity: (l.activity as Record<string, unknown>[])
+                .slice(0, 20)
+                .map((a) => ({ type: str(a.type, 20) || 'Other', note: str(a.note, 500), at: str(a.at, 40) }))
+                .filter((a) => a.note || a.at),
+            }
+          : {}),
       }))
       .filter((l) => l.id),
     upiId: /^[\w.\-]{2,64}@[\w.\-]{2,64}$/.test(str(r.upiId, 130)) ? str(r.upiId, 130) : '',
@@ -242,6 +251,42 @@ export async function clientLeadAction(clientId: string, leadId: string, status:
   await send({
     title: `\uD83C\uDFAF ${business || 'Client'} updated a lead: ${leadName}`,
     body: note ? `${status} — \u201C${note}\u201D` : `Marked ${status}.`,
+    path: '/',
+    tag: `portal-lead-${clientId}`,
+  }).catch(() => 0);
+  return 'ok';
+}
+
+/** Client logs an activity and/or sets the next follow-up on a lead. */
+export async function clientLeadFollowUp(clientId: string, leadId: string, next: string, actType: string, actNote: string): Promise<'ok' | 'bad'> {
+  const ref = crmDb().collection(PORTALS).doc(clientId);
+  let owner = '';
+  let business = '';
+  let leadName = '';
+  const nowIso = new Date().toISOString();
+  const ok = await crmDb().runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists || !snap.get('enabled')) return false;
+    const s = cleanSnapshot(snap.get('snapshot'));
+    const l = s.leads.find((x) => x.id === leadId);
+    if (!l) return false;
+    if (next) l.nextFollowUp = next;
+    if (actNote) {
+      const item = { type: actType || 'Other', note: actNote, at: nowIso };
+      l.activity = [item, ...(l.activity || [])].slice(0, 20);
+      if (l.status === 'New') l.status = 'Contacted';
+    }
+    owner = String(snap.get('uid') || '');
+    business = s.business;
+    leadName = l.name;
+    tx.update(ref, { snapshot: s });
+    tx.set(crmDb().collection(PORTAL_ACTIONS).doc(), { uid: owner, clientId, leadId, leadNextFollowUp: next, leadActivityType: actType, leadActivityNote: actNote, at: Date.now() });
+    return true;
+  });
+  if (!ok) return 'bad';
+  await send({
+    title: `🎯 ${business || 'Client'} — follow-up on ${leadName}`,
+    body: actNote ? `${actType || 'Note'}: “${actNote}”` : `Next follow-up set.`,
     path: '/',
     tag: `portal-lead-${clientId}`,
   }).catch(() => 0);
