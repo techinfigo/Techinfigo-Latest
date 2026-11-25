@@ -1139,8 +1139,11 @@ function DocsTab({ data }: { data: PortalSnapshot }) {
 
 function IntegrationsTab({ data, webhookToken }: { data: PortalSnapshot; webhookToken?: string }) {
   const [copied, setCopied] = useState(false);
+  const [copiedMail, setCopiedMail] = useState(false);
   const hookUrl = webhookToken ? `https://www.techinfigo.com/api/hooks/in/${webhookToken}` : '';
+  const leadEmail = webhookToken ? `leads+${webhookToken}@techinfigo.com` : '';
   const copy = async () => { try { await navigator.clipboard.writeText(hookUrl); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch { /* ignore */ } };
+  const copyMail = async () => { try { await navigator.clipboard.writeText(leadEmail); setCopiedMail(true); setTimeout(() => setCopiedMail(false), 1500); } catch { /* ignore */ } };
   const apps: { name: string; desc: string; badge: string }[] = [
     { name: 'Instagram', desc: 'Let us post, run ads and pull insights from your Instagram.', badge: 'IG' },
     { name: 'Google Business Profile', desc: 'Manage reviews and Google Maps posts.', badge: 'G' },
@@ -1177,6 +1180,21 @@ function IntegrationsTab({ data, webhookToken }: { data: PortalSnapshot; webhook
           <p className="flex items-center gap-2 font-black"><span className="grid place-items-center h-8 w-8 rounded-lg bg-brandDark text-brandYellow text-sm">f</span> Meta (FB / Instagram) ads</p>
           <p className="mt-2 text-sm text-brandDark/60">In <b>Zapier</b>: Facebook Lead Ads → <b>Webhooks POST</b> → paste the link above. Your ad leads arrive here instantly. Need help? <a className="font-bold underline" href={whatsappUrl('Namaste, Meta ads ko mere portal se connect karna hai.')} target="_blank" rel="noopener noreferrer">WhatsApp us</a>.</p>
         </div>
+      </div>
+
+      {/* Listing-site leads by email */}
+      <div className="rounded-3xl bg-white border-2 border-brandDark/10 p-5 sm:p-6">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brandDark/45"><Mail className="w-4 h-4" strokeWidth={2.4} /> Leads from IndiaMART, JustDial, 99acres, MagicBricks</p>
+        <p className="mt-1.5 font-medium text-brandDark/60 text-sm">These sites email you every lead. Forward those emails to the address below and each one becomes a lead here automatically — name, phone and all.</p>
+        {leadEmail ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <code className="flex-1 min-w-0 truncate rounded-xl bg-brandDark/5 ring-1 ring-brandDark/10 px-3 py-2.5 text-sm text-brandDark">{leadEmail}</code>
+            <button type="button" onClick={copyMail} className="inline-flex items-center gap-1.5 rounded-xl bg-brandYellow text-brandDark font-black px-4 py-2.5 text-sm shrink-0">{copiedMail ? <><Check className="w-4 h-4" strokeWidth={2.6} /> Copied</> : <><Download className="w-4 h-4" strokeWidth={2.4} /> Copy address</>}</button>
+          </div>
+        ) : (
+          <p className="mt-3 rounded-xl bg-brandDark/5 px-3 py-2.5 text-sm text-brandDark/60">Being set up — refresh in a moment.</p>
+        )}
+        <p className="mt-3 text-xs text-brandDark/55">Set your lead email to auto-forward here, or add this address as a lead/CC recipient in your IndiaMART, JustDial, 99acres or MagicBricks account. Want us to set it up? <a className="font-bold underline" href={whatsappUrl('Namaste, mujhe listing-site leads (IndiaMART/JustDial/99acres/MagicBricks) portal se connect karni hain.')} target="_blank" rel="noopener noreferrer">WhatsApp us</a>.</p>
       </div>
 
       {/* Other accounts */}
