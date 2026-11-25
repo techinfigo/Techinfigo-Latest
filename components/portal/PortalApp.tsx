@@ -4,7 +4,7 @@ import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, Upload, SlidersHorizontal, CalendarRange, Blocks, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
 import type { PortalPlan, PortalLead, PortalSnapshot, PortalStage } from '../../lib/portal-types';
-import { stagesForType, deriveStageName, stageToStatus, BUSINESS_TEMPLATES } from '../../lib/portal-types';
+import { stagesForType, deriveStageName, stageToStatus } from '../../lib/portal-types';
 
 /**
  * The client's dashboard: this month at a glance, the content calendar with
@@ -64,8 +64,7 @@ export default function PortalApp({ data, syncedAt, webhookToken, businessType =
   const dueInvoices = data.invoices.filter((i) => i.due > 0.5).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const totalDue = dueInvoices.reduce((a, i) => a + i.due, 0);
   const [leads, setLeads] = useState<PortalLead[]>(data.leads || []);
-  const [bizType, setBizType] = useState(businessType || 'general');
-  const [stageList, setStageList] = useState<PortalStage[]>(stages && stages.length ? stages : stagesForType(businessType));
+  const stageList: PortalStage[] = stages && stages.length ? stages : stagesForType(businessType);
   const newLeads = leads.filter((l) => l.status === 'New Lead').length;
   const leadStats = {
     total: leads.length,
@@ -122,14 +121,6 @@ export default function PortalApp({ data, syncedAt, webhookToken, businessType =
     const mapped = idx >= 0 ? stageToStatus(stageList[idx], idx) : undefined;
     setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, stage: stageName, ...(mapped ? { status: mapped } : {}) } : l)));
     await fetch('/api/portal/act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ leadId: id, stage: stageName }) }).catch(() => 0);
-  };
-
-  const onSetBusiness = async (type: string) => {
-    const ns = stagesForType(type);
-    setBizType(type);
-    setStageList(ns);
-    setLeads((ls) => ls.map((l) => ({ ...l, stage: deriveStageName(l.status, ns) })));
-    await fetch('/api/portal/act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ setBusiness: type }) }).catch(() => 0);
   };
 
   const logout = async () => {
@@ -417,7 +408,7 @@ export default function PortalApp({ data, syncedAt, webhookToken, businessType =
           </div>
         )}
 
-        {tab === 'leads' && <LeadsTab leads={leads} stages={stageList} businessType={bizType} onStage={onLeadStage} onSetBusiness={onSetBusiness} onAddLead={onAddLead} onFollowUp={onLeadFollowUp} />}
+        {tab === 'leads' && <LeadsTab leads={leads} stages={stageList} onStage={onLeadStage} onAddLead={onAddLead} onFollowUp={onLeadFollowUp} />}
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
@@ -492,7 +483,7 @@ function stageBadge(stages: PortalStage[], name: string): { text: string; cls: s
   return { text: name || 'New', ...pal };
 }
 
-function LeadsTab({ leads, stages, businessType, onStage, onSetBusiness, onAddLead, onFollowUp }: { leads: PortalLead[]; stages: PortalStage[]; businessType: string; onStage: (id: string, stageName: string) => void; onSetBusiness: (type: string) => void; onAddLead: (name: string, phone: string, note: string) => void; onFollowUp: (id: string, fu: { next: string; type: string; note: string }) => void }) {
+function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: PortalLead[]; stages: PortalStage[]; onStage: (id: string, stageName: string) => void; onAddLead: (name: string, phone: string, note: string) => void; onFollowUp: (id: string, fu: { next: string; type: string; note: string }) => void }) {
   const stageName = (l: PortalLead): string => l.stage || deriveStageName(l.status, stages);
   const [adding, setAdding] = useState(false);
   const [nm, setNm] = useState('');
@@ -507,7 +498,6 @@ function LeadsTab({ leads, stages, businessType, onStage, onSetBusiness, onAddLe
   const [view, setView] = useState<'list' | 'pipeline'>('list');
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [stageF, setStageF] = useState<Set<string>>(new Set());
-  const [bizMenu, setBizMenu] = useState(false);
   const [sourceF, setSourceF] = useState<Set<string>>(new Set());
   const [fromD, setFromD] = useState('');
   const [toD, setToD] = useState('');
@@ -716,18 +706,6 @@ function LeadsTab({ leads, stages, businessType, onStage, onSetBusiness, onAddLe
                 <button type="button" onClick={clearFilters} className="flex-1 rounded-lg bg-brandDark/5 text-brandDark/60 text-sm font-bold py-1.5">Clear all</button>
                 <button type="button" onClick={() => setMenu('none')} className="flex-1 rounded-lg bg-brandDark text-white text-sm font-bold py-1.5">Done</button>
               </div>
-            </div>
-          )}
-        </div>
-        {/* Business-type pipeline picker */}
-        <div className="relative">
-          <button type="button" onClick={() => setBizMenu((v) => !v)} title="Change the stages to fit your business" className="inline-flex items-center gap-1.5 rounded-2xl bg-white border-2 border-brandDark/10 text-brandDark/70 font-bold px-3.5 py-2.5 text-sm"><Blocks className="w-4 h-4" strokeWidth={2.2} /> Pipeline</button>
-          {bizMenu && (
-            <div className="absolute right-0 z-30 mt-2 w-60 rounded-2xl bg-white border-2 border-brandDark/10 shadow-3xl p-2">
-              <p className="px-2 py-1 text-[11px] font-black uppercase tracking-wider text-brandDark/45">Pick your business</p>
-              {Object.entries(BUSINESS_TEMPLATES).map(([key, t]) => (
-                <button key={key} type="button" onClick={() => { onSetBusiness(key); setBizMenu(false); }} className={`w-full text-left rounded-lg px-2.5 py-1.5 text-sm font-semibold ${businessType === key ? 'bg-brandDark text-white' : 'hover:bg-brandDark/5'}`}>{t.label}</button>
-              ))}
             </div>
           )}
         </div>

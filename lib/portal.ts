@@ -393,6 +393,7 @@ export async function setupPortal(user: CrmUser, raw: Record<string, unknown>): 
   if (clash.docs.some((d) => d.id !== clientId)) return 'This mobile number already logs in to another client’s portal.';
   const enabled = raw.enabled !== false;
   const update: Record<string, unknown> = { uid: user.uid, clientId, phone, enabled, updatedAt: Date.now() };
+  if (typeof raw.businessType === 'string' && BUSINESS_TEMPLATES[raw.businessType]) update.businessType = raw.businessType;
   if (!snap.exists) Object.assign(update, { createdAt: Date.now(), passVersion: 1, snapshot: cleanSnapshot({}) });
   if (password) Object.assign(update, { passHash: hashPassword(password), passVersion: Number(snap.get('passVersion') || 0) + 1 });
   if (!enabled) update.passVersion = Number(snap.get('passVersion') || 0) + 1; // signs everyone out
