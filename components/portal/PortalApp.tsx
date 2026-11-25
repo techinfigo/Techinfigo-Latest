@@ -78,6 +78,8 @@ export default function PortalApp({ data, syncedAt, webhookToken, businessType =
   const todayEnd = new Date(); todayEnd.setHours(23, 59, 59, 999);
   const followDue = leads.filter((l) => l.nextFollowUp && new Date(l.nextFollowUp).getTime() <= todayEnd.getTime() && l.status !== 'Closed Won' && l.status !== 'Closed Lost').length;
   const callToday = newLeads + followDue;
+  // Worked leads with no next step = the leak. New leads already count in callToday.
+  const noStep = leads.filter((l) => l.status !== 'New Lead' && l.status !== 'Closed Won' && l.status !== 'Closed Lost' && !l.nextFollowUp).length;
   const recentLeads = [...leads].sort((a, b) => {
     const pa = a.status === 'New Lead' ? 0 : 1, pb = b.status === 'New Lead' ? 0 : 1;
     return (pa - pb) || (b.at || '').localeCompare(a.at || '');
@@ -271,6 +273,18 @@ export default function PortalApp({ data, syncedAt, webhookToken, businessType =
                   <p className="text-sm font-semibold text-brandDark/70">{newLeads} new to call{followDue > 0 ? ` + ${followDue} follow-up${followDue === 1 ? '' : 's'} due` : ''} — fastest reply wins the customer.</p>
                 </div>
                 <span className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-brandDark text-white font-black px-5 py-3 shrink-0">Open leads <ArrowRight className="w-4 h-4" strokeWidth={2.6} /></span>
+              </button>
+            )}
+
+            {/* No-next-step nudge: never leave a worked lead open */}
+            {noStep > 0 && (
+              <button type="button" onClick={() => setTab('leads')} className="rounded-[24px] bg-rose-50 border-2 border-rose-200 text-rose-900 p-5 text-left flex items-center gap-4">
+                <span className="grid place-items-center h-11 w-11 rounded-2xl bg-rose-100 text-rose-600 shrink-0"><Clock className="w-5 h-5" strokeWidth={2.4} /></span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-lg font-black leading-tight">{noStep} lead{noStep === 1 ? '' : 's'} with no next step</p>
+                  <p className="text-sm font-semibold text-rose-800/80">Set a follow-up date so they don&apos;t slip away. Har lead ka agla step hona chahiye.</p>
+                </div>
+                <ArrowRight className="w-5 h-5 shrink-0 text-rose-400" strokeWidth={2.6} />
               </button>
             )}
 
@@ -540,6 +554,16 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
     if (isSameDay(l.nextFollowUp)) return 'today';
     return new Date(l.nextFollowUp).getTime() < Date.now() ? 'overdue' : 'upcoming';
   };
+  // One place for the urgency colours: overdue = red (missed!), today = amber, later = calm.
+  type FuTone = { pill: string; accent: string; row: string; card: string };
+  const fuTone = (fs: ReturnType<typeof fuState>): FuTone =>
+    fs === 'overdue'
+      ? { pill: 'bg-rose-100 text-rose-700', accent: 'border-l-rose-500', row: 'bg-rose-50/60 hover:bg-rose-50', card: 'border-rose-300' }
+      : fs === 'today'
+        ? { pill: 'bg-amber-100 text-amber-800', accent: 'border-l-amber-400', row: 'bg-amber-50/50 hover:bg-amber-50', card: 'border-amber-300' }
+        : { pill: 'bg-brandDark/[0.06] text-brandDark/60', accent: 'border-l-transparent', row: 'hover:bg-brandYellow/[0.05]', card: 'border-brandDark/10' };
+  const isOpenLead = (l: PortalLead) => l.status !== 'Closed Won' && l.status !== 'Closed Lost';
+  const needsStep = (l: PortalLead) => isOpenLead(l) && !l.nextFollowUp;
   const fuLabel = (s?: string) => (s ? new Date(s).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + (new Date(s).getHours() ? ', ' + new Date(s).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : '') : '');
   const toLocalInput = (iso?: string) => {
     if (!iso) return '';
@@ -551,6 +575,12 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
   const openFu = (l: PortalLead) => {
     if (fuFor === l.id) { setFuFor(null); return; }
     setFuFor(l.id); setFuType('Call'); setFuNote(''); setFuNext(toLocalInput(l.nextFollowUp));
+  };
+  const quickNext = (days: number, hour: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    d.setHours(hour, 0, 0, 0);
+    setFuNext(toLocalInput(d.toISOString()));
   };
   const saveFu = (id: string) => {
     if (!fuNote.trim() && !fuNext) { setFuFor(null); return; }
@@ -613,6 +643,12 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
         ))}
       </div>
       <input value={fuNote} onChange={(e) => setFuNote(e.target.value)} placeholder="What happened? e.g. Called — interested, wants price" className="rounded-lg border-2 border-brandDark/10 px-3 py-2 text-sm" />
+      <div className="flex flex-wrap items-center gap-1.5">
+        <label className="text-xs font-bold text-brandDark/50 mr-0.5">Remind me:</label>
+        {([['Today 6pm', 0, 18], ['Tomorrow', 1, 10], ['In 3 days', 3, 10], ['Next week', 7, 10]] as [string, number, number][]).map(([lbl, d, h]) => (
+          <button key={lbl} type="button" onClick={() => quickNext(d, h)} className="rounded-full bg-white border-2 border-brandDark/10 px-2.5 py-1 text-xs font-bold text-brandDark/70 hover:border-brandYellow">{lbl}</button>
+        ))}
+      </div>
       <div className="flex flex-wrap items-center gap-2">
         <label className="text-xs font-bold text-brandDark/50">Next follow-up:</label>
         <input type="datetime-local" value={fuNext} onChange={(e) => setFuNext(e.target.value)} className="rounded-lg border-2 border-brandDark/10 px-3 py-1.5 text-sm font-semibold" />
@@ -753,7 +789,7 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
           const fs = fuState(l);
           const last = l.activity && l.activity[0];
           return (
-            <li key={l.id} className={`rounded-3xl bg-white border-2 p-4 ${fs === 'today' ? 'border-rose-300' : fs === 'overdue' ? 'border-amber-300' : 'border-brandDark/10'}`}>
+            <li key={l.id} className={`rounded-3xl bg-white border-2 p-4 ${fuTone(fs).card}`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="font-black truncate">{l.name}</p>
@@ -766,10 +802,13 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
                 <span className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${b.cls}`}><span className={`h-1.5 w-1.5 rounded-full ${b.dot}`} />{b.text}</span>
               </div>
               {fs && (
-                <p className={`mt-2 inline-flex items-center gap-1.5 rounded-lg text-xs font-bold px-2 py-1 ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {fs === 'today' ? 'Follow-up today' : fs === 'overdue' ? 'Follow-up overdue' : `Next: ${fuLabel(l.nextFollowUp)}`}</p>
+                <button type="button" onClick={() => openFu(l)} className={`mt-2 inline-flex items-center gap-1.5 rounded-lg text-xs font-bold px-2 py-1 ${fuTone(fs).pill}`}><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {fs === 'today' ? 'Follow-up today' : fs === 'overdue' ? 'Follow-up overdue' : `Next: ${fuLabel(l.nextFollowUp)}`}</button>
               )}
               {!fs && l.status === 'New Lead' && daysAgo(l.at) >= 1 && (
-                <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-red-100 text-red-800 text-xs font-bold px-2 py-1"><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {daysAgo(l.at)} din purana — aaj hi call karein!</p>
+                <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-rose-100 text-rose-800 text-xs font-bold px-2 py-1"><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> {daysAgo(l.at)} din purana — aaj hi call karein!</p>
+              )}
+              {needsStep(l) && !(l.status === 'New Lead' && daysAgo(l.at) >= 1) && (
+                <button type="button" onClick={() => openFu(l)} className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-100 text-amber-800 ring-1 ring-amber-300 text-xs font-bold px-2 py-1"><Clock className="w-3.5 h-3.5" strokeWidth={2.4} /> Set next step</button>
               )}
               {last ? <p className="mt-2 text-sm text-brandDark/70"><span className="font-bold">{last.type}:</span> {last.note}</p> : l.note ? <p className="mt-2 text-sm text-brandDark/70">{l.note}</p> : null}
               {(l.phone || l.email) && (
@@ -816,8 +855,9 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
               const fs = fuState(l);
               const last = l.activity && l.activity[0];
               const ActIcon = last?.type === 'Call' ? Phone : last?.type === 'WhatsApp' ? MessageCircle : last?.type === 'Email' ? Mail : PenLine;
-              const accent = fs === 'today' ? 'border-l-[3px] border-l-rose-400' : fs === 'overdue' ? 'border-l-[3px] border-l-amber-400' : 'border-l-[3px] border-l-transparent';
-              const rowBg = fs === 'today' ? 'bg-rose-50/50 hover:bg-rose-50' : fs === 'overdue' ? 'bg-amber-50/40 hover:bg-amber-50' : 'hover:bg-brandYellow/[0.05]';
+              const tone = fuTone(fs);
+              const accent = `border-l-[3px] ${tone.accent}`;
+              const rowBg = tone.row;
               return (
                 <React.Fragment key={l.id}>
                   <tr className={`${rowBg} transition-colors align-top`}>
@@ -850,9 +890,11 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
                     {/* Next follow-up */}
                     <td className="px-4 py-3 whitespace-nowrap">
                       {l.nextFollowUp ? (
-                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-black uppercase tracking-wide ${fs === 'today' ? 'bg-rose-100 text-rose-700' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/[0.06] text-brandDark/60'}`}>
+                        <button type="button" onClick={() => openFu(l)} title="Reschedule" className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-black uppercase tracking-wide ${tone.pill}`}>
                           {fs === 'today' ? 'Today' : fs === 'overdue' ? `Overdue (${new Date(l.nextFollowUp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })})` : fuLabel(l.nextFollowUp)}
-                        </span>
+                        </button>
+                      ) : isOpenLead(l) ? (
+                        <button type="button" onClick={() => openFu(l)} title="Set next step" className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-black uppercase tracking-wide bg-amber-100 text-amber-800 ring-1 ring-amber-300 hover:bg-amber-200"><Clock className="w-3 h-3" strokeWidth={2.6} /> Set step</button>
                       ) : <span className="text-brandDark/25 text-sm">—</span>}
                     </td>
                     {/* Source */}
@@ -916,7 +958,7 @@ function LeadsTab({ leads, stages, onStage, onAddLead, onFollowUp }: { leads: Po
                           <p className="font-black text-sm truncate">{l.name}</p>
                           {l.phone && <p className="text-xs font-semibold text-brandDark/50 tabular-nums">{l.phone}</p>}
                           <p className="text-[11px] font-semibold text-brandDark/40 mt-0.5">{l.source || 'Enquiry'}</p>
-                          {fs && <p className={`mt-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${fs === 'today' ? 'bg-rose-100 text-rose-800' : fs === 'overdue' ? 'bg-amber-100 text-amber-800' : 'bg-brandDark/5 text-brandDark/60'}`}><Clock className="w-3 h-3" strokeWidth={2.4} /> {fs === 'today' ? 'Today' : fs === 'overdue' ? 'Overdue' : fuLabel(l.nextFollowUp)}</p>}
+                          {fs ? <p className={`mt-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${fuTone(fs).pill}`}><Clock className="w-3 h-3" strokeWidth={2.4} /> {fs === 'today' ? 'Today' : fs === 'overdue' ? 'Overdue' : fuLabel(l.nextFollowUp)}</p> : needsStep(l) ? <button type="button" onClick={() => openFu(l)} className="mt-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-800 ring-1 ring-amber-300"><Clock className="w-3 h-3" strokeWidth={2.4} /> Set step</button> : null}
                           <div className="mt-2 flex gap-1.5">
                             {l.phone && <a href={`tel:${l.phone}`} title="Call" className="grid place-items-center h-7 w-7 rounded-lg bg-brandDark text-white"><Phone className="w-3.5 h-3.5" strokeWidth={2.4} /></a>}
                             {digits && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" title="WhatsApp" className="grid place-items-center h-7 w-7 rounded-lg bg-emerald-500 text-white"><MessageCircle className="w-3.5 h-3.5" strokeWidth={2.4} /></a>}
