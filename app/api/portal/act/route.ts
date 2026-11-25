@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { rateLimit } from '../../../../lib/rate-limit';
-import { PORTAL_COOKIE, clientAction, clientLeadAction, clientLeadFollowUp, clientAddLead, readPortal } from '../../../../lib/portal';
+import { PORTAL_COOKIE, clientAction, clientLeadAction, clientLeadFollowUp, clientSetBusiness, clientSetLeadStage, clientAddLead, readPortal } from '../../../../lib/portal';
 
 /** Signed-in client approves a post, or asks for a change. */
 
@@ -24,6 +24,18 @@ export async function POST(request: Request) {
     if (!name && !phone) return NextResponse.json({ ok: false, error: 'Naam ya phone number daaliye.' }, { status: 400, headers: H });
     const ar = await clientAddLead(session.clientId, name, phone, note).catch((e) => { console.error('[portal add lead]', e); return 'bad' as const; });
     return ar === 'ok' ? NextResponse.json({ ok: true }, { headers: H }) : NextResponse.json({ ok: false, error: 'Ye abhi nahi ho paya. Refresh karke try karein.' }, { status: 409, headers: H });
+  }
+
+  // Client picks their business-type pipeline.
+  if (raw && typeof raw.setBusiness === 'string') {
+    const br = await clientSetBusiness(session.clientId, raw.setBusiness.slice(0, 40)).catch((e) => { console.error('[portal set business]', e); return 'bad' as const; });
+    return br === 'ok' ? NextResponse.json({ ok: true }, { headers: H }) : NextResponse.json({ ok: false, error: 'Ye abhi nahi ho paya. Refresh karke try karein.' }, { status: 409, headers: H });
+  }
+
+  // Client moves a lead to one of their own pipeline stages.
+  if (raw && typeof raw.leadId === 'string' && typeof raw.stage === 'string') {
+    const sr = await clientSetLeadStage(session.clientId, raw.leadId.slice(0, 80), raw.stage.slice(0, 60)).catch((e) => { console.error('[portal set stage]', e); return 'bad' as const; });
+    return sr === 'ok' ? NextResponse.json({ ok: true }, { headers: H }) : NextResponse.json({ ok: false, error: 'Ye abhi nahi ho paya. Refresh karke try karein.' }, { status: 409, headers: H });
   }
 
   // Lead follow-up: log an activity and/or set the next follow-up date.

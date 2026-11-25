@@ -23,5 +23,5 @@ export default async function Page() {
   const token = (await cookies()).get(PORTAL_COOKIE)?.value;
   const session = isCrmConfigured() ? await readPortal(token) : null;
   if (!session) return <PortalLogin />;
-  return <PortalApp data={session.snapshot} syncedAt={session.syncedAt} webhookToken={session.webhookToken} />;
+  return <PortalApp data={session.snapshot} syncedAt={session.syncedAt} webhookToken={session.webhookToken} businessType={session.businessType} stages={session.stages} />;
 }

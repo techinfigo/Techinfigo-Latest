@@ -22,7 +22,7 @@ const SESSION_DAYS = 30;
 /* ---------------------------------------------------------------- types */
 
 import type { PortalPlan, PortalLead, PortalSnapshot } from './portal-types';
-import { normalizeStage, PORTAL_STAGES } from './portal-types';
+import { normalizeStage, PORTAL_STAGES, stagesForType, deriveStageName, stageToStatus, BUSINESS_TEMPLATES, type PortalStage } from './portal-types';
 export type { PortalPlan, PortalInvoice, PortalService, PortalDoc, PortalLead, PortalSnapshot } from './portal-types';
 
 /* ------------------------------------------------------------- helpers */
@@ -144,7 +144,7 @@ export const portalCookie = {
   maxAge: SESSION_DAYS * 86400,
 };
 
-export type PortalSession = { clientId: string; snapshot: PortalSnapshot; syncedAt: number; phone: string; webhookToken: string };
+export type PortalSession = { clientId: string; snapshot: PortalSnapshot; syncedAt: number; phone: string; webhookToken: string; businessType: string; stages: PortalStage[] };
 
 /** The signed-in client's portal, or null (bad/expired cookie, access switched off, password changed). */
 export async function readPortal(token: string | undefined): Promise<PortalSession | null> {
@@ -161,7 +161,18 @@ export async function readPortal(token: string | undefined): Promise<PortalSessi
       webhookToken = randomBytes(16).toString('hex');
       await crmDb().collection(PORTALS).doc(clientId).set({ webhookToken }, { merge: true }).catch(() => {});
     }
-    return { clientId, snapshot: cleanSnapshot(snap.get('snapshot')), syncedAt: Number(snap.get('syncedAt') || 0), phone: String(snap.get('phone') || ''), webhookToken };
+    // Per-business pipeline: stages config + per-lead stage, both website-managed
+    // (kept outside the CRM-built snapshot so a resync never overwrites them).
+    const businessType = String(snap.get('businessType') || '') || 'general';
+    const stages = stagesForType(businessType);
+    const leadStages = (snap.get('leadStages') || {}) as Record<string, string>;
+    const snapshot = cleanSnapshot(snap.get('snapshot'));
+    const valid = new Set(stages.map((s) => s.name));
+    for (const l of snapshot.leads) {
+      const saved = leadStages[l.id];
+      l.stage = saved && valid.has(saved) ? saved : deriveStageName(l.status, stages);
+    }
+    return { clientId, snapshot, syncedAt: Number(snap.get('syncedAt') || 0), phone: String(snap.get('phone') || ''), webhookToken, businessType, stages };
   } catch {
     return null;
   }
@@ -299,6 +310,40 @@ export async function clientLeadFollowUp(clientId: string, leadId: string, next:
     tag: `portal-lead-${clientId}`,
   }).catch(() => 0);
   return 'ok';
+}
+
+/** Client picks the business-type pipeline that fits them. */
+export async function clientSetBusiness(clientId: string, businessType: string): Promise<'ok' | 'bad'> {
+  if (!BUSINESS_TEMPLATES[businessType]) return 'bad';
+  const ref = crmDb().collection(PORTALS).doc(clientId);
+  const snap = await ref.get();
+  if (!snap.exists || !snap.get('enabled')) return 'bad';
+  await ref.set({ businessType }, { merge: true });
+  return 'ok';
+}
+
+/** Client moves a lead to one of their own pipeline stages. */
+export async function clientSetLeadStage(clientId: string, leadId: string, stageName: string): Promise<'ok' | 'bad'> {
+  const ref = crmDb().collection(PORTALS).doc(clientId);
+  const ok = await crmDb().runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    if (!snap.exists || !snap.get('enabled')) return false;
+    const businessType = String(snap.get('businessType') || '') || 'general';
+    const stages = stagesForType(businessType);
+    const idx = stages.findIndex((s) => s.name === stageName);
+    if (idx < 0) return false;
+    const mappedStatus = stageToStatus(stages[idx], idx);
+    const s = cleanSnapshot(snap.get('snapshot'));
+    const l = s.leads.find((x) => x.id === leadId);
+    if (l) l.status = mappedStatus;
+    const owner = String(snap.get('uid') || '');
+    const leadStages = (snap.get('leadStages') || {}) as Record<string, string>;
+    leadStages[leadId] = stageName;
+    tx.update(ref, { snapshot: s, leadStages });
+    tx.set(crmDb().collection(PORTAL_ACTIONS).doc(), { uid: owner, clientId, leadId, leadStatus: mappedStatus, at: Date.now() });
+    return true;
+  });
+  return ok ? 'ok' : 'bad';
 }
 
 /** Signed-in client adds their own lead (walk-in, phone call). */

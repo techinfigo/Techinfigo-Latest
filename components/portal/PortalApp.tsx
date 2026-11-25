@@ -3,8 +3,8 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Home, Target, Calendar, Receipt, FileText, Bell, Phone, MessageCircle, Mail, PenLine, Clock, ArrowRight, Plus, Search, Check, CreditCard, Download, ExternalLink, Upload, SlidersHorizontal, CalendarRange, Blocks, type LucideIcon } from 'lucide-react';
 import { whatsappUrl } from '../../config/site';
-import type { PortalPlan, PortalLead, PortalLeadStatus, PortalSnapshot } from '../../lib/portal-types';
-import { PORTAL_STAGES } from '../../lib/portal-types';
+import type { PortalPlan, PortalLead, PortalSnapshot, PortalStage } from '../../lib/portal-types';
+import { stagesForType, deriveStageName, stageToStatus, BUSINESS_TEMPLATES } from '../../lib/portal-types';
 
 /**
  * The client's dashboard: this month at a glance, the content calendar with
@@ -48,7 +48,7 @@ function badge(p: PortalPlan): { text: string; cls: string } {
   return { text: '🗓️ Planned', cls: 'bg-brandDark/5 text-brandDark/70' };
 }
 
-export default function PortalApp({ data, syncedAt, webhookToken }: { data: PortalSnapshot; syncedAt: number; webhookToken?: string }) {
+export default function PortalApp({ data, syncedAt, webhookToken, businessType = 'general', stages }: { data: PortalSnapshot; syncedAt: number; webhookToken?: string; businessType?: string; stages?: PortalStage[] }) {
   const [tab, setTab] = useState<Tab>('home');
   const [plans, setPlans] = useState<PortalPlan[]>(data.plans);
   const [menu, setMenu] = useState(false);
@@ -64,6 +64,8 @@ export default function PortalApp({ data, syncedAt, webhookToken }: { data: Port
   const dueInvoices = data.invoices.filter((i) => i.due > 0.5).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const totalDue = dueInvoices.reduce((a, i) => a + i.due, 0);
   const [leads, setLeads] = useState<PortalLead[]>(data.leads || []);
+  const [bizType, setBizType] = useState(businessType || 'general');
+  const [stageList, setStageList] = useState<PortalStage[]>(stages && stages.length ? stages : stagesForType(businessType));
   const newLeads = leads.filter((l) => l.status === 'New Lead').length;
   const leadStats = {
     total: leads.length,
@@ -85,15 +87,6 @@ export default function PortalApp({ data, syncedAt, webhookToken }: { data: Port
   const approvePlan = async (id: string) => {
     setPlans((ps) => ps.map((p) => (p.id === id ? { ...p, status: 'Approved', changeRequested: undefined } : p)));
     await fetch('/api/portal/act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId: id, action: 'approve' }) }).catch(() => 0);
-  };
-
-  const onLeadAct = async (id: string, patch: { status?: PortalLead['status']; note?: string }) => {
-    setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, ...patch } : l)));
-    await fetch('/api/portal/act', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ leadId: id, status: patch.status || '', note: patch.note || '' }),
-    }).catch(() => 0);
   };
 
   const onAddLead = async (name: string, phone: string, note: string) => {
@@ -122,6 +115,21 @@ export default function PortalApp({ data, syncedAt, webhookToken }: { data: Port
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ leadId: id, followUp: fu }),
     }).catch(() => 0);
+  };
+
+  const onLeadStage = async (id: string, stageName: string) => {
+    const idx = stageList.findIndex((s) => s.name === stageName);
+    const mapped = idx >= 0 ? stageToStatus(stageList[idx], idx) : undefined;
+    setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, stage: stageName, ...(mapped ? { status: mapped } : {}) } : l)));
+    await fetch('/api/portal/act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ leadId: id, stage: stageName }) }).catch(() => 0);
+  };
+
+  const onSetBusiness = async (type: string) => {
+    const ns = stagesForType(type);
+    setBizType(type);
+    setStageList(ns);
+    setLeads((ls) => ls.map((l) => ({ ...l, stage: deriveStageName(l.status, ns) })));
+    await fetch('/api/portal/act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ setBusiness: type }) }).catch(() => 0);
   };
 
   const logout = async () => {
@@ -304,7 +312,7 @@ export default function PortalApp({ data, syncedAt, webhookToken }: { data: Port
                     </div>
                     <div className="mt-2">
                       {recentLeads.map((l) => {
-                        const bdg = leadBadge(l.status);
+                        const bdg = stageBadge(stageList, l.stage || deriveStageName(l.status, stageList));
                         const digits = (l.phone || '').replace(/[^0-9]/g, '');
                         const wa = digits.length === 10 ? '91' + digits : digits;
                         return (
@@ -409,7 +417,7 @@ export default function PortalApp({ data, syncedAt, webhookToken }: { data: Port
           </div>
         )}
 
-        {tab === 'leads' && <LeadsTab leads={leads} onAct={onLeadAct} onAddLead={onAddLead} onFollowUp={onLeadFollowUp} />}
+        {tab === 'leads' && <LeadsTab leads={leads} stages={stageList} businessType={bizType} onStage={onLeadStage} onSetBusiness={onSetBusiness} onAddLead={onAddLead} onFollowUp={onLeadFollowUp} />}
         {tab === 'calendar' && <CalendarTab plans={plans} todayKey={todayKey} onAct={onAct} />}
         {tab === 'payments' && <PaymentsTab data={data} />}
         {tab === 'docs' && <DocsTab data={data} />}
@@ -463,24 +471,29 @@ function KpiCard({ n, label, tone }: { n: number | string; label: string; tone?:
 
 /* ------------------------------------------------------------ leads */
 
-function stageLabel(s: PortalLeadStatus): string {
-  return s === 'New Lead' ? 'New' : s === 'Closed Won' ? 'Won' : s === 'Closed Lost' ? 'Lost' : s === 'Proposal Sent' ? 'Proposal' : s;
-}
-// Same stage colours as the agency CRM.
-function leadBadge(status: PortalLeadStatus): { text: string; cls: string; dot: string } {
-  const text = stageLabel(status);
-  switch (status) {
-    case 'New Lead': return { text, cls: 'bg-blue-100 text-blue-800', dot: 'bg-blue-500' };
-    case 'Contacted': return { text, cls: 'bg-amber-100 text-amber-800', dot: 'bg-amber-500' };
-    case 'Proposal Sent': return { text, cls: 'bg-violet-100 text-violet-800', dot: 'bg-violet-500' };
-    case 'Negotiation': return { text, cls: 'bg-orange-100 text-orange-800', dot: 'bg-orange-500' };
-    case 'Closed Won': return { text, cls: 'bg-emerald-100 text-emerald-800', dot: 'bg-emerald-500' };
-    case 'Closed Lost': return { text, cls: 'bg-rose-100 text-rose-700', dot: 'bg-rose-400' };
-    default: return { text, cls: 'bg-brandDark/10 text-brandDark/50', dot: 'bg-brandDark/30' };
-  }
+// Colour a stage by its position (open stages cycle a palette; won/lost fixed).
+const STAGE_PALETTE: { cls: string; dot: string }[] = [
+  { cls: 'bg-blue-100 text-blue-800', dot: 'bg-blue-500' },
+  { cls: 'bg-amber-100 text-amber-800', dot: 'bg-amber-500' },
+  { cls: 'bg-violet-100 text-violet-800', dot: 'bg-violet-500' },
+  { cls: 'bg-orange-100 text-orange-800', dot: 'bg-orange-500' },
+  { cls: 'bg-sky-100 text-sky-800', dot: 'bg-sky-500' },
+  { cls: 'bg-teal-100 text-teal-800', dot: 'bg-teal-500' },
+];
+const WON_C = { cls: 'bg-emerald-100 text-emerald-800', dot: 'bg-emerald-500' };
+const LOST_C = { cls: 'bg-rose-100 text-rose-700', dot: 'bg-rose-400' };
+function stageBadge(stages: PortalStage[], name: string): { text: string; cls: string; dot: string } {
+  const i = stages.findIndex((s) => s.name === name);
+  const st = i >= 0 ? stages[i] : undefined;
+  if (st?.kind === 'won') return { text: name, ...WON_C };
+  if (st?.kind === 'lost') return { text: name, ...LOST_C };
+  const oi = stages.filter((s) => s.kind === 'open').findIndex((s) => s.name === name);
+  const pal = STAGE_PALETTE[(oi >= 0 ? oi : i >= 0 ? i : 0) % STAGE_PALETTE.length];
+  return { text: name || 'New', ...pal };
 }
 
-function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]; onAct: (id: string, patch: { status?: PortalLead['status']; note?: string }) => void; onAddLead: (name: string, phone: string, note: string) => void; onFollowUp: (id: string, fu: { next: string; type: string; note: string }) => void }) {
+function LeadsTab({ leads, stages, businessType, onStage, onSetBusiness, onAddLead, onFollowUp }: { leads: PortalLead[]; stages: PortalStage[]; businessType: string; onStage: (id: string, stageName: string) => void; onSetBusiness: (type: string) => void; onAddLead: (name: string, phone: string, note: string) => void; onFollowUp: (id: string, fu: { next: string; type: string; note: string }) => void }) {
+  const stageName = (l: PortalLead): string => l.stage || deriveStageName(l.status, stages);
   const [adding, setAdding] = useState(false);
   const [nm, setNm] = useState('');
   const [ph, setPh] = useState('');
@@ -492,8 +505,9 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
   };
   const [q, setQ] = useState('');
   const [view, setView] = useState<'list' | 'pipeline'>('list');
-  const [dragOver, setDragOver] = useState<PortalLead['status'] | null>(null);
-  const [statusF, setStatusF] = useState<Set<PortalLeadStatus>>(new Set());
+  const [dragOver, setDragOver] = useState<string | null>(null);
+  const [stageF, setStageF] = useState<Set<string>>(new Set());
+  const [bizMenu, setBizMenu] = useState(false);
   const [sourceF, setSourceF] = useState<Set<string>>(new Set());
   const [fromD, setFromD] = useState('');
   const [toD, setToD] = useState('');
@@ -504,14 +518,14 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
   const [fuType, setFuType] = useState('Call');
   const [fuNote, setFuNote] = useState('');
   const [fuNext, setFuNext] = useState('');
-  const order: Record<PortalLeadStatus, number> = { 'New Lead': 0, 'Contacted': 1, 'Proposal Sent': 2, 'Negotiation': 3, 'Closed Won': 4, 'Closed Lost': 5 };
+  const stageIdx = (name: string) => { const i = stages.findIndex((s) => s.name === name); return i < 0 ? 99 : i; };
   // Leads with a pending follow-up float to the top, soonest first — like the CRM.
   const sorted = [...leads].sort((a, b) => {
     const ap = !!a.nextFollowUp, bp = !!b.nextFollowUp;
     if (ap && bp) return new Date(a.nextFollowUp!).getTime() - new Date(b.nextFollowUp!).getTime();
     if (ap) return -1;
     if (bp) return 1;
-    return (order[a.status] - order[b.status]) || (b.at || '').localeCompare(a.at || '');
+    return (stageIdx(stageName(a)) - stageIdx(stageName(b))) || (b.at || '').localeCompare(a.at || '');
   });
   const ql = q.trim().toLowerCase();
   const base = sorted.filter((l) => {
@@ -522,7 +536,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
     return okQ && okSrc && okDate;
   });
   const searched = base; // pipeline shows all stages (filtered by search/source/date)
-  const shown = statusF.size === 0 ? base : base.filter((l) => statusF.has(l.status));
+  const shown = stageF.size === 0 ? base : base.filter((l) => stageF.has(stageName(l)));
   const newCount = leads.filter((l) => l.status === 'New Lead').length;
   const wonCount = leads.filter((l) => l.status === 'Closed Won').length;
   const daysAgo = (at?: string) => (at ? Math.floor((Date.now() - new Date(at).getTime()) / 86400000) : 0);
@@ -555,14 +569,14 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
   };
   const actTypes = ['Call', 'WhatsApp', 'Visit', 'Other'];
   const sourceList = Array.from(new Set(leads.map((l) => l.source).filter(Boolean))) as string[];
-  const activeFilters = statusF.size + sourceF.size + (fromD || toD ? 1 : 0);
-  const toggleStatus = (s: PortalLeadStatus) => setStatusF((prev) => { const n = new Set(prev); if (n.has(s)) n.delete(s); else n.add(s); return n; });
+  const activeFilters = stageF.size + sourceF.size + (fromD || toD ? 1 : 0);
+  const toggleStage = (s: string) => setStageF((prev) => { const n = new Set(prev); if (n.has(s)) n.delete(s); else n.add(s); return n; });
   const toggleSource = (s: string) => setSourceF((prev) => { const n = new Set(prev); if (n.has(s)) n.delete(s); else n.add(s); return n; });
-  const clearFilters = () => { setStatusF(new Set()); setSourceF(new Set()); setFromD(''); setToD(''); };
+  const clearFilters = () => { setStageF(new Set()); setSourceF(new Set()); setFromD(''); setToD(''); };
   const exportCsv = () => {
     const esc = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const head = ['Name', 'Brand', 'Phone', 'Email', 'Source', 'Stage', 'Next follow-up', 'Added', 'Latest note'];
-    const rows = shown.map((l) => [l.name, l.company || '', l.phone || '', l.email || '', l.source || '', l.status, l.nextFollowUp || '', l.at || '', (l.activity && l.activity[0]?.note) || l.note || ''].map(esc).join(','));
+    const rows = shown.map((l) => [l.name, l.company || '', l.phone || '', l.email || '', l.source || '', stageName(l), l.nextFollowUp || '', l.at || '', (l.activity && l.activity[0]?.note) || l.note || ''].map(esc).join(','));
     const csv = [head.map(esc).join(','), ...rows].join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
     const a = document.createElement('a'); a.href = url; a.download = `leads-${new Date().toISOString().slice(0, 10)}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
@@ -587,14 +601,15 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
   };
   // Compact stage dropdown used in the list + mobile cards.
   const StageSelect = ({ l, size }: { l: PortalLead; size?: 'sm' }) => {
-    const b = leadBadge(l.status);
+    const cur = stageName(l);
+    const b = stageBadge(stages, cur);
     return (
       <select
-        value={l.status}
-        onChange={(e) => onAct(l.id, { status: e.target.value as PortalLeadStatus })}
+        value={cur}
+        onChange={(e) => onStage(l.id, e.target.value)}
         className={`appearance-none cursor-pointer rounded-full border-2 border-transparent font-bold ${b.cls} ${size === 'sm' ? 'text-[11px] px-2.5 py-1' : 'text-xs px-3 py-1.5'}`}
       >
-        {PORTAL_STAGES.map((s) => <option key={s} value={s} className="bg-white text-brandDark">{stageLabel(s)}</option>)}
+        {stages.map((s) => <option key={s.name} value={s.name} className="bg-white text-brandDark">{s.name}</option>)}
       </select>
     );
   };
@@ -677,10 +692,10 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
               <div>
                 <p className="text-[11px] font-black uppercase tracking-wider text-brandDark/45 mb-1.5">Stage</p>
                 <div className="grid gap-1">
-                  {PORTAL_STAGES.map((s) => (
-                    <label key={s} className="flex items-center gap-2 text-sm font-semibold cursor-pointer">
-                      <input type="checkbox" checked={statusF.has(s)} onChange={() => toggleStatus(s)} className="accent-brandDark" /> {stageLabel(s)}
-                      <span className="ml-auto text-brandDark/40">{leads.filter((l) => l.status === s).length}</span>
+                  {stages.map((s) => (
+                    <label key={s.name} className="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                      <input type="checkbox" checked={stageF.has(s.name)} onChange={() => toggleStage(s.name)} className="accent-brandDark" /> {s.name}
+                      <span className="ml-auto text-brandDark/40">{leads.filter((l) => stageName(l) === s.name).length}</span>
                     </label>
                   ))}
                 </div>
@@ -701,6 +716,18 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
                 <button type="button" onClick={clearFilters} className="flex-1 rounded-lg bg-brandDark/5 text-brandDark/60 text-sm font-bold py-1.5">Clear all</button>
                 <button type="button" onClick={() => setMenu('none')} className="flex-1 rounded-lg bg-brandDark text-white text-sm font-bold py-1.5">Done</button>
               </div>
+            </div>
+          )}
+        </div>
+        {/* Business-type pipeline picker */}
+        <div className="relative">
+          <button type="button" onClick={() => setBizMenu((v) => !v)} title="Change the stages to fit your business" className="inline-flex items-center gap-1.5 rounded-2xl bg-white border-2 border-brandDark/10 text-brandDark/70 font-bold px-3.5 py-2.5 text-sm"><Blocks className="w-4 h-4" strokeWidth={2.2} /> Pipeline</button>
+          {bizMenu && (
+            <div className="absolute right-0 z-30 mt-2 w-60 rounded-2xl bg-white border-2 border-brandDark/10 shadow-3xl p-2">
+              <p className="px-2 py-1 text-[11px] font-black uppercase tracking-wider text-brandDark/45">Pick your business</p>
+              {Object.entries(BUSINESS_TEMPLATES).map(([key, t]) => (
+                <button key={key} type="button" onClick={() => { onSetBusiness(key); setBizMenu(false); }} className={`w-full text-left rounded-lg px-2.5 py-1.5 text-sm font-semibold ${businessType === key ? 'bg-brandDark text-white' : 'hover:bg-brandDark/5'}`}>{t.label}</button>
+              ))}
             </div>
           )}
         </div>
@@ -743,7 +770,7 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
       <>
       <ul className="md:hidden grid gap-3">
         {shown.map((l) => {
-          const b = leadBadge(l.status);
+          const b = stageBadge(stages, stageName(l));
           const digits = (l.phone || '').replace(/[^0-9]/g, '');
           const fs = fuState(l);
           const last = l.activity && l.activity[0];
@@ -886,19 +913,19 @@ function LeadsTab({ leads, onAct, onAddLead, onFollowUp }: { leads: PortalLead[]
       {view === 'pipeline' && (
         <div className="overflow-x-auto pb-2 -mx-1 px-1">
           <div className="flex gap-4 min-w-max">
-            {PORTAL_STAGES.map((st) => {
-              const col = searched.filter((l) => l.status === st);
-              const bb = leadBadge(st);
+            {stages.map((st) => {
+              const col = searched.filter((l) => stageName(l) === st.name);
+              const bb = stageBadge(stages, st.name);
               return (
                 <div
-                  key={st}
-                  onDragOver={(e) => { e.preventDefault(); setDragOver(st); }}
-                  onDragLeave={() => setDragOver((d) => (d === st ? null : d))}
-                  onDrop={(e) => { e.preventDefault(); const id = e.dataTransfer.getData('leadId'); if (id) onAct(id, { status: st }); setDragOver(null); }}
-                  className={`w-[300px] shrink-0 rounded-2xl p-3 transition ${dragOver === st ? 'bg-brandYellow/15 ring-2 ring-brandYellow' : 'bg-brandDark/[0.03]'}`}
+                  key={st.name}
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(st.name); }}
+                  onDragLeave={() => setDragOver((d) => (d === st.name ? null : d))}
+                  onDrop={(e) => { e.preventDefault(); const id = e.dataTransfer.getData('leadId'); if (id) onStage(id, st.name); setDragOver(null); }}
+                  className={`w-[280px] shrink-0 rounded-2xl p-3 transition ${dragOver === st.name ? 'bg-brandYellow/15 ring-2 ring-brandYellow' : 'bg-brandDark/[0.03]'}`}
                 >
                   <div className="flex items-center justify-between px-1 pb-2.5">
-                    <span className="inline-flex items-center gap-1.5 text-sm font-black text-brandDark/70"><span className={`h-2 w-2 rounded-full ${bb.dot}`} />{stageLabel(st)}</span>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-black text-brandDark/70"><span className={`h-2 w-2 rounded-full ${bb.dot}`} />{st.name}</span>
                     <span className="rounded-full bg-white px-2 py-0.5 text-xs font-bold text-brandDark/55">{col.length}</span>
                   </div>
                   <div className="grid gap-2">
